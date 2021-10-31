@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0-rc.2.21480.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ProEShop.Common\ProEShop.Common.csproj" />
+    <ProjectReference Include="..\ProEShop.DataLayer\ProEShop.DataLayer.csproj" />
+    <ProjectReference Include="..\ProEShop.Entities\ProEShop.Entities.csproj" />
+    <ProjectReference Include="..\ProEShop.IocConfig\ProEShop.IocConfig.csproj" />
+    <ProjectReference Include="..\ProEShop.Services\ProEShop.Services.csproj" />
+    <ProjectReference Include="..\ProEShop.ViewModels\ProEShop.ViewModels.csproj" />
+  </ItemGroup>
+
+</Project>
