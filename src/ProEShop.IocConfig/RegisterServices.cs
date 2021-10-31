@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using ProEShop.DataLayer;
+using ProEShop.DataLayer.Context;
 
 namespace ProEShop.IocConfig;
 public static class RegisterServices
