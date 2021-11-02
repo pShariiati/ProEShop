@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using ProEShop.ViewModels.Identity.Settings;
 using ProEShop.Web.Models;
 
 namespace ProEShop.Web.Controllers;
@@ -7,10 +9,12 @@ namespace ProEShop.Web.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly IOptionsSnapshot<SiteSettings> siteSettings;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger, IOptionsSnapshot<SiteSettings> siteSettings)
     {
         _logger = logger;
+        this.siteSettings = siteSettings;
     }
 
     public IActionResult Index()

@@ -14,9 +14,8 @@ public class ApplicationRoleManager
         IEnumerable<IRoleValidator<Role>> roleValidators,
         ILookupNormalizer keyNormalizer,
         IdentityErrorDescriber errors,
-        ILogger<ApplicationRoleManager> logger
-        ) :
-        base((RoleStore<Role, ApplicationDbContext, long, UserRole, RoleClaim>)store,
+        ILogger<ApplicationRoleManager> logger)
+        : base((RoleStore<Role, ApplicationDbContext, long, UserRole, RoleClaim>)store,
             roleValidators,keyNormalizer, errors, logger)
     {
     }
