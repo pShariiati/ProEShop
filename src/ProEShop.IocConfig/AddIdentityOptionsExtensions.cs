@@ -31,7 +31,7 @@ public static class AddIdentityOptionsExtensions
           .AddSignInManager<ApplicationSignInManager>()
           .AddErrorDescriber<CustomIdentityErrorDescriber>()
           // You **cannot** use .AddEntityFrameworkStores() when you customize everything
-          //.AddEntityFrameworkStores<ApplicationDbContext, int>()
+          //.AddEntityFrameworkStores<ApplicationDbContext, long>()
           .AddDefaultTokenProviders()
           .AddTokenProvider<ConfirmEmailDataProtectorTokenProvider<User>>(EmailConfirmationTokenProviderName);
 
@@ -67,12 +67,6 @@ public static class AddIdentityOptionsExtensions
             options.ValidationInterval = TimeSpan.Zero;
             options.OnRefreshingPrincipal = principalContext =>
             {
-                // Invoked when the default security stamp validator replaces the user's ClaimsPrincipal in the cookie.
-
-                //var newId = new ClaimsIdentity();
-                //newId.AddClaim(new Claim("PreviousName", principalContext.CurrentPrincipal.Identity.Name));
-                //principalContext.NewPrincipal.AddIdentity(newId);
-
                 return Task.CompletedTask;
             };
         });
@@ -84,7 +78,8 @@ public static class AddIdentityOptionsExtensions
         identityOptionsCookies.Cookie.HttpOnly = true;
         identityOptionsCookies.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
         identityOptionsCookies.Cookie.SameSite = SameSiteMode.Lax;
-        identityOptionsCookies.Cookie.IsEssential = true; //  this cookie will always be stored regardless of the user's consent
+        // this cookie will always be stored regardless of the user's consent
+        identityOptionsCookies.Cookie.IsEssential = true;
 
         identityOptionsCookies.ExpireTimeSpan = siteSettings.CookieOptions.ExpireTimeSpan;
         identityOptionsCookies.SlidingExpiration = siteSettings.CookieOptions.SlidingExpiration;

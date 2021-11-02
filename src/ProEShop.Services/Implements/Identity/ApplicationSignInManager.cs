@@ -11,20 +11,6 @@ namespace ProEShop.Services.Implements.Identity;
 public class ApplicationSignInManager
     : SignInManager<User>, IApplicationSignInManager
 {
-    //public ApplicationSignInManager(
-    //    IApplicationUserManager userManager,
-    //    IHttpContextAccessor contextAccessor,
-    //    IUserClaimsPrincipalFactory<User> claimsFactory,
-    //    IOptions<IdentityOptions> optionsAccessor,
-    //    ILogger<ApplicationSignInManager> logger,
-    //    IAuthenticationSchemeProvider schemes)
-    //    : base((UserManager<User>)userManager,
-    //        contextAccessor, claimsFactory, optionsAccessor, logger, schemes)
-    //{
-    //}
-
-    #region CustomClass
-    #endregion
     public ApplicationSignInManager(
         IApplicationUserManager userManager,
         IHttpContextAccessor contextAccessor,
@@ -37,4 +23,7 @@ public class ApplicationSignInManager
             contextAccessor, claimsFactory, optionsAccessor, logger, schemes, confirmation)
     {
     }
+
+    #region CustomClass
+    #endregion
 }

@@ -10,6 +10,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.0-rc.2.21480.10" />
 	</ItemGroup>
 	<ItemGroup>
+	  <ProjectReference Include="..\ProEShop.Common\ProEShop.Common.csproj" />
 	  <ProjectReference Include="..\ProEShop.DataLayer\ProEShop.DataLayer.csproj" />
 	  <ProjectReference Include="..\ProEShop.Entities\ProEShop.Entities.csproj" />
 	</ItemGroup>
