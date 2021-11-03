@@ -9,19 +9,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProEShop.Services.Implements.Identity;
-
-public class ApplicationRoleStore
-    : RoleStore<Role, ApplicationDbContext, long, UserRole, RoleClaim>,
-    IApplicationRoleStore
+namespace ProEShop.Services.Implements.Identity
 {
-    public ApplicationRoleStore(
-        IUnitOfWork uow,
-        IdentityErrorDescriber describer = null)
-        : base((ApplicationDbContext)uow, describer)
-    {
-    }
 
-    #region CustomClass
-    #endregion
+    public class ApplicationRoleStore
+        : RoleStore<Role, ApplicationDbContext, long, UserRole, RoleClaim>,
+            IApplicationRoleStore
+    {
+        public ApplicationRoleStore(
+            IUnitOfWork uow,
+            IdentityErrorDescriber describer = null)
+            : base((ApplicationDbContext) uow, describer)
+        {
+        }
+
+        #region CustomClass
+
+        #endregion
+    }
 }

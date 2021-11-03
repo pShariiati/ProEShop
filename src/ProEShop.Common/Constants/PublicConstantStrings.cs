@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProEShop.Common.Constants;
-public static class PublicConstantStrings
+namespace ProEShop.Common.Constants
 {
-    public const string UserDefaultAvatar = "default-avatar.png";
+    public static class PublicConstantStrings
+    {
+        public const string UserDefaultAvatar = "default-avatar.png";
+    }
 }

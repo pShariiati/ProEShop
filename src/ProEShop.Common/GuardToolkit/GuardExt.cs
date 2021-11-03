@@ -1,12 +1,16 @@
-﻿namespace ProEShop.Common.GuardToolkit;
-public static class GuardExt
+﻿using System;
+
+namespace ProEShop.Common.GuardToolkit
 {
-    /// <summary>
-    /// Checks if the argument is null.
-    /// </summary>
-    public static void CheckArgumentIsNull(this object o, string name)
+    public static class GuardExt
     {
-        if (o == null)
-            throw new ArgumentNullException(name);
+        /// <summary>
+        /// Checks if the argument is null.
+        /// </summary>
+        public static void CheckArgumentIsNull(this object o, string name)
+        {
+            if (o == null)
+                throw new ArgumentNullException(name);
+        }
     }
 }

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ProEShop.Entities.Identity;
 
-namespace SampleProject.DataLayer.Configurations
+namespace ProEShop.DataLayer.Configurations
 {
     public class UserClaimConfiguration : IEntityTypeConfiguration<UserClaim>
     {

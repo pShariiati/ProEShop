@@ -1,35 +1,54 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using ProEShop.ViewModels.Identity.Settings;
+using Microsoft.Extensions.Logging;
+using ProEShop.DataLayer.Context;
+using ProEShop.Entities;
+using ProEShop.Services.Contracts;
 using ProEShop.Web.Models;
 
-namespace ProEShop.Web.Controllers;
-
-public class HomeController : Controller
+namespace ProEShop.Web.Controllers
 {
-    private readonly ILogger<HomeController> _logger;
-    private readonly IOptionsSnapshot<SiteSettings> siteSettings;
-
-    public HomeController(ILogger<HomeController> logger, IOptionsSnapshot<SiteSettings> siteSettings)
+    public class HomeController : Controller
     {
-        _logger = logger;
-        this.siteSettings = siteSettings;
-    }
+        private readonly ILogger<HomeController> _logger;
+        private readonly IUnitOfWork _uow;
+        private readonly ICategoryService _categoryService;
 
-    public IActionResult Index()
-    {
-        return View();
-    }
+        public HomeController(
+            ILogger<HomeController> logger,
+            IUnitOfWork uow,
+            ICategoryService categoryService)
+        {
+            _logger = logger;
+            _uow = uow;
+            _categoryService = categoryService;
+        }
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
+        public async Task<IActionResult> Index()
+        {
+            _categoryService.Add(new Category
+            {
+                Title = "ك  ي"
+            });
+            await _uow.SaveChangesAsync();
+            //var cats = await _categoryService.GetAll();
+            return View();
+        }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
     }
 }

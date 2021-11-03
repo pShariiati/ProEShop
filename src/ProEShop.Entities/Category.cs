@@ -1,11 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ProEShop.Entities;
-public class Category
+namespace ProEShop.Entities
 {
-    public int Id { get; set; }
+    public class Category
+    {
+        public int Id { get; set; }
 
-    [Required]
-    [MaxLength(100)]
-    public string Title { get; set; }
+        [Required]
+        [MaxLength(100)]
+        public string Title { get; set; }
+    }
 }

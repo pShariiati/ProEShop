@@ -1,9 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
-namespace ProEShop.DataLayer.Context;
-public interface IUnitOfWork : IDisposable
+namespace ProEShop.DataLayer.Context
 {
-    DbSet<TEntity> Set<TEntity>() where TEntity : class;
-    int SaveChanges();
-    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+    public interface IUnitOfWork : IDisposable
+    {
+        DbSet<TEntity> Set<TEntity>() where TEntity : class;
+        int SaveChanges();
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+    }
 }

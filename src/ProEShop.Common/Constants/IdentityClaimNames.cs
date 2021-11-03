@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProEShop.Common.Constants;
-public static class IdentityClaimNames
+namespace ProEShop.Common.Constants
 {
-    public const string FullName = nameof(FullName);
-    public const string Avatar = nameof(Avatar);
+    public static class IdentityClaimNames
+    {
+        public const string FullName = nameof(FullName);
+        public const string Avatar = nameof(Avatar);
+    }
 }
