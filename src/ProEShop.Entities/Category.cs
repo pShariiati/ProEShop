@@ -9,5 +9,7 @@ namespace ProEShop.Entities
         [Required]
         [MaxLength(100)]
         public string Title { get; set; }
+
+        public string Test { get; set; }
     }
 }

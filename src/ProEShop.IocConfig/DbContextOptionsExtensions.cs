@@ -1,8 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Security.Principal;
+using DNTCommon.Web.Core;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using ProEShop.Common.GuardToolkit;
 using ProEShop.Common.PersianToolkit;
 using ProEShop.DataLayer.Context;
+using ProEShop.Services.Contracts.Identity;
 using ProEShop.ViewModels.Identity.Settings;
 
 namespace ProEShop.IocConfig
@@ -28,13 +32,19 @@ namespace ProEShop.IocConfig
         /// <summary>
         /// Creates and seeds the database.
         /// </summary>
-        //public static void InitializeDb(this IServiceProvider serviceProvider)
-        //{
-        //    serviceProvider.RunScopedService<IIdentityDbInitializer>(identityDbInitialize =>
-        //    {
-        //        identityDbInitialize.Initialize();
-        //        identityDbInitialize.SeedData();
-        //    });
-        //}
+        public static void InitializeDb(this IServiceProvider serviceProvider)
+        {
+            //using (var serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            //{
+            //    var context = serviceScope.ServiceProvider.GetRequiredService<IIdentityDbInitializer>();
+            //    context.Initialize();
+            //    context.SeedData();
+            //}
+            serviceProvider.RunScopedService<IIdentityDbInitializer>(identityDbInitialize =>
+            {
+                identityDbInitialize.Initialize();
+                identityDbInitialize.SeedData();
+            });
+        }
     }
 }

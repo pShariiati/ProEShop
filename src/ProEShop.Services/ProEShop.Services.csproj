@@ -5,11 +5,13 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+		<PackageReference Include="DNTCommon.Web.Core" Version="2.9.5" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\ProEShop.Common\ProEShop.Common.csproj" />
 		<ProjectReference Include="..\ProEShop.DataLayer\ProEShop.DataLayer.csproj" />
 		<ProjectReference Include="..\ProEShop.Entities\ProEShop.Entities.csproj" />
+		<ProjectReference Include="..\ProEShop.ViewModels\ProEShop.ViewModels.csproj" />
 	</ItemGroup>
 
 </Project>

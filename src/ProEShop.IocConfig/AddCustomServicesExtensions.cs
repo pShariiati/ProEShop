@@ -5,8 +5,8 @@ using ProEShop.DataLayer.Context;
 using ProEShop.Entities.Identity;
 using ProEShop.Services.Contracts;
 using ProEShop.Services.Contracts.Identity;
-using ProEShop.Services.Implements;
-using ProEShop.Services.Implements.Identity;
+using ProEShop.Services.Services;
+using ProEShop.Services.Services.Identity;
 
 namespace ProEShop.IocConfig
 {
@@ -38,6 +38,7 @@ namespace ProEShop.IocConfig
             services.AddScoped<SignInManager<User>, ApplicationSignInManager>();
 
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IIdentityDbInitializer, IdentityDbInitializer>();
 
             return services;
         }

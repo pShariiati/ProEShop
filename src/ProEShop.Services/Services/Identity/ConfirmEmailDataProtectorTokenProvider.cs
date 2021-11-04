@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace ProEShop.Services.Implements.Identity
+namespace ProEShop.Services.Services.Identity
 {
     public class ConfirmEmailDataProtectionTokenProviderOptions : DataProtectionTokenProviderOptions
     {

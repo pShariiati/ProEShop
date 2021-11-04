@@ -1,17 +1,13 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Security.Claims;
+using System.Security.Principal;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using ProEShop.Common.Constants;
 using ProEShop.Entities.Identity;
 using ProEShop.Services.Contracts.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ProEShop.Services.Implements.Identity
+namespace ProEShop.Services.Services.Identity
 {
     public class ApplicationClaimsPrincipalFactory : UserClaimsPrincipalFactory<User, Role>
     {

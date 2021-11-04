@@ -5,7 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.11">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ProEShop.Common\ProEShop.Common.csproj" />
+    <ProjectReference Include="..\ProEShop.DataLayer\ProEShop.DataLayer.csproj" />
+    <ProjectReference Include="..\ProEShop.Entities\ProEShop.Entities.csproj" />
     <ProjectReference Include="..\ProEShop.IocConfig\ProEShop.IocConfig.csproj" />
+    <ProjectReference Include="..\ProEShop.Services\ProEShop.Services.csproj" />
     <ProjectReference Include="..\ProEShop.ViewModels\ProEShop.ViewModels.csproj" />
   </ItemGroup>
 

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace ProEShop.Services.Implements.Identity
+namespace ProEShop.Services.Services.Identity
 {
 
     public class CustomIdentityErrorDescriber : IdentityErrorDescriber
