@@ -119,7 +119,7 @@ namespace ProEShop.Services.Services.Identity
                 Email = email,
                 EmailConfirmed = true,
                 Avatar = _options.Value.UserDefaultAvatar,
-                IsActive = true
+                CreatedDateTime = DateTime.Now
             };
             var adminUserResult = await _applicationUserManager.CreateAsync(adminUser, password);
             if (adminUserResult == IdentityResult.Failed())

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ProEShop.Entities;
+using ProEShop.Entities.AuditableEntity;
 using ProEShop.Entities.Identity;
 
 namespace ProEShop.DataLayer.Context
@@ -21,6 +22,9 @@ namespace ProEShop.DataLayer.Context
         {
             base.OnModelCreating(builder);
             builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+            //...
+            // This should be placed here, at the end.
+            builder.AddAuditableShadowProperties();
         }
     }
 }

@@ -3,10 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ProEShop.Entities.AuditableEntity;
 
 namespace ProEShop.Entities.Identity
 {
-    public class User : IdentityUser<long>
+    public class User : IdentityUser<long>, IAuditableEntity
     {
         [MaxLength(200)]
         public string FirstName { get; set; }
@@ -17,7 +18,7 @@ namespace ProEShop.Entities.Identity
         [NotMapped]
         public string FullName => $"{FirstName} {LastName}";
 
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
 
         public DateTime CreatedDateTime { get; set; }
 
