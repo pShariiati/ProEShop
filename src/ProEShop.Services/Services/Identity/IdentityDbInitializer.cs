@@ -100,7 +100,7 @@ namespace ProEShop.Services.Services.Identity
             var adminRole = await _roleManager.FindByNameAsync(ConstantRoles.Admin);
             if (adminRole == null)
             {
-                adminRole = new Role(ConstantRoles.Admin);
+                adminRole = new Role(ConstantRoles.Admin, "ادمین کل سیستم");
                 var adminRoleResult = await _roleManager.CreateAsync(adminRole);
                 if (adminRoleResult == IdentityResult.Failed())
                 {
