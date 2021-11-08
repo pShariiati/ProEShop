@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DNTCommon.Web.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,8 +27,10 @@ namespace ProEShop.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<SiteSettings>(options => Configuration.Bind(options));
-            services.AddControllersWithViews();
+            services.Configure<ContentSecurityPolicyConfig>(options => Configuration.GetSection("ContentSecurityPolicyConfig").Bind(options));
+            // Adds all of the ASP.NET Core Identity related services and configurations at once.
             services.AddCustomIdentityServices();
+            services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +48,7 @@ namespace ProEShop.Web
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseContentSecurityPolicy();
 
             app.UseRouting();
 
