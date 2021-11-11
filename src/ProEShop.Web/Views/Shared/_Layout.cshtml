@@ -1,48 +1,139 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿<!doctype html>
+<html lang="fa" dir="rtl">
+
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - ProEShop.Web</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.rtl.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="~/css/site.css">
+    <title>سلام به دنیا</title>
 </head>
+
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ProEShop.Web</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+
+    <div class="container-fluid bg-white shadow-sm">
+        <div class="row p-3" id="main-header">
+            <div class="col-12 col-lg-2 text-center text-lg-start mb-3 mb-lg-0 ps-2">
+                <img src="~/images/eshop.png" class="logo" />
+            </div>
+            <div class="col-lg-6 col-xl-5 col-md-9">
+                <div class="input-group" id="main-search-box">
+                    <span class="input-group-text bi bi-search">
+                    </span>
+                    <input id="main-search-input" type="text" class="form-control" />
+                    <span class="input-group-text bi bi-x-circle text-danger"></span>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+            <div class="col-md-3 col-lg-4 ms-auto text-end d-flex justify-content-center justify-content-md-end align-items-center">
+                <a href="#login" class="btn btn-light">
+                    <i class="bi bi-box-arrow-in-left rem1and3"></i>
+                    &nbsp;
+                    <span>
+                        ورود
+                        <span class="d-none d-lg-inline-block">به حساب کاربری</span>
+                    </span>
+                </a>
+                <!-- <div class="dropdown">
+                    <button class="btn btn-light dropdown-toggle dropstart" type="button" id="profile-dropdown-menu"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person rem1and3"></i>
+                    </button>
+                    <ul class="dropdown-menu custom-box-shadow" aria-labelledby="profile-dropdown-menu"
+                        id="ul-profile-menus">
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <div id="profile-menus">
+                                    <img src="images/user-avatar.png" id="user-avatar-in-header" alt="">
+                                    &nbsp;
+                                    &nbsp;
+                                    <div>
+                                        <span>
+                                            پیام شریعتی
+                                        </span>
+                                        <br />
+                                        <span class="text-info rem0and75">
+                                            مشاهده حساب کاربری
+                                            <i class="bi bi-chevron-left"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="rem0and75 text-secondary" id="wallet-and-pro-kala-box">
+                                    <div class="d-flex justify-content-between">
+                                        <span>
+                                            کیف پول
+                                        </span>
+                                        <span>
+                                            ۰ تومان
+                                        </span>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <span>
+                                            پرو کلاب
+                                        </span>
+                                        <span>
+                                            ۰ امتیار
+                                        </span>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="proflie-dropdown-menu-lines">
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <i class="bi bi-card-checklist"></i>
+                                سفارش های من
+                            </a>
+                        </li>
+                        <li class="proflie-dropdown-menu-lines">
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <i class="bi bi-gift"></i>
+                                جوایز پرو کلاب
+                            </a>
+                        </li>
+                        <li class="proflie-dropdown-menu-lines">
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <i class="bi bi-box-arrow-right"></i>
+                                خروج از حساب کاربری
+                            </a>
+                        </li>
+                    </ul>
+                </div> -->
+
+                <span style="height: 26px; border-right: 1px solid #dad4d4;"></span>
+                <div class="dropdown">
+                    <button class="btn btn-light position-relative dropstart" type="button" id="profile-dropdown-menu"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-cart rem1and3"></i>
+                        <span class="position-absolute top-100 start-50 translate-middle badge rounded-pill bg-danger">
+                            ۱۰
+                        </span>
+                    </button>
+                    <div class="dropdown-menu custom-box-shadow" aria-labelledby="profile-dropdown-menu"
+                         id="ul-profile-menus">
+                        body
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - ProEShop.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @RenderBody()
+
+    <script src="lib/jquery/jquery.min.js"></script>
+    <script src="lib/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>
