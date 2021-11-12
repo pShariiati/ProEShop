@@ -35,6 +35,9 @@ namespace ProEShop.DataLayer.Context
             return this.Entry(entity).Property(propertyName).CurrentValue;
         }
 
+        public void MarkAsDeleted<TEntity>(TEntity entity)
+            => base.Entry(entity).State = EntityState.Deleted;
+
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             SetShadowProperties();

@@ -4,9 +4,8 @@ using ProEShop.Entities;
 
 namespace ProEShop.Services.Contracts
 {
-    public interface ICategoryService
+    public interface ICategoryService : IGenericService<Category>
     {
-        void Add(Category category);
         Task<List<Category>> GetAll();
     }
 }
