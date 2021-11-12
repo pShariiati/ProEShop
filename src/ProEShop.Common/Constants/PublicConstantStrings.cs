@@ -1,7 +1,6 @@
-﻿namespace ProEShop.Common.Constants
-{
-    public static class PublicConstantStrings
-    {
+﻿namespace ProEShop.Common.Constants;
 
-    }
+public static class PublicConstantStrings
+{
+
 }

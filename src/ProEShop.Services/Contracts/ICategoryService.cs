@@ -2,10 +2,9 @@
 using System.Threading.Tasks;
 using ProEShop.Entities;
 
-namespace ProEShop.Services.Contracts
+namespace ProEShop.Services.Contracts;
+
+public interface ICategoryService : IGenericService<Category>
 {
-    public interface ICategoryService : IGenericService<Category>
-    {
-        Task<List<Category>> GetAll();
-    }
+    Task<List<Category>> GetAll();
 }

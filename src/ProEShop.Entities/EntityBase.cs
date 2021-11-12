@@ -1,7 +1,6 @@
-﻿namespace ProEShop.Entities
+﻿namespace ProEShop.Entities;
+
+public abstract class EntityBase
 {
-    public abstract class EntityBase
-    {
-        public long Id { get; set; }
-    }
+    public long Id { get; set; }
 }

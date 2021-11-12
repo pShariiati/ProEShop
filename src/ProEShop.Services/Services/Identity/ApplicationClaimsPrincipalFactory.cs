@@ -7,35 +7,34 @@ using ProEShop.Common.Constants;
 using ProEShop.Entities.Identity;
 using ProEShop.Services.Contracts.Identity;
 
-namespace ProEShop.Services.Services.Identity
+namespace ProEShop.Services.Services.Identity;
+
+public class ApplicationClaimsPrincipalFactory : UserClaimsPrincipalFactory<User, Role>
 {
-    public class ApplicationClaimsPrincipalFactory : UserClaimsPrincipalFactory<User, Role>
+    public ApplicationClaimsPrincipalFactory(
+        IApplicationUserManager userManager,
+        IApplicationRoleManager roleManager,
+        IOptions<IdentityOptions> optionsAccessor)
+        : base((UserManager<User>)userManager, (RoleManager<Role>)roleManager, optionsAccessor)
     {
-        public ApplicationClaimsPrincipalFactory(
-            IApplicationUserManager userManager,
-            IApplicationRoleManager roleManager,
-            IOptions<IdentityOptions> optionsAccessor)
-            : base((UserManager<User>) userManager, (RoleManager<Role>) roleManager, optionsAccessor)
-        {
-        }
+    }
 
-        public override async Task<ClaimsPrincipal> CreateAsync(User user)
-        {
-            // adds all `Options.ClaimsIdentity.RoleClaimType -> Role Claims` automatically +
-            // `Options.ClaimsIdentity.UserIdClaimType -> userId`
-            // & `Options.ClaimsIdentity.UserNameClaimType -> userName`
-            var principal = await base.CreateAsync(user);
-            AddCustomClaims(user, principal);
-            return principal;
-        }
+    public override async Task<ClaimsPrincipal> CreateAsync(User user)
+    {
+        // adds all `Options.ClaimsIdentity.RoleClaimType -> Role Claims` automatically +
+        // `Options.ClaimsIdentity.UserIdClaimType -> userId`
+        // & `Options.ClaimsIdentity.UserNameClaimType -> userName`
+        var principal = await base.CreateAsync(user);
+        AddCustomClaims(user, principal);
+        return principal;
+    }
 
-        private static void AddCustomClaims(User user, IPrincipal principal)
+    private static void AddCustomClaims(User user, IPrincipal principal)
+    {
+        (principal.Identity as ClaimsIdentity).AddClaims(new[]
         {
-            (principal.Identity as ClaimsIdentity).AddClaims(new[]
-            {
                 new Claim(IdentityClaimNames.Avatar, user.Avatar ?? string.Empty, ClaimValueTypes.String),
                 new Claim(IdentityClaimNames.FullName, user.FullName ?? string.Empty, ClaimValueTypes.String)
             });
-        }
     }
 }

@@ -4,31 +4,29 @@ using ProEShop.DataLayer.Context;
 using ProEShop.Entities;
 using ProEShop.Services.Contracts;
 
-namespace ProEShop.Web.Controllers
+namespace ProEShop.Web.Controllers;
+public class HomeController : Controller
 {
-    public class HomeController : Controller
-    {
-        private readonly IUnitOfWork _uow;
-        private readonly ICategoryService _categoryService;
+    private readonly IUnitOfWork _uow;
+    private readonly ICategoryService _categoryService;
 
-        public HomeController(
-            IUnitOfWork uow,
-            ICategoryService categoryService
-        )
+    public HomeController(
+        IUnitOfWork uow,
+        ICategoryService categoryService
+    )
+    {
+        _uow = uow;
+        _categoryService = categoryService;
+    }
+    public async Task<IActionResult> Index()
+    {
+        await _categoryService.AddAsync(new Category()
         {
-            _uow = uow;
-            _categoryService = categoryService;
-        }
-        public async Task<IActionResult> Index()
-        {
-            await _categoryService.AddAsync(new Category()
-            {
-                Test = "test",
-                Title = "test2"
-            });
-            await _uow.SaveChangesAsync();
-            var categories = await _categoryService.GetAll();
-            return View();
-        }
+            Test = "test",
+            Title = "test2"
+        });
+        await _uow.SaveChangesAsync();
+        var categories = await _categoryService.GetAll();
+        return View();
     }
 }

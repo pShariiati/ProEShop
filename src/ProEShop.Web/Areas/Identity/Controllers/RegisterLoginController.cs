@@ -4,14 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProEShop.Web.Areas.Identity.Controllers
+namespace ProEShop.Web.Areas.Identity.Controllers;
+
+[Area("Identity")]
+public class RegisterLoginController : Controller
 {
-    [Area("Identity")]
-    public class RegisterLoginController : Controller
+    public IActionResult Index()
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+        return View();
     }
 }
