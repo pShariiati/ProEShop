@@ -1,9 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using ProEShop.Common.GuardToolkit;
-using ProEShop.DataLayer.Context;
-using ProEShop.IocConfig;
 using ProEShop.ViewModels.Identity.Settings;
 
 namespace ProEShop.IocConfig;

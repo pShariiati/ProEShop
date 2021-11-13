@@ -1,17 +1,23 @@
 using DNTCommon.Web.Core;
+using Microsoft.Extensions.WebEncoders;
 using ProEShop.IocConfig;
 using ProEShop.ViewModels.Identity.Settings;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
 builder.Services.Configure<SiteSettings>(options => builder.Configuration.Bind(options));
 builder.Services.Configure<ContentSecurityPolicyConfig>(options => builder.Configuration.GetSection("ContentSecurityPolicyConfig").Bind(options));
 // Adds all of the ASP.NET Core Identity related services and configurations at once.
 builder.Services.AddCustomIdentityServices();
-builder.Services.AddRazorPages()
-    .AddRazorRuntimeCompilation();
+builder.Services.AddRazorPages();
+    //.AddRazorRuntimeCompilation();
+builder.Services.Configure<WebEncoderOptions>(options =>
+{
+    options.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.All);
+});
 
 var app = builder.Build();
 app.Services.InitializeDb();
@@ -32,10 +38,6 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "areas",
-    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
-);
-app.MapDefaultControllerRoute();
+app.MapRazorPages();
 
 app.Run();

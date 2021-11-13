@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ProEShop.Entities.AuditableEntity;
+﻿namespace ProEShop.Entities.AuditableEntity;
 
 public class AppShadowProperties
 {

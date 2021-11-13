@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System.Collections.Generic;
 using ProEShop.Entities.AuditableEntity;
 
 namespace ProEShop.Entities.Identity;

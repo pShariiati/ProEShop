@@ -1,11 +1,10 @@
-﻿using System.Security.Claims;
-using System.Security.Principal;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using ProEShop.Common.Constants;
 using ProEShop.Entities.Identity;
 using ProEShop.Services.Contracts.Identity;
+using System.Security.Claims;
+using System.Security.Principal;
 
 namespace ProEShop.Services.Services.Identity;
 

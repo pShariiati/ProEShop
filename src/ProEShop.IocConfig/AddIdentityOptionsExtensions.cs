@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -67,8 +65,8 @@ public static class AddIdentityOptionsExtensions
     {
         services.Configure<SecurityStampValidatorOptions>(options =>
         {
-                // enables immediate logout, after updating the user's stat.
-                options.ValidationInterval = TimeSpan.Zero;
+            // enables immediate logout, after updating the user's stat.
+            options.ValidationInterval = TimeSpan.Zero;
             options.OnRefreshingPrincipal = principalContext => { return Task.CompletedTask; };
         });
     }

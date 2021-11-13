@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using DNTCommon.Web.Core;
+﻿using DNTCommon.Web.Core;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,7 +8,6 @@ using ProEShop.Common.GuardToolkit;
 using ProEShop.Common.IdentityToolkit;
 using ProEShop.DataLayer.Context;
 using ProEShop.Entities.Identity;
-using ProEShop.Services.Contracts;
 using ProEShop.Services.Contracts.Identity;
 using ProEShop.ViewModels.Identity.Settings;
 

@@ -2,9 +2,18 @@
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
-		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Remove="Pages\Identity\RegisterLogin.cshtml.css" />
+	  <None Remove="Pages\Identity\RegisterLogin.cshtml.js" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="Pages\Identity\RegisterLogin.cshtml.js" />
+	  <Content Include="Pages\Identity\RegisterLogin.cshtml.css" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.0" />

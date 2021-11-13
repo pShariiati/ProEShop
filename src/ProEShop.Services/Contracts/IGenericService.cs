@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using ProEShop.Entities;
+﻿using ProEShop.Entities;
 
 namespace ProEShop.Services.Contracts;
 

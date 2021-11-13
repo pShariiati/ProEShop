@@ -1,5 +1,3 @@
-using System;
-
 namespace ProEShop.ViewModels.Identity.Settings;
 
 public class CookieOptions

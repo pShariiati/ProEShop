@@ -1,6 +1,4 @@
-﻿using System.Security.Claims;
-using System.Security.Principal;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +8,8 @@ using ProEShop.Services.Contracts;
 using ProEShop.Services.Contracts.Identity;
 using ProEShop.Services.Services;
 using ProEShop.Services.Services.Identity;
+using System.Security.Claims;
+using System.Security.Principal;
 
 namespace ProEShop.IocConfig;
 

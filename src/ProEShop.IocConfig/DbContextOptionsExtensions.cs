@@ -1,6 +1,4 @@
-﻿using System;
-using System.Security.Principal;
-using DNTCommon.Web.Core;
+﻿using DNTCommon.Web.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using ProEShop.Common.GuardToolkit;

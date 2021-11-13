@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Identity;
-using ProEShop.ViewModels.Identity.Settings;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace ProEShop.ViewModels.Identity.Settings;
 

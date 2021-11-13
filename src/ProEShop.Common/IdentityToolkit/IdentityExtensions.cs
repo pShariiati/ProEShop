@@ -1,9 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
 using System.Globalization;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
-using Microsoft.AspNetCore.Identity;
 
 namespace ProEShop.Common.IdentityToolkit;
 

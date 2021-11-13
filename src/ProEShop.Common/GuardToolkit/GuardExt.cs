@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ProEShop.Common.GuardToolkit;
+﻿namespace ProEShop.Common.GuardToolkit;
 
 public static class GuardExt
 {

@@ -1,31 +1,28 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30114.105
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{50CC81C8-4F53-4E91-860C-DE2CDE0757EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProEShop.Web", "src\ProEShop.Web\ProEShop.Web.csproj", "{133C3859-C4EA-4DCD-BD4A-C5B371AA2120}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProEShop.Web", "src\ProEShop.Web\ProEShop.Web.csproj", "{133C3859-C4EA-4DCD-BD4A-C5B371AA2120}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProEShop.ViewModels", "src\ProEShop.ViewModels\ProEShop.ViewModels.csproj", "{1A625D04-67BE-4892-845E-3B7BA513F0F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProEShop.ViewModels", "src\ProEShop.ViewModels\ProEShop.ViewModels.csproj", "{1A625D04-67BE-4892-845E-3B7BA513F0F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProEShop.Services", "src\ProEShop.Services\ProEShop.Services.csproj", "{9F79430C-D309-46D8-A42E-499960BD180B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProEShop.Services", "src\ProEShop.Services\ProEShop.Services.csproj", "{9F79430C-D309-46D8-A42E-499960BD180B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProEShop.IocConfig", "src\ProEShop.IocConfig\ProEShop.IocConfig.csproj", "{6752B126-4E0B-4963-8AB5-76395E74C53E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProEShop.IocConfig", "src\ProEShop.IocConfig\ProEShop.IocConfig.csproj", "{6752B126-4E0B-4963-8AB5-76395E74C53E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProEShop.Entities", "src\ProEShop.Entities\ProEShop.Entities.csproj", "{D39A6CD6-4B75-4144-9CE0-3296747CEBDC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProEShop.Entities", "src\ProEShop.Entities\ProEShop.Entities.csproj", "{D39A6CD6-4B75-4144-9CE0-3296747CEBDC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProEShop.DataLayer", "src\ProEShop.DataLayer\ProEShop.DataLayer.csproj", "{EBCAFBE9-6F1A-4D2D-8548-BD0F8FA5B1BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProEShop.DataLayer", "src\ProEShop.DataLayer\ProEShop.DataLayer.csproj", "{EBCAFBE9-6F1A-4D2D-8548-BD0F8FA5B1BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProEShop.Common", "src\ProEShop.Common\ProEShop.Common.csproj", "{6D8B00E4-BFBF-4EF9-BDBD-6B6FC23C4BB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProEShop.Common", "src\ProEShop.Common\ProEShop.Common.csproj", "{6D8B00E4-BFBF-4EF9-BDBD-6B6FC23C4BB9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{133C3859-C4EA-4DCD-BD4A-C5B371AA2120}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -57,6 +54,9 @@ Global
 		{6D8B00E4-BFBF-4EF9-BDBD-6B6FC23C4BB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D8B00E4-BFBF-4EF9-BDBD-6B6FC23C4BB9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{133C3859-C4EA-4DCD-BD4A-C5B371AA2120} = {50CC81C8-4F53-4E91-860C-DE2CDE0757EE}
 		{1A625D04-67BE-4892-845E-3B7BA513F0F0} = {50CC81C8-4F53-4E91-860C-DE2CDE0757EE}
@@ -65,5 +65,8 @@ Global
 		{D39A6CD6-4B75-4144-9CE0-3296747CEBDC} = {50CC81C8-4F53-4E91-860C-DE2CDE0757EE}
 		{EBCAFBE9-6F1A-4D2D-8548-BD0F8FA5B1BF} = {50CC81C8-4F53-4E91-860C-DE2CDE0757EE}
 		{6D8B00E4-BFBF-4EF9-BDBD-6B6FC23C4BB9} = {50CC81C8-4F53-4E91-860C-DE2CDE0757EE}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {90798722-2036-4795-9277-06C6BC65B156}
 	EndGlobalSection
 EndGlobal

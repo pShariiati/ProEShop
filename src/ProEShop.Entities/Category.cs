@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using ProEShop.Entities.AuditableEntity;
+﻿using ProEShop.Entities.AuditableEntity;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProEShop.Entities;
 

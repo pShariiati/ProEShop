@@ -1,14 +1,11 @@
-﻿using System;
-using System.Globalization;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using ProEShop.Entities;
 using ProEShop.Entities.AuditableEntity;
 using ProEShop.Entities.Identity;
+using System.Globalization;
 
 namespace ProEShop.DataLayer.Context;
 
