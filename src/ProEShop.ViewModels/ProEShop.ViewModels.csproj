@@ -9,4 +9,8 @@
 		<PackageReference Include="Microsoft.Extensions.Identity.Core" Version="6.0.0" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\ProEShop.Common\ProEShop.Common.csproj" />
+	</ItemGroup>
+
 </Project>

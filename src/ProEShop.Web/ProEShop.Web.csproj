@@ -7,11 +7,9 @@
 
 	<ItemGroup>
 	  <None Remove="Pages\Identity\RegisterLogin.cshtml.css" />
-	  <None Remove="Pages\Identity\RegisterLogin.cshtml.js" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Content Include="Pages\Identity\RegisterLogin.cshtml.js" />
 	  <Content Include="Pages\Identity\RegisterLogin.cshtml.css" />
 	</ItemGroup>
 
