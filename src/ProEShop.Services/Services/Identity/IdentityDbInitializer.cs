@@ -18,7 +18,6 @@ public class IdentityDbInitializer : IIdentityDbInitializer
     private readonly IOptionsSnapshot<SiteSettings> _options;
     private readonly IApplicationUserManager _applicationUserManager;
     private readonly ILogger<IdentityDbInitializer> _logger;
-    private readonly IUnitOfWork uow;
     private readonly IApplicationRoleManager _roleManager;
     private readonly IServiceScopeFactory _scopeFactory;
 

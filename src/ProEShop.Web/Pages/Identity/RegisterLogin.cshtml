@@ -5,15 +5,19 @@
     ViewData["Title"] = "ورود / ثبت نام";
 }
 
+@section Styles{
+    <link rel="stylesheet" href="~/css/register-login.css" />
+}
 <div class="d-flex justify-content-center" id="login-box">
     <div class="rounded-3 border border-1 col-11 col-md-9 col-lg-6 col-xl-5 col-xxl-4 py-4 px-5 mt-5">
         <div class="text-center">
-            <img src="~/images/application/eshop.png" id="register-login-picture" width="140">
+            <img src="~/images/application/eshop.png" id="register-login-picture">
         </div>
         <div id="login-register-text" class="mt-3 rem1and3">
             ورود / ثبت نام
         </div>
         <form method="post" class="mt-3">
+            <div class="text-danger" asp-validation-summary="All"></div>
             <div>
                 <label class="form-label rem0and9" asp-for="RegisterLogin.PhoneNumberOrEmail"></label>
                 <input asp-for="RegisterLogin.PhoneNumberOrEmail" class="form-control mt-3">

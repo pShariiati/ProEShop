@@ -12,7 +12,7 @@ public class ApplicationRoleStore
 {
     public ApplicationRoleStore(
         IUnitOfWork uow,
-        IdentityErrorDescriber? describer = null)
+        IdentityErrorDescriber describer = null)
         : base((ApplicationDbContext)uow, describer)
     {
     }

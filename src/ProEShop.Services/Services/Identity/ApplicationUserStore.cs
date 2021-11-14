@@ -12,7 +12,7 @@ public class ApplicationUserStore
 {
     public ApplicationUserStore(
         IUnitOfWork uow,
-        IdentityErrorDescriber? describer = null)
+        IdentityErrorDescriber describer = null)
         : base((ApplicationDbContext)uow, describer)
     {
     }

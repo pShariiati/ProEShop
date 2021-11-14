@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Globalization;
 using System.Security.Claims;
 using System.Security.Principal;
@@ -8,6 +9,13 @@ namespace ProEShop.Common.IdentityToolkit;
 
 public static class IdentityExtensions
 {
+    public static void AddErrorsFromResult(this ModelStateDictionary modelStat, IdentityResult result)
+    {
+        foreach (var error in result.Errors)
+        {
+            modelStat.AddModelError(string.Empty, error.Description);
+        }
+    }
     /// <summary>
     /// IdentityResult errors list to string
     /// </summary>

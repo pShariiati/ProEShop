@@ -5,5 +5,5 @@ namespace ProEShop.Entities.Identity;
 
 public class UserToken : IdentityUserToken<long>, IAuditableEntity
 {
-    public virtual User? User { get; set; }
+    public virtual User User { get; set; }
 }
