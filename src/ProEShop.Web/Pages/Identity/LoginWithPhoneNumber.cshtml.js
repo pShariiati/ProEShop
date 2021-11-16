@@ -9,7 +9,7 @@
     function countDown() {
         if (second == 0) {
             if (second == 0 && minute == 0) {
-                alert('done');
+                //alert('done');
                 clearInterval(countDownTimerInterval);
             }
             else {

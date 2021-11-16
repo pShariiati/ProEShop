@@ -47,24 +47,36 @@ public class RegisterLoginModel : PageModel
         var isInputEmail = registerLogin.PhoneNumberOrEmail.IsEmail();
         if (!isInputEmail)
         {
-            var user = new User
+            var addNewUser = false;
+            var user = await _userManager.FindByNameAsync(registerLogin.PhoneNumberOrEmail);
+            if (user is null)
             {
-                UserName = registerLogin.PhoneNumberOrEmail,
-                PhoneNumber = registerLogin.PhoneNumberOrEmail,
-                Avatar = _siteSettings.UserDefaultAvatar,
-                Email = $"{StringHelpers.GenerateGuid()}@test.com",
-                SendSmsLastTime = DateTime.Now
-            };
-            var result = await _userManager.CreateAsync(user);
-            if (result.Succeeded)
+                user = new User
+                {
+                    UserName = registerLogin.PhoneNumberOrEmail,
+                    PhoneNumber = registerLogin.PhoneNumberOrEmail,
+                    Avatar = _siteSettings.UserDefaultAvatar,
+                    Email = $"{StringHelpers.GenerateGuid()}@test.com",
+                    SendSmsLastTime = DateTime.Now
+                };
+                var result = await _userManager.CreateAsync(user);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation(LogCodes.RegisterCode, $"{user.UserName} created a new account with phone number");
+                    addNewUser = true;
+                }
+                else
+                {
+                    ModelState.AddErrorsFromResult(result);
+                    return Page();
+                }
+            }
+            if (DateTime.Now > user.SendSmsLastTime.AddMinutes(3) || addNewUser)
             {
-                _logger.LogInformation(LogCodes.RegisterCode, $"{user.UserName} created a new account with phone number");
                 var phoneNumberToken = await _userManager.GenerateChangePhoneNumberTokenAsync(user, registerLogin.PhoneNumberOrEmail);
                 // TODO: Send Sms token to the user
-                return RedirectToPage("./LoginWithPhoneNumber", new { phoneNumber = registerLogin.PhoneNumberOrEmail });
             }
-            ModelState.AddErrorsFromResult(result);
         }
-        return Page();
+        return RedirectToPage("./LoginWithPhoneNumber", new { phoneNumber = registerLogin.PhoneNumberOrEmail });
     }
 }
