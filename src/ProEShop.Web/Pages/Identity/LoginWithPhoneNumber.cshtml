@@ -1,8 +1,58 @@
 ﻿@page "{phoneNumber}"
-@model ProEShop.Web.Pages.Identity.LoginWithPhoneNumberModel
+@model LoginWithPhoneNumberModel
 @{
     Layout = "_IdentityLayout";
     ViewData["Title"] = "ورود به سایت";
 }
 
-login with phone number
+<div class="d-flex justify-content-center" id="login-box"
+     count-down-timer-minute="@Model.LoginWithPhoneNumber.SendSmsLastTimeMinute"
+     count-down-timer-second="@Model.LoginWithPhoneNumber.SendSmsLastTimeSecond">
+    <div class="rounded-3 border border-1 col-11 col-md-9 col-lg-6 col-xl-5 col-xxl-4 py-4 px-5 mt-5">
+        <div class="text-center d-flex justify-content-start">
+            <a asp-page="./RegisterLogin" class="text-black">
+                <i class="bi bi-arrow-right-short h2"></i>
+            </a>
+            <div class="flex-grow-1">
+                <a asp-page="/Index">
+                    <img src="~/images/application/eshop.png" id="register-login-picture" />
+                </a>
+            </div>
+        </div>
+        <div id="login-register-text" class="mt-3 rem1and3 d-flex">
+            <span>کد تایید را وارد نمایید</span>
+        </div>
+        <form method="post" class="mt-3">
+            <div class="text-danger" asp-validation-summary="All"></div>
+            <div>
+                <label class="form-label rem0and9">
+                    کد تایید برای شماره موبایل
+                    <span>@Model.LoginWithPhoneNumber.PhoneNumber</span>
+                    ارسال گردید
+                </label>
+                <input asp-for="LoginWithPhoneNumber.ActivationCode" class="form-control mt-3 text-center">
+                <span class="span-error-message" asp-validation-for="LoginWithPhoneNumber.ActivationCode"></span>
+                <div class="mt-4">
+                    <a asp-page="./LoginWithPassword" asp-route-phoneNumber="@Model.LoginWithPhoneNumber.PhoneNumber">
+                        <span class="rem0and9 text-info">ورود با رمز عبور</span>
+                        <i class="bi bi-chevron-left text-info rem0and75"></i>
+                    </a>
+                </div>
+                <div class="text-center mt-3 rem0and9">
+                    ارسال مجدد کد تا
+                    <span id="count-down-timer-box"></span>
+                    دیگر
+                </div>
+            </div>
+            <div class="d-grid gap-2 mt-4">
+                <button class="btn btn-danger">
+                    ادامه
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts{
+<script src="~/Pages/Identity/LoginWithPhoneNumber.cshtml.js"></script>
+<partial name="_ValidationScriptsPartial" />
+}

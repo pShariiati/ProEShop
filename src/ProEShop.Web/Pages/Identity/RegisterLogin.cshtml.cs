@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using ProEShop.Common.Constants;
 using ProEShop.Common.Helpers;
 using ProEShop.Common.IdentityToolkit;
+using ProEShop.DataLayer.Context;
 using ProEShop.Entities.Identity;
 using ProEShop.Services.Contracts.Identity;
 using ProEShop.ViewModels.Identity;
@@ -51,7 +52,8 @@ public class RegisterLoginModel : PageModel
                 UserName = registerLogin.PhoneNumberOrEmail,
                 PhoneNumber = registerLogin.PhoneNumberOrEmail,
                 Avatar = _siteSettings.UserDefaultAvatar,
-                Email = $"{StringHelpers.GenerateGuid()}@test.com"
+                Email = $"{StringHelpers.GenerateGuid()}@test.com",
+                SendSmsLastTime = DateTime.Now
             };
             var result = await _userManager.CreateAsync(user);
             if (result.Succeeded)

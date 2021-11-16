@@ -121,6 +121,6 @@ public interface IApplicationUserManager : IDisposable
     #endregion
 
     #region CustomClass
-
+    Task<DateTime?> GetSendSmsLastTimeAsync(string phoneNumber);
     #endregion
 }
