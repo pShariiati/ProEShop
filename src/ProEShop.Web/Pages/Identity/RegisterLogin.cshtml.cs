@@ -56,8 +56,7 @@ public class RegisterLoginModel : PageModel
                     UserName = registerLogin.PhoneNumberOrEmail,
                     PhoneNumber = registerLogin.PhoneNumberOrEmail,
                     Avatar = _siteSettings.UserDefaultAvatar,
-                    Email = $"{StringHelpers.GenerateGuid()}@test.com",
-                    SendSmsLastTime = DateTime.Now
+                    Email = $"{StringHelpers.GenerateGuid()}@test.com"
                 };
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
@@ -75,6 +74,8 @@ public class RegisterLoginModel : PageModel
             {
                 var phoneNumberToken = await _userManager.GenerateChangePhoneNumberTokenAsync(user, registerLogin.PhoneNumberOrEmail);
                 // TODO: Send Sms token to the user
+                user.SendSmsLastTime = DateTime.Now;
+                await _userManager.UpdateAsync(user);
             }
         }
         return RedirectToPage("./LoginWithPhoneNumber", new { phoneNumber = registerLogin.PhoneNumberOrEmail });

@@ -13,7 +13,7 @@ public interface IApplicationSignInManager
     bool IsSignedIn(ClaimsPrincipal principal);
     Task<bool> CanSignInAsync(User user);
     Task RefreshSignInAsync(User user);
-    Task SignInAsync(User user, bool isPersistent, string authenticationMethod);
+    Task SignInAsync(User user, bool isPersistent, string authenticationMethod = null);
     Task SignInAsync(User user, AuthenticationProperties authenticationProperties, string authenticationMethod);
     Task SignInWithClaimsAsync(User user, bool isPersistent, IEnumerable<Claim> additionalClaims);
 

@@ -1,4 +1,5 @@
-﻿using ProEShop.Common.Constants;
+﻿using Microsoft.AspNetCore.Mvc;
+using ProEShop.Common.Constants;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,9 +13,10 @@ public class LoginWithPhoneNumberViewModel
 {
     [Display(Name = "کد فعال سازی")]
     [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
-    [MaxLength(5, ErrorMessage = AttributesErrorMessages.MaxLengthMessage)]
+    [StringLength(6, MinimumLength = 6, ErrorMessage = AttributesErrorMessages.RegularExpressionMessage)]
     public string ActivationCode { get; set; }
-
+    
+    [HiddenInput]
     public string PhoneNumber { get; set; }
 
     public byte SendSmsLastTimeMinute { get; set; }

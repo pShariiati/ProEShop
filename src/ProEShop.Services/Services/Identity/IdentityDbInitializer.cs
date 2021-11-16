@@ -113,8 +113,7 @@ public class IdentityDbInitializer : IIdentityDbInitializer
             UserName = name,
             Email = email,
             EmailConfirmed = true,
-            Avatar = _options.Value.UserDefaultAvatar,
-            SendSmsLastTime = DateTime.Now
+            Avatar = _options.Value.UserDefaultAvatar
         };
         var adminUserResult = await _applicationUserManager.CreateAsync(adminUser, password);
         if (adminUserResult == IdentityResult.Failed())
