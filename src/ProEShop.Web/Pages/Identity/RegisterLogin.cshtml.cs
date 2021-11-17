@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
 using ProEShop.Common.Constants;
@@ -19,15 +19,18 @@ public class RegisterLoginModel : PageModel
     private readonly IApplicationUserManager _userManager;
     private readonly ILogger<RegisterLoginModel> _logger;
     private readonly SiteSettings _siteSettings;
+    private readonly ISmsSender _smsSender;
 
     public RegisterLoginModel(
         IApplicationUserManager userManager,
         ILogger<RegisterLoginModel> logger,
-        IOptionsMonitor<SiteSettings> siteSettings)
+        IOptionsMonitor<SiteSettings> siteSettings,
+        ISmsSender smsSender)
     {
         _logger = logger;
         _userManager = userManager;
         _siteSettings = siteSettings.CurrentValue;
+        _smsSender = smsSender;
     }
 
     #endregion
@@ -73,7 +76,13 @@ public class RegisterLoginModel : PageModel
             if (DateTime.Now > user.SendSmsLastTime.AddMinutes(3) || addNewUser)
             {
                 var phoneNumberToken = await _userManager.GenerateChangePhoneNumberTokenAsync(user, registerLogin.PhoneNumberOrEmail);
-                // TODO: Send Sms token to the user
+                // Send Sms token to the user
+                var sendSmsResult = await _smsSender.SendSmsAsync(user.PhoneNumber, $"کد فعال سازی شما\n {phoneNumberToken}");
+                if (!sendSmsResult)
+                {
+                    ModelState.AddModelError(string.Empty, "در ارسال پیامک خطایی به وجود آمد، لطفا دوباره سعی نمایید.");
+                    return Page();
+                }
                 user.SendSmsLastTime = DateTime.Now;
                 await _userManager.UpdateAsync(user);
             }

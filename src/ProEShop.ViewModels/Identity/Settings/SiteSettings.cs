@@ -13,4 +13,5 @@ public class SiteSettings
     public PasswordOptions PasswordOptions { get; set; }
     public LockoutOptions LockoutOptions { get; set; }
     public CookieOptions CookieOptions { get; set; }
+    public SmsInfo SmsInfo { get; set; }
 }
