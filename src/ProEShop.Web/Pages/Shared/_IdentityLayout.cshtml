@@ -20,8 +20,9 @@
 
     <script src="~/lib/jquery/jquery.min.js"></script>
     <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("ValidationScripts", false)
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", false)
+    @await RenderSectionAsync("CustomScripts", false)
 </body>
 
 </html>

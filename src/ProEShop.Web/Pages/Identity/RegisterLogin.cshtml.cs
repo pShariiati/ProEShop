@@ -76,13 +76,13 @@ public class RegisterLoginModel : PageModel
             if (DateTime.Now > user.SendSmsLastTime.AddMinutes(3) || addNewUser)
             {
                 var phoneNumberToken = await _userManager.GenerateChangePhoneNumberTokenAsync(user, registerLogin.PhoneNumberOrEmail);
-                // Send Sms token to the user
-                var sendSmsResult = await _smsSender.SendSmsAsync(user.PhoneNumber, $"کد فعال سازی شما\n {phoneNumberToken}");
-                if (!sendSmsResult)
-                {
-                    ModelState.AddModelError(string.Empty, "در ارسال پیامک خطایی به وجود آمد، لطفا دوباره سعی نمایید.");
-                    return Page();
-                }
+                // todo: Send Sms token to the user
+                //var sendSmsResult = await _smsSender.SendSmsAsync(user.PhoneNumber, $"کد فعال سازی شما\n {phoneNumberToken}");
+                //if (!sendSmsResult)
+                //{
+                //    ModelState.AddModelError(string.Empty, "در ارسال پیامک خطایی به وجود آمد، لطفا دوباره سعی نمایید.");
+                //    return Page();
+                //}
                 user.SendSmsLastTime = DateTime.Now;
                 await _userManager.UpdateAsync(user);
             }

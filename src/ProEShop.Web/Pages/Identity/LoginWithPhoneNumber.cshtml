@@ -19,12 +19,16 @@
                 </a>
             </div>
         </div>
+        <div class="alert alert-warning mt-3" role="alert">
+            کد فعال سازی (حالت توسعه)
+            <br />
+            <span id="activation-code-box">@Model.ActivationCode</span>
+        </div>
         <div id="login-register-text" class="mt-3 rem1and3 d-flex">
             <span>کد تایید را وارد نمایید</span>
         </div>
         <form method="post" class="mt-3">
             <input asp-for="LoginWithPhoneNumber.PhoneNumber" />
-            <div class="text-danger" asp-validation-summary="All"></div>
             <div>
                 <label class="form-label rem0and9">
                     کد تایید برای شماره موبایل
@@ -40,9 +44,17 @@
                     </a>
                 </div>
                 <div class="text-center mt-3 rem0and9">
-                    ارسال مجدد کد تا
-                    <span id="count-down-timer-box"></span>
-                    دیگر
+                    <span>
+                        ارسال مجدد کد تا
+                        <span id="count-down-timer-box"></span>
+                        دیگر
+                    </span>
+                    <button id="send-user-activation-sms-box"
+                            onclick="sendActivationCode('@Model.LoginWithPhoneNumber.PhoneNumber', this)"
+                            type="button"
+                            class="d-none btn btn-default text-info">
+                        دریافت مجدد کد تایید
+                    </button>
                 </div>
             </div>
             <div class="d-grid gap-2 mt-4">
@@ -53,7 +65,9 @@
         </form>
     </div>
 </div>
-@section Scripts{
+@section CustomScripts{
 <script src="~/Pages/Identity/LoginWithPhoneNumber.cshtml.js"></script>
+}
+@section ValidationScripts{
 <partial name="_ValidationScriptsPartial" />
 }

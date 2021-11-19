@@ -1,25 +1,58 @@
-﻿$(document).ready(function () {
-    var minute = parseInt($('div[count-down-timer-minute]').attr('count-down-timer-minute'));
-    var second = parseInt($('div[count-down-timer-second]').attr('count-down-timer-second'));
-    var countDownTimerInterval = setInterval(countDown, 1000);
+﻿var countDownTimerInterval;
+$(document).ready(function () {
+    countDownTimerInterval = setInterval(countDown, 1000);
     countDown();
-    function setCountDownTimeBox() {
-        $('#count-down-timer-box').html(`${minute}:${second < 10 ? '0' + second : second}`);
-    }
-    function countDown() {
-        if (second == 0) {
-            if (second == 0 && minute == 0) {
-                //alert('done');
-                clearInterval(countDownTimerInterval);
-            }
-            else {
-                minute--;
-                second = 59;
-            }
+});
+var minute = parseInt($('div[count-down-timer-minute]').attr('count-down-timer-minute'));
+var second = parseInt($('div[count-down-timer-second]').attr('count-down-timer-second'));
+
+function countDown() {
+    if (second == 0) {
+        if (second == 0 && minute == 0) {
+            $('#count-down-timer-box').parent().addClass('d-none');
+            $('#send-user-activation-sms-box').removeClass('d-none');
+            clearInterval(countDownTimerInterval);
         }
         else {
-            second--;
+            minute--;
+            second = 59;
         }
-        setCountDownTimeBox();
     }
-});
+    else {
+        second--;
+    }
+    setCountDownTimeBox();
+}
+
+function setCountDownTimeBox() {
+    $('#count-down-timer-box').html(`${minute}:${second < 10 ? '0' + second : second}`);
+}
+
+///////
+function sendActivationCode(phoneNumber, e) {
+    showLoading();
+    var objectToSend = {
+        phoneNumber: phoneNumber,
+        __RequestVerificationToken: getRVT(e)
+    }
+    console.log(objectToSend);
+    console.log(window.location.pathname);
+    $.post(window.location.pathname + '?handler=SendUserSmsActivation', objectToSend, function (data, status) {
+        if (status == 'success' && data.isSuccessful) {
+            hideLoading();
+            console.log(data.message);
+            $('#activation-code-box').html(data.data.activationCode);
+            $('#count-down-timer-box').parent().removeClass('d-none');
+            $('#send-user-activation-sms-box').addClass('d-none');
+            minute = 3;
+            second = 0;
+            setCountDownTimeBox();
+            countDownTimerInterval = setInterval(countDown, 1000);
+        }
+    }).fail(function () {
+        console.log('خطایی به وجود آمد، لطفا مجددا تلاش نمایید');
+    });
+}
+function getRVT(e) {
+    return $(e).parents('form').find(`input[name="${rvt}"]`).val();
+}
