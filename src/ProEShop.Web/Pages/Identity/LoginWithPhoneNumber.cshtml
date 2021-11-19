@@ -50,7 +50,7 @@
                         دیگر
                     </span>
                     <button id="send-user-activation-sms-box"
-                            onclick="sendActivationCode('@Model.LoginWithPhoneNumber.PhoneNumber', this)"
+                            onclick="reSendActivationCode('@Model.LoginWithPhoneNumber.PhoneNumber', this)"
                             type="button"
                             class="d-none btn btn-default text-info">
                         دریافت مجدد کد تایید
@@ -71,3 +71,6 @@
 @section ValidationScripts{
 <partial name="_ValidationScriptsPartial" />
 }
+<h1>
+    @Url.Page("/Identity/LoginWithPhoneNumber?handler=SendUserSmsActivation")
+</h1>

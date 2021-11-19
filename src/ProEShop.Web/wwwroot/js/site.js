@@ -1,7 +1,7 @@
 ﻿//__RequestVerificationToken
 var rvt = '__RequestVerificationToken';
 
-var loadingModalHtml = `<div class="modal" id="loading-modal" data-bs-backdrop="static">
+var loadingModalHtml = `<div class="modal fade" id="loading-modal" data-bs-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -13,10 +13,13 @@ var loadingModalHtml = `<div class="modal" id="loading-modal" data-bs-backdrop="
         </div>
     </div>
 </div>`;
-function showLoading() {
+function showLoading(funcToCall) {
     if ($('#loading-modal').length === 0) {
         $('body').append(loadingModalHtml);
-    }   
+    }
+    $('#loading-modal').on('shown.bs.modal', function (e) {
+        funcToCall();
+    })
     $('#loading-modal').modal('show');
 }
 function hideLoading() {

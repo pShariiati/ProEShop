@@ -29,15 +29,17 @@ function setCountDownTimeBox() {
 }
 
 ///////
-function sendActivationCode(phoneNumber, e) {
-    showLoading();
+function reSendActivationCode(phoneNumber, e) {
+    showLoading(function () { reSendActivationCodeFunc(phoneNumber, e) });
+}
+function reSendActivationCodeFunc(phoneNumber, e) {
     var objectToSend = {
         phoneNumber: phoneNumber,
         __RequestVerificationToken: getRVT(e)
     }
     console.log(objectToSend);
     console.log(window.location.pathname);
-    $.post(window.location.pathname + '?handler=SendUserSmsActivation', objectToSend, function (data, status) {
+    $.post(window.location.pathname + '?handler=ReSendUserSmsActivation', objectToSend, function (data, status) {
         if (status == 'success' && data.isSuccessful) {
             hideLoading();
             console.log(data.message);
