@@ -12,7 +12,7 @@ using ProEShop.ViewModels.Identity.Settings;
 
 namespace ProEShop.Web.Pages.Identity;
 
-public class RegisterLoginModel : PageModel
+public class RegisterLoginModel : PageBase
 {
     #region Constructor
 

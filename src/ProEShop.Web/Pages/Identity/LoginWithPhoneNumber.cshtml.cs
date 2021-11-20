@@ -7,7 +7,7 @@ using ProEShop.ViewModels.Identity;
 
 namespace ProEShop.Web.Pages.Identity;
 
-public class LoginWithPhoneNumberModel : PageModel
+public class LoginWithPhoneNumberModel : PageBase
 {
     #region Constructor
 
@@ -30,7 +30,7 @@ public class LoginWithPhoneNumberModel : PageModel
     #endregion
 
     public LoginWithPhoneNumberViewModel LoginWithPhoneNumber { get; set; }
-    = new LoginWithPhoneNumberViewModel();
+    = new();
     
     [ViewData]
     public string ActivationCode { get; set; }
@@ -80,19 +80,19 @@ public class LoginWithPhoneNumberModel : PageModel
         //System.Threading.Thread.Sleep(2000);
         var user = await _userManager.FindByNameAsync(phoneNumber);
         if (user is null)
-            return new JsonResult(new JsonResultOperation(false));
+            return Json(new JsonResultOperation(false));
         if (user.SendSmsLastTime.AddMinutes(3) > DateTime.Now)
-            return new JsonResult(new JsonResultOperation(false));
+            return Json(new JsonResultOperation(false));
         var phoneNumberToken = await _userManager.GenerateChangePhoneNumberTokenAsync(user, phoneNumber);
         // todo: Send Sms token to the user
         //var sendSmsResult = await _smsSender.SendSmsAsync(user.PhoneNumber, $"کد فعال سازی شما\n {phoneNumberToken}");
         //if (!sendSmsResult)
         //{
-        //    return new JsonResult(new JsonResultOperation(false, "در ارسال پیامک خطایی به وجود آمد، لطفا دوباره سعی نمایید"));
+        //    return Json(new JsonResultOperation(false, "در ارسال پیامک خطایی به وجود آمد، لطفا دوباره سعی نمایید"));
         //}
         user.SendSmsLastTime = DateTime.Now;
         await _uow.SaveChangesAsync();
-        return new JsonResult(new JsonResultOperation(true, "کد فعال سازی مجددا ارسال شد")
+        return Json(new JsonResultOperation(true, "کد فعال سازی مجددا ارسال شد")
         {
             Data = new
             {

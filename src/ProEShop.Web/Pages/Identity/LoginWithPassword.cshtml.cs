@@ -1,12 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace ProEShop.Web.Pages.Identity
+namespace ProEShop.Web.Pages.Identity;
+
+public class LoginWithPasswordModel : PageBase
 {
-    public class LoginWithPasswordModel : PageModel
+    public void OnGet()
     {
-        public void OnGet(string phoneNumber)
-        {
-        }
     }
 }

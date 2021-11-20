@@ -3,6 +3,7 @@
 @{
     Layout = "_IdentityLayout";
     ViewData["Title"] = "ورود به سایت";
+    var reSendSmsUrl = @Url.Page("/Identity/LoginWithPhoneNumber", "ReSendUserSmsActivation");
 }
 
 <div class="d-flex justify-content-center" id="login-box"
@@ -50,9 +51,9 @@
                         دیگر
                     </span>
                     <button id="send-user-activation-sms-box"
-                            onclick="reSendActivationCode('@Model.LoginWithPhoneNumber.PhoneNumber', this)"
+                            onclick="reSendActivationCode('@Model.LoginWithPhoneNumber.PhoneNumber', this, '@reSendSmsUrl')"
                             type="button"
-                            class="d-none btn btn-default text-info">
+                            class="btn btn-default text-info">
                         دریافت مجدد کد تایید
                     </button>
                 </div>
@@ -68,9 +69,10 @@
 @section CustomScripts{
 <script src="~/Pages/Identity/LoginWithPhoneNumber.cshtml.js"></script>
 }
-@section ValidationScripts{
+@section Scripts{
 <partial name="_ValidationScriptsPartial" />
+<script src="~/lib/toastr.js/toastr.min.js"></script>
 }
-<h1>
-    @Url.Page("/Identity/LoginWithPhoneNumber?handler=SendUserSmsActivation")
-</h1>
+@section Styles{
+    <link rel="stylesheet" href="~/lib/toastr.js/toastr.min.css" />
+}
