@@ -25,6 +25,10 @@
     {
       "library": "toastr.js@2.1.4",
       "destination": "wwwroot\\lib\\toastr.js"
+    },
+    {
+      "library": "jquery-ajax-unobtrusive@3.2.6",
+      "destination": "wwwroot\\lib\\jquery-ajax-unobtrusive"
     }
   ]
 }

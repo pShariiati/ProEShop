@@ -57,22 +57,22 @@ public class LoginWithPhoneNumberModel : PageBase
     {
         if (!ModelState.IsValid)
         {
-            return Page();
+            return Json(new JsonResultOperation(false, "مقادیر را به درستی وارد نمایید"));
         }
 
         var user = await _userManager.FindByNameAsync(loginWithPhoneNumber.PhoneNumber);
         if (user is null)
         {
-            return Page();
+            return Json(new JsonResultOperation(false));
         }
 
         var result = await _userManager.VerifyChangePhoneNumberTokenAsync(user, loginWithPhoneNumber.ActivationCode, loginWithPhoneNumber.PhoneNumber);
         if (!result)
         {
-            return Page();
+            return Json(new JsonResultOperation(false, "کد وارد شده صحیح نمیباشد"));
         }
         await _signInManager.SignInAsync(user, true);
-        return RedirectToPage("/Test");
+        return Json(new JsonResultOperation(true, "شما با موفقیت وارد شدید"));
     }
 
     public async Task<IActionResult> OnPostReSendUserSmsActivationAsync(string phoneNumber)
