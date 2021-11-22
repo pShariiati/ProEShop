@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProEShop.DataLayer.Context;
 
@@ -11,9 +12,10 @@ using ProEShop.DataLayer.Context;
 namespace ProEShop.DataLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211122202842_V2021_11_22_2358")]
+    partial class V2021_11_22_2358
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,6 +67,9 @@ namespace ProEShop.DataLayer.Migrations
                     b.Property<long?>("ParentId")
                         .HasColumnType("bigint");
 
+                    b.Property<long?>("ParnetId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Picture")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
@@ -84,13 +89,7 @@ namespace ProEShop.DataLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ParentId");
-
-                    b.HasIndex("Slug")
-                        .IsUnique();
-
-                    b.HasIndex("Title")
-                        .IsUnique();
+                    b.HasIndex("ParnetId");
 
                     b.ToTable("Categories");
                 });
@@ -567,11 +566,11 @@ namespace ProEShop.DataLayer.Migrations
 
             modelBuilder.Entity("ProEShop.Entities.Category", b =>
                 {
-                    b.HasOne("ProEShop.Entities.Category", "Parent")
+                    b.HasOne("ProEShop.Entities.Category", "Parnet")
                         .WithMany("Categories")
-                        .HasForeignKey("ParentId");
+                        .HasForeignKey("ParnetId");
 
-                    b.Navigation("Parent");
+                    b.Navigation("Parnet");
                 });
 
             modelBuilder.Entity("ProEShop.Entities.Identity.RoleClaim", b =>

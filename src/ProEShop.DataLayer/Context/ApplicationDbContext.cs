@@ -42,6 +42,7 @@ public class ApplicationDbContext :
     }
 
     public DbSet<Category> Categories { get; set; }
+    public DbSet<Product> Prouducts { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
