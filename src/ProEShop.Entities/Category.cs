@@ -1,11 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProEShop.Entities.AuditableEntity;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProEShop.Entities;
 
 [Index(nameof(Category.Slug), IsUnique = true)]
 [Index(nameof(Category.Title), IsUnique = true)]
+[Table("Categories")]
 public class Category : EntityBase, IAuditableEntity
 {
     #region Properties

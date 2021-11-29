@@ -48,6 +48,9 @@ namespace ProEShop.DataLayer.Migrations
                         .HasMaxLength(2000)
                         .HasColumnType("nvarchar(2000)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("ModifiedByBrowserName")
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
@@ -539,6 +542,9 @@ namespace ProEShop.DataLayer.Migrations
                     b.Property<DateTime>("CreatedDateTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("ModifiedByBrowserName")
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
@@ -562,7 +568,7 @@ namespace ProEShop.DataLayer.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Prouducts");
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("ProEShop.Entities.Category", b =>

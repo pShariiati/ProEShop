@@ -2,6 +2,7 @@
 using ProEShop.DataLayer.Context;
 using ProEShop.Entities;
 using ProEShop.Services.Contracts;
+using ProEShop.ViewModels.Categories;
 
 namespace ProEShop.Services.Services;
 
@@ -14,8 +15,21 @@ public class CategoryService : GenericService<Category>, ICategoryService
         _categories = uow.Set<Category>();
     }
 
-    public Task<List<Category>> GetAll()
+    public async Task<ShowCategoriesViewModel> GetCategories()
     {
-        return _categories.ToListAsync();
+        var categories = await _categories
+			.IgnoreQueryFilters()
+            .Select(x => new ShowCategoryViewModel
+            {
+                Title = x.Title,
+                ShowInMenus = x.ShowInMenus,
+                Parent = x.ParentId != null ? x.Parent.Title : "دسته اصلی"
+            })
+            .ToListAsync();
+
+        return new()
+        {
+            Categories = categories
+        };
     }
 }

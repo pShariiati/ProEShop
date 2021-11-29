@@ -1,7 +1,6 @@
 ﻿@page "{phoneNumber}"
 @model LoginWithPhoneNumberModel
 @{
-    Layout = "_IdentityLayout";
     ViewData["Title"] = "ورود به سایت";
     var reSendSmsUrl = @Url.Page("/Identity/LoginWithPhoneNumber", "ReSendUserSmsActivation");
 }
