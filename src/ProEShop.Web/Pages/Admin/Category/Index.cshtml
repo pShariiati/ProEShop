@@ -4,4 +4,57 @@
     ViewData["Title"] = "دسته بندی ها";
 }
 
-Index Category
+<div class="card text-dark bg-white border-0 shadow">
+    <div class="card-body">
+        <h5 class="card-title">
+            @ViewData["Title"]
+        </h5>
+        @if (Model.Categories.Categories.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>@Html.DisplayNameFor(x => x.Categories.Categories[0].Title)</th>
+                            <th>@Html.DisplayNameFor(x => x.Categories.Categories[0].Parent)</th>
+                            <th>@Html.DisplayNameFor(x => x.Categories.Categories[0].ShowInMenus)</th>
+                            <th>عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var category in Model.Categories.Categories)
+                        {
+                            <tr>
+                                <td>@category.Title</td>
+                                <td>@category.Parent</td>
+                                <td>
+                                    @if (category.ShowInMenus)
+                                    {
+                                        <div class="d-grid">
+                                            <span class="btn btn-success" type="button">بله</span>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="d-grid">
+                                            <span class="btn btn-success" type="button">خیر</span>
+                                        </div>
+                                    }
+                                </td>
+                                <td>
+                                    <button class="btn btn-warning">ویرایش</button>
+                                    <button class="btn btn-danger">حذف</button>
+                                    <button class="btn btn-success">افزودن زیر دسته</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <partial name="_RecordNotFound" />
+        }
+    </div>
+</div>
