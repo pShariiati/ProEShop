@@ -47,7 +47,6 @@ public class ApplicationDbContext :
         base.OnModelCreating(builder);
         builder.RegisterAllEntities(typeof(EntityBase));
         builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
-        builder.Entity<Category>().HasQueryFilter(b => !b.IsDeleted);
         //...
         // This should be placed here, at the end.
         builder.AddAuditableShadowProperties();

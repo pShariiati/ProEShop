@@ -21,8 +21,11 @@ public class IndexModel : PageModel
     public ShowCategoriesViewModel Categories { get; set; }
     = new();
 
-    public async Task OnGetAsync()
+    public SearchCategoriesViewModel SearchCategories { get; set; }
+    = new();
+
+    public async Task OnGetAsync(SearchCategoriesViewModel searchCategories)
     {
-        Categories = await _categoryService.GetCategories();
+        Categories = await _categoryService.GetCategories(searchCategories);
     }
 }
