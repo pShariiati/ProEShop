@@ -18,14 +18,19 @@ public class IndexModel : PageModel
 
     #endregion
 
-    public ShowCategoriesViewModel Categories { get; set; }
-    = new();
-
     public SearchCategoriesViewModel SearchCategories { get; set; }
     = new();
 
-    public async Task OnGetAsync(SearchCategoriesViewModel searchCategories)
+    public ShowCategoriesViewModel Categories { get; set; }
+    = new();
+
+    public void OnGet()
     {
-        Categories = await _categoryService.GetCategories(searchCategories);
+
+    }
+
+    public async Task<PartialViewResult> OnGetGetDataTableAsync(SearchCategoriesViewModel searchCategories)
+    {
+        return Partial("List", await _categoryService.GetCategories(searchCategories));
     }
 }

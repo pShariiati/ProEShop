@@ -13,7 +13,6 @@ builder.Services.Configure<ContentSecurityPolicyConfig>(options => builder.Confi
 // Adds all of the ASP.NET Core Identity related services and configurations at once.
 builder.Services.AddCustomIdentityServices();
 builder.Services.AddRazorPages();
-    //.AddRazorRuntimeCompilation();
 builder.Services.Configure<WebEncoderOptions>(options =>
 {
     options.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.All);

@@ -7,19 +7,20 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="Pages\Admin\Category\Index.cshtml.js" />
 	  <None Remove="Pages\Identity\LoginWithPhoneNumber.cshtml.css" />
 	  <None Remove="Pages\Identity\LoginWithPhoneNumber.cshtml.js" />
 	  <None Remove="Pages\Identity\RegisterLogin.cshtml.css" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Content Include="Pages\Admin\Category\Index.cshtml.js" />
 	  <Content Include="Pages\Identity\LoginWithPhoneNumber.cshtml.js" />
 	  <Content Include="Pages\Identity\LoginWithPhoneNumber.cshtml.css" />
 	  <Content Include="Pages\Identity\RegisterLogin.cshtml.css" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
