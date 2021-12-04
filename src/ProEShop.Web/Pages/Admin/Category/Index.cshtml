@@ -31,21 +31,29 @@
                     <select class="form-select" asp-for="SearchCategories.ShowInMenusStatus" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.Categories.ShowInMenusStatus>()"></select>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
-                    <label class="form-form-label" asp-for="Categories.SearchCategories.DeletedStatus"></label>
-                    <select class="form-select" asp-for="Categories.SearchCategories.DeletedStatus" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.DeletedStatus>()"></select>
+                    <label class="form-form-label" asp-for="SearchCategories.DeletedStatus"></label>
+                    <select class="form-select" asp-for="SearchCategories.DeletedStatus" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.DeletedStatus>()"></select>
                 </div>
                 <div class="col-12 my-2">
                     <div class="d-grid d-lg-block">
-                        <button type="submit" class="btn btn-primary">جستجو ...</button>
+                        <button type="submit" class="btn btn-primary d-inline-flex align-items-center search-form-loading" disabled>
+                            جستجو ...
+                            &nbsp;
+                            <span class="spinner-border spinner-border-sm d-none"></span>
+                        </button>
                     </div>
                 </div>
             </div>
         </form>
-        <div class="data-table-place"></div>
+        <div class="data-table-place">
+            <div class="text-center data-table-loading">
+                <img src="~/images/application/loading.gif" />
+            </div>
+        </div>
     </div>
 </div>
 @section Scripts{
-@*<partial name="_ValidationScriptsPartial" />*@
+<partial name="_ValidationScriptsPartial" />
 }
 @section CustomScripts{
 <script src="~/Pages/Admin/Category/Index.cshtml.js"></script>

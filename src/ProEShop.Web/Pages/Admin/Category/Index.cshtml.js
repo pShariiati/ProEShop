@@ -1,7 +1,9 @@
 ﻿$(function () {
     $.get(`${location.pathname}?handler=GetDataTable`, function (data, status) {
+        $('.search-form-loading').removeAttr('disabled');
+        $('.data-table-loading').addClass('d-none');
         if (status == 'success') {
-            $('.data-table-place').html(data);
+            $('.data-table-place').append(data);
         }
         else {
             showErrorMessage();
@@ -12,8 +14,22 @@
         e.preventDefault();
         var currentForm = $(this);
         const formData = currentForm.serializeArray();
+
+        // show loading and disabling button
+        currentForm.find('.search-form-loading').attr('disabled', 'disabled');
+        currentForm.find('.search-form-loading span').removeClass('d-none');
+
+        $('.data-table-loading').removeClass('d-none');
+        $('.data-table-body').html('');
+
         $.get(`${location.pathname}?handler=GetDataTable`, formData, function (data, status) {
-            if (status == 'success1') {
+            // hide loading and disabling button
+            currentForm.find('.search-form-loading').removeAttr('disabled');
+            currentForm.find('.search-form-loading span').addClass('d-none');
+
+            $('.data-table-loading').addClass('d-none');
+
+            if (status == 'success') {
                 if (data.isSuccessful == false) {
                     var errors = '<ul>';
                     data.data.forEach(function (e) {
@@ -24,7 +40,7 @@
                     showToastr('warning', data.message);
                 }
                 else {
-                    $('.data-table-place').html(data);
+                    $('.data-table-place .data-table-body').html(data);
                 }
             }
             else {
