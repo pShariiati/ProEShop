@@ -9,7 +9,7 @@
         <h5 class="card-title">
             @ViewData["Title"]
         </h5>
-        <form class="alert alert-secondary">
+        <form class="alert alert-secondary search-form-via-ajax">
             <div asp-validation-summary="All" class="text-danger"></div>
             <h5>
                 جستجو در
@@ -41,11 +41,11 @@
                 </div>
             </div>
         </form>
-        <div class="read-data-table"></div>
+        <div class="data-table-place"></div>
     </div>
 </div>
 @section Scripts{
-<partial name="_ValidationScriptsPartial" />
+@*<partial name="_ValidationScriptsPartial" />*@
 }
 @section CustomScripts{
 <script src="~/Pages/Admin/Category/Index.cshtml.js"></script>

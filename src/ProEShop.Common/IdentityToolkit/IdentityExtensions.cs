@@ -9,13 +9,20 @@ namespace ProEShop.Common.IdentityToolkit;
 
 public static class IdentityExtensions
 {
-    public static void AddErrorsFromResult(this ModelStateDictionary modelStat, IdentityResult result)
+    public static void AddErrorsFromResult(this ModelStateDictionary modelState, IdentityResult result)
     {
         foreach (var error in result.Errors)
         {
-            modelStat.AddModelError(string.Empty, error.Description);
+            modelState.AddModelError(string.Empty, error.Description);
         }
     }
+
+    public static List<string> GetModelStateErrors(this ModelStateDictionary modelState)
+    {
+        return modelState.Keys.SelectMany(k => modelState[k].Errors)
+            .Select(m => m.ErrorMessage).ToList();
+    }
+
     /// <summary>
     /// IdentityResult errors list to string
     /// </summary>
