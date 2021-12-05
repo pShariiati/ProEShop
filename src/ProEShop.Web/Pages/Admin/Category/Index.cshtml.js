@@ -1,13 +1,18 @@
 ﻿$(function () {
 
-    $('#show-form-modal').modal('show');
-    $.get(`${location.pathname}?handler=Add`, function (data, status) {
-        if (status == 'success') {
-            $('#show-form-modal .modal-body').html(data);
-        }
-        else {
-            showErrorMessage();
-        }
+    $('.show-modal-form-button').click(function (e) {
+        e.preventDefault();
+        var urlToLoadTheForm = $(this).attr('href');
+        $.get(urlToLoadTheForm, function (data, status) {
+            if (status == 'success') {
+                $('#show-form-modal .modal-body').html(data);
+                $.validator.unobtrusive.parse($('#show-form-modal form'));
+                $('#show-form-modal').modal('show');
+            }
+            else {
+                showErrorMessage();
+            }
+        });
     });
 
     $.get(`${location.pathname}?handler=GetDataTable`, function (data, status) {
@@ -34,7 +39,7 @@
         $('.data-table-body').html('');
 
         $.get(`${location.pathname}?handler=GetDataTable`, formData, function (data, status) {
-            // hide loading and disabling button
+            // hide loading and activating button
             currentForm.find('.search-form-loading').removeAttr('disabled');
             currentForm.find('.search-form-loading span').addClass('d-none');
 
