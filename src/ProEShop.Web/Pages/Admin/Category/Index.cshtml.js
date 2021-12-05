@@ -1,4 +1,15 @@
 ﻿$(function () {
+
+    $('#show-form-modal').modal('show');
+    $.get(`${location.pathname}?handler=Add`, function (data, status) {
+        if (status == 'success') {
+            $('#show-form-modal .modal-body').html(data);
+        }
+        else {
+            showErrorMessage();
+        }
+    });
+
     $.get(`${location.pathname}?handler=GetDataTable`, function (data, status) {
         $('.search-form-loading').removeAttr('disabled');
         $('.data-table-loading').addClass('d-none');

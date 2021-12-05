@@ -7,6 +7,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="Pages\Admin\Category\Index - Copy.cshtml.js" />
 	  <None Remove="Pages\Admin\Category\Index.cshtml.js" />
 	  <None Remove="Pages\Identity\LoginWithPhoneNumber.cshtml.css" />
 	  <None Remove="Pages\Identity\LoginWithPhoneNumber.cshtml.js" />

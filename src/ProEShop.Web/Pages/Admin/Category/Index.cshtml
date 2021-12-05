@@ -9,6 +9,11 @@
         <h5 class="card-title">
             @ViewData["Title"]
         </h5>
+        <div class="d-grid d-lg-block mb-2">
+            <a href="#" type="button" class="btn btn-outline-primary">
+                افزودن دسته بندی
+            </a>
+        </div>
         <form class="alert alert-secondary search-form-via-ajax">
             <div asp-validation-summary="All" class="text-danger"></div>
             <h5>
@@ -38,8 +43,7 @@
                     <div class="d-grid d-lg-block">
                         <button type="submit" class="btn btn-primary d-inline-flex align-items-center search-form-loading" disabled>
                             جستجو ...
-                            &nbsp;
-                            <span class="spinner-border spinner-border-sm d-none"></span>
+                            <span class="spinner-border spinner-border-sm d-none">&nbsp;</span>
                         </button>
                     </div>
                 </div>
@@ -52,6 +56,22 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="show-form-modal" data-bs-backdrop="static">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">افزودن دسته بندی</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer d-flex justify-content-start">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">بستن</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 @section Scripts{
 <partial name="_ValidationScriptsPartial" />
 }

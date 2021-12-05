@@ -31,7 +31,6 @@ public class IndexModel : PageBase
 
     public async Task<IActionResult> OnGetGetDataTableAsync(SearchCategoriesViewModel searchCategories)
     {
-        Thread.Sleep(2000);
         if (!ModelState.IsValid)
         {
             return Json(new JsonResultOperation(false, PublicConstantStrings.ModelStateErrorMessage)
@@ -40,5 +39,15 @@ public class IndexModel : PageBase
             });
         }
         return Partial("List", await _categoryService.GetCategories(searchCategories));
+    }
+
+    public IActionResult OnGetAdd()
+    {
+        return Partial("Add");
+    }
+
+    public IActionResult OnPostAdd(AddCategoryViewModel model)
+    {
+        return Partial("Add");
     }
 }
