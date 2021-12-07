@@ -57,3 +57,21 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
 function showErrorMessage(message) {
     showToastr('error', message != null ? message : 'خطایی به وجود آمد، لطفا مجددا تلاش نمایید');
 }
+
+function initializeTinyMCE() {
+    tinymce.init({
+        selector: 'textarea.custom-tinymce',
+        height: 300,
+        max_height: 500,
+        language: 'fa_IR',
+        language_url: '/js/fa_IR.js',
+        content_style: 'body {font-family: Vazir}',
+        plugins: 'link table preview wordcount',
+        toolbar: 'link bold italic table preview'
+    });
+}
+document.addEventListener('focusin', function (e) {
+    if (e.target.closest('.tox-tinymce-aux, .moxman-window, .tam-assetmanager-root') !== null) {
+        e.stopImmediatePropagation();
+    }
+});

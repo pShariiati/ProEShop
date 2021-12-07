@@ -22,21 +22,21 @@
             </h5>
             <div class="row">
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
-                    <label class="form-form-label" asp-for="SearchCategories.Title"></label>
+                    <label class="form-form" asp-for="SearchCategories.Title"></label>
                     <input class="form-control" asp-for="SearchCategories.Title" />
                     <span class="span-error-message" asp-validation-for="SearchCategories.Title"></span>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
-                    <label class="form-form-label" asp-for="SearchCategories.Slug"></label>
+                    <label class="form-form" asp-for="SearchCategories.Slug"></label>
                     <input class="form-control" asp-for="SearchCategories.Slug" />
                     <span class="span-error-message" asp-validation-for="SearchCategories.Slug"></span>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
-                    <label class="form-form-label" asp-for="SearchCategories.ShowInMenusStatus"></label>
+                    <label class="form-form" asp-for="SearchCategories.ShowInMenusStatus"></label>
                     <select class="form-select" asp-for="SearchCategories.ShowInMenusStatus" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.Categories.ShowInMenusStatus>()"></select>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
-                    <label class="form-form-label" asp-for="SearchCategories.DeletedStatus"></label>
+                    <label class="form-form" asp-for="SearchCategories.DeletedStatus"></label>
                     <select class="form-select" asp-for="SearchCategories.DeletedStatus" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.DeletedStatus>()"></select>
                 </div>
                 <div class="col-12 my-2">
@@ -58,22 +58,23 @@
 </div>
 
 <div class="modal fade" id="show-form-modal" data-bs-backdrop="static">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">افزودن دسته بندی</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body"></div>
-      <div class="modal-footer d-flex justify-content-start">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">بستن</button>
-      </div>
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">افزودن دسته بندی</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer d-flex justify-content-start">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">بستن</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
-
+<textarea class="custom-tinymce"></textarea>
 @section Scripts{
 <partial name="_ValidationScriptsPartial" />
+<script src="~/lib/tinymce/tinymce.min.js"></script>
 }
 @section CustomScripts{
 <script src="~/Pages/Admin/Category/Index.cshtml.js"></script>
