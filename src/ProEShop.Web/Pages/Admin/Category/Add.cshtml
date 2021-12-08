@@ -4,23 +4,26 @@
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="row">
         <div class="col-12 col-sm-6 col-lg-3 my-2">
-            <label class="form-form" asp-for="Title"></label>
+            <label class="form-label" asp-for="Title"></label>
             <input class="form-control" asp-for="Title" />
             <span class="span-error-message" asp-validation-for="Title"></span>
         </div>
         <div class="col-12 col-sm-6 col-lg-3 my-2">
-            <label class="form-form" asp-for="Slug"></label>
+            <label class="form-label" asp-for="Slug"></label>
             <input class="form-control" asp-for="Slug" />
             <span class="span-error-message" asp-validation-for="Slug"></span>
         </div>
         <div class="col-12 col-sm-6 col-lg-3 my-2">
-            <label class="form-form" asp-for="Picture"></label>
+            <label class="form-label" asp-for="Picture"></label>
             <input class="form-control" asp-for="Picture" />
             <span class="span-error-message" asp-validation-for="Picture"></span>
         </div>
         <div class="col-12 col-sm-6 col-lg-3 my-2">
-            <label class="form-form" asp-for="ParentId"></label>
-            <select class="form-select" asp-for="ParentId"></select>
+            <label class="form-label" asp-for="ParentId"></label>
+            <select class="form-select custom-select2" asp-for="ParentId">
+                <option>تست 1</option>
+                <option>تست 2</option>
+            </select>
         </div>
         <div class="col-12 my-2 form-check form-switch px-3">
             <label class="form-check-label" asp-for="ShowInMenus"></label>
@@ -29,7 +32,7 @@
             </div>
         </div>
         <div class="col-12 my-2">
-            <label class="form-form" asp-for="Description"></label>
+            <label class="form-label" asp-for="Description"></label>
             <textarea class="form-control custom-tinymce" asp-for="Description"></textarea>
             <span class="span-error-message" asp-validation-for="Description"></span>
         </div>

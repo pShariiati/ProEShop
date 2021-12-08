@@ -22,21 +22,21 @@
             </h5>
             <div class="row">
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
-                    <label class="form-form" asp-for="SearchCategories.Title"></label>
+                    <label class="form-label" asp-for="SearchCategories.Title"></label>
                     <input class="form-control" asp-for="SearchCategories.Title" />
                     <span class="span-error-message" asp-validation-for="SearchCategories.Title"></span>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
-                    <label class="form-form" asp-for="SearchCategories.Slug"></label>
+                    <label class="form-label" asp-for="SearchCategories.Slug"></label>
                     <input class="form-control" asp-for="SearchCategories.Slug" />
                     <span class="span-error-message" asp-validation-for="SearchCategories.Slug"></span>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
-                    <label class="form-form" asp-for="SearchCategories.ShowInMenusStatus"></label>
+                    <label class="form-label" asp-for="SearchCategories.ShowInMenusStatus"></label>
                     <select class="form-select" asp-for="SearchCategories.ShowInMenusStatus" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.Categories.ShowInMenusStatus>()"></select>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
-                    <label class="form-form" asp-for="SearchCategories.DeletedStatus"></label>
+                    <label class="form-label" asp-for="SearchCategories.DeletedStatus"></label>
                     <select class="form-select" asp-for="SearchCategories.DeletedStatus" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.DeletedStatus>()"></select>
                 </div>
                 <div class="col-12 my-2">
@@ -71,11 +71,17 @@
         </div>
     </div>
 </div>
-<textarea class="custom-tinymce"></textarea>
+
 @section Scripts{
 <partial name="_ValidationScriptsPartial" />
 <script src="~/lib/tinymce/tinymce.min.js"></script>
+<script src="~/lib/select2/js/select2.min.js"></script>
+<script src="~/lib/select2/js/i18n/fa.min.js"></script>
 }
 @section CustomScripts{
 <script src="~/Pages/Admin/Category/Index.cshtml.js"></script>
+}
+@section Styles{
+    <link rel="stylesheet" href="~/lib/select2/css/select2.min.css"/>
+    <link rel="stylesheet" href="~/lib/select2-bootstrap-5-theme/select2-bootstrap-5-theme.rtl.min.css"/>
 }

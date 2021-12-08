@@ -7,6 +7,7 @@
             if (status == 'success') {
                 $('#show-form-modal .modal-body').html(data);
                 initializeTinyMCE();
+                initializeSelect2();
                 $.validator.unobtrusive.parse($('#show-form-modal form'));
                 $('#show-form-modal').modal('show');
             }

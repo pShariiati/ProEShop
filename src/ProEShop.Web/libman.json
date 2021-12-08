@@ -33,6 +33,14 @@
     {
       "library": "tinymce@5.10.2",
       "destination": "wwwroot\\lib\\tinymce"
+    },
+    {
+      "library": "select2@4.0.13",
+      "destination": "wwwroot\\lib\\select2"
+    },
+    {
+      "library": "select2-bootstrap-5-theme@1.2.0",
+      "destination": "wwwroot\\lib\\select2-bootstrap-5-theme"
     }
   ]
 }

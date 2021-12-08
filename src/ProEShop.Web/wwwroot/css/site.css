@@ -44,3 +44,7 @@ a{
     margin-top: 5px;
     font-size: .9rem;
 }
+
+span.select2-dropdown.select2-dropdown--below {
+    left: -17px;
+}
