@@ -1,5 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using ProEShop.Common;
 using ProEShop.Common.Constants;
 using ProEShop.Common.Helpers;
 using ProEShop.Common.IdentityToolkit;
@@ -43,7 +44,12 @@ public class IndexModel : PageBase
 
     public IActionResult OnGetAdd()
     {
-        return Partial("Add");
+        var model = new AddCategoryViewModel()
+        {
+            MainCategories = _categoryService.GetCategoriesToShowInSelectBox()
+                .CreateSelectListItem(firstItemText: "خودش دسته اصلی باشد")
+        };
+        return Partial("Add", model);
     }
 
     public IActionResult OnPostAdd(AddCategoryViewModel model)

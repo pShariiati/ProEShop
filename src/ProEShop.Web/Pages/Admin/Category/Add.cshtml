@@ -20,9 +20,7 @@
         </div>
         <div class="col-12 col-sm-6 col-lg-3 my-2">
             <label class="form-label" asp-for="ParentId"></label>
-            <select class="form-select custom-select2" asp-for="ParentId">
-                <option>تست 1</option>
-                <option>تست 2</option>
+            <select class="form-select custom-select2" asp-for="ParentId" asp-items="Model.MainCategories">
             </select>
         </div>
         <div class="col-12 my-2 form-check form-switch px-3">

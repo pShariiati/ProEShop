@@ -3,7 +3,9 @@
     $('.show-modal-form-button').click(function (e) {
         e.preventDefault();
         var urlToLoadTheForm = $(this).attr('href');
+        showLoading();
         $.get(urlToLoadTheForm, function (data, status) {
+            hideLoading();
             if (status == 'success') {
                 $('#show-form-modal .modal-body').html(data);
                 initializeTinyMCE();

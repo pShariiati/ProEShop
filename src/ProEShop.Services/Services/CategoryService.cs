@@ -62,4 +62,9 @@ public class CategoryService : GenericService<Category>, ICategoryService
             .ToListAsync()
         };
     }
+
+    public Dictionary<long, string> GetCategoriesToShowInSelectBox()
+    {
+        return _categories.ToDictionary(x => x.Id, x => x.Title);
+    }
 }
