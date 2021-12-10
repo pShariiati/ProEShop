@@ -20,7 +20,7 @@ public static class IdentityExtensions
     public static List<string> GetModelStateErrors(this ModelStateDictionary modelState)
     {
         return modelState.Keys.SelectMany(k => modelState[k].Errors)
-            .Select(m => m.ErrorMessage).ToList();
+            .Select(m => m.ErrorMessage).OrderByDescending(x => x).ToList();
     }
 
     /// <summary>

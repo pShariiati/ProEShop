@@ -30,6 +30,42 @@
         }
     });
 
+    $(document).on('submit', 'form.custom-ajax-form', function (e) {
+        e.preventDefault();
+        var currentForm = $(this);
+        var formAction = currentForm.attr('action');
+        var formData = new FormData(this);
+        $.ajax({
+            url: formAction,
+            data: formData,
+            type: 'POST',
+            enctype: 'multipart/form-data',
+            dataType: 'json',
+            processData: false,
+            contentType: false,
+            beforeSend: function () {
+                currentForm.find('.submit-custom-ajax-button span').removeClass('d-none');
+                currentForm.find('.submit-custom-ajax-button').attr('disabled', 'disabled');
+            },
+            success: function (data, status) {
+                if (data.isSuccessful == false) {
+                    fillValidationForm(data.data, currentForm);
+                    showToastr('warning', data.message);
+                }
+                else {
+                    showToastr('success', data.message);
+                }
+            },
+            complete: function () {
+                currentForm.find('.submit-custom-ajax-button span').addClass('d-none');
+                currentForm.find('.submit-custom-ajax-button').removeAttr('disabled');
+            },
+            error: function () {
+                showErrorMessage();
+            }
+        });
+    });
+
     $(document).on('submit', 'form.search-form-via-ajax', function (e) {
         e.preventDefault();
         var currentForm = $(this);
@@ -51,12 +87,7 @@
 
             if (status == 'success') {
                 if (data.isSuccessful == false) {
-                    var errors = '<ul>';
-                    data.data.forEach(function (e) {
-                        errors += `<li>${e}</li>`;
-                    });
-                    errors += '</ul>';
-                    currentForm.find('div[class*="validation-summary"]').html(errors);
+                    fillValidationForm(data.data, currentForm);
                     showToastr('warning', data.message);
                 }
                 else {
@@ -68,4 +99,12 @@
             }
         });
     });
+    function fillValidationForm(errors, currentForm) {
+        var result = '<ul>';
+        errors.forEach(function (e) {
+            result += `<li>${e}</li>`;
+        });
+        result += '</ul>';
+        currentForm.find('div[class*="validation-summary"]').html(result);
+    }
 });
