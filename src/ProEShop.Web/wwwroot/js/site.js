@@ -67,7 +67,28 @@ function initializeTinyMCE() {
         language_url: '/js/fa_IR.js',
         content_style: 'body {font-family: Vazir}',
         plugins: 'link table preview wordcount',
-        toolbar: 'link bold italic table preview'
+        toolbar: [
+            {
+                name: 'history', items: ['undo', 'redo', 'preview']
+            },
+            {
+                name: 'styles', items: ['styleselect']
+            },
+            {
+                name: 'formatting', items: ['bold', 'italic', 'underline', 'link']
+            },
+            {
+                name: 'alignment', items: ['alignleft', 'aligncenter', 'alignright', 'alignjustify', 'forecolor', 'backcolor']
+            },
+            {
+                name: 'table', items: ['table', 'wordcount']
+            },
+            {
+                name: 'indentation', items: ['outdent', 'indent']
+            }
+        ],
+        menubar: false,
+        branding: false
     });
 }
 document.addEventListener('focusin', function (e) {
@@ -79,6 +100,6 @@ document.addEventListener('focusin', function (e) {
 function initializeSelect2() {
     $('.custom-select2').select2({
         theme: 'bootstrap-5',
-        dropdownParent: $('#show-form-modal')
+        dropdownParent: $('#form-modal-place')
     });
 }
