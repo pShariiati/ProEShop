@@ -48,3 +48,7 @@ a{
 span.select2-dropdown.select2-dropdown--below {
     left: -17px;
 }
+
+.max-width-200 {
+    max-width: 200px
+}

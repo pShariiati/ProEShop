@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace ProEShop.Common.Helpers;
 
@@ -19,7 +20,7 @@ public static class StringHelpers
 
     public static string GenerateGuid() => Guid.NewGuid().ToString("N");
 
-    public static List<string> AddDuplicateErrors<T>(this List<string> duplicateColumns)
+    public static List<string> SetDuplicateColumnsErrorMessages<T>(this List<string> duplicateColumns)
     {
         var result = new List<string>();
         foreach (var duplicateColumn in duplicateColumns)
@@ -29,5 +30,10 @@ public static class StringHelpers
             result.Add($"این {columnDisplayName} قبلا در سیستم ثبت شده است");
         }
         return result;
+    }
+
+    public static string GenerateFileName(this IFormFile file)
+    {
+        return GenerateGuid() + Path.GetExtension(file.FileName);
     }
 }

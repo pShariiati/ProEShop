@@ -16,11 +16,13 @@ public class IndexModel : PageBase
 
     private readonly ICategoryService _categoryService;
     private readonly IUnitOfWork _uow;
+    private readonly IUploadFileService _uploadFile;
 
-    public IndexModel(ICategoryService categoryService, IUnitOfWork uow)
+    public IndexModel(ICategoryService categoryService, IUnitOfWork uow, IUploadFileService uploadFile)
     {
         _categoryService = categoryService;
         _uow = uow;
+        _uploadFile = uploadFile;
     }
 
     #endregion
@@ -65,13 +67,18 @@ public class IndexModel : PageBase
             });
         }
 
+        string pictureFileName = null;
+        if (model.Picture.IsFileUploaded())
+            pictureFileName = model.Picture.GenerateFileName();
+
         var category = new Entities.Category
         {
             Description = model.Description,
             ShowInMenus = model.ShowInMenus,
             Title = model.Title,
             Slug = model.Slug,
-            ParentId = model.ParentId == 0 ? null : model.ParentId
+            ParentId = model.ParentId == 0 ? null : model.ParentId,
+            Picture = pictureFileName
         };
 
         var result = await _categoryService.AddAsync(category);
@@ -79,11 +86,11 @@ public class IndexModel : PageBase
         {
             return Json(new JsonResultOperation(false, PublicConstantStrings.DuplicateErrorMessage)
             {
-                Data = result.Columns.AddDuplicateErrors<AddCategoryViewModel>()
+                Data = result.Columns.SetDuplicateColumnsErrorMessages<AddCategoryViewModel>()
             });
         }
         await _uow.SaveChangesAsync();
-
+        await _uploadFile.SaveFile(model.Picture, pictureFileName, "images", "categories");
         return Json(new JsonResultOperation(true, "دسته بندی مورد نظر با موفقیت اضافه شد"));
     }
 }

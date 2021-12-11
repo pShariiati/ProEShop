@@ -8,6 +8,7 @@
                     <th>@Html.DisplayNameFor(x => x.Categories[0].Title)</th>
                     <th>@Html.DisplayNameFor(x => x.Categories[0].Parent)</th>
                     <th>@Html.DisplayNameFor(x => x.Categories[0].Slug)</th>
+                    <th>@Html.DisplayNameFor(x => x.Categories[0].Picture)</th>
                     <th>@Html.DisplayNameFor(x => x.Categories[0].ShowInMenus)</th>
                     <th>عملیات</th>
                 </tr>
@@ -19,6 +20,20 @@
                         <td>@category.Title</td>
                         <td>@category.Parent</td>
                         <td>@category.Slug</td>
+                        <td>
+                            @if (category.Picture == "بدون عکس")
+                            {
+                                <div class="d-grid">
+                                    <span class="btn btn-warning" type="button">@category.Picture</span>
+                                </div>
+                            }
+                            else
+                            {
+                                <span class="d-flex justify-content-center">
+                                    <img src="~/images/categories/@category.Picture" class="rounded max-width-200" />
+                                </span>
+                            }
+                        </td>
                         <td>
                             @if (category.ShowInMenus)
                             {

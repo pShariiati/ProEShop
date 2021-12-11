@@ -10,6 +10,7 @@ using ProEShop.Services.Services;
 using ProEShop.Services.Services.Identity;
 using System.Security.Claims;
 using System.Security.Principal;
+using ProEShop.Services;
 
 namespace ProEShop.IocConfig;
 
@@ -49,6 +50,7 @@ public static class AddCustomServicesExtensions
 
         services.AddScoped<ISmsSender, AuthMessageSender>();
         services.AddScoped<IHttpClientService, HttpClientService>();
+        services.AddScoped<IUploadFileService, UploadFileService>();
 
         return services;
     }
