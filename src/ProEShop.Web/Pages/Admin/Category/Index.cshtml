@@ -22,22 +22,22 @@
             </h5>
             <div class="row">
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
-                    <label class="form-label" asp-for="SearchCategories.Title"></label>
-                    <input class="form-control" asp-for="SearchCategories.Title" />
-                    <span class="span-error-message" asp-validation-for="SearchCategories.Title"></span>
+                    <label class="form-label" asp-for="Categories.SearchCategories.Title"></label>
+                    <input class="form-control" asp-for="Categories.SearchCategories.Title" />
+                    <span class="span-error-message" asp-validation-for="Categories.SearchCategories.Title"></span>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
-                    <label class="form-label" asp-for="SearchCategories.Slug"></label>
-                    <input class="form-control" asp-for="SearchCategories.Slug" />
-                    <span class="span-error-message" asp-validation-for="SearchCategories.Slug"></span>
+                    <label class="form-label" asp-for="Categories.SearchCategories.Slug"></label>
+                    <input class="form-control" asp-for="Categories.SearchCategories.Slug" />
+                    <span class="span-error-message" asp-validation-for="Categories.SearchCategories.Slug"></span>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
-                    <label class="form-label" asp-for="SearchCategories.ShowInMenusStatus"></label>
-                    <select class="form-select" asp-for="SearchCategories.ShowInMenusStatus" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.Categories.ShowInMenusStatus>()"></select>
+                    <label class="form-label" asp-for="Categories.SearchCategories.ShowInMenusStatus"></label>
+                    <select class="form-select" asp-for="Categories.SearchCategories.ShowInMenusStatus" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.Categories.ShowInMenusStatus>()"></select>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
-                    <label class="form-label" asp-for="SearchCategories.DeletedStatus"></label>
-                    <select class="form-select" asp-for="SearchCategories.DeletedStatus" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.DeletedStatus>()"></select>
+                    <label class="form-label" asp-for="Categories.SearchCategories.DeletedStatus"></label>
+                    <select class="form-select" asp-for="Categories.SearchCategories.DeletedStatus" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.DeletedStatus>()"></select>
                 </div>
                 <div class="col-12 my-2">
                     <div class="d-grid d-lg-block">

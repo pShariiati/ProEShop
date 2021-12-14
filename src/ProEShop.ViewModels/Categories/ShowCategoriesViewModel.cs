@@ -9,6 +9,9 @@ public class ShowCategoriesViewModel
 
     public SearchCategoriesViewModel SearchCategories { get; set; }
     = new();
+
+    public PaginationViewModel Pagination { get; set; }
+    = new();
 }
 
 public class ShowCategoryViewModel

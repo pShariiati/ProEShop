@@ -16,17 +16,17 @@ public class CategoryService : GenericService<Category>, ICategoryService
         _categories = uow.Set<Category>();
     }
 
-    public async Task<ShowCategoriesViewModel> GetCategories(SearchCategoriesViewModel model)
+    public async Task<ShowCategoriesViewModel> GetCategories(ShowCategoriesViewModel model)
     {
         var categories = _categories.AsQueryable();
 
-        if (!string.IsNullOrWhiteSpace(model.Title))
-            categories = categories.Where(x => x.Title.Contains(model.Title.Trim()));
+        if (!string.IsNullOrWhiteSpace(model.SearchCategories.Title))
+            categories = categories.Where(x => x.Title.Contains(model.SearchCategories.Title.Trim()));
 
-        if (!string.IsNullOrWhiteSpace(model.Slug))
-            categories = categories.Where(x => x.Slug.Contains(model.Slug.Trim()));
+        if (!string.IsNullOrWhiteSpace(model.SearchCategories.Slug))
+            categories = categories.Where(x => x.Slug.Contains(model.SearchCategories.Slug.Trim()));
 
-        switch (model.DeletedStatus)
+        switch (model.SearchCategories.DeletedStatus)
         {
             case ViewModels.DeletedStatus.True:
                 break;
@@ -38,7 +38,7 @@ public class CategoryService : GenericService<Category>, ICategoryService
                 break;
         }
 
-        switch (model.ShowInMenusStatus)
+        switch (model.SearchCategories.ShowInMenusStatus)
         {
             case ShowInMenusStatus.True:
                 categories = categories.Where(x => x.ShowInMenus);
@@ -49,10 +49,11 @@ public class CategoryService : GenericService<Category>, ICategoryService
             default:
                 break;
         }
+        var paginationResult = await GenericPaginationAsync(categories, model.Pagination);
 
         return new()
         {
-            Categories = await categories
+            Categories = await paginationResult.Query
             .Select(x => new ShowCategoryViewModel
             {
                 Title = x.Title,
@@ -61,7 +62,8 @@ public class CategoryService : GenericService<Category>, ICategoryService
                 Slug = x.Slug,
                 Picture = x.Picture ?? "بدون عکس"
             })
-            .ToListAsync()
+            .ToListAsync(),
+            Pagination = paginationResult.Pagination
         };
     }
 
@@ -79,7 +81,7 @@ public class CategoryService : GenericService<Category>, ICategoryService
             result.Add(nameof(Category.Slug));
         if (!result.Any())
             await base.AddAsync(entity);
-        return new (!result.Any())
+        return new(!result.Any())
         {
             Columns = result
         };

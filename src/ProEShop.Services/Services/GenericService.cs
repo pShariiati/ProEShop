@@ -3,6 +3,7 @@ using ProEShop.Common.Helpers;
 using ProEShop.DataLayer.Context;
 using ProEShop.Entities;
 using ProEShop.Services.Contracts;
+using ProEShop.ViewModels;
 
 namespace ProEShop.Services.Services;
 
@@ -44,4 +45,23 @@ public abstract class GenericService<TEntity> : IGenericService<TEntity> where T
 
     public Task<bool> IsExistsByIdAsync(long id)
         => _entities.AnyAsync(x => x.Id == id);
+
+    public async Task<PaginationResultViewModel<T>> GenericPaginationAsync<T>(IQueryable<T> items, PaginationViewModel pagination)
+    {
+        if (pagination.CurrentPage < 1)
+            pagination.CurrentPage = 1;
+        var itemsCount = await items.LongCountAsync();
+        var pagesCount = (int)Math.Ceiling(
+                (decimal)itemsCount / pagination.Take
+            );
+        if (pagination.CurrentPage > pagesCount)
+            pagination.CurrentPage = pagesCount;
+        var skip = (pagination.CurrentPage - 1) * pagination.Take;
+        pagination.PagesCount = pagesCount;
+        return new PaginationResultViewModel<T>
+        {
+            Pagination = pagination,
+            Query = items.Skip(skip).Take(pagination.Take)
+        };
+    }
 }
