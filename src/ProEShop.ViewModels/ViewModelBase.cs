@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ProEShop.ViewModels;
 
@@ -14,6 +15,7 @@ public enum DeletedStatus
 
 public class PaginationViewModel
 {
+    [HiddenInput]
     public int CurrentPage { get; set; } = 1;
 
     public byte Take { get; set; }

@@ -19,6 +19,14 @@
         });
     });
 
+    function activatingPagination() {
+        $('#main-pagianation button').click(function () {
+            var currentPageSelected = $(this).val();
+            $('.search-form-via-ajax input[name$="Pagination.CurrentPage"]').val(currentPageSelected);
+            $('.search-form-via-ajax').submit();
+        });
+    }
+
     function fillDataTable() {
         $.get(`${location.pathname}?handler=GetDataTable`, function (data, status) {
             $('.search-form-loading').removeAttr('disabled');
@@ -26,6 +34,7 @@
             if (status == 'success') {
                 $('.data-table-place .data-table-body').remove();
                 $('.data-table-place').append(data);
+                activatingPagination();
             }
             else {
                 showErrorMessage();
@@ -77,7 +86,6 @@
         e.preventDefault();
         var currentForm = $(this);
         const formData = currentForm.serializeArray();
-
         // show loading and disabling button
         currentForm.find('.search-form-loading').attr('disabled', 'disabled');
         currentForm.find('.search-form-loading span').removeClass('d-none');
@@ -99,6 +107,7 @@
                 }
                 else {
                     $('.data-table-place .data-table-body').html(data);
+                    activatingPagination();
                 }
             }
             else {

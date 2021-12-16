@@ -35,7 +35,7 @@ public class IndexModel : PageBase
 
     }
 
-    public async Task<IActionResult> OnGetGetDataTableAsync(ShowCategoriesViewModel categoriesViewModel)
+    public async Task<IActionResult> OnGetGetDataTableAsync(ShowCategoriesViewModel categories)
     {
         if (!ModelState.IsValid)
         {
@@ -44,9 +44,8 @@ public class IndexModel : PageBase
                 Data = ModelState.GetModelStateErrors()
             });
         }
-        categoriesViewModel.Pagination.CurrentPage = 2;
-        categoriesViewModel.Pagination.Take = 2;
-        return Partial("List", await _categoryService.GetCategories(categoriesViewModel));
+        categories.Pagination.Take = 2;
+        return Partial("List", await _categoryService.GetCategories(categories));
     }
 
     public IActionResult OnGetAdd()

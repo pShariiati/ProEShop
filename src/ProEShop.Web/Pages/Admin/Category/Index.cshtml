@@ -15,6 +15,7 @@
             </a>
         </div>
         <form class="alert alert-secondary search-form-via-ajax">
+            <input asp-for="Categories.Pagination.CurrentPage" />
             <div asp-validation-summary="All" class="text-danger"></div>
             <h5>
                 جستجو در
@@ -82,6 +83,6 @@
 <script src="~/Pages/Admin/Category/Index.cshtml.js"></script>
 }
 @section Styles{
-    <link rel="stylesheet" href="~/lib/select2/css/select2.min.css"/>
-    <link rel="stylesheet" href="~/lib/select2-bootstrap-5-theme/select2-bootstrap-5-theme.rtl.min.css"/>
+<link rel="stylesheet" href="~/lib/select2/css/select2.min.css" />
+<link rel="stylesheet" href="~/lib/select2-bootstrap-5-theme/select2-bootstrap-5-theme.rtl.min.css" />
 }

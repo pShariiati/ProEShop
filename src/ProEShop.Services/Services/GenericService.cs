@@ -54,6 +54,8 @@ public abstract class GenericService<TEntity> : IGenericService<TEntity> where T
         var pagesCount = (int)Math.Ceiling(
                 (decimal)itemsCount / pagination.Take
             );
+        if (pagesCount <= 0)
+            pagesCount = 1;
         if (pagination.CurrentPage > pagesCount)
             pagination.CurrentPage = pagesCount;
         var skip = (pagination.CurrentPage - 1) * pagination.Take;
