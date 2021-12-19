@@ -67,7 +67,7 @@
                     </button>
                     <button type="button" class="btn btn-outline-primary">قبلی</button>
                 }
-                @for (int counter = 1; counter <= Model.Pagination.PagesCount; counter++)
+                @for (int counter = Model.Pagination.StartPage; counter <= Model.Pagination.EndPage; counter++)
                 {
                     <button value="@counter" type="button"
                             class="@(counter == Model.Pagination.CurrentPage ? "active " : string.Empty)btn btn-outline-primary">
@@ -77,10 +77,17 @@
                 @if (Model.Pagination.CurrentPage != Model.Pagination.PagesCount)
                 {
                     <button type="button" class="btn btn-outline-primary">بعدی</button>
-                    <button value="@Model.Pagination.PagesCount" type="button" class="btn btn-outline-primary">
+                    <button data-bs-toggle="tooltip" data-bs-placement="top" title="کل صفحات @Model.Pagination.PagesCount" value="@Model.Pagination.PagesCount" type="button" class="btn btn-outline-primary">
                         <i class="bi bi-chevron-double-left"></i>
+                        @Model.Pagination.PagesCount
                     </button>
                 }
+            </div>
+        </div>
+        <div class="col-10 col-sm-6 col-md-4 col-xl-3 m-auto">
+            <div class="input-group">
+                <input id="page-number-input" value="@Model.Pagination.CurrentPage" min="1" max="@Model.Pagination.PagesCount" type="number" class="form-control rtl-direction" placeholder="شماره صفحه">
+                <button class="btn btn-outline-primary" type="submit">برو به صفحه</button>
             </div>
         </div>
         <!-- End pagination -->

@@ -52,3 +52,7 @@ span.select2-dropdown.select2-dropdown--below {
 .max-width-200 {
     max-width: 200px
 }
+
+.rtl-direction {
+    direction: rtl;
+}

@@ -35,6 +35,7 @@
                 $('.data-table-place .data-table-body').remove();
                 $('.data-table-place').append(data);
                 activatingPagination();
+                enablingTooltips();
             }
             else {
                 showErrorMessage();
@@ -85,6 +86,8 @@
     $(document).on('submit', 'form.search-form-via-ajax', function (e) {
         e.preventDefault();
         var currentForm = $(this);
+        var pageNumberInput = $('#page-number-input').val();
+        currentForm.find('input[name$="Pagination.CurrentPage"').val(pageNumberInput);
         const formData = currentForm.serializeArray();
         // show loading and disabling button
         currentForm.find('.search-form-loading').attr('disabled', 'disabled');
@@ -108,6 +111,7 @@
                 else {
                     $('.data-table-place .data-table-body').html(data);
                     activatingPagination();
+                    enablingTooltips();
                 }
             }
             else {

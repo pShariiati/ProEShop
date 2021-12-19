@@ -44,7 +44,7 @@ public class IndexModel : PageBase
                 Data = ModelState.GetModelStateErrors()
             });
         }
-        categories.Pagination.Take = 2;
+        categories.Pagination.Take = 1;
         return Partial("List", await _categoryService.GetCategories(categories));
     }
 
