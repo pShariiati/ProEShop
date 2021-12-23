@@ -16,6 +16,8 @@ public class ShowCategoriesViewModel
 
 public class ShowCategoryViewModel
 {
+    public long Id { get; set; }
+
     [Display(Name = "عنوان")]
     public string Title { get; set; }
 

@@ -7,4 +7,5 @@ public interface ICategoryService : IGenericService<Category>
 {
     Task<ShowCategoriesViewModel> GetCategories(ShowCategoriesViewModel model);
     Dictionary<long, string> GetCategoriesToShowInSelectBox();
+    Task<EditCategoryViewModel> GetForEdit(long id);
 }
