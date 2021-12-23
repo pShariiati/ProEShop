@@ -91,7 +91,7 @@ public class IndexModel : PageBase
             });
         }
         await _uow.SaveChangesAsync();
-        await _uploadFile.SaveFile(model.Picture, pictureFileName, "images", "categories");
+        await _uploadFile.SaveFile(model.Picture, pictureFileName, null, "images", "categories");
         return Json(new JsonResultOperation(true, "دسته بندی مورد نظر با موفقیت اضافه شد"));
     }
 
@@ -101,5 +101,47 @@ public class IndexModel : PageBase
         model.MainCategories = _categoryService.GetCategoriesToShowInSelectBox()
             .CreateSelectListItem(firstItemText: "خودش دسته اصلی باشد");
         return Partial("Edit", model);
+    }
+
+    public async Task<IActionResult> OnPostEdit(EditCategoryViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return Json(new JsonResultOperation(false, PublicConstantStrings.ModelStateErrorMessage)
+            {
+                Data = ModelState.GetModelStateErrors()
+            });
+        }
+
+        string pictureFileName = null;
+        if (model.Picture.IsFileUploaded())
+            pictureFileName = model.Picture.GenerateFileName();
+
+        var category = await _categoryService.FindByIdAsync(model.Id);
+        if (category == null)
+        {
+            return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
+        }
+
+        var oldFileName = category.Picture;
+
+        category.Title = model.Title;
+        category.Description = model.Description;
+        category.ShowInMenus = model.ShowInMenus;
+        category.Slug = model.Slug;
+        category.ParentId = model.ParentId == 0 ? null : model.ParentId;
+        category.Picture = pictureFileName;
+
+        var result = await _categoryService.Update(category);
+        if (!result.Ok)
+        {
+            return Json(new JsonResultOperation(false, PublicConstantStrings.DuplicateErrorMessage)
+            {
+                Data = result.Columns.SetDuplicateColumnsErrorMessages<AddCategoryViewModel>()
+            });
+        }
+        await _uow.SaveChangesAsync();
+        await _uploadFile.SaveFile(model.Picture, pictureFileName, oldFileName, "images", "categories");
+        return Json(new JsonResultOperation(true, "دسته بندی مورد نظر با موفقیت ویرایش شد"));
     }
 }

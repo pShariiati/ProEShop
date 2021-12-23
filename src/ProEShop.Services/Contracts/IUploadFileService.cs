@@ -4,5 +4,5 @@ namespace ProEShop.Services.Contracts;
 
 public interface IUploadFileService
 {
-    Task SaveFile(IFormFile file, string fileName, params string[] destinationDirectoryNames);
+    Task SaveFile(IFormFile file, string fileName, string oldFileName, params string[] destinationDirectoryNames);
 }

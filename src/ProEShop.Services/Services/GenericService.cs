@@ -21,11 +21,14 @@ public abstract class GenericService<TEntity> : IGenericService<TEntity> where T
     public virtual async Task<DuplicateColumns> AddAsync(TEntity entity)
     {
         await _entities.AddAsync(entity);
-        return new DuplicateColumns();
+        return new();
     }
 
-    public void Update(TEntity entity)
-        => _entities.Update(entity);
+    public virtual async Task<DuplicateColumns> Update(TEntity entity)
+    {
+        _entities.Update(entity);
+        return new();
+    }
 
     public void Remove(TEntity entity)
         => _entities.Remove(entity);
