@@ -41,6 +41,11 @@
     {
       "library": "select2-bootstrap-5-theme@1.2.0",
       "destination": "wwwroot\\lib\\select2-bootstrap-5-theme"
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "sweetalert2@11.3.0",
+      "destination": "wwwroot\\lib\\sweetalert2"
     }
   ]
 }

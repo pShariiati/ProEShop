@@ -144,4 +144,16 @@ public class IndexModel : PageBase
         await _uploadFile.SaveFile(model.Picture, pictureFileName, oldFileName, "images", "categories");
         return Json(new JsonResultOperation(true, "دسته بندی مورد نظر با موفقیت ویرایش شد"));
     }
+
+    public async Task<IActionResult> OnPostDeleteAsync(long elementId)
+    {
+        var category = await _categoryService.FindByIdAsync(elementId);
+        if (category is null)
+        {
+            return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
+        }
+        _categoryService.SoftDelete(category);
+        await _uow.SaveChangesAsync();
+        return Json(new JsonResultOperation(true, "دسته بندی مورد نظر با موفقیت حذف شد"));
+    }
 }

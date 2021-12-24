@@ -11,4 +11,5 @@ public interface IGenericService<TEntity> where TEntity : EntityBase, new()
     void Remove(long id);
     Task<TEntity> FindByIdAsync(long id);
     Task<bool> IsExistsByIdAsync(long id);
+    void SoftDelete(TEntity entity);
 }

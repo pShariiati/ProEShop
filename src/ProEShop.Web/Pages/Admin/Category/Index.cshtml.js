@@ -1,5 +1,42 @@
 ﻿$(function () {
 
+    function activatingDeleteButtons() {
+        $('.delete-row-button').click(function () {
+            var currentForm = $(this).parent();
+            Swal.fire({
+                title: 'اعلان',
+                text: 'آیا مطمئن به حذف هستید ؟',
+                icon: 'warning',
+                confirmButtonText: 'بله',
+                showDenyButton: true,
+                denyButtonText: 'خیر',
+                confirmButtonColor: '#067719',
+                allowOutsideClick: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var data = {
+                        elementId: currentForm.find('input:first').val(),
+                        __RequestVerificationToken: currentForm.find('input:last').val()
+                    }
+                    showLoading();
+                    $.post(location.pathname + "?handler=Delete", data, function (data, status) {
+                        if (data.isSuccessful == false) {
+                            showToastr('warning', data.message);
+                        }
+                        else {
+                            fillDataTable();
+                            showToastr('success', data.message);
+                        }
+                    }).always(function () {
+                        hideLoading();
+                    }).fail(function () {
+                        showErrorMessage();
+                    });
+                }
+            });
+        });
+    }
+
     function activatingModalForm() {
         $('.show-modal-form-button').click(function (e) {
             e.preventDefault();
@@ -47,6 +84,7 @@
                 activatingPagination();
                 activatingGotoPage();
                 activatingModalForm();
+                activatingDeleteButtons();
                 enablingTooltips();
             }
             else {
@@ -135,6 +173,7 @@
                     activatingPagination();
                     activatingGotoPage();
                     activatingModalForm();
+                    activatingDeleteButtons();
                     enablingTooltips();
                 }
             }

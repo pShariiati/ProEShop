@@ -52,7 +52,10 @@
                             <a asp-page-handler="Edit" asp-route-id="@category.Id" class="btn btn-warning show-modal-form-button">
                                 ویرایش
                             </a>
-                            <button class="btn btn-danger">حذف</button>
+                            <form asp-page-handler="Delete" class="d-inline-block">
+                                <input type="hidden" name="elementId" value="@category.Id" />
+                                <button type="button" class="btn btn-danger delete-row-button">حذف</button>
+                            </form>
                             <button class="btn btn-success">افزودن زیر دسته</button>
                         </td>
                     </tr>

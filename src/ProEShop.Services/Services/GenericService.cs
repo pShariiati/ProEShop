@@ -49,6 +49,11 @@ public abstract class GenericService<TEntity> : IGenericService<TEntity> where T
     public Task<bool> IsExistsByIdAsync(long id)
         => _entities.AnyAsync(x => x.Id == id);
 
+    public void SoftDelete(TEntity entity)
+    {
+        entity.IsDeleted = true;
+    }
+
     public async Task<PaginationResultViewModel<T>> GenericPaginationAsync<T>(IQueryable<T> items, PaginationViewModel pagination)
     {
         if (pagination.CurrentPage < 1)
