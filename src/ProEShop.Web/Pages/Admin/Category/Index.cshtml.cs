@@ -37,6 +37,7 @@ public class IndexModel : PageBase
 
     public async Task<IActionResult> OnGetGetDataTableAsync(ShowCategoriesViewModel categories)
     {
+        Thread.Sleep(1000);
         if (!ModelState.IsValid)
         {
             return Json(new JsonResultOperation(false, PublicConstantStrings.ModelStateErrorMessage)
@@ -98,6 +99,10 @@ public class IndexModel : PageBase
     public async Task<IActionResult> OnGetEdit(long id)
     {
         var model = await _categoryService.GetForEdit(id);
+        if (model is null)
+        {
+            return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
+        }
         model.MainCategories = _categoryService.GetCategoriesToShowInSelectBox()
             .CreateSelectListItem(firstItemText: "خودش دسته اصلی باشد");
         return Partial("Edit", model);

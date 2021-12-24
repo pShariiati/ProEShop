@@ -63,6 +63,7 @@ function showErrorMessage(message) {
 }
 
 function initializeTinyMCE() {
+    tinymce.remove('textarea.custom-tinymce');
     tinymce.init({
         selector: 'textarea.custom-tinymce',
         height: 300,
