@@ -6,6 +6,6 @@ namespace ProEShop.Services.Contracts;
 public interface ICategoryService : IGenericService<Category>
 {
     Task<ShowCategoriesViewModel> GetCategories(ShowCategoriesViewModel model);
-    Dictionary<long, string> GetCategoriesToShowInSelectBox();
+    Dictionary<long, string> GetCategoriesToShowInSelectBox(long? id = null);
     Task<EditCategoryViewModel> GetForEdit(long id);
 }

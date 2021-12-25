@@ -68,9 +68,11 @@ public class CategoryService : GenericService<Category>, ICategoryService
         };
     }
 
-    public Dictionary<long, string> GetCategoriesToShowInSelectBox()
+    public Dictionary<long, string> GetCategoriesToShowInSelectBox(long? id)
     {
-        return _categories.ToDictionary(x => x.Id, x => x.Title);
+        return _categories
+            .Where(x => id == null || x.Id != id)
+            .ToDictionary(x => x.Id, x => x.Title);
     }
 
     public async Task<EditCategoryViewModel> GetForEdit(long id)
@@ -84,7 +86,7 @@ public class CategoryService : GenericService<Category>, ICategoryService
             Title = x.Title,
             Slug = x.Slug,
             ShowInMenus = x.ShowInMenus
-        }).SingleOrDefaultAsync(x=>x.Id == id);
+        }).SingleOrDefaultAsync(x => x.Id == id);
     }
 
     public override async Task<DuplicateColumns> AddAsync(Category entity)

@@ -19,7 +19,7 @@
                         __RequestVerificationToken: currentForm.find('input:last').val()
                     }
                     showLoading();
-                    $.post(location.pathname + "?handler=Delete", data, function (data, status) {
+                    $.post(currentForm.attr('action'), data, function (data, status) {
                         if (data.isSuccessful == false) {
                             showToastr('warning', data.message);
                         }
@@ -66,7 +66,7 @@
             });
         });
     }
-    activatingModalForm();
+    //activatingModalForm();
 
     function activatingPagination() {
         $('#main-pagianation button').click(function () {
@@ -85,10 +85,10 @@
 
     function fillDataTable() {
         $('.data-table-place .data-table-body').remove();
-        $('.search-form-loading').attr('disabled', 'disabled');
+        $('.search-form-submit-button').attr('disabled', 'disabled');
         $('.data-table-loading').removeClass('d-none');
         $.get(`${location.pathname}?handler=GetDataTable`, function (data, status) {
-            $('.search-form-loading').removeAttr('disabled');
+            $('.search-form-submit-button').removeAttr('disabled');
             $('.data-table-loading').addClass('d-none');
             if (status == 'success') {
                 $('.data-table-place').append(data);
@@ -159,8 +159,8 @@
         }
         const formData = currentForm.serializeArray();
         // show loading and disabling button
-        currentForm.find('.search-form-loading').attr('disabled', 'disabled');
-        currentForm.find('.search-form-loading span').removeClass('d-none');
+        currentForm.find('.search-form-submit-button').attr('disabled', 'disabled');
+        currentForm.find('.search-form-submit-button span').removeClass('d-none');
 
         $('.data-table-loading').removeClass('d-none');
         $('.data-table-body').html('');
@@ -170,8 +170,8 @@
             isMainPaginationClicked = false;
             isGotoPageClicked = false;
             // hide loading and activating button
-            currentForm.find('.search-form-loading').removeAttr('disabled');
-            currentForm.find('.search-form-loading span').addClass('d-none');
+            currentForm.find('.search-form-submit-button').removeAttr('disabled');
+            currentForm.find('.search-form-submit-button span').addClass('d-none');
 
             $('.data-table-loading').addClass('d-none');
 
