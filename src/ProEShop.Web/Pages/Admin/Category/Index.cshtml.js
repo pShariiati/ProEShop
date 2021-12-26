@@ -3,9 +3,10 @@
     function activatingDeleteButtons() {
         $('.delete-row-button').click(function () {
             var currentForm = $(this).parent();
+            var customMessage = $(this).attr('custom-message');
             Swal.fire({
                 title: 'اعلان',
-                text: 'آیا مطمئن به حذف هستید ؟',
+                text: customMessage == undefined ? 'آیا مطمئن به حذف هستید ؟' : customMessage,
                 icon: 'warning',
                 confirmButtonText: 'بله',
                 showDenyButton: true,
@@ -87,7 +88,10 @@
         $('.data-table-place .data-table-body').remove();
         $('.search-form-submit-button').attr('disabled', 'disabled');
         $('.data-table-loading').removeClass('d-none');
-        $.get(`${location.pathname}?handler=GetDataTable`, function (data, status) {
+
+        const formData = $('form.search-form-via-ajax').serializeArray();
+
+        $.get(`${location.pathname}?handler=GetDataTable`, formData, function (data, status) {
             $('.search-form-submit-button').removeAttr('disabled');
             $('.data-table-loading').addClass('d-none');
             if (status == 'success') {

@@ -52,10 +52,20 @@
                             <a custom-title="ویرایش دسته بندی" asp-page-handler="Edit" asp-route-id="@category.Id" class="btn btn-warning show-modal-form-button">
                                 ویرایش
                             </a>
-                            <form asp-page-handler="Delete" class="d-inline-block">
-                                <input type="hidden" name="elementId" value="@category.Id" />
-                                <button type="button" class="btn btn-danger delete-row-button">حذف</button>
-                            </form>
+                            @if (category.IsDeleted)
+                            {
+                                <form asp-page-handler="Restore" class="d-inline-block">
+                                    <input type="hidden" name="elementId" value="@category.Id" />
+                                    <button custom-message="آیا مطمئن به بازگردانی هستید ؟" type="button" class="btn btn-warning delete-row-button">بازگردانی</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <form asp-page-handler="Delete" class="d-inline-block">
+                                    <input type="hidden" name="elementId" value="@category.Id" />
+                                    <button type="button" class="btn btn-danger delete-row-button">حذف</button>
+                                </form>
+                            }
                             <a asp-page-handler="Add" asp-route-id="@category.Id" class="btn btn-success show-modal-form-button">
                                 افزودن زیر دسته
                             </a>
@@ -72,7 +82,7 @@
             </tbody>
         </table>
         <!-- Pagination -->
-        <div class="btn-toolbar my-3 d-flex justify-content-center" id="main-pagianation">
+    <div class="btn-toolbar my-3 d-flex justify-content-center" id="main-pagianation">
             <div class="btn-group me-2">
                 @if (Model.Pagination.CurrentPage != 1)
                 {
@@ -84,7 +94,7 @@
                 @for (int counter = Model.Pagination.StartPage; counter <= Model.Pagination.EndPage; counter++)
                 {
                     <button value="@counter" type="button"
-                            class="@(counter == Model.Pagination.CurrentPage ? "active " : string.Empty)btn btn-outline-primary">
+                    class="@(counter == Model.Pagination.CurrentPage ? "active " : string.Empty)btn btn-outline-primary">
                         @counter
                     </button>
                 }

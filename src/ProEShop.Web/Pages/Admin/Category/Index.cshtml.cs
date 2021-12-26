@@ -188,4 +188,16 @@ public class IndexModel : PageBase
         _uploadFile.DeleteFile(fileName, "images", "categories");
         return Json(new JsonResultOperation(true, "تصویر دسته بندی مورد نظر با موفقیت حذف شد"));
     }
+
+    public async Task<IActionResult> OnPostRestoreAsync(long elementId)
+    {
+        var category = await _categoryService.FindByIdAsync(elementId);
+        if (category is null)
+        {
+            return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
+        }
+        _categoryService.Restore(category);
+        await _uow.SaveChangesAsync();
+        return Json(new JsonResultOperation(true, "دسته بندی مورد نظر با موفقیت بازگردانی شد"));
+    }
 }
