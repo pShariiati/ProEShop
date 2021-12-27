@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using ProEShop.Common.Helpers;
 using ProEShop.DataLayer.Context;
 using ProEShop.Entities;
@@ -46,8 +47,13 @@ public abstract class GenericService<TEntity> : IGenericService<TEntity> where T
     public async Task<TEntity> FindByIdAsync(long id)
         => await _entities.FindAsync(id);
 
-    public Task<bool> IsExistsByIdAsync(long id)
-        => _entities.AnyAsync(x => x.Id == id);
+    public async Task<bool> IsExistsBy(string propertyToFilter, object propertyValue, long? id = null)
+    {
+        var exp = ExpressionHelpers.CreateExpression<TEntity>(propertyToFilter, propertyValue);
+        return await _entities
+            .Where(x=> id == null || x.Id != id)
+            .AnyAsync(exp);
+    }
 
     public void SoftDelete(TEntity entity)
     {

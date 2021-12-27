@@ -10,7 +10,7 @@ public interface IGenericService<TEntity> where TEntity : EntityBase, new()
     void Remove(TEntity entity);
     void Remove(long id);
     Task<TEntity> FindByIdAsync(long id);
-    Task<bool> IsExistsByIdAsync(long id);
+    Task<bool> IsExistsBy(string propertyToFilter, object propertyValue, long? id = null);
     void SoftDelete(TEntity entity);
     void Restore(TEntity entity);
 }

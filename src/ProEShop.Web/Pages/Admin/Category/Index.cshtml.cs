@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq.Expressions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ProEShop.Common;
 using ProEShop.Common.Constants;
@@ -26,7 +27,7 @@ public class IndexModel : PageBase
     }
 
     #endregion
-
+    
     public ShowCategoriesViewModel Categories { get; set; }
     = new();
 
@@ -52,7 +53,7 @@ public class IndexModel : PageBase
     {
         if (id > 0)
         {
-            if (!await _categoryService.IsExistsByIdAsync(id))
+            if (!await _categoryService.IsExistsBy(nameof(Entities.Category.Id), id))
             {
                 return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
             }
@@ -199,5 +200,25 @@ public class IndexModel : PageBase
         _categoryService.Restore(category);
         await _uow.SaveChangesAsync();
         return Json(new JsonResultOperation(true, "دسته بندی مورد نظر با موفقیت بازگردانی شد"));
+    }
+
+    public async Task<IActionResult> OnPostCheckForTitle(string title)
+    {
+        return Json(!await _categoryService.IsExistsBy(nameof(Entities.Category.Title), title));
+    }
+
+    public async Task<IActionResult> OnPostCheckForSlug(string slug)
+    {
+        return Json(!await _categoryService.IsExistsBy(nameof(Entities.Category.Slug), slug));
+    }
+
+    public async Task<IActionResult> OnPostCheckForTitleOnEdit(string title, long id)
+    {
+        return Json(!await _categoryService.IsExistsBy(nameof(Entities.Category.Title), title, id));
+    }
+
+    public async Task<IActionResult> OnPostCheckForSlugOnEdit(string slug, long id)
+    {
+        return Json(!await _categoryService.IsExistsBy(nameof(Entities.Category.Slug), slug, id));
     }
 }
