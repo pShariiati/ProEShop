@@ -3,6 +3,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ProEShop.ViewModels;
 
+public enum SortingOrder
+{
+    [Display(Name = "صعودی")]
+    Asc,
+
+    [Display(Name = "نزولی")]
+    Desc
+}
+
 public static class ViewModelConstants
 {
     public const string AntiForgeryToken = "__RequestVerificationToken";

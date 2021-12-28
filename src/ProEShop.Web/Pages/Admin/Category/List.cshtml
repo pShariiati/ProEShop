@@ -5,6 +5,7 @@
         <table class="table table-bordered table-striped table-hover">
             <thead class="table-light">
                 <tr>
+                    <th>@Html.DisplayNameFor(x => x.Categories[0].Id)</th>
                     <th>@Html.DisplayNameFor(x => x.Categories[0].Title)</th>
                     <th>@Html.DisplayNameFor(x => x.Categories[0].Parent)</th>
                     <th>@Html.DisplayNameFor(x => x.Categories[0].Slug)</th>
@@ -17,6 +18,7 @@
                 @foreach (var category in Model.Categories)
                 {
                     <tr>
+                        <td>@category.Id</td>
                         <td>@category.Title</td>
                         <td>@category.Parent</td>
                         <td>@category.Slug</td>
