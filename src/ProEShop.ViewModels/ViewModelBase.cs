@@ -3,6 +3,21 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ProEShop.ViewModels;
 
+public enum PageCount
+{
+    [Display(Name = "۱۰ سطر")]
+    Ten,
+
+    [Display(Name = "۲۵ سطر")]
+    TwentyFive,
+
+    [Display(Name = "۵۰ سطر")]
+    Fifty,
+
+    [Display(Name = "۱۰۰ سطر")]
+    Hundred
+}
+
 public enum SortingOrder
 {
     [Display(Name = "صعودی")]
@@ -32,7 +47,8 @@ public class PaginationViewModel
     [HiddenInput]
     public int CurrentPage { get; set; } = 1;
 
-    public byte Take { get; set; }
+    [HiddenInput]
+    public PageCount PageCount { get; set; } = PageCount.Ten;
 
     public int PagesCount { get; set; }
 

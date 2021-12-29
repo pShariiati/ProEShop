@@ -85,30 +85,33 @@
         </table>
         <!-- Pagination -->
     <div class="btn-toolbar my-3 d-flex justify-content-center" id="main-pagianation">
-            <div class="btn-group me-2">
-                @if (Model.Pagination.CurrentPage != 1)
-                {
-                    <button value="1" type="button" class="btn btn-outline-primary">
-                        <i class="bi bi-chevron-double-right"></i>
-                    </button>
-                    <button value="@(Model.Pagination.CurrentPage - 1)" type="button" class="btn btn-outline-primary">قبلی</button>
-                }
-                @for (int counter = Model.Pagination.StartPage; counter <= Model.Pagination.EndPage; counter++)
-                {
-                    <button value="@counter" type="button"
-                    class="@(counter == Model.Pagination.CurrentPage ? "active " : string.Empty)btn btn-outline-primary">
-                        @counter
-                    </button>
-                }
-                @if (Model.Pagination.CurrentPage != Model.Pagination.PagesCount)
-                {
-                    <button value="@(Model.Pagination.CurrentPage + 1)" type="button" class="btn btn-outline-primary">بعدی</button>
-                    <button data-bs-toggle="tooltip" data-bs-placement="top" title="کل صفحات @Model.Pagination.PagesCount" value="@Model.Pagination.PagesCount" type="button" class="btn btn-outline-primary">
-                        <i class="bi bi-chevron-double-left"></i>
-                        @Model.Pagination.PagesCount
-                    </button>
-                }
-            </div>
+        <div class="btn-group me-2">
+            @if (Model.Pagination.CurrentPage != 1)
+            {
+                <button value="1" type="button" class="btn btn-outline-primary">
+                    <i class="bi bi-chevron-double-right"></i>
+                </button>
+                <button value="@(Model.Pagination.CurrentPage - 1)" type="button" class="btn btn-outline-primary">قبلی</button>
+            }
+            @for (int counter = Model.Pagination.StartPage; counter <= Model.Pagination.EndPage; counter++)
+            {
+                <button value="@counter" type="button"
+                        class="@(counter == Model.Pagination.CurrentPage ? "active " : string.Empty)btn btn-outline-primary">
+                    @counter
+                </button>
+            }
+            @if (Model.Pagination.CurrentPage != Model.Pagination.PagesCount)
+            {
+                <button value="@(Model.Pagination.CurrentPage + 1)" type="button" class="btn btn-outline-primary">بعدی</button>
+                <button data-bs-toggle="tooltip" data-bs-placement="top" title="کل صفحات @Model.Pagination.PagesCount" value="@Model.Pagination.PagesCount" type="button" class="btn btn-outline-primary">
+                    <i class="bi bi-chevron-double-left"></i>
+                    @Model.Pagination.PagesCount
+                </button>
+            }
+        </div>
+        <div>
+            <select id="page-count-selectbox" asp-for="Pagination.PageCount" class="form-select" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.PageCount>()"></select>
+        </div>
         </div>
         <div class="col-10 col-sm-6 col-md-4 col-xl-3 m-auto">
             <div class="input-group">

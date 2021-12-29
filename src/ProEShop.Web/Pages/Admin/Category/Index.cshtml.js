@@ -100,6 +100,7 @@
                 activatingGotoPage();
                 activatingModalForm();
                 activatingDeleteButtons();
+                activatingPageCount();
                 enablingTooltips();
             }
             else {
@@ -148,6 +149,14 @@
         });
     });
 
+    function activatingPageCount() {
+        $('#page-count-selectbox').change(function () {
+            var pageCountValue = this.value;
+            $('form.search-form-via-ajax input[name$="Pagination.PageCount"]').val(pageCountValue);
+            $('form.search-form-via-ajax').submit();
+        })
+    }
+
     var isMainPaginationClicked = false;
     var isGotoPageClicked = false;
 
@@ -190,6 +199,7 @@
                     activatingGotoPage();
                     activatingModalForm();
                     activatingDeleteButtons();
+                    activatingPageCount();
                     enablingTooltips();
                 }
             }
