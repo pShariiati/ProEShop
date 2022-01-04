@@ -45,12 +45,15 @@ public static class AddCustomServicesExtensions
         services.AddScoped<IApplicationSignInManager, ApplicationSignInManager>();
         services.AddScoped<SignInManager<User>, ApplicationSignInManager>();
 
-        services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<IIdentityDbInitializer, IdentityDbInitializer>();
 
         services.AddScoped<ISmsSender, AuthMessageSender>();
         services.AddScoped<IHttpClientService, HttpClientService>();
+
+
         services.AddScoped<IUploadFileService, UploadFileService>();
+        services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped<ICategoryFeatureService, CategoryFeatureService>();
 
         return services;
     }

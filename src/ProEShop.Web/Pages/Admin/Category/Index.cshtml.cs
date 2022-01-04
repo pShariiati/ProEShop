@@ -57,11 +57,12 @@ public class IndexModel : PageBase
                 return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
             }
         }
+
+        var categories = await _categoryService.GetCategoriesToShowInSelectBoxAsync();
         var model = new AddCategoryViewModel()
         {
             ParentId = id,
-            MainCategories = _categoryService.GetCategoriesToShowInSelectBox()
-                .CreateSelectListItem(firstItemText: "خودش دسته اصلی باشد")
+            MainCategories = categories.CreateSelectListItem(firstItemText: "خودش دسته اصلی باشد")
         };
         return Partial("Add", model);
     }
@@ -110,8 +111,9 @@ public class IndexModel : PageBase
         {
             return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
         }
-        model.MainCategories = _categoryService.GetCategoriesToShowInSelectBox(id)
-            .CreateSelectListItem(firstItemText: "خودش دسته اصلی باشد");
+
+        var categories = await _categoryService.GetCategoriesToShowInSelectBoxAsync(id);
+        model.MainCategories = categories.CreateSelectListItem(firstItemText: "خودش دسته اصلی باشد");
         return Partial("Edit", model);
     }
 

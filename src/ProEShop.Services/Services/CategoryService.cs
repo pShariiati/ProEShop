@@ -74,11 +74,11 @@ public class CategoryService : GenericService<Category>, ICategoryService
         };
     }
 
-    public Dictionary<long, string> GetCategoriesToShowInSelectBox(long? id = null)
+    public async Task<Dictionary<long, string>> GetCategoriesToShowInSelectBoxAsync(long? id = null)
     {
-        return _categories
+        return await _categories
             .Where(x => id == null || x.Id != id)
-            .ToDictionary(x => x.Id, x => x.Title);
+            .ToDictionaryAsync(x => x.Id, x => x.Title);
     }
 
     public async Task<EditCategoryViewModel> GetForEdit(long id)

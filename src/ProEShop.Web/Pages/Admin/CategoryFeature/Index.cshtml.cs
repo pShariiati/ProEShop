@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using ProEShop.Common;
 using ProEShop.Common.Constants;
 using ProEShop.Common.Helpers;
 using ProEShop.Common.IdentityToolkit;
@@ -15,21 +16,31 @@ public class IndexModel : PageBase
     #region Constructor
 
     private readonly ICategoryFeatureService _categoryFeatureService;
+    private readonly ICategoryService _categoryService;
     private readonly IUnitOfWork _uow;
 
-    public IndexModel(ICategoryFeatureService categoryFeatureService, IUnitOfWork uow)
+    public IndexModel(
+        ICategoryFeatureService categoryFeatureService,
+        IUnitOfWork uow,
+        ICategoryService categoryService)
     {
         _categoryFeatureService = categoryFeatureService;
         _uow = uow;
+        _categoryService = categoryService;
     }
 
     #endregion
 
-    public void OnGet()
+    public ShowCategoryFeaturesViewModel CategoryFeatures { get; set; }
+        = new();
+
+    public async Task OnGet()
     {
+        var categories = await _categoryService.GetCategoriesToShowInSelectBoxAsync();
+        CategoryFeatures.SearchCategoryFeatures.Categories = categories.CreateSelectListItem();
     }
 
-    public async Task<IActionResult> OnGetGetDataTableAsync(ShowCategoryFeaturesViewModel categoryFeature)
+    public async Task<IActionResult> OnGetGetDataTableAsync(ShowCategoryFeaturesViewModel categoryFeatures)
     {
         if (!ModelState.IsValid)
         {
@@ -38,6 +49,6 @@ public class IndexModel : PageBase
                 Data = ModelState.GetModelStateErrors()
             });
         }
-        return Partial("List", await _categoryFeatureService.GetCategoryFeatures(categoryFeature));
+        return Partial("List", await _categoryFeatureService.GetCategoryFeatures(categoryFeatures));
     }
 }
