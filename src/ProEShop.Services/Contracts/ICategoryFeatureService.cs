@@ -6,5 +6,5 @@ namespace ProEShop.Services.Contracts;
 
 public interface ICategoryFeatureService : IGenericService<Category>
 {
-    Task<ShowCategoryFeatureViewModel> GetCategoryFeatures(ShowCategoryFeaturesViewModel model);
+    Task<ShowCategoryFeaturesViewModel> GetCategoryFeatures(ShowCategoryFeaturesViewModel model);
 }

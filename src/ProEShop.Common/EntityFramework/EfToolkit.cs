@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace ProEShop.Common.EntityFramewrok;
+namespace ProEShop.Common.EntityFramework;
 
 public static class EfToolkit
 {

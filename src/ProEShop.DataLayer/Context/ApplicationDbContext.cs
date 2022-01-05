@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using ProEShop.Common.EntityFramewrok;
+using ProEShop.Common.EntityFramework;
 using ProEShop.Entities;
 using ProEShop.Entities.AuditableEntity;
 using ProEShop.Entities.Identity;

@@ -5,7 +5,7 @@ namespace ProEShop.ViewModels.CategoryFeatures;
 
 public class ShowCategoryFeaturesViewModel
 {
-    public List<ShowCategoryFeatureViewModel> Categories { get; set; }
+    public List<ShowCategoryFeatureViewModel> CategoryFeatures { get; set; }
 
     public SearchCategoryFeaturesViewModel SearchCategoryFeatures { get; set; }
         = new();
@@ -23,13 +23,8 @@ public class SearchCategoryFeaturesViewModel
 
 public class ShowCategoryFeatureViewModel
 {
-    [Display(Name = "شناسه")]
-    public long Id { get; set; }
-
     [Display(Name = "عنوان")]
     public string Title { get; set; }
-
-    public bool IsDeleted { get; set; }
 }
 
 public enum SortingFeatures

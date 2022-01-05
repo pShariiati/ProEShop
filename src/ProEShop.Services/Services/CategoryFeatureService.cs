@@ -11,15 +11,28 @@ namespace ProEShop.Services.Services;
 
 public class CategoryFeatureService : GenericService<Category>, ICategoryFeatureService
 {
-    private readonly DbSet<CategoryFeature> _categories;
+    private readonly DbSet<CategoryFeature> _categoryFeatures;
     public CategoryFeatureService(IUnitOfWork uow)
         : base(uow)
     {
-        _categories = uow.Set<CategoryFeature>();
+        _categoryFeatures = uow.Set<CategoryFeature>();
     }
 
-    public Task<ShowCategoryFeatureViewModel> GetCategoryFeatures(ShowCategoryFeaturesViewModel model)
+    public async Task<ShowCategoryFeaturesViewModel> GetCategoryFeatures(ShowCategoryFeaturesViewModel model)
     {
-        throw new NotImplementedException();
+        var categoryFeatures = _categoryFeatures.AsQueryable();
+        
+        var paginationResult = await GenericPaginationAsync(categoryFeatures, model.Pagination);
+
+        return new()
+        {
+            CategoryFeatures = await paginationResult.Query
+            .Select(x => new ShowCategoryFeatureViewModel
+            {
+                Title = x.Feature.Title
+            })
+            .ToListAsync(),
+            Pagination = paginationResult.Pagination
+        };
     }
 }
