@@ -1,5 +1,5 @@
 ﻿@page
-@model ProEShop.Web.Pages.Admin.CategoryFeature.IndexModel
+@model ProEShop.Web.Pages.Admin.Feature.IndexModel
 @{
     ViewData["Title"] = "ویژگی های دسته بندی ها";
 }
@@ -15,8 +15,8 @@
             </a>
         </div>
         <form class="alert alert-secondary search-form-via-ajax">
-            <input asp-for="CategoryFeatures.Pagination.CurrentPage" />
-            <input asp-for="CategoryFeatures.Pagination.PageCount" />
+            <input asp-for="Features.Pagination.CurrentPage" />
+            <input asp-for="Features.Pagination.PageCount" />
             <div asp-validation-summary="All" class="text-danger"></div>
             <h5>
                 جستجو در
@@ -24,8 +24,21 @@
             </h5>
             <div class="row">
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
-                    <label class="form-label" asp-for="CategoryFeatures.SearchCategoryFeatures.CategoryId"></label>
-                    <select class="form-select" asp-for="CategoryFeatures.SearchCategoryFeatures.CategoryId" asp-items="Model.CategoryFeatures.SearchCategoryFeatures.Categories"></select>
+                    <label class="form-label" asp-for="Features.SearchFeatures.CategoryId"></label>
+                    <select class="form-select" asp-for="Features.SearchFeatures.CategoryId" asp-items="Model.Features.SearchFeatures.Categories"></select>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3 my-2">
+                    <label class="form-label" asp-for="Features.SearchFeatures.Title"></label>
+                    <input class="form-control" asp-for="Features.SearchFeatures.Title" />
+                    <span class="span-error-message" asp-validation-for="Features.SearchFeatures.Title"></span>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3 my-2">
+                    <label class="form-label" asp-for="Features.SearchFeatures.Sorting"></label>
+                    <select class="form-select" asp-for="Features.SearchFeatures.Sorting" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.Features.SortingFeatures>()"></select>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3 my-2">
+                    <label class="form-label" asp-for="Features.SearchFeatures.SortingOrder"></label>
+                    <select class="form-select" asp-for="Features.SearchFeatures.SortingOrder" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.SortingOrder>()"></select>
                 </div>
                 <div class="col-12 my-2">
                     <div class="d-grid d-lg-block">

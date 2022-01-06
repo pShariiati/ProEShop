@@ -7,20 +7,20 @@ using ProEShop.Common.IdentityToolkit;
 using ProEShop.DataLayer.Context;
 using ProEShop.Services.Contracts;
 using ProEShop.ViewModels.Categories;
-using ProEShop.ViewModels.CategoryFeatures;
+using ProEShop.ViewModels.Features;
 
-namespace ProEShop.Web.Pages.Admin.CategoryFeature;
+namespace ProEShop.Web.Pages.Admin.Feature;
 
 public class IndexModel : PageBase
 {
     #region Constructor
 
-    private readonly ICategoryFeatureService _categoryFeatureService;
+    private readonly IFeatureService _categoryFeatureService;
     private readonly ICategoryService _categoryService;
     private readonly IUnitOfWork _uow;
 
     public IndexModel(
-        ICategoryFeatureService categoryFeatureService,
+        IFeatureService categoryFeatureService,
         IUnitOfWork uow,
         ICategoryService categoryService)
     {
@@ -31,16 +31,16 @@ public class IndexModel : PageBase
 
     #endregion
 
-    public ShowCategoryFeaturesViewModel CategoryFeatures { get; set; }
+    public ShowFeaturesViewModel Features { get; set; }
         = new();
 
     public async Task OnGet()
     {
         var categories = await _categoryService.GetCategoriesToShowInSelectBoxAsync();
-        CategoryFeatures.SearchCategoryFeatures.Categories = categories.CreateSelectListItem();
+        Features.SearchFeatures.Categories = categories.CreateSelectListItem();
     }
 
-    public async Task<IActionResult> OnGetGetDataTableAsync(ShowCategoryFeaturesViewModel categoryFeatures)
+    public async Task<IActionResult> OnGetGetDataTableAsync(ShowFeaturesViewModel features)
     {
         if (!ModelState.IsValid)
         {
@@ -49,6 +49,6 @@ public class IndexModel : PageBase
                 Data = ModelState.GetModelStateErrors()
             });
         }
-        return Partial("List", await _categoryFeatureService.GetCategoryFeatures(categoryFeatures));
+        return Partial("List", await _categoryFeatureService.GetCategoryFeatures(features));
     }
 }
