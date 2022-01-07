@@ -39,7 +39,9 @@ public class FeatureService : GenericService<Feature>, IFeatureService
             CategoryFeatures = await paginationResult.Query
             .Select(x => new ShowFeatureViewModel
             {
-                Title = x.Title
+                Title = x.Title,
+                CategoryId = model.SearchFeatures.CategoryId,
+                FeatureId = x.Id
             })
             .ToListAsync(),
             Pagination = paginationResult.Pagination

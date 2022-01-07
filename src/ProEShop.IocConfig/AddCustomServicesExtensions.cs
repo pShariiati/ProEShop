@@ -54,6 +54,7 @@ public static class AddCustomServicesExtensions
         services.AddScoped<IUploadFileService, UploadFileService>();
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<IFeatureService, FeatureService>();
+        services.AddScoped<ICategoryFeatureService, CategoryFeatureService>();
 
         return services;
     }

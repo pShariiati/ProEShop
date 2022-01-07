@@ -10,13 +10,14 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var category in Model.CategoryFeatures)
+                @foreach (var feature in Model.CategoryFeatures)
                 {
                     <tr>
-                        <td>@category.Title</td>
+                        <td>@feature.Title</td>
                         <td>
                             <form asp-page-handler="Delete" class="d-inline-block">
-                                <input type="hidden" name="elementId" value="" />
+                                <input type="hidden" name="categoryId" value="@feature.CategoryId" />
+                                <input type="hidden" name="featureId" value="@feature.FeatureId" />
                                 <button type="button" class="btn btn-danger delete-row-button">حذف</button>
                             </form>
                         </td>

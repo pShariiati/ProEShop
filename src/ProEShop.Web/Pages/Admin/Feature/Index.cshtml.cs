@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ProEShop.Common;
 using ProEShop.Common.Constants;
@@ -15,18 +15,21 @@ public class IndexModel : PageBase
 {
     #region Constructor
 
-    private readonly IFeatureService _categoryFeatureService;
+    private readonly IFeatureService _featureService;
     private readonly ICategoryService _categoryService;
+    private readonly ICategoryFeatureService _categoryFeatureService;
     private readonly IUnitOfWork _uow;
 
     public IndexModel(
-        IFeatureService categoryFeatureService,
+        IFeatureService featureService,
         IUnitOfWork uow,
-        ICategoryService categoryService)
+        ICategoryService categoryService,
+        ICategoryFeatureService categoryFeatureService)
     {
-        _categoryFeatureService = categoryFeatureService;
+        _featureService = featureService;
         _uow = uow;
         _categoryService = categoryService;
+        _categoryFeatureService = categoryFeatureService;
     }
 
     #endregion
@@ -49,6 +52,18 @@ public class IndexModel : PageBase
                 Data = ModelState.GetModelStateErrors()
             });
         }
-        return Partial("List", await _categoryFeatureService.GetCategoryFeatures(features));
+        return Partial("List", await _featureService.GetCategoryFeatures(features));
+    }
+
+    public async Task<IActionResult> OnPostDelete(long categoryId, long featureId)
+    {
+        var categoryFeature = await _categoryFeatureService.GetCategoryFeatureToRemove(categoryId, featureId);
+        if (categoryFeature is not null)
+        {
+            _categoryFeatureService.Remove(categoryFeature);
+            await _uow.SaveChangesAsync();
+        }
+
+        return Json(new JsonResultOperation(true, "ویژگی دسته بندی مورد نظر با موفقیت حذف شد"));
     }
 }
