@@ -46,6 +46,10 @@
       "provider": "jsdelivr",
       "library": "sweetalert2@11.3.0",
       "destination": "wwwroot\\lib\\sweetalert2"
+    },
+    {
+      "library": "jqueryui@1.12.1",
+      "destination": "wwwroot\\lib\\jqueryui"
     }
   ]
 }

@@ -56,3 +56,7 @@ span.select2-dropdown.select2-dropdown--below {
 .rtl-direction {
     direction: rtl;
 }
+
+.ui-autocomplete {
+    z-index: 5000;
+}

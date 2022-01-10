@@ -16,4 +16,5 @@ public static class AttributesErrorMessages
     public const string RemoteMessage = "این {0} قبلا در سیستم ثبت شده است";
     public const string CompareMessage = "{1} با تکرار آن تطابق ندارد";
     public const string RangeMessage = "{0} باید در بازه {1} و {2} باشد";
+    public const string ComboBoxRequiredMessage = "لطفا {0} را انتخاب نمایید";
 }

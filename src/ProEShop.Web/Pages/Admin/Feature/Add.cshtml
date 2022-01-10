@@ -1,0 +1,26 @@
+﻿@model ProEShop.ViewModels.Features.AddFeatureViewModel
+
+<form class="alert alert-secondary custom-ajax-form" asp-page-handler="Add" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="row">
+        <div class="col-12 col-sm-6 col-lg-3 my-2">
+            <label class="form-label" asp-for="CategoryId"></label>
+            <select class="form-select custom-select2" asp-for="CategoryId" asp-items="Model.Categories">
+            </select>
+            <span class="span-error-message" asp-validation-for="CategoryId"></span>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3 my-2">
+            <label class="form-label" asp-for="Title"></label>
+            <input class="autocomplete form-control" asp-for="Title"/>
+            <span class="span-error-message" asp-validation-for="Title"></span>
+        </div>
+        <div class="col-12 my-2">
+            <div class="d-grid d-lg-block">
+                <button type="submit" class="btn btn-primary d-inline-flex align-items-center submit-custom-ajax-button">
+                    افزودن
+                    <span class="spinner-border spinner-border-sm d-none ms-2"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

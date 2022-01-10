@@ -6,5 +6,5 @@ namespace ProEShop.Services.Contracts;
 
 public interface ICategoryFeatureService : ICustomGenericService<CategoryFeature>
 {
-    Task<CategoryFeature> GetCategoryFeatureToRemove(long categoryId, long featureId);
+    Task<CategoryFeature> GetCategoryFeature(long categoryId, long featureId);
 }
