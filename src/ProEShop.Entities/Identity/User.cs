@@ -25,14 +25,28 @@ public class User : IdentityUser<long>, IAuditableEntity
 
     public DateTime BirthDate { get; set; }
 
+    public Gender Gender { get; set; }
+
     [Required]
     [MaxLength(50)]
     public string Avatar { get; set; }
 
     public DateTime SendSmsLastTime { get; set; }
 
+    #region Relations
+
     public virtual ICollection<UserClaim> UserClaims { get; set; }
     public virtual ICollection<UserLogin> UserLogins { get; set; }
     public virtual ICollection<UserRole> UserRoles { get; set; }
     public virtual ICollection<UserToken> UserTokens { get; set; }
+
+    public Seller Seller { get; set; }
+
+    #endregion
+}
+
+public enum Gender
+{
+    Man,
+    Woman
 }

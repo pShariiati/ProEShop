@@ -9,6 +9,7 @@ namespace ProEShop.Entities;
 [Table("Sellers")]
 [Index(nameof(Seller.ShabaNumber), IsUnique = true)]
 [Index(nameof(Seller.ShopName), IsUnique = true)]
+[Index(nameof(Seller.SellerCode), IsUnique = true)]
 public class Seller : EntityBase, IAuditableEntity
 {
     #region Properties
@@ -35,11 +36,12 @@ public class Seller : EntityBase, IAuditableEntity
     public string NationalId { get; set; }
 
     public CompanyType CompanyType { get; set; }
-
-    public Gender Gender { get; set; }
+    #endregion
 
     public int SellerCode { get; set; }
 
+    [Required]
+    [MaxLength(200)]
     public string ShopName { get; set; }
 
     [Column(TypeName = "ntext")]
@@ -48,14 +50,21 @@ public class Seller : EntityBase, IAuditableEntity
     [MaxLength(50)]
     public string Logo { get; set; }
 
+    /// <summary>
+    /// عکس کارت ملی
+    /// </summary>
+    [Required]
     [MaxLength(50)]
     public string IdCartPicture { get; set; }
 
     [MaxLength(24)]
     public string ShabaNumber { get; set; }
 
-    public string Phone { get; set; }
+    [Required]
+    [MaxLength(11)]
+    public string Telephone { get; set; }
 
+    [MaxLength(200)]
     public string Website { get; set; }
 
     public ProvinceAndCity Province { get; set; }
@@ -65,6 +74,7 @@ public class Seller : EntityBase, IAuditableEntity
     [MaxLength(300)]
     public string Address { get; set; }
 
+    [Required]
     [MaxLength(11)]
     public string PostalCode { get; set; }
     
@@ -79,19 +89,11 @@ public class Seller : EntityBase, IAuditableEntity
 
     #endregion
 
-    #endregion
-
     #region Relations
 
     public User User { get; set; }
 
     #endregion
-}
-
-public enum Gender
-{
-    Man,
-    Woman
 }
 
 public enum CompanyType
