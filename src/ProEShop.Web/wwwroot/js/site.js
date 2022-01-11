@@ -250,6 +250,7 @@ $(function () {
         $('.data-table-place .data-table-body').remove();
         $('.search-form-submit-button').attr('disabled', 'disabled');
         $('.data-table-loading').removeClass('d-none');
+        $('#record-not-found-box').remove();
 
         const formData = $('form.search-form-via-ajax').serializeArray();
 

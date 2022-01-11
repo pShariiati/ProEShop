@@ -5,6 +5,7 @@
         <table class="table table-bordered table-striped table-hover">
             <thead class="table-light">
                 <tr>
+                    <th>@Html.DisplayNameFor(x => x.CategoryFeatures[0].FeatureId)</th>
                     <th>@Html.DisplayNameFor(x => x.CategoryFeatures[0].Title)</th>
                     <th>عملیات</th>
                 </tr>
@@ -13,6 +14,7 @@
                 @foreach (var feature in Model.CategoryFeatures)
                 {
                     <tr>
+                        <td>@feature.FeatureId</td>
                         <td>@feature.Title</td>
                         <td>
                             <form asp-page-handler="Delete" class="d-inline-block">

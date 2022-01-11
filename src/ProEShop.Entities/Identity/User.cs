@@ -20,6 +20,11 @@ public class User : IdentityUser<long>, IAuditableEntity
 
     public DateTime CreatedDateTime { get; set; }
 
+    [MaxLength(11)]
+    public string NationalCode { get; set; }
+
+    public DateTime BirthDate { get; set; }
+
     [Required]
     [MaxLength(50)]
     public string Avatar { get; set; }
