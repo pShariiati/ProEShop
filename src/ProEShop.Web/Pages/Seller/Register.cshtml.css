@@ -1,0 +1,17 @@
+﻿#register-seller-right-side {
+    background: #e6e6e6;
+}
+
+#register-seller-right-side .border-end {
+    border-left-width: 3px !important;
+}
+
+@media only screen and (min-width: 768px) {
+    #register-seller-right-side {
+        height: 100vh;
+    }
+
+    .over-flow-scroll-y {
+        overflow-y: scroll;
+    }
+}

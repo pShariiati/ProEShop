@@ -60,3 +60,11 @@ span.select2-dropdown.select2-dropdown--below {
 .ui-autocomplete {
     z-index: 5000;
 }
+
+.rtl-direction {
+    direction: rtl;
+}
+
+.border-bottom-dashed {
+    border-bottom: 2px dashed #0DCAF0;
+}

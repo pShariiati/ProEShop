@@ -1,6 +1,187 @@
 ﻿@page
 @model ProEShop.Web.Pages.Seller.RegisterModel
 @{
+    ViewData["Title"] = "ثبت نام فروشنده";
 }
 
-Register
+<div class="container-fluid">
+    <div class="row align-items-center d-flex">
+        <div class="order-2 mt-3 mt-md-0 order-md-1 col-md-5 col-lg-4 over-flow-scroll-y" id="register-seller-right-side">
+
+            <div class="row mt-md-5">
+                <div class="col-auto p-0 text-center flex-column d-none d-sm-flex">
+                    <div class="row h-50">
+                        <div class="col">&nbsp;</div>
+                        <div class="col">&nbsp;</div>
+                    </div>
+                    <h3 class="m-2">
+                        <span class="badge rounded bg-info border">
+                            <i class="bi bi-journal-text"></i>
+                        </span>
+                    </h3>
+                    <div class="row h-50">
+                        <div class="col border-end border-info">&nbsp;</div>
+                        <div class="col">&nbsp;</div>
+                    </div>
+                </div>
+                <div class="col py-2 ps-0">
+                    <div class="card bg-transparent border-0">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                ۱. اطلاعات فروشنده
+                            </h5>
+                            <p>
+                                اطلاعات شخصی فروشنده، اطلاعات تجاری، اطلاعات تماس
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-auto p-0 text-center flex-column d-none d-sm-flex">
+                    <div class="row h-50">
+                        <div class="col border-end border-secondary">&nbsp;</div>
+                        <div class="col">&nbsp;</div>
+                    </div>
+                    <h3 class="m-2">
+                        <span class="badge rounded bg-info border">
+                            <i class="bi bi-file-earmark-check"></i>
+                        </span>
+                    </h3>
+                    <div class="row h-50">
+                        <div class="col border-end border-secondary">&nbsp;</div>
+                        <div class="col">&nbsp;</div>
+                    </div>
+                </div>
+                <div class="col py-2 ps-0">
+                    <div class="card bg-transparent border-0">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                ۲. بارگذاری مدارک
+                            </h5>
+                            <p>
+                                اطلاعات مربوط به تصویر مدارک هویتی
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-auto p-0 text-center flex-column d-none d-sm-flex">
+                    <div class="row h-50">
+                        <div class="col border-end border-secondary">&nbsp;</div>
+                        <div class="col">&nbsp;</div>
+                    </div>
+                    <h3 class="m-2">
+                        <span class="badge rounded bg-info border">
+                            <i class="bi bi-check2-circle"></i>
+                        </span>
+                    </h3>
+                    <div class="row h-50">
+                        <div class="col">&nbsp;</div>
+                    </div>
+                </div>
+                <div class="col py-2 ps-0">
+                    <div class="card bg-transparent border-0">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                ۳. اتمام ثبت نام
+                            </h5>
+                            <p>
+                                به جمع فروشندگان پرو شاپ خوش آمدید.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-1 order-md-2 d-none d-lg-block"></div>
+        <div class="col-md-7 col-lg-6 order-1 order-md-3 mt-5 mt-md-0">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="text-center text-md-start">
+                        ثبت نام در مرکز فروشندگان
+                        <a asp-page="/Index" class="text-info border-bottom-dashed">پرو شاپ</a>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        
+                        <div class="text-danger" asp-validation-summary="All"></div>
+                        
+                        <!-- Email -->
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text">
+                                <i class="bi bi-phone"></i>
+                            </span>
+                            <input asp-for="RegisterSeller.Email" class="form-control rtl-direction"
+                                   placeholder="@Html.DisplayNameFor(x => x.RegisterSeller.Email)"/>
+                        </div>
+                        <span class="span-error-message mb-3" asp-validation-for="RegisterSeller.Email"></span>
+
+                        <!-- End Email-->
+
+                        <!-- PhoneNumber -->
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text">
+                                <i class="bi bi-phone"></i>
+                            </span>
+                            <input asp-for="RegisterSeller.PhoneNumber" class="form-control"
+                                   placeholder="@Html.DisplayNameFor(x => x.RegisterSeller.PhoneNumber)"/>
+                        </div>
+                        <span class="span-error-message mb-3" asp-validation-for="RegisterSeller.PhoneNumber"></span>
+
+                        <!-- End PhoneNumber-->
+
+                        <!-- Password -->
+
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text">
+                                <i class="bi bi-lock"></i>
+                            </span>
+                            <input asp-for="RegisterSeller.Password" class="form-control"
+                                   placeholder="@Html.DisplayNameFor(x => x.RegisterSeller.Password)"/>
+                        </div>
+                        <span class="span-error-message mb-3" asp-validation-for="RegisterSeller.Password"></span>
+
+                        <!-- End Password-->
+
+                        <!-- Confirm Password -->
+
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text">
+                                <i class="bi bi-lock"></i>
+                            </span>
+                            <input asp-for="RegisterSeller.ConfirmPassword" class="form-control"
+                                   placeholder="@Html.DisplayNameFor(x => x.RegisterSeller.ConfirmPassword)"/>
+                        </div>
+                        <span class="span-error-message mb-3" asp-validation-for="RegisterSeller.ConfirmPassword"></span>
+
+                        <!-- End Confirm Password-->
+
+                        <div class="d-grid d-md-block text-md-center">
+                            <button class="btn btn-primary px-md-5">ثبت نام</button>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            قبلا ثبت نام کرده ام.
+                            <a class="text-info border-bottom-dashed" asp-page="./Login">ورود</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <partial name="Shared/_ValidationScriptsPartial" />
+}
+@section CustomScripts
+{
+    <script src="~/Pages/Seller/Register.cshtml.js"></script>
+}
