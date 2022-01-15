@@ -33,6 +33,8 @@ public class User : IdentityUser<long>, IAuditableEntity
 
     public DateTime SendSmsLastTime { get; set; }
 
+    public bool IsSeller { get; set; }
+
     #region Relations
 
     public virtual ICollection<UserClaim> UserClaims { get; set; }
