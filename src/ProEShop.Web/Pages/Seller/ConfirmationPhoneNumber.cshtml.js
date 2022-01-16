@@ -10,7 +10,7 @@ function countDown() {
     if (second == 0) {
         if (second == 0 && minute == 0) {
             $('#count-down-timer-box').parent().addClass('d-none');
-            $('#send-user-activation-sms-box').removeClass('d-none');
+            $('#send-seller-activation-sms-box').removeClass('d-none');
             clearInterval(countDownTimerInterval);
         }
         else {
@@ -40,7 +40,7 @@ function reSendActivationCode(phoneNumber, e, reSendSmsUrl) {
             showToastr('success', data.message);
             $('#activation-code-box').html(data.data.activationCode);
             $('#count-down-timer-box').parent().removeClass('d-none');
-            $('#send-user-activation-sms-box').addClass('d-none');
+            $('#send-seller-activation-sms-box').addClass('d-none');
             minute = 3;
             second = 0;
             setCountDownTimeBox();
@@ -53,28 +53,8 @@ function reSendActivationCode(phoneNumber, e, reSendSmsUrl) {
         showErrorMessage();
     }).always(function () {
         hideLoading();
-    });;
+    });
 }
 function getRVT(e) {
     return $(e).parents('form').find(`input[name="${rvt}"]`).val();
-}
-
-function onBeginLoginWithPhoneNumber() {
-    showLoading();
-}
-function onCompleteLoginWithPhoneNumber() {
-    hideLoading();
-}
-function onFailureLoginWithPhoneNumber() {
-    showErrorMessage();
-}
-
-function onSuccessLoginWithPhoneNumber(data, status) {
-    if (status == 'success' && data.isSuccessful) {
-        showToastr('success', 'شما با موفقیت وارد شدید');
-        location.href = '/';
-    }
-    else {
-        showErrorMessage();
-    }
 }

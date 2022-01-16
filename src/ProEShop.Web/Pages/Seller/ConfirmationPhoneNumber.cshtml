@@ -2,6 +2,79 @@
 @model ProEShop.Web.Pages.Seller.ConfirmationPhoneNumberModel
 @{
     ViewData["Title"] = "تایید کردن شماره تلفن فروشنده";
+    var reSendSmsUrl = @Url.Page("/Seller/ConfirmationPhoneNumber", "ReSendSellerSmsActivation");
 }
 
-@Model.PhoneNumber
+<div class="container-fluid"
+     count-down-timer-minute="@Model.Confirmation.SendSmsLastTimeMinute"
+     count-down-timer-second="@Model.Confirmation.SendSmsLastTimeSecond">
+    <div class="row justify-content-center vh-100 align-items-center">
+        <div class="col-md-7 col-lg-5 col-xxl-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="text-center text-md-start">
+                        تایید کردن شماره تلفن فروشنده در
+                        <a asp-page="/Index" class="text-info border-bottom-dashed">پرو شاپ</a>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        <h5 class="text-center">
+                            @Model.Confirmation.PhoneNumber
+                        </h5>
+                        <div class="text-danger" asp-validation-summary="All"></div>
+
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text">
+                                <i class="bi bi-check-circle"></i>
+                            </span>
+                            <input asp-for="Confirmation.ActivationCode" class="form-control rtl-direction"
+                                   placeholder="@Html.DisplayNameFor(x => x.Confirmation.ActivationCode)"/>
+                        </div>
+                        <span class="span-error-message mb-3" asp-validation-for="Confirmation.ActivationCode"></span>
+                        
+
+                        <div class="d-grid d-md-block text-md-center">
+                            <button class="btn btn-primary px-md-5">تایید شماره</button>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <a class="text-info border-bottom-dashed" asp-page="./Register">تغییر شماره</a>
+                        </div>
+                        
+                        <div class="text-center mt-3 rem0and9">
+                            <span>
+                                ارسال مجدد کد تا
+                                <span id="count-down-timer-box"></span>
+                                دیگر
+                            </span>
+                            <button id="send-seller-activation-sms-box"
+                                    onclick="reSendActivationCode('@Model.Confirmation.PhoneNumber', this, '@reSendSmsUrl')"
+                                    type="button"
+                                    class="d-none btn btn-default text-info">
+                                دریافت مجدد کد تایید
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <partial name="Shared/_ValidationScriptsPartial" />
+    <script src="~/lib/toastr.js/toastr.min.js"></script>
+}
+
+@section CustomScripts
+{
+    <script src="~/Pages/Seller/ConfirmationPhoneNumber.cshtml.js"></script>
+}
+
+@section Styles
+{
+    <link rel="stylesheet" href="~/lib/toastr.js/toastr.min.css"></link>
+}

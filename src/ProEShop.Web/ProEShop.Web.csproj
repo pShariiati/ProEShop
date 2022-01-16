@@ -12,6 +12,7 @@
 	  <None Remove="Pages\Identity\LoginWithPhoneNumber.cshtml.css" />
 	  <None Remove="Pages\Identity\LoginWithPhoneNumber.cshtml.js" />
 	  <None Remove="Pages\Identity\RegisterLogin.cshtml.css" />
+	  <None Remove="Pages\Seller\ConfirmationPhoneNumber.cshtml.js" />
 	  <None Remove="Pages\Seller\Register.cshtml.css" />
 	  <None Remove="Pages\Seller\Register.cshtml.js" />
 	</ItemGroup>
@@ -21,6 +22,7 @@
 	  <Content Include="Pages\Identity\LoginWithPhoneNumber.cshtml.js" />
 	  <Content Include="Pages\Identity\LoginWithPhoneNumber.cshtml.css" />
 	  <Content Include="Pages\Identity\RegisterLogin.cshtml.css" />
+	  <Content Include="Pages\Seller\ConfirmationPhoneNumber.cshtml.js" />
 	  <Content Include="Pages\Seller\Register.cshtml.css" />
 	  <Content Include="Pages\Seller\Register.cshtml.js" />
 	</ItemGroup>
