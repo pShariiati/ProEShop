@@ -19,7 +19,7 @@
                 </a>
             </div>
         </div>
-        <div class="alert alert-warning mt-3" role="alert">
+        <div class="alert alert-warning mt-3">
             کد فعال سازی (حالت توسعه)
             <br />
             <span id="activation-code-box">@Model.ActivationCode</span>
@@ -77,4 +77,9 @@
 @section Scripts{
 <partial name="_ValidationScriptsPartial" />
 <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/lib/toastr.js/toastr.min.js"></script>
+}
+@section Styles
+{
+<link rel="stylesheet" href="~/lib/toastr.js/toastr.min.css" />
 }

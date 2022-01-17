@@ -18,9 +18,17 @@
                     </h5>
                 </div>
                 <div class="card-body">
-                    <form method="post">
+                    <form call-function-in-the-end="test" method="post" class="public-ajax-form" asp-page="./ConfirmationPhoneNumber">
+                        <input asp-for="Confirmation.PhoneNumber"/>
+                        <div class="alert alert-warning">
+                            کد فعال سازی (حالت توسعه)
+                            <br/>
+                            <span id="activation-code-box">@Model.ActivationCode</span>
+                        </div>
                         <h5 class="text-center">
-                            @Model.Confirmation.PhoneNumber
+                            کد تایید برای شماره موبایل
+                            <span class="text-danger">@Model.Confirmation.PhoneNumber</span>
+                            ارسال گردید
                         </h5>
                         <div class="text-danger" asp-validation-summary="All"></div>
 
@@ -32,7 +40,7 @@
                                    placeholder="@Html.DisplayNameFor(x => x.Confirmation.ActivationCode)"/>
                         </div>
                         <span class="span-error-message mb-3" asp-validation-for="Confirmation.ActivationCode"></span>
-                        
+
 
                         <div class="d-grid d-md-block text-md-center">
                             <button class="btn btn-primary px-md-5">تایید شماره</button>
@@ -41,7 +49,7 @@
                         <div class="text-center mt-4">
                             <a class="text-info border-bottom-dashed" asp-page="./Register">تغییر شماره</a>
                         </div>
-                        
+
                         <div class="text-center mt-3 rem0and9">
                             <span>
                                 ارسال مجدد کد تا

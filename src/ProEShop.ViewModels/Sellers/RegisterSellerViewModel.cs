@@ -14,6 +14,7 @@ public class RegisterSellerViewModel
     [Display(Name = "شماره تلفن")]
     [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
     [RegularExpression(@"^09[\d]{9}$", ErrorMessage = AttributesErrorMessages.RegularExpressionMessage)]
+    [MaxLength(11, ErrorMessage = AttributesErrorMessages.MaxLengthMessage)]
     public string PhoneNumber { get; set; }
 
     [Display(Name = "رمز عبور")]

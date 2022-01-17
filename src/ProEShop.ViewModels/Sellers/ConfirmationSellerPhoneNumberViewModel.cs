@@ -12,7 +12,9 @@ public class ConfirmationSellerPhoneNumberViewModel
     [MaxLength(6, ErrorMessage = AttributesErrorMessages.MaxLengthMessage)]
     public string ActivationCode { get; set; }
 
+    [Display(Name = "شماره تلفن")]
     [HiddenInput]
+    [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
     public string PhoneNumber { get; set; }
 
     public byte SendSmsLastTimeMinute { get; set; }

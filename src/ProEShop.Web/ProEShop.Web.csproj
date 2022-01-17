@@ -9,6 +9,7 @@
 	<ItemGroup>
 	  <None Remove="Pages\Admin\Category\Index - Copy.cshtml.js" />
 	  <None Remove="Pages\Admin\Category\Index.cshtml.js" />
+	  <None Remove="Pages\Admin\Feature\Index.cshtml.js" />
 	  <None Remove="Pages\Identity\LoginWithPhoneNumber.cshtml.css" />
 	  <None Remove="Pages\Identity\LoginWithPhoneNumber.cshtml.js" />
 	  <None Remove="Pages\Identity\RegisterLogin.cshtml.css" />
@@ -19,6 +20,7 @@
 
 	<ItemGroup>
 	  <Content Include="Pages\Admin\Category\Index.cshtml.js" />
+	  <Content Include="Pages\Admin\Feature\Index.cshtml.js" />
 	  <Content Include="Pages\Identity\LoginWithPhoneNumber.cshtml.js" />
 	  <Content Include="Pages\Identity\LoginWithPhoneNumber.cshtml.css" />
 	  <Content Include="Pages\Identity\RegisterLogin.cshtml.css" />

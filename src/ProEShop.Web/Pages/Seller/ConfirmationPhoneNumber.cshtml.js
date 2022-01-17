@@ -58,3 +58,7 @@ function reSendActivationCode(phoneNumber, e, reSendSmsUrl) {
 function getRVT(e) {
     return $(e).parents('form').find(`input[name="${rvt}"]`).val();
 }
+
+function test() {
+    alert();
+}

@@ -16,4 +16,4 @@ function setScrollForRegisterSellerSideBar() {
 $(window).on('resize', function () {
     setScrollForRegisterSellerSideBar();
 });
-setScrollForRegisterSellerSideBar();tScrollForRegisterSellerSideBar();
+setScrollForRegisterSellerSideBar();
