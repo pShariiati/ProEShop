@@ -13,6 +13,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\ProEShop.Common\ProEShop.Common.csproj" />
+	  <ProjectReference Include="..\ProEShop.Entities\ProEShop.Entities.csproj" />
 	</ItemGroup>
 
 </Project>

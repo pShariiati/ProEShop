@@ -55,7 +55,8 @@ public class RegisterModel : PageModel
                 UserName = RegisterSeller.PhoneNumber,
                 PhoneNumber = RegisterSeller.PhoneNumber,
                 Avatar = _siteSettings.UserDefaultAvatar,
-                Email = RegisterSeller.Email
+                Email = RegisterSeller.Email,
+                IsSeller = true
             };
             var result = await _userManager.CreateAsync(user);
             if (result.Succeeded)

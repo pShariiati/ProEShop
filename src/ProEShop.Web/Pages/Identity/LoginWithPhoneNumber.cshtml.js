@@ -59,22 +59,7 @@ function getRVT(e) {
     return $(e).parents('form').find(`input[name="${rvt}"]`).val();
 }
 
-function onBeginLoginWithPhoneNumber() {
-    showLoading();
-}
-function onCompleteLoginWithPhoneNumber() {
-    hideLoading();
-}
-function onFailureLoginWithPhoneNumber() {
-    showErrorMessage();
-}
-
-function onSuccessLoginWithPhoneNumber(data, status) {
-    if (status == 'success' && data.isSuccessful) {
-        showToastr('success', 'شما با موفقیت وارد شدید');
-        location.href = '/';
-    }
-    else {
-        showErrorMessage();
-    }
+function loginWithPhoneNumberInIdentity(message) {
+    showToastr('success', message);
+    location.href = '/';
 }
