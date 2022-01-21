@@ -39,12 +39,19 @@ public class ApplicationUserManager
     public async Task<DateTime?> GetSendSmsLastTimeAsync(string phoneNumber)
     {
         var result = await _users.Select(x => new
-                    {
-                        x.UserName,
-                        x.SendSmsLastTime
-                    })
+        {
+            x.UserName,
+            x.SendSmsLastTime
+        })
                     .SingleOrDefaultAsync(x => x.UserName == phoneNumber);
         return result?.SendSmsLastTime;
+    }
+
+    public async Task<bool> CheckForUserIsSeller(string phoneNumber)
+    {
+        return await _users.Where(x => x.UserName == phoneNumber)
+            .Where(x => x.UserRoles.All(r => r.Role.Name != ConstantRoles.Seller))
+            .AnyAsync(x => x.IsSeller);
     }
 
     #endregion

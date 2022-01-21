@@ -129,6 +129,23 @@ public class IdentityDbInitializer : IIdentityDbInitializer
             return IdentityResult.Failed();
         }
 
+        //Create the `Seller` Role if it does not exist
+        var sellerRole = await _roleManager.FindByNameAsync(ConstantRoles.Seller);
+        if (sellerRole == null)
+        {
+            sellerRole = new Role(ConstantRoles.Seller, "فروشنده سیستم");
+            var sellerRoleResult = await _roleManager.CreateAsync(sellerRole);
+            if (sellerRoleResult == IdentityResult.Failed())
+            {
+                _logger.LogError($"{thisMethodName}: sellerRole CreateAsync failed. {sellerRoleResult.DumpErrors()}");
+                return IdentityResult.Failed();
+            }
+        }
+        else
+        {
+            _logger.LogInformation($"{thisMethodName}: sellerRole already exists.");
+        }
+
         return IdentityResult.Success;
     }
 }

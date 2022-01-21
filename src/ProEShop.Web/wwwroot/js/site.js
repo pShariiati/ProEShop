@@ -63,39 +63,44 @@ function showErrorMessage(message) {
 }
 
 function initializeTinyMCE() {
-    tinymce.remove('textarea.custom-tinymce');
-    tinymce.init({
-        selector: 'textarea.custom-tinymce',
-        height: 300,
-        max_height: 500,
-        language: 'fa_IR',
-        language_url: '/js/fa_IR.js',
-        content_style: 'body {font-family: Vazir}',
-        plugins: 'link table preview wordcount',
-        toolbar: [
-            {
-                name: 'history', items: ['undo', 'redo', 'preview']
-            },
-            {
-                name: 'styles', items: ['styleselect']
-            },
-            {
-                name: 'formatting', items: ['bold', 'italic', 'underline', 'link']
-            },
-            {
-                name: 'alignment', items: ['alignleft', 'aligncenter', 'alignright', 'alignjustify', 'forecolor', 'backcolor']
-            },
-            {
-                name: 'table', items: ['table', 'wordcount']
-            },
-            {
-                name: 'indentation', items: ['outdent', 'indent']
-            }
-        ],
-        menubar: false,
-        branding: false
-    });
+    if ($('textarea.custom-tinymce').length > 0) {
+        tinymce.remove('textarea.custom-tinymce');
+        tinymce.init({
+            selector: 'textarea.custom-tinymce',
+            height: 300,
+            max_height: 500,
+            language: 'fa_IR',
+            language_url: '/js/fa_IR.js',
+            content_style: 'body {font-family: Vazir}',
+            plugins: 'link table preview wordcount',
+            toolbar: [
+                {
+                    name: 'history', items: ['undo', 'redo', 'preview']
+                },
+                {
+                    name: 'styles', items: ['styleselect']
+                },
+                {
+                    name: 'formatting', items: ['bold', 'italic', 'underline', 'link']
+                },
+                {
+                    name: 'alignment', items: ['alignleft', 'aligncenter', 'alignright', 'alignjustify', 'forecolor', 'backcolor']
+                },
+                {
+                    name: 'table', items: ['table', 'wordcount']
+                },
+                {
+                    name: 'indentation', items: ['outdent', 'indent']
+                }
+            ],
+            menubar: false,
+            branding: false
+        });
+    }
 }
+
+initializeTinyMCE();
+
 document.addEventListener('focusin', function (e) {
     if (e.target.closest('.tox-tinymce-aux, .moxman-window, .tam-assetmanager-root') !== null) {
         e.stopImmediatePropagation();
@@ -341,7 +346,7 @@ $(document).on('submit', 'form.public-ajax-form', function (e) {
                 showToastr('warning', data.message);
             }
             else {
-                window[functionName](data.message);
+                window[functionName](data.message, data.data);
             }
         },
         complete: function () {

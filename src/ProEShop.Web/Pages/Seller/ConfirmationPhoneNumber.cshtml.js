@@ -59,7 +59,7 @@ function getRVT(e) {
     return $(e).parents('form').find(`input[name="${rvt}"]`).val();
 }
 
-function confirmationSellerPhoneNumber(message) {
+function confirmationSellerPhoneNumber(message, data) {
     showToastr('success', message);
-    location.href = '/';
+    location.href = `/Seller/CreateSeller/${data}`;
 }

@@ -68,3 +68,7 @@ span.select2-dropdown.select2-dropdown--below {
 .border-bottom-dashed {
     border-bottom: 2px dashed #0DCAF0;
 }
+
+.custom-overflow-y {
+    overflow-y: scroll;
+}
