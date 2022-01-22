@@ -20,6 +20,7 @@ public class CreateSellerModel : PageModel
 
     [BindProperty]
     public CreateSellerViewModel CreateSeller { get; set; }
+        = new();
 
     public async Task<IActionResult> OnGet(string phoneNumber)
     {
@@ -28,6 +29,7 @@ public class CreateSellerModel : PageModel
             return RedirectToPage("/Error");
         }
 
+        CreateSeller.PhoneNumber = phoneNumber;
         return Page();
     }
 

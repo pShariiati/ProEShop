@@ -11,7 +11,12 @@
             <div class="card-header">
                 <div class="card-title text-center h5">
                     <div class="mb-3">
-                        بعد از وارد کردن اطلاعات کامل، شما به عنوان فروشنده انتخاب می شوید
+                        بعد از وارد کردن اطلاعات کامل، شما به عنوان فروشنده
+                        <a asp-page="/Index" class="text-info border-bottom-dashed">پرو شاپ</a>
+                        انتخاب می شوید
+                        <a asp-page="/Index">
+                            <img src="~/images/application/eshop.png" width="120"/>
+                        </a>
                     </div>
                     <button type="button" class="btn btn-primary">بعدی</button>
                     <button class="btn btn-primary">تکمیل ثبت نام</button>
@@ -21,13 +26,13 @@
             <div class="card-body">
                 <nav>
                     <div class="nav nav-tabs nav-fill" id="nav-tab">
-                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#seller-info" type="button" role="tab" aria-controls="nav-home" aria-selected="true">اطلاعات فروشنده و فروشگاه</button>
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#seller-identity" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">اطلاعات هویتی</button>
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#seller-info" type="button" role="tab" aria-controls="nav-home" aria-selected="true">اطلاعات فروشنده و فروشگاه</button>
+                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#seller-identity" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">اطلاعات هویتی</button>
                         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#contract" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">قرارداد</button>
                     </div>
                 </nav>
-                <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show active" id="seller-info">
+                <div class="tab-content">
+                    <div class="tab-pane fade" id="seller-info">
                         <div class="card">
                             <div class="card-body row">
                                 <div class="mb-3 form-check form-switch px-3">
@@ -120,7 +125,7 @@
                                 <div class="mb-3 col-md-6 col-lg-3">
                                     <label asp-for="CreateSeller.Website"></label>
                                     <div class="input-group">
-                                        <input dir="ltr" class="form-control" asp-for="CreateSeller.Website" />
+                                        <input class="form-control" asp-for="CreateSeller.Website" />
                                         <span class="input-group-text">
                                             <i class="bi bi-globe"></i>
                                         </span>
@@ -129,16 +134,21 @@
                                 </div>
                                 <div class="mb-3 col-md-6 col-lg-3">
                                     <label asp-for="CreateSeller.PostalCode"></label>
-                                    <input dir="ltr" class="form-control" asp-for="CreateSeller.PostalCode" />
+                                    <input class="form-control" asp-for="CreateSeller.PostalCode" />
                                     <span asp-validation-for="CreateSeller.PostalCode" class="span-error-message"></span>
                                 </div>
                                 <div class="col-lg-6 mb-3">
                                     <label asp-for="CreateSeller.ShabaNumber"></label>
                                     <div class="input-group">
-                                        <input dir="ltr" class="form-control" asp-for="CreateSeller.ShabaNumber" />
+                                        <input class="form-control" asp-for="CreateSeller.ShabaNumber" />
                                         <span class="input-group-text">IR</span>
                                     </div>
                                     <span asp-validation-for="CreateSeller.ShabaNumber" class="span-error-message"></span>
+                                </div>
+                                <div class="mb-3 col-md-6 col-lg-3">
+                                    <label asp-for="CreateSeller.Telephone"></label>
+                                    <input class="form-control" asp-for="CreateSeller.Telephone" />
+                                    <span asp-validation-for="CreateSeller.Telephone" class="span-error-message"></span>
                                 </div>
                                 <div>
                                     <label asp-for="CreateSeller.AboutSeller"></label>
@@ -148,13 +158,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="seller-identity">
+                    <div class="tab-pane fade show active" id="seller-identity">
                         <div class="card">
                             <div class="card-body">
                                 <div class="mb-3">
                                     <label asp-for="CreateSeller.IdCartPicture"></label>
-                                    <input class="form-control" asp-for="CreateSeller.IdCartPicture" />
+                                    <input image-preview-box="id-cart-image-preview-box-create-seller" class="form-control image-preivew-input" asp-for="CreateSeller.IdCartPicture" />
                                     <span asp-validation-for="CreateSeller.IdCartPicture" class="span-error-message"></span>
+                                </div>
+                                <div class="d-none" id="id-cart-image-preview-box-create-seller">
+                                    <img src="~/images/application/eshop.png" width="100" />
                                 </div>
                             </div>
                         </div>
