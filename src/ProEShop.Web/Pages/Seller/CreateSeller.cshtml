@@ -6,6 +6,7 @@
 
 <div class="container">
     <form asp-page="./CreateSeller">
+        <input asp-for="CreateSeller.PhoneNumber" />
         <div class="card mt-5">
             <div class="card-header">
                 <div class="card-title text-center h5">
@@ -29,6 +30,78 @@
                     <div class="tab-pane fade show active" id="seller-info">
                         <div class="card">
                             <div class="card-body row">
+                                <div class="mb-3 form-check form-switch px-3">
+                                    <label class="form-check-label" asp-for="CreateSeller.IsLegalPerson">
+                                        شخص حقیقی
+                                    </label>
+                                    <div>
+                                        <input id="legal-person-checkbox-create-seller" class="custom-checkbox form-check-input m-0" asp-for="CreateSeller.IsLegalPerson" />
+                                    </div>
+                                </div>
+                                <!-- Legal person -->
+
+                                <div class="row m-0 p-0" id="legal-person-box-create-seller">
+                                    <div class="mb-3 col-md-6 col-lg-3">
+                                        <label asp-for="CreateSeller.CompanyName"></label>
+                                        <input class="form-control" asp-for="CreateSeller.CompanyName" />
+                                        <span asp-validation-for="CreateSeller.CompanyName" class="span-error-message"></span>
+                                    </div>
+
+                                    <div class="mb-3 col-md-6 col-lg-3">
+                                        <label asp-for="CreateSeller.RegisterNumber"></label>
+                                        <input class="form-control" asp-for="CreateSeller.RegisterNumber" />
+                                        <span asp-validation-for="CreateSeller.RegisterNumber" class="span-error-message"></span>
+                                    </div>
+
+                                    <div class="mb-3 col-md-6 col-lg-3">
+                                        <label asp-for="CreateSeller.EconomicCode"></label>
+                                        <input class="form-control" asp-for="CreateSeller.EconomicCode" />
+                                        <span asp-validation-for="CreateSeller.EconomicCode" class="span-error-message"></span>
+                                    </div>
+
+                                    <div class="mb-3 col-md-6 col-lg-3">
+                                        <label asp-for="CreateSeller.SignatureOwners"></label>
+                                        <input class="form-control" asp-for="CreateSeller.SignatureOwners" />
+                                        <span asp-validation-for="CreateSeller.SignatureOwners" class="span-error-message"></span>
+                                    </div>
+
+                                    <div class="mb-3 col-md-6 col-lg-3">
+                                        <label asp-for="CreateSeller.NationalId"></label>
+                                        <input class="form-control" asp-for="CreateSeller.NationalId" />
+                                        <span asp-validation-for="CreateSeller.NationalId" class="span-error-message"></span>
+                                    </div>
+
+                                    <div class="mb-3 col-md-6 col-lg-3">
+                                        <label asp-for="CreateSeller.CompanyType"></label>
+                                        <select class="form-select" asp-for="CreateSeller.CompanyType" asp-items="Html.GetEnumSelectList<ProEShop.Entities.CompanyType>()"></select>
+                                        <span asp-validation-for="CreateSeller.CompanyType" class="span-error-message"></span>
+                                    </div>
+                                </div>
+                                <!-- End Legal person -->
+                                <div class="mb-3 col-md-6 col-lg-2">
+                                    <label asp-for="CreateSeller.FirstName"></label>
+                                    <input class="form-control" asp-for="CreateSeller.FirstName" />
+                                    <span asp-validation-for="CreateSeller.FirstName" class="span-error-message"></span>
+                                </div>
+                                <div class="mb-3 col-md-6 col-lg-2">
+                                    <label asp-for="CreateSeller.LastName"></label>
+                                    <input class="form-control" asp-for="CreateSeller.LastName" />
+                                    <span asp-validation-for="CreateSeller.LastName" class="span-error-message"></span>
+                                </div>
+                                <div class="mb-3 col-md-6 col-lg-3">
+                                    <label asp-for="CreateSeller.BirthDate"></label>
+                                    <input class="form-control" asp-for="CreateSeller.BirthDate" />
+                                    <span asp-validation-for="CreateSeller.BirthDate" class="span-error-message"></span>
+                                </div>
+                                <div class="mb-3 col-md-6 col-lg-3">
+                                    <label asp-for="CreateSeller.NationalCode"></label>
+                                    <input class="form-control" asp-for="CreateSeller.NationalCode" />
+                                    <span asp-validation-for="CreateSeller.NationalCode" class="span-error-message"></span>
+                                </div>
+                                <div class="mb-3 col-md-6 col-lg-2">
+                                    <label asp-for="CreateSeller.Gender"></label>
+                                    <select class="form-select" asp-for="CreateSeller.Gender" asp-items="Html.GetEnumSelectList<ProEShop.Entities.Identity.Gender>()"></select>
+                                </div>
                                 <div class="mb-3 col-md-6 col-lg-3">
                                     <label asp-for="CreateSeller.ShopName"></label>
                                     <input class="form-control" asp-for="CreateSeller.ShopName" />
@@ -47,7 +120,7 @@
                                 <div class="mb-3 col-md-6 col-lg-3">
                                     <label asp-for="CreateSeller.Website"></label>
                                     <div class="input-group">
-                                        <input dir="ltr" class="form-control" asp-for="CreateSeller.Website"/>
+                                        <input dir="ltr" class="form-control" asp-for="CreateSeller.Website" />
                                         <span class="input-group-text">
                                             <i class="bi bi-globe"></i>
                                         </span>
@@ -121,6 +194,13 @@
                                 <br />
                                 2- قانون دو
                             </div>
+                            <div class="card-footer">
+                                <div class="form-check my-2">
+                                    <input class="form-check-input" asp-for="CreateSeller.AcceptToTheTerms">
+                                    <label class="form-check-label" asp-for="CreateSeller.AcceptToTheTerms"></label>
+                                    <span class="span-error-message">خطا!</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -137,4 +217,9 @@
 {
 <partial name="Shared/_ValidationScriptsPartial" />
 <script src="~/lib/tinymce/tinymce.min.js"></script>
+}
+
+@section CustomScripts
+{
+    <script src="~/Pages/Seller/CreateSeller.cshtml.js"></script>
 }

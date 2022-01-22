@@ -11,17 +11,41 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using ProEShop.Common.Attributes;
 using ProEShop.Common.Constants;
 using ProEShop.Entities;
+using ProEShop.Entities.Identity;
 
 namespace ProEShop.ViewModels.Sellers;
 
 public class CreateSellerViewModel
 {
+    [Display(Name = "نام")]
+    [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
+    [MaxLength(200, ErrorMessage = AttributesErrorMessages.MaxLengthMessage)]
+    public string FirstName { get; set; }
+
+    [Display(Name = "نام خانوادگی")]
+    [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
+    [MaxLength(200, ErrorMessage = AttributesErrorMessages.MaxLengthMessage)]
+    public string LastName { get; set; }
+
+    [Display(Name = "کد ملی")]
+    [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
+    [MaxLength(11, ErrorMessage = AttributesErrorMessages.MaxLengthMessage)]
+    public string NationalCode { get; set; }
+
+    [Display(Name = "تاریخ تولد")]
+    [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
+    public string BirthDate { get; set; }
+
+    [Display(Name = "جنسیت")]
+    public Gender Gender { get; set; }
+
     [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
     [HiddenInput]
     public string PhoneNumber { get; set; }
 
-    [Display(Name = "شخص حقیقی / حقوقی")]
-    public bool IsRealPerson { get; set; }
+    public bool IsLegalPerson { get; set; }
+
+    #region Legal person
 
     [Display(Name = "نام شرکت")]
     [MaxLength(200, ErrorMessage = AttributesErrorMessages.MaxLengthMessage)]
@@ -45,6 +69,8 @@ public class CreateSellerViewModel
 
     [Display(Name = "نوع شرکت")]
     public CompanyType CompanyType { get; set; }
+
+    #endregion
 
     [Display(Name = "نام فروشگاه")]
     [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
@@ -98,4 +124,7 @@ public class CreateSellerViewModel
     public string PostalCode { get; set; }
 
     public List<SelectListItem> Provinces { get; set; }
+
+    [Display(Name = "قوانین را قبول دارم")]
+    public bool AcceptToTheTerms { get; set; }
 }
