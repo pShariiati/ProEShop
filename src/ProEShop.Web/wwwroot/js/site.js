@@ -114,11 +114,36 @@ function initializeSelect2() {
     });
 }
 
+function initializeSelect2WithoutModal() {
+    if ($('.custom-select2').length > 0) {
+        $('.custom-select2').select2({
+            theme: 'bootstrap-5'
+        });
+    }
+}
+
+initializeSelect2WithoutModal();
+
 // Validation
 
 // fileRequired
 
 if (jQuery.validator) {
+
+    $.validator.setDefaults({
+        ignore: []
+    });
+
+    var defaultRangeValidator = $.validator.methods.range;
+
+    $.validator.methods.range = function (value, element, param) {
+        if (element.type === 'checkbox') {
+            return element.checked;
+        } else {
+            return defaultRangeValidator.call(this, value, element, param);
+        }
+    }
+
     jQuery.validator.addMethod("fileRequired", function (value, element, param) {
         if (element.files[0] != null)
             return element.files[0].size > 0;
@@ -320,8 +345,11 @@ $(document).on('submit', 'form.custom-ajax-form', function (e) {
     });
 });
 
+$('form input').blur(function() {
+    $(this).parents('form').valid();
+})
+
 $(document).on('submit', 'form.public-ajax-form', function (e) {
-    debugger;
     e.preventDefault();
     var currentForm = $(this);
     var formAction = currentForm.attr('action');
@@ -428,11 +456,6 @@ function fillValidationForm(errors, currentForm) {
 
 
 // End Ajax operations
-
-$.validator.setDefaults({
-    ignore: [],
-    // other default options
-});
 
 $('input[data-val-ltrdirection="true"]').attr('dir', 'ltr');
 $('input[data-val-isimage]').attr('accept', 'image/*');

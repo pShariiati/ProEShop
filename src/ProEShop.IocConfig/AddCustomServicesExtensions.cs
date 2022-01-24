@@ -55,6 +55,7 @@ public static class AddCustomServicesExtensions
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<IFeatureService, FeatureService>();
         services.AddScoped<ICategoryFeatureService, CategoryFeatureService>();
+        services.AddScoped<IProvinceAndCityService, ProvinceAndCityService>();
 
         return services;
     }
