@@ -4,7 +4,7 @@
     ViewData["Title"] = "وارد کردن مشخصات فروشنده";
 }
 
-<div class="container">
+<div class="container" id="create-seller-container">
     <form asp-page="./CreateSeller">
         <input asp-for="CreateSeller.PhoneNumber" />
         <div class="card mt-5">
@@ -18,7 +18,8 @@
                             <img src="~/images/application/eshop.png" width="120"/>
                         </a>
                     </div>
-                    <button type="button" class="btn btn-primary">بعدی</button>
+                    <button type="button" id="previous-tab-create-seller" class="btn btn-primary">قبلی</button>
+                    <button type="button" id="next-tab-create-seller" class="btn btn-primary">بعدی</button>
                     <button class="btn btn-primary">تکمیل ثبت نام</button>
                 </div>
                 <div class="text-danger" asp-validation-summary="All"></div>
