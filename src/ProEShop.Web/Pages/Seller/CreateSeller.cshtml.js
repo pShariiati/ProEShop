@@ -72,3 +72,18 @@ $('#create-seller-container .nav-tabs button').on('show.bs.tab', function (e) {
         $('#create-seller-container #previous-tab-create-seller').removeAttr('disabled');
     }
 });
+
+$('#CreateSeller_ProvinceId').change(function () {
+    var formData = {
+        provinceId: $(this).val()
+    }
+    getDataWithAJAX('/Seller/CreateSeller/test?handler=GetCities', formData, 'putCitiesInTheSelectBox');
+});
+
+function putCitiesInTheSelectBox(message, data) {
+    $('#CreateSeller_CityId option').remove();
+    $('#CreateSeller_CityId').append('<option value="0">انتخاب کنید</optoin>');
+    $.each(data, function (key, value) {
+        $('#CreateSeller_CityId').append(`<option value="${key}">${value}</optoin>`);
+    });
+}

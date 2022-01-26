@@ -22,4 +22,10 @@ public class ProvinceAndCityService : GenericService<ProvinceAndCity>, IProvince
         return _provinceAndCities.Where(x => x.ParentId == null)
             .ToDictionaryAsync(x => x.Id, x => x.Title);
     }
+
+    public async Task<Dictionary<long, string>> GetCitiesByProvinceIdInSelectBoxAsync(long provinceId)
+    {
+        return await _provinceAndCities.Where(x => x.ParentId == provinceId)
+            .ToDictionaryAsync(x => x.Id, x => x.Title);
+    }
 }

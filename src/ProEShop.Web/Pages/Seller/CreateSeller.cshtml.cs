@@ -1,25 +1,26 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ProEShop.Common;
+using ProEShop.Common.Helpers;
 using ProEShop.Services.Contracts;
 using ProEShop.Services.Contracts.Identity;
 using ProEShop.ViewModels.Sellers;
 
 namespace ProEShop.Web.Pages.Seller;
 
-public class CreateSellerModel : PageModel
+public class CreateSellerModel : PageBase
 {
     #region Constructor
 
     private readonly IApplicationUserManager _userManager;
-    private readonly IProvinceAndCityService _provinceAndCity;
+    private readonly IProvinceAndCityService _provinceAndCityService;
 
     public CreateSellerModel(
         IApplicationUserManager userManager,
-        IProvinceAndCityService provinceAndCity)
+        IProvinceAndCityService provinceAndCityService)
     {
         _userManager = userManager;
-        _provinceAndCity = provinceAndCity;
+        _provinceAndCityService = provinceAndCityService;
     }
 
     #endregion
@@ -36,7 +37,7 @@ public class CreateSellerModel : PageModel
         }
 
         CreateSeller.PhoneNumber = phoneNumber;
-        var provinces = await _provinceAndCity.GetProvincesToShowInSelectBoxAsync();
+        var provinces = await _provinceAndCityService.GetProvincesToShowInSelectBoxAsync();
         CreateSeller.Provinces = provinces.CreateSelectListItem();
         return Page();
     }
@@ -44,5 +45,32 @@ public class CreateSellerModel : PageModel
     public void OnPost()
     {
         //await _signInManager.SignInAsync(user, true);
+    }
+
+    public async Task<IActionResult> OnGetGetCities(long provinceId)
+    {
+        if (provinceId == 0)
+        {
+            return Json(new JsonResultOperation(true, string.Empty)
+            {
+                Data = new Dictionary<long, string>()
+            });
+        }
+
+        if (provinceId < 1)
+        {
+            return Json(new JsonResultOperation(false, "استان مورد نظر را به درستی وارد نمایید"));
+        }
+
+        if (!await _provinceAndCityService.IsExistsBy("Id", provinceId))
+        {
+            return Json(new JsonResultOperation(false, "استان مورد نظر یافت نشد"));
+        }
+
+        var cities = await _provinceAndCityService.GetCitiesByProvinceIdInSelectBoxAsync(provinceId);
+        return Json(new JsonResultOperation(true, string.Empty)
+        {
+            Data = cities
+        });
     }
 }
