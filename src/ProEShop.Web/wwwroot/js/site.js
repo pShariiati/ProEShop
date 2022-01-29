@@ -101,6 +101,9 @@ function initializeTinyMCE() {
 
 initializeTinyMCE();
 
+// برای نمایش ادیتور
+// Tinymce
+// از این کد استفاده میکنیم
 document.addEventListener('focusin', function (e) {
     if (e.target.closest('.tox-tinymce-aux, .moxman-window, .tam-assetmanager-root') !== null) {
         e.stopImmediatePropagation();
@@ -128,12 +131,36 @@ initializeSelect2WithoutModal();
 
 // fileRequired
 
+var imageInputsWithProblems = [];
+
+// یک آرایه و یک آیتم میگیره
+// آیتم رو از آرایه حذف میکنه
+function removeItemInArray(arr, item) {
+    var found = arr.indexOf(item);
+
+    while (found !== -1) {
+        arr.splice(found, 1);
+        found = arr.indexOf(item);
+    }
+}
+
 if (jQuery.validator) {
 
+    // برای اعتبار سنجی اینپوت های مخفی از این کد استفاده میکنیم
+    // کجا کاربر داره ؟
+    // هنگام استفاده از
+    // navs-tabs
+    // What is navs-tabs ?
+    // https://getbootstrap.com/docs/5.0/components/navs-tabs/#javascript-behavior
+    // برای مثال در تب دوم، اینپوت های تب اول مخفی هستن
+    // و به صورت پیشفرض اعتبار سنجی نمیشن
+    // کد پایین، اینپوت های مخفی رو هم اعتبار سنجی میکنه
     $.validator.setDefaults({
         ignore: []
     });
 
+    // اگر چکباکس تیک نخورده باشد
+    // متن خطا را نمایش میدهد
     var defaultRangeValidator = $.validator.methods.range;
 
     $.validator.methods.range = function (value, element, param) {
@@ -163,10 +190,32 @@ if (jQuery.validator) {
 
     // isImage
     jQuery.validator.addMethod('isImage', function (value, element, param) {
-        if (element.files[0] != null) {
-            var whiteListExtensions = $(element).data('val-whitelistextensions').split(',');
-            return whiteListExtensions.includes(element.files[0].type);
+        var selectedFile = element.files[0];
+        if (selectedFile === undefined) {
+            return true;
         }
+        var whiteListExtensions = $(element).data('val-whitelistextensions').split(',');
+        if (!whiteListExtensions.includes(selectedFile.type)) {
+            return false;
+        }
+        var currentElementId = $(element).attr('id');
+        var currentForm = $(element).parents('form');
+
+        if (imageInputsWithProblems.includes(currentElementId)) {
+            removeItemInArray(imageInputsWithProblems, currentElementId);
+            return false;
+        }
+
+        if ($('#image-preview-box-temp').length === 0) {
+            $('body').append('<img class="d-none" id="image-preview-box-temp" />');
+        }
+        $('#image-preview-box-temp').attr('src', URL.createObjectURL(selectedFile));
+        $('#image-preview-box-temp').off('error');
+        $('#image-preview-box-temp').on('error',
+            function () {
+                imageInputsWithProblems.push(currentElementId);
+                currentForm.validate().element(`#${currentElementId}`);
+            });
         return true;
     });
     jQuery.validator.unobtrusive.adapters.addBool('isImage');
@@ -187,6 +236,7 @@ if (jQuery.validator) {
 
 // Ajax operations
 
+// فعال ساز دکمه حذف، در داخل گرید
 function activatingDeleteButtons() {
     $('.delete-row-button').click(function () {
         var currentForm = $(this).parent();
@@ -232,6 +282,8 @@ function initializingAutocomplete() {
     }
 }
 
+// این فانکشن فرم های مربوط به ایجاد و ویرایش را
+// به صورت ایجکس برگشت میزند که در داخل مودال نمایش دهیم
 function activatingModalForm() {
 
     $('.show-modal-form-button').click(function (e) {
@@ -252,6 +304,7 @@ function activatingModalForm() {
                 initializeTinyMCE();
                 initializeSelect2();
                 initializingAutocomplete();
+                activatingInputAttributes();
                 $.validator.unobtrusive.parse($('#form-modal-place form'));
                 $('#form-modal-place').modal('show');
             }
@@ -264,6 +317,7 @@ function activatingModalForm() {
 }
 //activatingModalForm();
 
+// فعال ساز مربوط به صحفه بندی
 function activatingPagination() {
     $('#main-pagianation button').click(function () {
         isMainPaginationClicked = true;
@@ -273,12 +327,14 @@ function activatingPagination() {
     });
 }
 
+// فعال ساز دکمه برو به صفحه فلان
 function activatingGotoPage() {
     $('#go-to-page-button').click(function () {
         isGotoPageClicked = true;
     });
 }
 
+// خواندن اطلاعات و ریختن آن در داخل گرید
 function fillDataTable() {
     $('.data-table-place .data-table-body').remove();
     $('.search-form-submit-button').attr('disabled', 'disabled');
@@ -307,6 +363,8 @@ function fillDataTable() {
 
 //fillDataTable();
 
+// فرم ایجاد و ویرایش در داخل مودال موقعی که سابمیت شوند توسط این
+// فانکشن به صورت ایجکسی به سمت سرور ارسال میشوند
 $(document).on('submit', 'form.custom-ajax-form', function (e) {
     e.preventDefault();
     var currentForm = $(this);
@@ -345,10 +403,22 @@ $(document).on('submit', 'form.custom-ajax-form', function (e) {
     });
 });
 
-$('form input').blur(function() {
+// به محض بلر شدن یک اینپوت
+// تمامی اینپوت های فرم را مجددا اعتبار سنجی میکند
+// چرا از این استفاده میکنیم ؟
+// برای مثال شما روی دکمه ثبت نام کلیک میکنید و
+// در بالای صفحه و داخل تگ
+// <div asp-validation-summary="All" class="text-danger"></div>
+// مینویسد ایمیل را وارد کنید
+// شما نیز ایمیل را وارد میکنید
+// اما در قسمت بالای صفحه همچنان متن "لطفا ایمیل را وارد کنید" وجود دارد
+// برای اینکه این مشکل حل شود از این کد استفاده میکنیم
+$('form input').blur(function () {
     $(this).parents('form').valid();
 })
 
+// این فانکشن هر فرمی را به صورت پست به سمت سرور با استفاده از ایجکس
+// ارسال میکند
 $(document).on('submit', 'form.public-ajax-form', function (e) {
     e.preventDefault();
     var currentForm = $(this);
@@ -386,6 +456,7 @@ $(document).on('submit', 'form.public-ajax-form', function (e) {
     });
 });
 
+// فعالساز مربوط به تعداد آیتم در هر صفحه
 function activatingPageCount() {
     $('#page-count-selectbox').change(function () {
         var pageCountValue = this.value;
@@ -394,7 +465,14 @@ function activatingPageCount() {
     })
 }
 
+// برای مثال در صفحه دو یک گرید هستیم
+// و کاربر یک عبارتی را سرچ میکند ما باید بیاییم
+// و از صفحه یک دوباره شروع به نمایش دادن اطلاعات کنیم
+// این متغیر برای این کار است
 var isMainPaginationClicked = false;
+
+// اگر دکمه برو به فلان صحفحه کلیک شده بود
+// باید به همان صفحه برویم
 var isGotoPageClicked = false;
 
 $(document).on('submit', 'form.search-form-via-ajax', function (e) {
@@ -445,6 +523,12 @@ $(document).on('submit', 'form.search-form-via-ajax', function (e) {
         }
     });
 });
+
+// موقعی که یک فرم به سمت سرور ارسال میشود
+// اگر خطای اعتبار سنجی داشته باشد
+// با استفاده از این فانکشن متن خطاها را داخل
+// <div asp-validation-summary="All" class="text-danger"></div>
+// نمایش میدهیم
 function fillValidationForm(errors, currentForm) {
     var result = '<ul>';
     errors.forEach(function (e) {
@@ -454,6 +538,8 @@ function fillValidationForm(errors, currentForm) {
     currentForm.find('div[class*="validation-summary"]').html(result);
 }
 
+// با استفاده از این فانکشن میتوانیم اطلاعاتی را از سمت سرور دریافت کنیم
+// برای مثال برای خواندن شهرستان های یک استان از این فانکشن استفاده میکنیم
 function getDataWithAJAX(url, formData, functionNameToCallInTheEnd) {
     $.ajax({
         url: url,
@@ -484,9 +570,25 @@ function getDataWithAJAX(url, formData, functionNameToCallInTheEnd) {
 
 // End Ajax operations
 
-$('input[data-val-ltrdirection="true"]').attr('dir', 'ltr');
-$('input[data-val-isimage]').attr('accept', 'image/*');
+// به محض فراخوانی صفحه این فانکشن را فرخوانی میکنیم
+// که اینپوت هایی که اتریبیوت های پایین را دارند
+// اتریبیوت جاوا اسکریپتی مورد نظر برای آنها اضافه شود
 
+function activatingInputAttributes() {
+    // اگر به یک پراپرتی اتریبیوت
+    // ltr
+    // را بدهیم
+    // این خط کد اینپوت مورد نظر را چپ به راست میکند
+    $('input[data-val-ltrdirection="true"]').attr('dir', 'ltr');
+
+    // فیلتر کردن ورودی های کاربر هنگام انتخاب فایل
+    // فقط عکس هارو به کاربر نمایش میدیم
+    $('input[data-val-isimage]').attr('accept', 'image/*');
+}
+
+activatingInputAttributes();
+
+// نمایش پیش نمایش عکس
 $('.image-preivew-input').change(function () {
     var selectedFile = this.files[0];
     var imagePreviewBox = $(this).attr('image-preview-box');

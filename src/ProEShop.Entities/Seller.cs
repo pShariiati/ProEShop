@@ -35,7 +35,7 @@ public class Seller : EntityBase, IAuditableEntity
     [MaxLength(30)]
     public string NationalId { get; set; }
 
-    public CompanyType CompanyType { get; set; }
+    public CompanyType? CompanyType { get; set; }
     #endregion
 
     public int SellerCode { get; set; }
@@ -102,7 +102,7 @@ public class Seller : EntityBase, IAuditableEntity
     #endregion
 }
 
-public enum CompanyType
+public enum CompanyType : byte
 {
     [Display(Name = "سهمی عام")]
     PublicStock,

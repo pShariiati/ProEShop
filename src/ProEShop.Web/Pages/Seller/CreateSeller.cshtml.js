@@ -6,14 +6,16 @@
         addRequiredRule('#CreateSeller_EconomicCode');
         addRequiredRule('#CreateSeller_SignatureOwners');
         addRequiredRule('#CreateSeller_NationalId');
+        addRangeRule('#CreateSeller_CompanyType');
         labelEl.html('شخص حقوقی');
     }
     else {
-        removeRequiredRule('#CreateSeller_CompanyName')
-        removeRequiredRule('#CreateSeller_RegisterNumber')
-        removeRequiredRule('#CreateSeller_EconomicCode')
-        removeRequiredRule('#CreateSeller_SignatureOwners')
-        removeRequiredRule('#CreateSeller_NationalId')
+        removeRequiredRule('#CreateSeller_CompanyName');
+        removeRequiredRule('#CreateSeller_RegisterNumber');
+        removeRequiredRule('#CreateSeller_EconomicCode');
+        removeRequiredRule('#CreateSeller_SignatureOwners');
+        removeRequiredRule('#CreateSeller_NationalId');
+        removeRangeRule('#CreateSeller_CompanyType');
         labelEl.html('شخص حقیقی');
     }
     $(this).parents('form').valid();
@@ -25,12 +27,26 @@ function removeRequiredRule(selector) {
     $(selector).rules('remove', 'required');
 }
 
+function removeRangeRule(selector) {
+    $(selector).rules('remove', 'range');
+}
+
 function addRequiredRule(selector) {
     var displayName = $(selector).parent().find('label').html().trim();
     $(selector).rules('add', {
         required: true,
         messages: {
             required: `لطفا ${displayName} را وارد نمایید`
+        }
+    });
+}
+
+function addRangeRule(selector) {
+    var displayName = $(selector).parent().find('label').html().trim();
+    $(selector).rules('add', {
+        range: [0, 4],
+        messages: {
+            range: `لطفا ${displayName} را وارد نمایید`
         }
     });
 }

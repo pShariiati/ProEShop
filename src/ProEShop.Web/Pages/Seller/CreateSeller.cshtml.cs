@@ -14,13 +14,15 @@ public class CreateSellerModel : PageBase
 
     private readonly IApplicationUserManager _userManager;
     private readonly IProvinceAndCityService _provinceAndCityService;
+    private readonly ISellerService _sellerService;
 
     public CreateSellerModel(
         IApplicationUserManager userManager,
-        IProvinceAndCityService provinceAndCityService)
+        IProvinceAndCityService provinceAndCityService, ISellerService sellerService)
     {
         _userManager = userManager;
         _provinceAndCityService = provinceAndCityService;
+        _sellerService = sellerService;
     }
 
     #endregion
@@ -62,7 +64,7 @@ public class CreateSellerModel : PageBase
             return Json(new JsonResultOperation(false, "استان مورد نظر را به درستی وارد نمایید"));
         }
 
-        if (!await _provinceAndCityService.IsExistsBy("Id", provinceId))
+        if (!await _provinceAndCityService.IsExistsBy(nameof(Entities.ProvinceAndCity.Id), provinceId))
         {
             return Json(new JsonResultOperation(false, "استان مورد نظر یافت نشد"));
         }
@@ -72,5 +74,11 @@ public class CreateSellerModel : PageBase
         {
             Data = cities
         });
+    }
+
+    public async Task<IActionResult> OnGetCheckForShopName(CreateSellerViewModel createSeller)
+    {
+        return Json(!await _sellerService.IsExistsBy(nameof(Entities.Seller.ShopName),
+            createSeller.ShopName));
     }
 }
