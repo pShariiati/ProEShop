@@ -415,7 +415,11 @@ $(document).on('submit', 'form.custom-ajax-form', function (e) {
 // برای اینکه این مشکل حل شود از این کد استفاده میکنیم
 $('form input').blur(function () {
     $(this).parents('form').valid();
-})
+});
+
+$('form select').change(function () {
+    $(this).parents('form').valid();
+});
 
 // این فانکشن هر فرمی را به صورت پست به سمت سرور با استفاده از ایجکس
 // ارسال میکند
@@ -458,11 +462,11 @@ $(document).on('submit', 'form.public-ajax-form', function (e) {
 
 // فعالساز مربوط به تعداد آیتم در هر صفحه
 function activatingPageCount() {
-    $('#page-count-selectbox').change(function () {
+    $('#page-count-selectbox').change(function() {
         var pageCountValue = this.value;
         $('form.search-form-via-ajax input[name$="Pagination.PageCount"]').val(pageCountValue);
         $('form.search-form-via-ajax').submit();
-    })
+    });
 }
 
 // برای مثال در صفحه دو یک گرید هستیم
@@ -599,4 +603,4 @@ $('.image-preivew-input').change(function () {
         $(`#${imagePreviewBox} img`).attr('src', '');
         $(`#${imagePreviewBox}`).addClass('d-none');
     }
-})
+});

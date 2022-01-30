@@ -50,6 +50,11 @@
     {
       "library": "jqueryui@1.12.1",
       "destination": "wwwroot\\lib\\jqueryui"
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "md.bootstrappersiandatetimepicker@4.1.1",
+      "destination": "wwwroot\\lib\\md.bootstrappersiandatetimepicker"
     }
   ]
 }

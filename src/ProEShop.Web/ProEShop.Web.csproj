@@ -50,4 +50,8 @@
 		<ProjectReference Include="..\ProEShop.ViewModels\ProEShop.ViewModels.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Mappings\" />
+	</ItemGroup>
+
 </Project>

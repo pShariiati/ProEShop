@@ -21,7 +21,8 @@
                     </h5>
                 </div>
                 <div class="card-body">
-                    <form call-function-in-the-end="confirmationSellerPhoneNumber"
+                    <form autocomplete="off"
+                        call-function-in-the-end="confirmationSellerPhoneNumber"
                           method="post" class="public-ajax-form"
                           asp-page="./ConfirmationPhoneNumber">
                         <input asp-for="Confirmation.PhoneNumber"/>
