@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ProEShop.Common;
 using ProEShop.Common.Constants;
 using ProEShop.Common.Helpers;
+using ProEShop.Common.IdentityToolkit;
 using ProEShop.Services.Contracts;
 using ProEShop.Services.Contracts.Identity;
 using ProEShop.ViewModels;
@@ -18,14 +20,16 @@ public class CreateSellerModel : PageBase
     private readonly IApplicationUserManager _userManager;
     private readonly IProvinceAndCityService _provinceAndCityService;
     private readonly ISellerService _sellerService;
+    private readonly IMapper _mapper;
 
     public CreateSellerModel(
         IApplicationUserManager userManager,
-        IProvinceAndCityService provinceAndCityService, ISellerService sellerService)
+        IProvinceAndCityService provinceAndCityService, ISellerService sellerService, IMapper mapper)
     {
         _userManager = userManager;
         _provinceAndCityService = provinceAndCityService;
         _sellerService = sellerService;
+        _mapper = mapper;
     }
 
     #endregion
@@ -57,9 +61,19 @@ public class CreateSellerModel : PageBase
         return Page();
     }
 
-    public void OnPost()
+    public IActionResult OnPost()
     {
-        //await _signInManager.SignInAsync(user, true);
+        if (!ModelState.IsValid)
+        {
+            return Json(new JsonResultOperation(false, PublicConstantStrings.ModelStateErrorMessage)
+            {
+                Data = ModelState.GetModelStateErrors()
+            });
+        }
+
+        var seller = _mapper.Map<Entities.Seller>(CreateSeller);
+        seller.ShopName = ShopName;
+        return RedirectToPage("SellerPanel");
     }
 
     public async Task<IActionResult> OnGetGetCities(long provinceId)

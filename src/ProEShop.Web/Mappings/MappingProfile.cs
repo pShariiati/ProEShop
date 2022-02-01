@@ -9,5 +9,6 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         this.CreateMap<User, CreateSellerViewModel>();
+        this.CreateMap<CreateSellerViewModel, Entities.Seller>();
     }
 }

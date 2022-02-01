@@ -30,7 +30,7 @@ public class User : IdentityUser<long>, IAuditableEntity
     public DateTime? BirthDate { get; set; }
 
     [Display(Name = "جنسیت")]
-    public Gender Gender { get; set; }
+    public Gender? Gender { get; set; }
 
     [Required]
     [MaxLength(50)]
