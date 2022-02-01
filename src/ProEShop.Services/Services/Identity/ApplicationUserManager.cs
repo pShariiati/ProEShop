@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using DNTPersianUtils.Core;
-using MD.PersianDateTime.Standard;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using ProEShop.Common.Helpers;
 using ProEShop.DataLayer.Context;
 using ProEShop.Entities.Identity;
 using ProEShop.Services.Contracts.Identity;
@@ -68,14 +68,17 @@ public class ApplicationUserManager
         if (result?.BirthDate != null)
         {
             var parsedDateTime = DateTime.Parse(result.BirthDate);
-            var persianDateTime = new PersianDateTime(parsedDateTime)
-            {
-                PersianNumber = true
-            };
             result.BirthDateEn = parsedDateTime.ToString("yyyy/MM/dd");
-            result.BirthDate = persianDateTime.ToShortDateString();
+            result.BirthDate = parsedDateTime.ToShortPersianDate().ToPersianNumbers();
         }
         return result;
+    }
+
+    public async Task<User> GetUserForCreateSeller(string userName)
+    {
+        return await _users.Where(x => x.IsSeller)
+            .Where(x => x.UserRoles.All(r => r.Role.Name != ConstantRoles.Seller))
+            .SingleOrDefaultAsync(x => x.UserName == userName);
     }
 
     #endregion

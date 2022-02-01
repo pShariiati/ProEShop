@@ -129,5 +129,7 @@ public interface IApplicationUserManager : IDisposable
 
     Task<CreateSellerViewModel> GetUserInfoForCreateSeller(string phoneNumber);
 
+    Task<User> GetUserForCreateSeller(string userName);
+
     #endregion
 }

@@ -20,17 +20,19 @@ public class RegisterLoginModel : PageBase
     private readonly ILogger<RegisterLoginModel> _logger;
     private readonly SiteSettings _siteSettings;
     private readonly ISmsSender _smsSender;
+    private readonly IUnitOfWork _uow;
 
     public RegisterLoginModel(
         IApplicationUserManager userManager,
         ILogger<RegisterLoginModel> logger,
         IOptionsMonitor<SiteSettings> siteSettings,
-        ISmsSender smsSender)
+        ISmsSender smsSender, IUnitOfWork uow)
     {
         _logger = logger;
         _userManager = userManager;
         _siteSettings = siteSettings.CurrentValue;
         _smsSender = smsSender;
+        _uow = uow;
     }
 
     #endregion
@@ -64,6 +66,7 @@ public class RegisterLoginModel : PageBase
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
+                    await _uow.SaveChangesAsync();
                     _logger.LogInformation(LogCodes.RegisterCode, $"{user.UserName} created a new account with phone number");
                     addNewUser = true;
                 }
@@ -85,6 +88,7 @@ public class RegisterLoginModel : PageBase
                 //}
                 user.SendSmsLastTime = DateTime.Now;
                 await _userManager.UpdateAsync(user);
+                await _uow.SaveChangesAsync();
             }
         }
         return RedirectToPage("./LoginWithPhoneNumber", new { phoneNumber = registerLogin.PhoneNumberOrEmail });

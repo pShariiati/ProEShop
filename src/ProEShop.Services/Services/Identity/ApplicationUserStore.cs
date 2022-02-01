@@ -15,6 +15,7 @@ public class ApplicationUserStore
         IdentityErrorDescriber describer = null)
         : base((ApplicationDbContext)uow, describer)
     {
+        AutoSaveChanges = false;
     }
 
     #region CustomClass

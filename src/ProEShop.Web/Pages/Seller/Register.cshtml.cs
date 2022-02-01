@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using ProEShop.Common.Constants;
 using ProEShop.Common.Helpers;
 using ProEShop.Common.IdentityToolkit;
+using ProEShop.DataLayer.Context;
 using ProEShop.Entities.Identity;
 using ProEShop.Services.Contracts.Identity;
 using ProEShop.ViewModels.Identity.Settings;
@@ -18,14 +19,16 @@ public class RegisterModel : PageModel
     private readonly IApplicationUserManager _userManager;
     private readonly SiteSettings _siteSettings;
     private readonly ILogger<RegisterModel> _logger;
+    private readonly IUnitOfWork _uow;
 
     public RegisterModel(
         IApplicationUserManager userManager,
         IOptionsMonitor<SiteSettings> siteSettings,
-        ILogger<RegisterModel> logger)
+        ILogger<RegisterModel> logger, IUnitOfWork uow)
     {
         _userManager = userManager;
         _logger = logger;
+        _uow = uow;
         _siteSettings = siteSettings.CurrentValue;
     }
 
@@ -61,6 +64,7 @@ public class RegisterModel : PageModel
             var result = await _userManager.CreateAsync(user);
             if (result.Succeeded)
             {
+                await _uow.SaveChangesAsync();
                 _logger.LogInformation(LogCodes.RegisterCode, $"{user.UserName} created a new account with phone number");
                 addNewUser = true;
             }
@@ -82,6 +86,7 @@ public class RegisterModel : PageModel
             //}
             user.SendSmsLastTime = DateTime.Now;
             await _userManager.UpdateAsync(user);
+            await _uow.SaveChangesAsync();
         }
 
         return RedirectToPage("./ConfirmationPhoneNumber", new { phoneNumber = RegisterSeller.PhoneNumber });

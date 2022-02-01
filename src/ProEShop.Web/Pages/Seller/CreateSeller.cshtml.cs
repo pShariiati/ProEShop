@@ -6,8 +6,10 @@ using ProEShop.Common;
 using ProEShop.Common.Constants;
 using ProEShop.Common.Helpers;
 using ProEShop.Common.IdentityToolkit;
+using ProEShop.DataLayer.Context;
 using ProEShop.Services.Contracts;
 using ProEShop.Services.Contracts.Identity;
+using ProEShop.Services.Services.Identity;
 using ProEShop.ViewModels;
 using ProEShop.ViewModels.Sellers;
 
@@ -21,15 +23,19 @@ public class CreateSellerModel : PageBase
     private readonly IProvinceAndCityService _provinceAndCityService;
     private readonly ISellerService _sellerService;
     private readonly IMapper _mapper;
+    private readonly IUnitOfWork _uow;
+    private readonly IUploadFileService _uploadFile;
 
     public CreateSellerModel(
         IApplicationUserManager userManager,
-        IProvinceAndCityService provinceAndCityService, ISellerService sellerService, IMapper mapper)
+        IProvinceAndCityService provinceAndCityService, ISellerService sellerService, IMapper mapper, IUnitOfWork uow, IUploadFileService uploadFile)
     {
         _userManager = userManager;
         _provinceAndCityService = provinceAndCityService;
         _sellerService = sellerService;
         _mapper = mapper;
+        _uow = uow;
+        _uploadFile = uploadFile;
     }
 
     #endregion
@@ -61,7 +67,7 @@ public class CreateSellerModel : PageBase
         return Page();
     }
 
-    public IActionResult OnPost()
+    public async Task<IActionResult> OnPost()
     {
         if (!ModelState.IsValid)
         {
@@ -71,9 +77,48 @@ public class CreateSellerModel : PageBase
             });
         }
 
+        var user = await _userManager.GetUserForCreateSeller(CreateSeller.PhoneNumber);
+        if (user is null)
+        {
+            return Json(new JsonResultOperation(false, "کاربر مورد نظر یافت نشد"));
+        }
+
         var seller = _mapper.Map<Entities.Seller>(CreateSeller);
+        seller.UserId = user.Id;
         seller.ShopName = ShopName;
-        return RedirectToPage("SellerPanel");
+
+        var logoFileName = CreateSeller.LogoFile.GenerateFileName();
+        var idCartPictureName = CreateSeller.IdCartPictureFile.GenerateFileName();
+
+        seller.IdCartPicture = idCartPictureName;
+        seller.Logo = logoFileName;
+
+        seller.SellerCode = await _sellerService.GetSellerCodeForCreateSeller();
+
+        var result = await _sellerService.AddAsync(seller);
+        if (!result.Ok)
+        {
+            return Json(new JsonResultOperation(false, PublicConstantStrings.DuplicateErrorMessage)
+            {
+                Data = result.Columns.SetDuplicateColumnsErrorMessages<CreateSellerViewModel>()
+            });
+        }
+
+        var roleResult = await _userManager.AddToRoleAsync(user, ConstantRoles.Seller);
+        if (!roleResult.Succeeded)
+        {
+            ModelState.AddErrorsFromResult(roleResult);
+            return Json(new JsonResultOperation(false)
+            {
+                Data = ModelState.GetModelStateErrors()
+            });
+        }
+        await _uow.SaveChangesAsync();
+
+        await _uploadFile.SaveFile(CreateSeller.IdCartPictureFile, idCartPictureName, null, "images", "seller-id-cart-pictures");
+        await _uploadFile.SaveFile(CreateSeller.LogoFile, logoFileName, null, "images", "seller-logos");
+
+        return Json(new JsonResultOperation(true, "شما با موفقیت به عنوان فروشنده انتخاب شدید"));
     }
 
     public async Task<IActionResult> OnGetGetCities(long provinceId)

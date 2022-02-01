@@ -94,7 +94,7 @@ public class CreateSellerViewModel
     [Display(Name = "لوگو فروشگاه")]
     [IsImage("لوگو فروشگاه")]
     [MaxFileSize("لوگو فروشگاه", 1)]
-    public IFormFile LogoPicture { get; set; }
+    public IFormFile LogoFile { get; set; }
 
     /// <summary>
     /// عکس کارت ملی
