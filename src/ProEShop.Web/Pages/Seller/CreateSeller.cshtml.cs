@@ -77,20 +77,34 @@ public class CreateSellerModel : PageBase
             });
         }
 
+        if (!CreateSeller.IsLegalPerson)
+        {
+            CreateSeller.CompanyName
+                = CreateSeller.RegisterNumber
+                    = CreateSeller.EconomicCode
+                        = CreateSeller.SignatureOwners
+                            = CreateSeller.NationalId
+                                = null;
+            CreateSeller.CompanyType = null;
+        }
+
         var user = await _userManager.GetUserForCreateSeller(CreateSeller.PhoneNumber);
         if (user is null)
         {
             return Json(new JsonResultOperation(false, "کاربر مورد نظر یافت نشد"));
         }
+        user = _mapper.Map(CreateSeller, user);
 
         var seller = _mapper.Map<Entities.Seller>(CreateSeller);
         seller.UserId = user.Id;
         seller.ShopName = ShopName;
+        
 
-        var logoFileName = CreateSeller.LogoFile.GenerateFileName();
-        var idCartPictureName = CreateSeller.IdCartPictureFile.GenerateFileName();
+        string logoFileName = null;
+        if (CreateSeller.LogoFile.IsFileUploaded())
+            logoFileName = CreateSeller.LogoFile.GenerateFileName();
 
-        seller.IdCartPicture = idCartPictureName;
+        seller.IdCartPicture = CreateSeller.IdCartPictureFile.GenerateFileName();
         seller.Logo = logoFileName;
 
         seller.SellerCode = await _sellerService.GetSellerCodeForCreateSeller();
@@ -115,10 +129,14 @@ public class CreateSellerModel : PageBase
         }
         await _uow.SaveChangesAsync();
 
-        await _uploadFile.SaveFile(CreateSeller.IdCartPictureFile, idCartPictureName, null, "images", "seller-id-cart-pictures");
-        await _uploadFile.SaveFile(CreateSeller.LogoFile, logoFileName, null, "images", "seller-logos");
+        await _uploadFile.SaveFile(CreateSeller.IdCartPictureFile, seller.IdCartPicture, null, "images", "seller-id-cart-pictures");
+        if (logoFileName != null)
+            await _uploadFile.SaveFile(CreateSeller.LogoFile, logoFileName, null, "images", "seller-logos");
 
-        return Json(new JsonResultOperation(true, "شما با موفقیت به عنوان فروشنده انتخاب شدید"));
+        return Json(new JsonResultOperation(true, "شما با موفقیت به عنوان فروشنده انتخاب شدید")
+        {
+            Data = "/Seller/RegistrationDone"
+        });
     }
 
     public async Task<IActionResult> OnGetGetCities(long provinceId)
@@ -152,5 +170,10 @@ public class CreateSellerModel : PageBase
     {
         return Json(!await _sellerService.IsExistsBy(nameof(Entities.Seller.ShopName),
             shopName));
+    }
+    public async Task<IActionResult> OnGetCheckForShabaNumber(CreateSellerViewModel createSeller)
+    {
+        return Json(!await _sellerService.IsExistsBy(nameof(Entities.Seller.ShabaNumber),
+            createSeller.ShabaNumber));
     }
 }

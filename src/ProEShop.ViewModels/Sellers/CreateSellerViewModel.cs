@@ -109,6 +109,9 @@ public class CreateSellerViewModel
     [LtrDirection]
     [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
     [MaxLength(24, ErrorMessage = AttributesErrorMessages.MaxLengthMessage)]
+    [PageRemote(PageName = "/Seller/CreateSeller", PageHandler = "CheckForShabaNumber",
+        HttpMethod = "GET",
+        ErrorMessage = AttributesErrorMessages.RemoteMessage)]
     public string ShabaNumber { get; set; }
 
     [Display(Name = "شماره تلفن ثابت")]

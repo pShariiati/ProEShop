@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace ProEShop.Web.Pages.SellerPanel;
+namespace ProEShop.Web.Pages.Seller;
 
-public class IndexModel : SellerPanelBase
+public class RegistrationDoneModel : PageModel
 {
     public void OnGet()
     {

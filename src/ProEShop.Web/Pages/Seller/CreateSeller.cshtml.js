@@ -104,8 +104,9 @@ function putCitiesInTheSelectBox(message, data) {
     });
 }
 
-function test(message, data) {
-    console.log(message, data)
+function createSeller(message, data) {
+    showToastr('success', message);
+    location.href = data
 }
 
 const dtp1Instance = new mds.MdsPersianDateTimePicker(document.getElementById('birth-date-icon-create-seller'), {

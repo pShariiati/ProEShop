@@ -22,8 +22,6 @@ public class SellerService : GenericService<Seller>, ISellerService
         var result = new List<string>();
         if (await _sellers.AnyAsync(x => x.ShabaNumber == entity.ShabaNumber))
             result.Add(nameof(Seller.ShabaNumber));
-        if (await _sellers.AnyAsync(x => x.SellerCode == entity.SellerCode))
-            result.Add(nameof(Seller.SellerCode));
         if (await _sellers.AnyAsync(x => x.ShopName == entity.ShopName))
             result.Add(nameof(Seller.ShopName));
         if (!result.Any())

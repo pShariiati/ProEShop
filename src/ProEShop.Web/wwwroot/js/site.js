@@ -417,6 +417,10 @@ $('form input').blur(function () {
     $(this).parents('form').valid();
 });
 
+$('form input.custom-md-persian-datepicker').change(function () {
+    $(this).parents('form').valid();
+});
+
 $('form select').change(function () {
     $(this).parents('form').valid();
 });
