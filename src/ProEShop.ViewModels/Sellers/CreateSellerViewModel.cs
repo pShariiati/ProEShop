@@ -39,6 +39,7 @@ public class CreateSellerViewModel
 
     [Display(Name = "تاریخ تولد")]
     [LtrDirection]
+    [RegularExpression(@"^۱۳[۰-۸][۰-۹]\/(۰[۱-۹]|۱[۰-۲])\/(۰[۱-۹]|[۱۲][۰-۹]|۳[۰۱])$", ErrorMessage = AttributesErrorMessages.RegularExpressionMessage)]
     [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
     public string BirthDate { get; set; }
     

@@ -6,6 +6,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using ProEShop.Common.Constants;
 
 namespace ProEShop.Common.Helpers;
 
@@ -30,6 +32,22 @@ public static class StringHelpers
             result.Add($"این {columnDisplayName} قبلا در سیستم ثبت شده است");
         }
         return result;
+    }
+
+    public static void CheckStringInputs<T>(this ModelStateDictionary modelState, List<string> properties, T model)
+    {
+        foreach (var property in properties)
+        {
+            var currentProperty = typeof(T).GetProperty(property);
+            var propertyValue = currentProperty.GetValue(model);
+            if (string.IsNullOrWhiteSpace(propertyValue?.ToString()))
+            {
+                var propertyDisplayName = currentProperty!
+                    .GetCustomAttribute<DisplayAttribute>()!.Name;
+                modelState.AddModelError(property,
+                    AttributesErrorMessages.RequiredMessage.Replace("{0}", propertyDisplayName));
+            }
+        }
     }
 
     public static string GenerateFileName(this IFormFile file)

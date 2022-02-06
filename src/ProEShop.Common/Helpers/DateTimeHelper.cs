@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using DNTPersianUtils.Core;
 
 namespace ProEShop.Common.Helpers;
 
@@ -23,5 +24,32 @@ public static class DateTimeHelper
         var month = pc.GetMonth(dateTime).ToString("00/");
         var year = pc.GetYear(dateTime).ToString("0000/");
         return $"{year}{month}{day}";
+    }
+
+    public static ConvertDateForCreateSeller ToGregorianDateForCreateSeller(this string input)
+    {
+        input = input.ToEnglishNumbers();
+
+        var splitInput = input.Split('/');
+
+        var year = int.Parse(splitInput[0]);
+        var month = int.Parse(splitInput[1]);
+        var day = int.Parse(splitInput[2]);
+
+        try
+        {
+            var convertedDateTime = new DateTime(year, month, day, new PersianCalendar());
+            if (convertedDateTime.GetAge() < 18)
+            {
+                return new(true, false);
+            }
+
+            return new(true, true, convertedDateTime);
+
+        }
+        catch
+        {
+            return new(false);
+        }
     }
 }

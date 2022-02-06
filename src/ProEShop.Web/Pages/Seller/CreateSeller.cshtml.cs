@@ -87,6 +87,26 @@ public class CreateSellerModel : PageBase
                                 = null;
             CreateSeller.CompanyType = null;
         }
+        else
+        {
+            var legalPersonProperties = new List<string>
+            {
+                nameof(CreateSeller.CompanyName),
+                nameof(CreateSeller.RegisterNumber),
+                nameof(CreateSeller.EconomicCode),
+                nameof(CreateSeller.SignatureOwners),
+                nameof(CreateSeller.NationalId)
+            };
+
+            ModelState.CheckStringInputs(legalPersonProperties, CreateSeller);
+            if (!ModelState.IsValid)
+            {
+                return Json(new JsonResultOperation(false, PublicConstantStrings.ModelStateErrorMessage)
+                {
+                    Data = ModelState.GetModelStateErrors()
+                });
+            }
+        }
 
         var user = await _userManager.GetUserForCreateSeller(CreateSeller.PhoneNumber);
         if (user is null)
@@ -94,7 +114,18 @@ public class CreateSellerModel : PageBase
             return Json(new JsonResultOperation(false, "کاربر مورد نظر یافت نشد"));
         }
         user = _mapper.Map(CreateSeller, user);
+        var birthDateResult = CreateSeller.BirthDate.ToGregorianDateForCreateSeller();
+        if (!birthDateResult.IsOk)
+        {
+            return Json(new JsonResultOperation(false, "تاریخ تولد را به درستی وارد نمایید"));
+        }
 
+        if (!birthDateResult.IsGreaterThan18)
+        {
+            return Json(new JsonResultOperation(false, "سن شما باید بیشتر از ۱۸ سال باشد"));
+        }
+
+        user.BirthDate = birthDateResult.ConvertedDateTime;
         var seller = _mapper.Map<Entities.Seller>(CreateSeller);
         seller.UserId = user.Id;
         seller.ShopName = ShopName;
