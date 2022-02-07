@@ -2,16 +2,16 @@
 
 public class ConvertDateForCreateSeller
 {
-    public ConvertDateForCreateSeller(bool isOk, bool isGreaterThan18 = default, DateTime convertedDateTime = default)
+    public ConvertDateForCreateSeller(bool isOk, bool isRangeOk = default, DateTime convertedDateTime = default)
     {
         IsOk = isOk;
-        IsGreaterThan18 = isGreaterThan18;
+        IsRangeOk = isRangeOk;
         ConvertedDateTime = convertedDateTime;
     }
 
     public bool IsOk { get; set; }
 
-    public bool IsGreaterThan18 { get; set; }
+    public bool IsRangeOk { get; set; }
 
     public DateTime ConvertedDateTime { get; set; }
 }

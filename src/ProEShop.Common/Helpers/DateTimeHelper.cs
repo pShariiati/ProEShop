@@ -39,7 +39,8 @@ public static class DateTimeHelper
         try
         {
             var convertedDateTime = new DateTime(year, month, day, new PersianCalendar());
-            if (convertedDateTime.GetAge() < 18)
+            var age = convertedDateTime.GetAge();
+            if (age is < 18 or > 100)
             {
                 return new(true, false);
             }

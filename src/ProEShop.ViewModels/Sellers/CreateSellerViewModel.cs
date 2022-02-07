@@ -39,7 +39,7 @@ public class CreateSellerViewModel
 
     [Display(Name = "تاریخ تولد")]
     [LtrDirection]
-    [RegularExpression(@"^۱۳[۰-۸][۰-۹]\/(۰[۱-۹]|۱[۰-۲])\/(۰[۱-۹]|[۱۲][۰-۹]|۳[۰۱])$", ErrorMessage = AttributesErrorMessages.RegularExpressionMessage)]
+    [RegularExpression(@"^۱۳[۰-۸][۰-۹]\/(۰[۱-۹]|۱[۰-۲])\/(۰[۱-۹]|[۱۲][۰-۹]|۳[۰۱])$", ErrorMessage = "سن باید بین ۱۸ و ۱۰۰ سال باشد")]
     [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
     public string BirthDate { get; set; }
     

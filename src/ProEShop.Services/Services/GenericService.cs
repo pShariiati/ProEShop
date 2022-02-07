@@ -65,6 +65,8 @@ public abstract class GenericService<TEntity> : IGenericService<TEntity> where T
         entity.IsDeleted = false;
     }
 
+    public async Task<bool> AnyAsync() => await _entities.AnyAsync();
+
     public async Task<PaginationResultViewModel<T>> GenericPaginationAsync<T>(IQueryable<T> items, PaginationViewModel pagination)
     {
         if (pagination.CurrentPage < 1)

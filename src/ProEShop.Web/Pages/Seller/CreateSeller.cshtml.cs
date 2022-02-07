@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using AutoMapper;
+using Ganss.XSS;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ProEShop.Common;
@@ -25,10 +26,12 @@ public class CreateSellerModel : PageBase
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _uow;
     private readonly IUploadFileService _uploadFile;
+    private readonly IApplicationSignInManager _signInManager;
+    private readonly IHtmlSanitizer _htmlSanitizer;
 
     public CreateSellerModel(
         IApplicationUserManager userManager,
-        IProvinceAndCityService provinceAndCityService, ISellerService sellerService, IMapper mapper, IUnitOfWork uow, IUploadFileService uploadFile)
+        IProvinceAndCityService provinceAndCityService, ISellerService sellerService, IMapper mapper, IUnitOfWork uow, IUploadFileService uploadFile, IApplicationSignInManager signInManager, IHtmlSanitizer htmlSanitizer)
     {
         _userManager = userManager;
         _provinceAndCityService = provinceAndCityService;
@@ -36,6 +39,8 @@ public class CreateSellerModel : PageBase
         _mapper = mapper;
         _uow = uow;
         _uploadFile = uploadFile;
+        _signInManager = signInManager;
+        _htmlSanitizer = htmlSanitizer;
     }
 
     #endregion
@@ -120,12 +125,16 @@ public class CreateSellerModel : PageBase
             return Json(new JsonResultOperation(false, "تاریخ تولد را به درستی وارد نمایید"));
         }
 
-        if (!birthDateResult.IsGreaterThan18)
+        if (!birthDateResult.IsRangeOk)
         {
-            return Json(new JsonResultOperation(false, "سن شما باید بیشتر از ۱۸ سال باشد"));
+            return Json(new JsonResultOperation(false, "سن باید بین ۱۸ و ۱۰۰ سال باشد"));
         }
 
         user.BirthDate = birthDateResult.ConvertedDateTime;
+        if (CreateSeller.AboutSeller != null)
+        {
+            CreateSeller.AboutSeller = _htmlSanitizer.Sanitize(CreateSeller.AboutSeller);
+        }
         var seller = _mapper.Map<Entities.Seller>(CreateSeller);
         seller.UserId = user.Id;
         seller.ShopName = ShopName;
@@ -163,6 +172,8 @@ public class CreateSellerModel : PageBase
         await _uploadFile.SaveFile(CreateSeller.IdCartPictureFile, seller.IdCartPicture, null, "images", "seller-id-cart-pictures");
         if (logoFileName != null)
             await _uploadFile.SaveFile(CreateSeller.LogoFile, logoFileName, null, "images", "seller-logos");
+
+        await _signInManager.SignInAsync(user, true);
 
         return Json(new JsonResultOperation(true, "شما با موفقیت به عنوان فروشنده انتخاب شدید")
         {

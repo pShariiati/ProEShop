@@ -28,4 +28,24 @@ public class ProvinceAndCityService : GenericService<ProvinceAndCity>, IProvince
         return await _provinceAndCities.Where(x => x.ParentId == provinceId)
             .ToDictionaryAsync(x => x.Id, x => x.Title);
     }
+
+    public async Task<(long, long)> GetForSeedData()
+    {
+        var province = await _provinceAndCities.Where(x => x.ParentId == null)
+            .Select(x => new
+            {
+                x.Title,
+                x.Id
+            })
+            .SingleAsync(x => x.Title == "اصفهان");
+
+        var city = await _provinceAndCities.Where(x => x.ParentId != null)
+            .Select(x => new
+            {
+                x.Title,
+                x.Id
+            })
+            .SingleAsync(x => x.Title == "کاشان");
+        return (province.Id, city.Id);
+    }
 }

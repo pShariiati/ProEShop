@@ -1,0 +1,84 @@
+﻿<!doctype html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.rtl.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="~/lib/toastr.js/toastr.min.css" />
+    <link rel="stylesheet" href="~/lib/sweetalert2/dist/sweetalert2.min.css" />
+    @await RenderSectionAsync("Styles", false)
+    <link rel="stylesheet" href="~/css/site.css">
+    <link rel="stylesheet" href="~/css/seller-panel-styles.css">
+    <link rel="stylesheet" href="~/ProEShop.Web.styles.css">
+    <title>@ViewData["Title"] | پنل فروشندگان پرو شاپ</title>
+</head>
+
+<body class="bg-light">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">مرکز فروشنگان پروشاپ</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#seller-panel-navbar"
+                    aria-controls="seller-panel-navbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse d-lg-flex justify-content-between" id="seller-panel-navbar">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">منو اول</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">
+                            منو دوم
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">زیر منو یک</a></li>
+                            <li><a class="dropdown-item" href="#">زیر منو دو</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">منو اول</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">
+                            منو دوم
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">زیر منو یک</a></li>
+                            <li><a class="dropdown-item" href="#">زیر منو دو</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-1 mt-lg-2">
+        @RenderBody()
+    </div>
+
+    <footer>
+        <div class="container-fluid mt-3">
+            <div class="row bg-secondary text-white p-3">
+                <div class="h5 text-center">
+                    کلیه حقوق برای پروشاپ محفوظ است
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/toastr.js/toastr.min.js"></script>
+    <script src="~/lib/sweetalert2/dist/sweetalert2.min.js"></script>
+    @await RenderSectionAsync("Scripts", false)
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/seller-panel-scripts.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("CustomScripts", false)
+</body>
+
+</html>
