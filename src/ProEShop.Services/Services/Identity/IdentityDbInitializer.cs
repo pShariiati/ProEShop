@@ -188,6 +188,7 @@ public class IdentityDbInitializer : IIdentityDbInitializer
         var user = await _applicationUserManager.FindByNameAsync("09103332211");
         if (user is null)
         {
+            var thisMethodName = nameof(SeedDatabaseWithAdminUserAsync);
             var userToAdd = new User()
             {
                 FirstName = "میلاد",
@@ -205,7 +206,12 @@ public class IdentityDbInitializer : IIdentityDbInitializer
                 SendSmsLastTime = DateTime.Now,
                 PhoneNumberConfirmed = true
             };
-            await _applicationUserManager.CreateAsync(userToAdd);
+            var result = await _applicationUserManager.CreateAsync(userToAdd);
+            if (result == IdentityResult.Failed())
+            {
+                _logger.LogError($"{thisMethodName}: adminUser CreateAsync failed. {result.DumpErrors()}");
+                return IdentityResult.Failed();
+            }
             await _uow.SaveChangesAsync();
         }
         return IdentityResult.Success;
@@ -284,7 +290,7 @@ public class IdentityDbInitializer : IIdentityDbInitializer
                 IsDeleted = false,
                 ProvinceId = provinceId,
                 CityId = cityId,
-                IsDocumentApproved = false,
+                DocumentStatus = DocumentStatus.Confirmed,
                 User = user
             };
             await _applicationUserManager.AddToRoleAsync(user, ConstantRoles.Seller);
