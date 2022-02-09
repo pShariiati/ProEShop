@@ -17,6 +17,30 @@ public static class DateTimeHelper
         return ((byte)min, (byte)sec);
     }
 
+    public static string ToLongPersianDate(this DateTime dateTime)
+    {
+        var monthsNames = new[]
+        {
+            "فروردین",
+            "اردیبهشت",
+            "خرداد",
+            "تیر",
+            "مرداد",
+            "شهریور",
+            "مهر",
+            "آبان",
+            "آذر",
+            "دی",
+            "بهمن",
+            "اسفند",
+        };
+        var pc = new PersianCalendar();
+        var day = pc.GetDayOfMonth(dateTime).ToString("00");
+        var month = monthsNames[pc.GetMonth(dateTime) - 1];
+        var year = pc.GetYear(dateTime).ToString("0000");
+        return $"{day} {month} {year}".ToPersianNumbers();
+    }
+
     public static string ToShortPersianDate(this DateTime dateTime)
     {
         var pc = new PersianCalendar();

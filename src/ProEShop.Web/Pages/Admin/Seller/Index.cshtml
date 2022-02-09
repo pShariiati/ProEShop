@@ -24,6 +24,10 @@
                     <span class="span-error-message" asp-validation-for="Sellers.SearchSellers.SellerCode"></span>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
+                    <label class="form-label" asp-for="Sellers.SearchSellers.Sorting"></label>
+                    <select class="form-select" asp-for="Sellers.SearchSellers.Sorting" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.Sellers.SortingSellers>()"></select>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3 my-2">
                     <label class="form-label" asp-for="Sellers.SearchSellers.SortingOrder"></label>
                     <select class="form-select" asp-for="Sellers.SearchSellers.SortingOrder" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.SortingOrder>()"></select>
                 </div>

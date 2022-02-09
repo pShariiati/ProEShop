@@ -1,19 +1,23 @@
 ﻿using System.Linq.Expressions;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ProEShop.Common.Helpers;
 using ProEShop.DataLayer.Context;
 using ProEShop.Entities;
 using ProEShop.Services.Contracts;
 using ProEShop.ViewModels.Categories;
+using ProEShop.ViewModels.Sellers;
 
 namespace ProEShop.Services.Services;
 
 public class SellerService : GenericService<Seller>, ISellerService
 {
     private readonly DbSet<Seller> _sellers;
+    private readonly IMapper _mapper;
 
-    public SellerService(IUnitOfWork uow) : base(uow)
+    public SellerService(IUnitOfWork uow, IMapper mapper) : base(uow)
     {
+        _mapper = mapper;
         _sellers = uow.Set<Seller>();
     }
 
@@ -38,5 +42,23 @@ public class SellerService : GenericService<Seller>, ISellerService
             .Select(x => x.SellerCode)
             .FirstOrDefaultAsync();
         return latestSellerCode + 1;
+    }
+
+    public async Task<ShowSellersViewModel> GetSellers(ShowSellersViewModel model)
+    {
+        var sellers = _sellers.AsQueryable();
+
+        sellers = sellers.CreateOrderByExpression(model.SearchSellers.Sorting.ToString(),
+            model.SearchSellers.SortingOrder.ToString());
+
+        var paginationResult = await GenericPaginationAsync(sellers, model.Pagination);
+
+        return new()
+        {
+            Sellers = await _mapper.ProjectTo<ShowSellerViewModel>(
+                    paginationResult.Query)
+                .ToListAsync(),
+            Pagination = paginationResult.Pagination
+        };
     }
 }

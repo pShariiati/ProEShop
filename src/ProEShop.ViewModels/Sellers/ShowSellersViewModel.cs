@@ -9,7 +9,7 @@ public class ShowSellersViewModel
     public List<ShowSellerViewModel> Sellers { get; set; }
 
     public SearchSellersViewModel SearchSellers { get; set; }
-
+        = new();
     public PaginationViewModel Pagination { get; set; }
         = new();
 }
@@ -17,15 +17,21 @@ public class ShowSellersViewModel
 public class SearchSellersViewModel
 {
     [Display(Name = "کد فروشنده")]
-    public int SellerCode { get; set; }
+    public int? SellerCode { get; set; }
 
     [Display(Name = "نمایش بر اساس")]
-    public SortingCategories Sorting { get; set; }
+    public SortingSellers Sorting { get; set; }
 
     [Display(Name = "مرتب سازی بر اساس")]
     public SortingOrder SortingOrder { get; set; }
 }
 
+
+public enum SortingSellers
+{
+    [Display(Name = "شناسه")]
+    Id
+}
 
 public class ShowSellerViewModel
 {
@@ -48,5 +54,5 @@ public class ShowSellerViewModel
     public bool IsActive { get; set; }
 
     [Display(Name = "تاریخ ثبت نام")]
-    public DateTime CreatedDateTime { get; set; }
+    public string CreatedDateTime { get; set; }
 }
