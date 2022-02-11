@@ -5,6 +5,7 @@ using ProEShop.Common.Helpers;
 using ProEShop.DataLayer.Context;
 using ProEShop.Entities;
 using ProEShop.Services.Contracts;
+using ProEShop.ViewModels;
 using ProEShop.ViewModels.Categories;
 using ProEShop.ViewModels.Sellers;
 
@@ -48,8 +49,94 @@ public class SellerService : GenericService<Seller>, ISellerService
     {
         var sellers = _sellers.AsQueryable();
 
-        sellers = sellers.CreateOrderByExpression(model.SearchSellers.Sorting.ToString(),
-            model.SearchSellers.SortingOrder.ToString());
+        #region Search
+        var searchedFullName = model.SearchSellers.FullName;
+        if (!string.IsNullOrWhiteSpace(searchedFullName))
+        {
+            sellers = sellers.Where(x => (x.User.FirstName + " " + x.User.LastName).Contains(searchedFullName));
+        }
+
+        var searchedSellerCode = model.SearchSellers.SellerCode.ToString();
+        if (!string.IsNullOrWhiteSpace(searchedSellerCode))
+        {
+            sellers = sellers.Where(x => x.SellerCode.ToString().Contains(searchedSellerCode));
+        }
+
+        var searchedShopName = model.SearchSellers.ShopName;
+        if (!string.IsNullOrWhiteSpace(searchedShopName))
+        {
+            sellers = sellers.Where(x => x.ShopName.Contains(searchedShopName));
+        }
+
+        switch (model.SearchSellers.IsRealPersonStatus)
+        {
+            case IsRealPersonStatus.IsRealPerson:
+                sellers = sellers.Where(x => x.IsRealPerson);
+                break;
+            case IsRealPersonStatus.IsLegalPerson:
+                sellers = sellers.Where(x => !x.IsRealPerson);
+                break;
+        }
+
+        switch (model.SearchSellers.IsActiveStatus)
+        {
+            case IsActiveStatus.Active:
+                sellers = sellers.Where(x => x.IsActive);
+                break;
+            case IsActiveStatus.Disabled:
+                sellers = sellers.Where(x => !x.IsActive);
+                break;
+        }
+
+        var searchedDocumentStatus = model.SearchSellers.DocumentStatus;
+        if (searchedDocumentStatus != null)
+        {
+            sellers = sellers.Where(x => x.DocumentStatus == searchedDocumentStatus);
+        }
+        #endregion
+
+        #region OrderBy
+
+        if (model.SearchSellers.Sorting == SortingSellers.Province)
+        {
+            if (model.SearchSellers.SortingOrder == SortingOrder.Asc)
+            {
+                sellers = sellers.OrderBy(x => x.Province.Title);
+            }
+            else
+            {
+                sellers = sellers.OrderByDescending(x => x.Province.Title);
+            }
+        }
+        else if (model.SearchSellers.Sorting == SortingSellers.City)
+        {
+            if (model.SearchSellers.SortingOrder == SortingOrder.Asc)
+            {
+                sellers = sellers.OrderBy(x => x.City.Title);
+            }
+            else
+            {
+                sellers = sellers.OrderByDescending(x => x.City.Title);
+            }
+        }
+        else if (model.SearchSellers.Sorting == SortingSellers.FullName)
+        {
+            if (model.SearchSellers.SortingOrder == SortingOrder.Asc)
+            {
+                sellers = sellers.OrderBy(x => x.User.FirstName + " " + x.User.LastName);
+            }
+            else
+            {
+                sellers = sellers.OrderByDescending(x => x.User.FirstName + " " + x.User.LastName);
+            }
+        }
+        else
+        {
+            sellers = sellers.CreateOrderByExpression(model.SearchSellers.Sorting.ToString(),
+                model.SearchSellers.SortingOrder.ToString());
+        }
+
+        #endregion
 
         var paginationResult = await GenericPaginationAsync(sellers, model.Pagination);
 

@@ -17,7 +17,7 @@ public class IndexModel : PageBase
         _sellerService = sellerService;
     }
 
-    [BindProperty]
+    [BindProperty(SupportsGet = true)]
     public ShowSellersViewModel Sellers { get; set; }
         = new();
 

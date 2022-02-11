@@ -7,6 +7,7 @@
         <table class="table table-bordered table-striped table-hover">
             <thead class="table-light">
                 <tr>
+                    <th>@Html.DisplayNameFor(x => x.Sellers[0].Id)</th>
                     <th>@Html.DisplayNameFor(x => x.Sellers[0].ShopName)</th>
                     <th>@Html.DisplayNameFor(x => x.Sellers[0].FullName)</th>
                     <th>@Html.DisplayNameFor(x => x.Sellers[0].SellerCode)</th>
@@ -14,6 +15,7 @@
                     <th>@Html.DisplayNameFor(x => x.Sellers[0].DocumentStatus)</th>
                     <th>@Html.DisplayNameFor(x => x.Sellers[0].CreatedDateTime)</th>
                     <th>@Html.DisplayNameFor(x => x.Sellers[0].IsActive)</th>
+                    <th>@Html.DisplayNameFor(x => x.Sellers[0].IsRealPerson)</th>
                     <th>عملیات</th>
                 </tr>
             </thead>
@@ -21,6 +23,7 @@
                 @foreach (var seller in Model.Sellers)
                 {
                     <tr>
+                        <td>@seller.Id</td>
                         <td>@seller.ShopName</td>
                         <td>@seller.FullName</td>
                         <td>@seller.SellerCode</td>
@@ -54,6 +57,20 @@
                             {
                                 <div class="d-grid">
                                     <span class="btn btn-warning" type="button">غیر فعال</span>
+                                </div>
+                            }
+                        </td>
+                        <td>
+                            @if (seller.IsRealPerson)
+                            {
+                                <div class="d-grid">
+                                    <span class="btn btn-success" type="button">شخص حقیقی</span>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="d-grid">
+                                    <span class="btn btn-primary" type="button">شخص حقوقی</span>
                                 </div>
                             }
                         </td>

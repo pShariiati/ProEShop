@@ -24,6 +24,30 @@
                     <span class="span-error-message" asp-validation-for="Sellers.SearchSellers.SellerCode"></span>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
+                    <label class="form-label" asp-for="Sellers.SearchSellers.FullName"></label>
+                    <input class="form-control" asp-for="Sellers.SearchSellers.FullName" />
+                    <span class="span-error-message" asp-validation-for="Sellers.SearchSellers.FullName"></span>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3 my-2">
+                    <label class="form-label" asp-for="Sellers.SearchSellers.ShopName"></label>
+                    <input class="form-control" asp-for="Sellers.SearchSellers.ShopName" />
+                    <span class="span-error-message" asp-validation-for="Sellers.SearchSellers.ShopName"></span>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3 my-2">
+                    <label class="form-label" asp-for="Sellers.SearchSellers.IsActiveStatus"></label>
+                    <select class="form-select" asp-for="Sellers.SearchSellers.IsActiveStatus" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.Sellers.IsActiveStatus>()"></select>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3 my-2">
+                    <label class="form-label" asp-for="Sellers.SearchSellers.IsRealPersonStatus"></label>
+                    <select class="form-select" asp-for="Sellers.SearchSellers.IsRealPersonStatus" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.Sellers.IsRealPersonStatus>()"></select>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3 my-2">
+                    <label class="form-label" asp-for="Sellers.SearchSellers.DocumentStatus"></label>
+                    <select class="form-select" asp-for="Sellers.SearchSellers.DocumentStatus" asp-items="Html.GetEnumSelectList<ProEShop.Entities.DocumentStatus>()">
+                        <option value="">نمایش همه</option>
+                    </select>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3 my-2">
                     <label class="form-label" asp-for="Sellers.SearchSellers.Sorting"></label>
                     <select class="form-select" asp-for="Sellers.SearchSellers.Sorting" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.Sellers.SortingSellers>()"></select>
                 </div>
