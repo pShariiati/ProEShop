@@ -27,7 +27,7 @@ public class MappingProfile : Profile
                     options.MapFrom(src => $"{src.Province.Title} - {src.City.Title}"))
             .ForMember(dest => dest.CreatedDateTime,
                 options =>
-                    options.MapFrom(src => src.CreatedDateTime.ToLongPersianDate()))
-        ;
+                    options.MapFrom(src => src.CreatedDateTime.ToLongPersianDate()));
+        this.CreateMap<Entities.Seller, SellerDetailsViewModel>();
     }
 }

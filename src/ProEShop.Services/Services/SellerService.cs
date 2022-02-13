@@ -148,4 +148,11 @@ public class SellerService : GenericService<Seller>, ISellerService
             Pagination = paginationResult.Pagination
         };
     }
+
+    public async Task<SellerDetailsViewModel> GetSellerDetails(long id)
+    {
+        return await _mapper.ProjectTo<SellerDetailsViewModel>(
+            _sellers
+        ).SingleOrDefaultAsync(x => x.Id == id);
+    }
 }

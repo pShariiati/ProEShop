@@ -354,10 +354,20 @@ function fillDataTable() {
             activatingDeleteButtons();
             activatingPageCount();
             enablingTooltips();
+            activatingGetHtmlWithAjax();
         }
         else {
             showErrorMessage();
         }
+    });
+}
+
+function activatingGetHtmlWithAjax() {
+    debugger;
+    $('.get-html-with-ajax').click(function () {
+        debugger;
+        var funcToCall = $(this).attr('functionNameToCallOnClick');
+        window[funcToCall](this);
     });
 }
 
@@ -435,7 +445,7 @@ $(document).on('submit', 'form.public-ajax-form', function (e) {
     e.preventDefault();
     var currentForm = $(this);
     var formAction = currentForm.attr('action');
-    var functionName = currentForm.attr('call-function-in-the-end');
+    var functionName = currentForm.attr('functionNameToCallInTheEnd');
     var formData = new FormData(this);
     $.ajax({
         url: formAction,
@@ -577,6 +587,25 @@ function getDataWithAJAX(url, formData, functionNameToCallInTheEnd) {
         error: function () {
             showErrorMessage();
         }
+    });
+}
+
+// خواندن صفحات
+// html
+// از سمت سرور
+function getHtmlWithAJAX(url, formData, functionNameToCallInTheEnd) {
+    debugger;
+    showLoading();
+    $.get(url, formData, function (data, status) {
+        if (data.isSuccessful === false) {
+            showToastr('warning', data.message);
+        } else {
+            window[functionNameToCallInTheEnd](data);
+        }
+    }).fail(function() {
+        showErrorMessage();
+    }).always(function() {
+        hideLoading();
     });
 }
 

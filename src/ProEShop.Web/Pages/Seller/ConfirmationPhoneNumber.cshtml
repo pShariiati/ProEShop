@@ -22,13 +22,13 @@
                 </div>
                 <div class="card-body">
                     <form autocomplete="off"
-                        call-function-in-the-end="confirmationSellerPhoneNumber"
+                          functionNameToCallInTheEnd="confirmationSellerPhoneNumber"
                           method="post" class="public-ajax-form"
                           asp-page="./ConfirmationPhoneNumber">
-                        <input asp-for="Confirmation.PhoneNumber"/>
+                        <input asp-for="Confirmation.PhoneNumber" />
                         <div class="alert alert-warning">
                             کد فعال سازی (حالت توسعه)
-                            <br/>
+                            <br />
                             <span id="activation-code-box">@Model.ActivationCode</span>
                         </div>
                         <h5 class="text-center">
@@ -43,7 +43,7 @@
                                 <i class="bi bi-check-circle"></i>
                             </span>
                             <input asp-for="Confirmation.ActivationCode" class="form-control rtl-direction"
-                                   placeholder="@Html.DisplayNameFor(x => x.Confirmation.ActivationCode)"/>
+                                   placeholder="@Html.DisplayNameFor(x => x.Confirmation.ActivationCode)" />
                         </div>
                         <span class="span-error-message mb-3" asp-validation-for="Confirmation.ActivationCode"></span>
 
@@ -79,16 +79,16 @@
 
 @section Scripts
 {
-    <partial name="Shared/_ValidationScriptsPartial" />
-    <script src="~/lib/toastr.js/toastr.min.js"></script>
+<partial name="Shared/_ValidationScriptsPartial" />
+<script src="~/lib/toastr.js/toastr.min.js"></script>
 }
 
 @section CustomScripts
 {
-    <script src="~/Pages/Seller/ConfirmationPhoneNumber.cshtml.js"></script>
+<script src="~/Pages/Seller/ConfirmationPhoneNumber.cshtml.js"></script>
 }
 
 @section Styles
 {
-    <link rel="stylesheet" href="~/lib/toastr.js/toastr.min.css" />
+<link rel="stylesheet" href="~/lib/toastr.js/toastr.min.css" />
 }

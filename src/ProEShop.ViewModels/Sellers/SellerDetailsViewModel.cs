@@ -1,21 +1,18 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
-using ProEShop.Entities.AuditableEntity;
-using ProEShop.Entities.Identity;
+using ProEShop.Entities;
 
-namespace ProEShop.Entities;
+namespace ProEShop.ViewModels.Sellers;
 
-[Table("Sellers")]
-[Index(nameof(Seller.ShabaNumber), IsUnique = true)]
-[Index(nameof(Seller.ShopName), IsUnique = true)]
-[Index(nameof(Seller.SellerCode), IsUnique = true)]
-public class Seller : EntityBase, IAuditableEntity
+public class SellerDetailsViewModel
 {
-    #region Properties
+    [Display(Name = "شناسه")]
+    public long Id { get; set; }
 
-    public long UserId { get; set; }
+    [Display(Name = "نام فروشنده")]
+    public string UserFullName { get; set; }
 
+    [Display(Name = "شخص حقوقی / شخص حقیقی")]
     public bool IsRealPerson { get; set; }
 
     #region Legal person
@@ -83,10 +80,10 @@ public class Seller : EntityBase, IAuditableEntity
     public string Website { get; set; }
 
     [Display(Name = "استان")]
-    public long ProvinceId { get; set; }
+    public string ProvinceTitle { get; set; }
 
     [Display(Name = "شهرستان")]
-    public long CityId { get; set; }
+    public string CityTitle { get; set; }
 
     [Display(Name = "آدرس کامل")]
     [Required]
@@ -108,52 +105,4 @@ public class Seller : EntityBase, IAuditableEntity
 
     [Display(Name = "تاریخ ثبت نام")]
     public DateTime CreatedDateTime { get; set; }
-
-    #endregion
-
-    #region Relations
-
-    public User User { get; set; }
-
-    public ProvinceAndCity Province { get; set; }
-
-    public ProvinceAndCity City { get; set; }
-
-    #endregion
-}
-
-public enum DocumentStatus : byte
-{
-    [Display(Name = "در انتظار تایید اولیه")]
-    AwaitingInitialApproval,
-
-    [Display(Name = "تایید شده")]
-    Confirmed,
-
-    [Display(Name = "رد شده در حالت اولیه")]
-    Rejected,
-
-    [Display(Name = "در انتظار تایید فروشنده سیستم")]
-    AwaitingApprovalSystemSeller,
-
-    [Display(Name = "رد شده برای فروشنده  سیستم")]
-    RejectedSystemSeller
-}
-
-public enum CompanyType : byte
-{
-    [Display(Name = "سهامی عام")]
-    PublicStock,
-
-    [Display(Name = "سهامی خاص")]
-    PrivateEquity,
-
-    [Display(Name = "مسئولیت محدود")]
-    LimitedResponsibility,
-
-    [Display(Name = "تعاونی")]
-    Cooperative,
-
-    [Display(Name = "تضامنی")]
-    Solidarity
 }
