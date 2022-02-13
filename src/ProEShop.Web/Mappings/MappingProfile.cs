@@ -28,6 +28,9 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.CreatedDateTime,
                 options =>
                     options.MapFrom(src => src.CreatedDateTime.ToLongPersianDate()));
-        this.CreateMap<Entities.Seller, SellerDetailsViewModel>();
+        this.CreateMap<Entities.Seller, SellerDetailsViewModel>()
+            .ForMember(dest => dest.CreatedDateTime,
+                options =>
+                    options.MapFrom(src => src.CreatedDateTime.ToLongPersianDate())); ;
     }
 }

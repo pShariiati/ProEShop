@@ -1,9 +1,241 @@
-﻿@model ProEShop.ViewModels.Sellers.SellerDetailsViewModel
-
-<h3>
-    @Model.Id
-    @Model.ShopName
-    @Model.ProvinceTitle
-    @Model.CityTitle
-    @Model.UserFullName
-</h3>
+﻿@using ProEShop.Common.Helpers
+@using ProEShop.Entities
+@using ProEShop.Entities.Identity
+@model ProEShop.ViewModels.Sellers.SellerDetailsViewModel
+@{
+    var isRealPerson = Model.IsRealPerson;
+    var documentStatusButtonClass = string.Empty;
+    if (Model.DocumentStatus is DocumentStatus.AwaitingApprovalSystemSeller
+        or DocumentStatus.AwaitingInitialApproval)
+        documentStatusButtonClass = "warning";
+    else if (Model.DocumentStatus == DocumentStatus.Confirmed)
+        documentStatusButtonClass = "success";
+    else
+        documentStatusButtonClass = "danger";
+    var isActive = Model.IsActive;
+}
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">
+            اطلاعات کامل فروشگاه
+            <b>@Model.ShopName</b>
+            با مدیریت
+            <b>@Model.UserFullName</b>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div>
+                <p class="fw-bold">
+                    <span class="btn btn-@(isRealPerson ? "success" : "primary")">
+                        @(isRealPerson ? "شخص حقیقی" : "شخص حقوقی")
+                    </span>
+                    <span class="btn btn-@documentStatusButtonClass">
+                        @Model.DocumentStatus.GetEnumDisplayName()
+                    </span>
+                    <span class="btn btn-info">
+                        @if (Model.UserGender == Gender.Man)
+                        {
+                            <text>آقا</text>
+                            <i class="bi bi-person-fill"></i>
+                        }
+                        else
+                        {
+                            @:خانم
+                            <i class="bi bi-person-heart"></i>
+                        }
+                    </span>
+                    <span class="btn btn-dark">
+                        @Model.CreatedDateTime
+                    </span>
+                    <span class="btn btn-@(isActive ? "success" : "danger")">
+                        @(isActive ? "فعال" : "غیر فعال")
+                    </span>
+                </p>
+            </div>
+            @if (!isRealPerson)
+            {
+                <div class="row">
+                    <div class="col-md-4 col-lg-3">
+                        <p class="fw-bold">
+                            @Html.DisplayNameFor(x=> x.CompanyName)
+                        </p>
+                        <p>
+                            @Model.CompanyName
+                        </p>
+                    </div>
+                    <div class="col-md-4 col-lg-3">
+                        <p class="fw-bold">
+                            @Html.DisplayNameFor(x=> x.RegisterNumber)
+                        </p>
+                        <p>
+                            @Model.RegisterNumber
+                        </p>
+                    </div>
+                    <div class="col-md-4 col-lg-3">
+                        <p class="fw-bold">
+                            @Html.DisplayNameFor(x=> x.EconomicCode)
+                        </p>
+                        <p>
+                            @Model.EconomicCode
+                        </p>
+                    </div>
+                    <div class="col-md-4 col-lg-3">
+                        <p class="fw-bold">
+                            @Html.DisplayNameFor(x=> x.SignatureOwners)
+                        </p>
+                        <p>
+                            @Model.SignatureOwners
+                        </p>
+                    </div>
+                    <div class="col-md-4 col-lg-3">
+                        <p class="fw-bold">
+                            @Html.DisplayNameFor(x=> x.NationalId)
+                        </p>
+                        <p>
+                            @Model.NationalId
+                        </p>
+                    </div>
+                    <div class="col-md-4 col-lg-3">
+                        <p class="fw-bold">
+                            @Html.DisplayNameFor(x=> x.CompanyType)
+                        </p>
+                        <p>
+                            @Model.CompanyType.GetEnumDisplayName()
+                        </p>
+                    </div>
+                </div>
+                <hr />
+            }
+            <div class="row">
+                <div class="col-md-4 col-lg-3">
+                    <p class="fw-bold">
+                        @Html.DisplayNameFor(x=> x.Id)
+                    </p>
+                    <p>
+                        @Model.Id
+                    </p>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <p class="fw-bold">
+                        @Html.DisplayNameFor(x=> x.UserFirstName)
+                    </p>
+                    <p>
+                        @Model.UserFullName
+                    </p>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <p class="fw-bold">
+                        @Html.DisplayNameFor(x=> x.UserLastName)
+                    </p>
+                    <p>
+                        @Model.UserFullName
+                    </p>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <p class="fw-bold">
+                        @Html.DisplayNameFor(x=> x.SellerCode)
+                    </p>
+                    <p>
+                        @Model.SellerCode
+                    </p>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <p class="fw-bold">
+                        @Html.DisplayNameFor(x=> x.ShopName)
+                    </p>
+                    <p>
+                        @Model.ShopName
+                    </p>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <p class="fw-bold">
+                        @Html.DisplayNameFor(x=> x.Logo)
+                    </p>
+                    <p>
+                        @if (Model.Logo is null)
+                        {
+                            <span class="btn btn-primary">بدون لوگو</span>
+                        }
+                        else
+                        {
+                            <img width="100" src="~/images/seller-logos/@Model.Logo" alt="لوگو فروشگاه @Model.ShopName" />
+                        }
+                    </p>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <p class="fw-bold">
+                        @Html.DisplayNameFor(x=> x.IdCartPicture)
+                    </p>
+                    <p>
+                        <img width="100" src="~/images/seller-id-cart-pictures/@Model.IdCartPicture" alt="تصویر کارت ملی" />
+                    </p>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <p class="fw-bold">
+                        @Html.DisplayNameFor(x=> x.ShabaNumber)
+                    </p>
+                    <p>
+                        IR @Model.ShabaNumber
+                    </p>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <p class="fw-bold">
+                        @Html.DisplayNameFor(x=> x.Telephone)
+                    </p>
+                    <p>
+                        @Model.Telephone
+                    </p>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <p class="fw-bold">
+                        @Html.DisplayNameFor(x=> x.Website)
+                    </p>
+                    <p>
+                        <a href="@Model.Website" target="_blank">@Model.Website</a>
+                    </p>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <p class="fw-bold">
+                        @Html.DisplayNameFor(x=> x.ProvinceTitle)
+                    </p>
+                    <p>
+                        @Model.ProvinceTitle
+                    </p>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <p class="fw-bold">
+                        @Html.DisplayNameFor(x=> x.CityTitle)
+                    </p>
+                    <p>
+                        @Model.CityTitle
+                    </p>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <p class="fw-bold">
+                        @Html.DisplayNameFor(x=> x.PostalCode)
+                    </p>
+                    <p>
+                        @Model.PostalCode
+                    </p>
+                </div>
+                <div class="col-lg-9">
+                    <p class="fw-bold">
+                        @Html.DisplayNameFor(x=> x.Address)
+                    </p>
+                    <p>
+                        @Model.Address
+                    </p>
+                </div>
+                <div>
+                    <p class="fw-bold">
+                        @Html.DisplayNameFor(x=> x.AboutSeller)
+                    </p>
+                    <p>
+                        @Html.Raw(Model.AboutSeller)
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

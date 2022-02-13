@@ -1,12 +1,14 @@
 ﻿fillDataTable();
+appendHtmlModalPlaceToBody();
 
 function getSellerDetails(e) {
-    debugger;
     var sellerId = $(e).attr('seller-id');
-    getHtmlWithAJAX('?handler=GetSellerDetails', { sellerId: sellerId }, 'showSellerDetailsInModal')
+    getHtmlWithAJAX('?handler=GetSellerDetails', { sellerId: sellerId }, 'showSellerDetailsInModal', e);
 }
 
-function showSellerDetailsInModal(result) {
-    debugger;
-    console.log(result);
+function showSellerDetailsInModal(result, clickedButton) {
+    var currnetModal = $('#html-modal-place');
+    currnetModal.find('.modal-body').html(result);
+    currnetModal.modal('show');
+    $('#html-modal-place .modal-header h5').html($(clickedButton).text().trim());
 }

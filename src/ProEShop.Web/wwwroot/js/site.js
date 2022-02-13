@@ -1,6 +1,47 @@
 ﻿//__RequestVerificationToken
 var rvt = '__RequestVerificationToken';
 
+var htmlModalPlace = `<div class="modal fade" id="html-modal-place" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer d-flex justify-content-start">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">بستن</button>
+            </div>
+        </div>
+    </div>
+</div>`;
+
+function appendHtmlModalPlaceToBody() {
+    if ($('#html-modal-place').length === 0) {
+        $('body').append(htmlModalPlace);
+    }
+}
+
+var formModalPlace = `<div class="modal fade" id="form-modal-place" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer d-flex justify-content-start">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">بستن</button>
+            </div>
+        </div>
+    </div>
+</div>`;
+
+function appendFormModalPlaceToBody() {
+    if ($('#form-modal-place').length === 0) {
+        $('body').append(formModalPlace);
+    }
+}
 var loadingModalHtml = `<div class="modal" id="loading-modal" data-bs-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -254,7 +295,7 @@ function activatingDeleteButtons() {
         }).then((result) => {
             if (result.isConfirmed) {
                 showLoading();
-                $.post(currentForm.attr('action'), formData, function (data, status) {
+                $.post(currentForm.attr('action'), formData, function (data) {
                     if (data.isSuccessful === false) {
                         showToastr('warning', data.message);
                     }
@@ -295,7 +336,7 @@ function activatingModalForm() {
         }
         $('#form-modal-place .modal-header h5').html(customTitle);
         showLoading();
-        $.get(urlToLoadTheForm, function (data, status) {
+        $.get(urlToLoadTheForm, function (data) {
             if (data.isSuccessful === false) {
                 showToastr('warning', data.message);
             }
@@ -341,12 +382,14 @@ function fillDataTable() {
     $('.data-table-loading').removeClass('d-none');
     $('#record-not-found-box').remove();
 
-    const formData = $('form.search-form-via-ajax').serializeArray();
+    var currentForm = $('form.search-form-via-ajax');
+    const formData = currentForm.serializeArray();
 
-    $.get(`${location.pathname}?handler=GetDataTable`, formData, function (data, status) {
-        $('.search-form-submit-button').removeAttr('disabled');
-        $('.data-table-loading').addClass('d-none');
-        if (status == 'success') {
+    $.get(`${location.pathname}?handler=GetDataTable`, formData, function (data) {
+        if (data.isSuccessful === false) {
+            fillValidationForm(data.data, currentForm);
+            showToastr('warning', data.message);
+        } else {
             $('.data-table-place').append(data);
             activatingPagination();
             activatingGotoPage();
@@ -356,16 +399,16 @@ function fillDataTable() {
             enablingTooltips();
             activatingGetHtmlWithAjax();
         }
-        else {
-            showErrorMessage();
-        }
+    }).fail(function() {
+        showErrorMessage();
+    }).always(function() {
+        $('.search-form-submit-button').removeAttr('disabled');
+        $('.data-table-loading').addClass('d-none');
     });
 }
 
 function activatingGetHtmlWithAjax() {
-    debugger;
     $('.get-html-with-ajax').click(function () {
-        debugger;
         var funcToCall = $(this).attr('functionNameToCallOnClick');
         window[funcToCall](this);
     });
@@ -392,7 +435,7 @@ $(document).on('submit', 'form.custom-ajax-form', function (e) {
             currentForm.find('.submit-custom-ajax-button span').removeClass('d-none');
             currentForm.find('.submit-custom-ajax-button').attr('disabled', 'disabled');
         },
-        success: function (data, status) {
+        success: function (data) {
             if (data.isSuccessful === false) {
                 fillValidationForm(data.data, currentForm);
                 showToastr('warning', data.message);
@@ -458,7 +501,7 @@ $(document).on('submit', 'form.public-ajax-form', function (e) {
         beforeSend: function () {
             showLoading();
         },
-        success: function (data, status) {
+        success: function (data) {
             if (data.isSuccessful === false) {
                 //var finalData = data.data != null ? data.data : [data.message];
                 var finalData = data.data || [data.message];
@@ -516,7 +559,7 @@ $(document).on('submit', 'form.search-form-via-ajax', function (e) {
     $('.data-table-body').html('');
     $('[data-bs-toggle="tooltip"], .tooltip').tooltip("hide");
     $('#record-not-found-box').remove();
-    $.get(`${location.pathname}?handler=GetDataTable`, formData, function (data, status) {
+    $.get(`${location.pathname}?handler=GetDataTable`, formData, function (data) {
         isMainPaginationClicked = false;
         isGotoPageClicked = false;
         // hide loading and activating button
@@ -525,23 +568,18 @@ $(document).on('submit', 'form.search-form-via-ajax', function (e) {
 
         $('.data-table-loading').addClass('d-none');
 
-        if (status == 'success') {
-            if (data.isSuccessful === false) {
-                fillValidationForm(data.data, currentForm);
-                showToastr('warning', data.message);
-            }
-            else {
-                $('.data-table-place').append(data);
-                activatingPagination();
-                activatingGotoPage();
-                activatingModalForm();
-                activatingDeleteButtons();
-                activatingPageCount();
-                enablingTooltips();
-            }
+        if (data.isSuccessful === false) {
+            fillValidationForm(data.data, currentForm);
+            showToastr('warning', data.message);
         }
         else {
-            showErrorMessage();
+            $('.data-table-place').append(data);
+            activatingPagination();
+            activatingGotoPage();
+            activatingModalForm();
+            activatingDeleteButtons();
+            activatingPageCount();
+            enablingTooltips();
         }
     });
 });
@@ -573,7 +611,7 @@ function getDataWithAJAX(url, formData, functionNameToCallInTheEnd) {
         beforeSend: function () {
             showLoading();
         },
-        success: function (data, status) {
+        success: function (data) {
             if (data.isSuccessful === false) {
                 showToastr('warning', data.message);
             }
@@ -593,14 +631,13 @@ function getDataWithAJAX(url, formData, functionNameToCallInTheEnd) {
 // خواندن صفحات
 // html
 // از سمت سرور
-function getHtmlWithAJAX(url, formData, functionNameToCallInTheEnd) {
-    debugger;
+function getHtmlWithAJAX(url, formData, functionNameToCallInTheEnd, clickedButton) {
     showLoading();
-    $.get(url, formData, function (data, status) {
+    $.get(url, formData, function (data) {
         if (data.isSuccessful === false) {
             showToastr('warning', data.message);
         } else {
-            window[functionNameToCallInTheEnd](data);
+            window[functionNameToCallInTheEnd](data, clickedButton);
         }
     }).fail(function() {
         showErrorMessage();

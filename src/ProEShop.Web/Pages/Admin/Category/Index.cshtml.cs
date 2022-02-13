@@ -40,6 +40,7 @@ public class IndexModel : PageBase
     {
         if (!ModelState.IsValid)
         {
+            ModelState.AddModelError(string.Empty, PublicConstantStrings.ModelStateErrorMessage);
             return Json(new JsonResultOperation(false, PublicConstantStrings.ModelStateErrorMessage)
             {
                 Data = ModelState.GetModelStateErrors()

@@ -19,7 +19,7 @@
       "destination": "wwwroot\\lib\\jquery-validation-unobtrusive"
     },
     {
-      "library": "bootstrap-icons@1.7.0",
+      "library": "bootstrap-icons@1.8.1",
       "destination": "wwwroot\\lib\\bootstrap-icons"
     },
     {
