@@ -31,7 +31,11 @@ public class CreateSellerModel : PageBase
 
     public CreateSellerModel(
         IApplicationUserManager userManager,
-        IProvinceAndCityService provinceAndCityService, ISellerService sellerService, IMapper mapper, IUnitOfWork uow, IUploadFileService uploadFile, IApplicationSignInManager signInManager, IHtmlSanitizer htmlSanitizer)
+        IProvinceAndCityService provinceAndCityService,
+        ISellerService sellerService, IMapper mapper,
+        IUnitOfWork uow, IUploadFileService uploadFile,
+        IApplicationSignInManager signInManager,
+        IHtmlSanitizer htmlSanitizer)
     {
         _userManager = userManager;
         _provinceAndCityService = provinceAndCityService;

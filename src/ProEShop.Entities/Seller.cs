@@ -104,10 +104,14 @@ public class Seller : EntityBase, IAuditableEntity
     [Display(Name = "وضعیت مدارک")]
     public DocumentStatus DocumentStatus { get; set; }
 
-    public bool IsActive { get; set; }
+    public bool IsActive { get; set; } = true;
 
     [Display(Name = "تاریخ ثبت نام")]
     public DateTime CreatedDateTime { get; set; }
+
+    [Display(Name = "دلایل رد مدراک فروشنده")]
+    [Column(TypeName = "ntext")]
+    public string RejectReason { get; set; }
 
     #endregion
 

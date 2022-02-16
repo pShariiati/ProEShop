@@ -580,6 +580,7 @@ $(document).on('submit', 'form.search-form-via-ajax', function (e) {
             activatingDeleteButtons();
             activatingPageCount();
             enablingTooltips();
+            activatingGetHtmlWithAjax();
         }
     });
 });
