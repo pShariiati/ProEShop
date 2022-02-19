@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Mvc;
+using ProEShop.Common.Attributes;
 using ProEShop.Common.Constants;
 using ProEShop.Entities;
 using ProEShop.Entities.Identity;
@@ -95,7 +96,7 @@ public class SellerDetailsViewModel
     [Display(Name = "تاریخ ثبت نام")]
     public string CreatedDateTime { get; set; }
 
-    [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
+    [MakeTinyMceRequired]
     [Display(Name = "دلایل رد مدراک فروشنده")]
     public string RejectReason { get; set; }
 }

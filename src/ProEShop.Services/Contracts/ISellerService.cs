@@ -9,4 +9,5 @@ public interface ISellerService : IGenericService<Seller>
     Task<int> GetSellerCodeForCreateSeller();
     Task<ShowSellersViewModel> GetSellers(ShowSellersViewModel model);
     Task<SellerDetailsViewModel> GetSellerDetails(long id);
+    Task<Seller> GetSellerToRemoveInManagingSellers(long id);
 }

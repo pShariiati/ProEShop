@@ -108,6 +108,12 @@ function initializeTinyMCE() {
         tinymce.remove('textarea.custom-tinymce');
         tinymce.init({
             selector: 'textarea.custom-tinymce',
+            setup: function (editor) {
+                editor.on('blur', function (e) {
+                    var elementId = $(e.target.targetElm).attr('id');
+                    $(e.target.formElement).validate().element(`#${elementId}`);
+                });
+            },
             height: 300,
             max_height: 500,
             language: 'fa_IR',
@@ -271,14 +277,32 @@ if (jQuery.validator) {
         return true;
     });
     jQuery.validator.unobtrusive.adapters.addBool('maxFileSize');
+
+    // makeTinyMceRequired
+    jQuery.validator.addMethod('makeTinyMceRequired', function (value, element, param) {
+        var editorId = $(element).attr('id');
+        var editorContent = tinyMCE.get(editorId).getContent();
+        $('body').append(`<div id="test-makeTinyMceRequired">${editorContent}</div>`);
+        var result = isNullOrWhitespace($('#test-makeTinyMceRequired').text());
+        $('#test-makeTinyMceRequired').remove();
+        return !result;
+    });
+    jQuery.validator.unobtrusive.adapters.addBool('makeTinyMceRequired');
 }
 
 // End validation
 
+function isNullOrWhitespace(input) {
+
+    if (typeof input === 'undefined' || input == null) return true;
+
+    return input.replace(/\s/g, '').length < 1;
+}
+
 // Ajax operations
 
 // فعال ساز دکمه حذف، در داخل گرید
-function activatingDeleteButtons() {
+function activatingDeleteButtons(isModalMode) {
     $('.delete-row-button').click(function () {
         var currentForm = $(this).parent();
         var customMessage = $(this).attr('custom-message');
@@ -300,8 +324,11 @@ function activatingDeleteButtons() {
                         showToastr('warning', data.message);
                     }
                     else {
-                        fillDataTable();
+                        if (isModalMode) {
+                            $('#html-modal-place').modal('hide');
+                        }
                         showToastr('success', data.message);
+                        fillDataTable();
                     }
                 }).always(function () {
                     hideLoading();

@@ -19,15 +19,18 @@ public class IndexModel : PageBase
     private readonly ISellerService _sellerService;
     private readonly IHtmlSanitizer _htmlSanitizer;
     private readonly IUnitOfWork _uow;
+    private readonly IUploadFileService _uploadFile;
 
     public IndexModel(
         ISellerService sellerService,
         IHtmlSanitizer htmlSanitizer,
-        IUnitOfWork uow)
+        IUnitOfWork uow,
+        IUploadFileService uploadFile)
     {
         _sellerService = sellerService;
         _htmlSanitizer = htmlSanitizer;
         _uow = uow;
+        _uploadFile = uploadFile;
     }
 
     #endregion
@@ -79,5 +82,43 @@ public class IndexModel : PageBase
         seller.RejectReason = _htmlSanitizer.Sanitize(model.RejectReason);
         await _uow.SaveChangesAsync();
         return Json(new JsonResultOperation(true, "مدارک فروشنده مورد نظر با موفقیت رد شد"));
+    }
+
+    public async Task<IActionResult> OnPostConfirmSellerDocuments(long id)
+    {
+        if (id < 1)
+        {
+            return Json(new JsonResultOperation(false));
+        }
+
+        var seller = await _sellerService.FindByIdAsync(id);
+        if (seller is null)
+        {
+            return Json(new JsonResultOperation(false, "فروشنده مورد نظر یافت نشد"));
+        }
+
+        seller.DocumentStatus = DocumentStatus.Confirmed;
+        seller.RejectReason = null;
+        await _uow.SaveChangesAsync();
+        return Json(new JsonResultOperation(true, "مدارک فروشنده مورد نظر با موفقیت تایید شد"));
+    }
+
+    public async Task<IActionResult> OnPostRemoveUser(long id)
+    {
+        if (id < 1)
+        {
+            return Json(new JsonResultOperation(false));
+        }
+
+        var seller = await _sellerService.GetSellerToRemoveInManagingSellers(id);
+        if (seller is null)
+        {
+            return Json(new JsonResultOperation(false, "فروشنده مورد نظر یافت نشد"));
+        }
+        _sellerService.Remove(seller);
+        await _uow.SaveChangesAsync();
+        _uploadFile.DeleteFile(seller.IdCartPicture, "images", "seller-id-cart-pictures");
+        _uploadFile.DeleteFile(seller.Logo, "images", "seller-logos");
+        return Json(new JsonResultOperation(true, "فروشنده مورد نظر با موفقیت حذف شد"));
     }
 }

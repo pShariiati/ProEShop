@@ -12,9 +12,11 @@ function showSellerDetailsInModal(result, clickedButton) {
     currnetModal.modal('show');
     $('#html-modal-place .modal-header h5').html($(clickedButton).text().trim());
     initializeTinyMCE();
+    $.validator.unobtrusive.parse($('#html-modal-place form'));
+    activatingDeleteButtons(true);
 }
 
-function rejectReasonInManagingSellers(message) {
+function sellerDocumentInManagingSellers(message) {
     showToastr('success', message);
     $('#html-modal-place').modal('hide');
     fillDataTable();

@@ -235,19 +235,38 @@
                         @Html.Raw(Model.AboutSeller)
                     </p>
                 </div>
-                <hr class="m-0" />
-                <form
-                    functionNameToCallInTheEnd="rejectReasonInManagingSellers"
-                    method="post" asp-page-handler="RejectSellerDocuments" class="public-ajax-form">
-                    <input asp-for="Id"/>
-                    <div class="text-danger" asp-validation-summary="All"></div>
-                    <div>
-                        <label asp-for="RejectReason" class="mb-3 form-label"></label>
-                        <textarea asp-for="RejectReason" class="custom-tinymce"></textarea>
-                        <span asp-validation-for="RejectReason" class="span-error-message"></span>
-                    </div>
-                    <button type="submit" class="btn btn-warning">ارسال مشکلات مدارکی فروشنده</button>
-                </form>
+                @if (Model.DocumentStatus != DocumentStatus.Confirmed)
+                {
+                    <hr />
+                    <form functionNameToCallInTheEnd="sellerDocumentInManagingSellers"
+                      method="post" asp-page-handler="RejectSellerDocuments" class="public-ajax-form">
+                        <input asp-for="Id" />
+                        <div class="text-danger" asp-validation-summary="All"></div>
+                        <div class="mb-3">
+                            <label asp-for="RejectReason" class="mb-3 form-label"></label>
+                            <textarea asp-for="RejectReason" class="custom-tinymce"></textarea>
+                            <span asp-validation-for="RejectReason" class="span-error-message"></span>
+                        </div>
+                        <button type="submit" class="btn btn-warning">ارسال مشکلات مدارکی فروشنده</button>
+                    </form>
+
+                    <form functionNameToCallInTheEnd="sellerDocumentInManagingSellers"
+                      method="post" asp-page-handler="ConfirmSellerDocuments"
+                      class="mt-3 public-ajax-form">
+                        <input asp-for="Id" />
+                        <button type="submit" class="btn btn-success">تایید کردن مدارک فروشنده</button>
+                    </form>
+                }
+
+                @if (Model.DocumentStatus == DocumentStatus.AwaitingInitialApproval)
+                {
+                    <form functionNameToCallInTheEnd="sellerDocumentInManagingSellers"
+                      method="post" asp-page-handler="RemoveUser"
+                      class="mt-3 public-ajax-form">
+                        <input asp-for="Id" />
+                        <button type="button" class="delete-row-button btn btn-danger">حذف فروشنده</button>
+                    </form>
+                }
             </div>
         </div>
     </div>
