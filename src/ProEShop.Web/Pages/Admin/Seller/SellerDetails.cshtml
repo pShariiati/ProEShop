@@ -27,6 +27,9 @@
         <div class="row">
             <div>
                 <p class="fw-bold">
+                    <span class="btn btn-info">
+                        @Model.UserPhoneNumber
+                    </span>
                     <span class="btn btn-@(isRealPerson ? "success" : "primary")">
                         @(isRealPerson ? "شخص حقیقی" : "شخص حقوقی")
                     </span>

@@ -19,9 +19,6 @@ public class MappingProfile : Profile
             .ForMember(x => x.BirthDate,
                 opt => opt.Ignore());
         this.CreateMap<Entities.Seller, ShowSellerViewModel>()
-            .ForMember(dest => dest.FullName,
-                options =>
-                    options.MapFrom(src => src.User.FullName))
             .ForMember(dest => dest.ProvinceAndCity,
                 options =>
                     options.MapFrom(src => $"{src.Province.Title} - {src.City.Title}"))

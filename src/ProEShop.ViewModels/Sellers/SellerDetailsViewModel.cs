@@ -10,6 +10,9 @@ namespace ProEShop.ViewModels.Sellers;
 
 public class SellerDetailsViewModel
 {
+    [Display(Name = "شماره همراه")]
+    public string UserPhoneNumber { get; set; }
+
     [Display(Name = "شناسه")]
     [HiddenInput]
     public long Id { get; set; }

@@ -95,6 +95,41 @@ public class CategoryService : GenericService<Category>, ICategoryService
         }).SingleOrDefaultAsync(x => x.Id == id);
     }
 
+    public async Task<List<List<ShowCategoryForCreateProductViewModel>>> GetCategoriesForCreateProduct(long[] selectedCategoriesIds)
+    {
+        var result = new List<List<ShowCategoryForCreateProductViewModel>>();
+        for (var counter = 0; counter < selectedCategoriesIds.Length + 1; counter++)
+        {
+            if (counter == 0)
+            {
+                result.Add(
+                    await _categories.Where(x=>x.ParentId == null)
+                        .Select(x=>new ShowCategoryForCreateProductViewModel()
+                        {
+                            Title = x.Title,
+                            HasChild = x.Categories.Any(),
+                            Id = x.Id
+                        }).ToListAsync()
+                    );
+            }
+            else
+            {
+                var selectedCategoryId = selectedCategoriesIds[counter];
+                result.Add(
+                    await _categories.Where(x => x.ParentId == selectedCategoryId)
+                        .Select(x => new ShowCategoryForCreateProductViewModel()
+                        {
+                            Title = x.Title,
+                            HasChild = x.Categories.Any(),
+                            Id = x.Id
+                        }).ToListAsync()
+                );
+            }
+        }
+
+        return result;
+    }
+
     public override async Task<DuplicateColumns> AddAsync(Category entity)
     {
         var result = new List<string>();

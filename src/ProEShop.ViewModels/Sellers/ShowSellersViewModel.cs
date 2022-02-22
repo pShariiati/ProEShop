@@ -94,6 +94,9 @@ public enum SortingSellers
 
 public class ShowSellerViewModel
 {
+    [Display(Name = "شماره همراه")]
+    public string UserPhoneNumber { get; set; }
+
     [Display(Name = "شناسه")]
     public long Id { get; set; }
 
@@ -104,7 +107,7 @@ public class ShowSellerViewModel
     public string ShopName { get; set; }
 
     [Display(Name = "نام فروشنده")]
-    public string FullName { get; set; }
+    public string UserFullName { get; set; }
 
     [Display(Name = "کد فروشنده")]
     public int SellerCode { get; set; }
