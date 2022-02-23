@@ -660,17 +660,28 @@ function getDataWithAJAX(url, formData, functionNameToCallInTheEnd) {
 // html
 // از سمت سرور
 function getHtmlWithAJAX(url, formData, functionNameToCallInTheEnd, clickedButton) {
-    showLoading();
-    $.get(url, formData, function (data) {
-        if (data.isSuccessful === false) {
-            showToastr('warning', data.message);
-        } else {
-            window[functionNameToCallInTheEnd](data, clickedButton);
+    $.ajax({
+        url: url,
+        data: formData,
+        type: 'GET',
+        dataType: 'html',
+        traditional: true,
+        beforeSend: function () {
+            showLoading();
+        },
+        success: function (data) {
+            if (data.isSuccessful === false) {
+                showToastr('warning', data.message);
+            } else {
+                window[functionNameToCallInTheEnd](data, clickedButton);
+            }
+        },
+        complete: function () {
+            hideLoading();
+        },
+        error: function () {
+            showErrorMessage();
         }
-    }).fail(function() {
-        showErrorMessage();
-    }).always(function() {
-        hideLoading();
     });
 }
 

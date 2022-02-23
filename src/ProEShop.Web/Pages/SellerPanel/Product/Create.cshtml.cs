@@ -18,12 +18,9 @@ public class CreateModel : SellerPanelBase
     {
     }
 
-    public async Task<IActionResult> OnGetGetCategories(long[] selectedCategoriesIds = default)
+    public async Task<IActionResult> OnGetGetCategories(long[] selectedCategoriesIds)
     {
         var result = await _categoryService.GetCategoriesForCreateProduct(selectedCategoriesIds);
-        return Json(new JsonResultOperation(true, null)
-        {
-            Data = result
-        });
+        return Partial("_SelectProductCategoryPartial", result);
     }
 }

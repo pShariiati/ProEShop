@@ -1,1 +1,20 @@
 ﻿@model List<List<ProEShop.ViewModels.Categories.ShowCategoryForCreateProductViewModel>>
+
+@foreach (var categories in Model)
+{
+    <div class="list-group col-4">
+        @foreach (var category in categories)
+        {
+            <button
+                category-id="@category.Id"
+                has-child="@category.HasChild.ToString().ToLower()"
+                type="button" class="list-group-item list-group-item-action d-flex justify-content-between">
+                @category.Title
+                @if (category.HasChild)
+                {
+                    <i class="bi bi-chevron-left"></i>
+                }
+            </button>
+        }
+    </div>
+}

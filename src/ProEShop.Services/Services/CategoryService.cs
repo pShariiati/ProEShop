@@ -97,34 +97,28 @@ public class CategoryService : GenericService<Category>, ICategoryService
 
     public async Task<List<List<ShowCategoryForCreateProductViewModel>>> GetCategoriesForCreateProduct(long[] selectedCategoriesIds)
     {
-        var result = new List<List<ShowCategoryForCreateProductViewModel>>();
-        for (var counter = 0; counter < selectedCategoriesIds.Length + 1; counter++)
+        var result = new List<List<ShowCategoryForCreateProductViewModel>>
         {
-            if (counter == 0)
-            {
-                result.Add(
-                    await _categories.Where(x=>x.ParentId == null)
-                        .Select(x=>new ShowCategoryForCreateProductViewModel()
-                        {
-                            Title = x.Title,
-                            HasChild = x.Categories.Any(),
-                            Id = x.Id
-                        }).ToListAsync()
-                    );
-            }
-            else
-            {
-                var selectedCategoryId = selectedCategoriesIds[counter];
-                result.Add(
-                    await _categories.Where(x => x.ParentId == selectedCategoryId)
-                        .Select(x => new ShowCategoryForCreateProductViewModel()
-                        {
-                            Title = x.Title,
-                            HasChild = x.Categories.Any(),
-                            Id = x.Id
-                        }).ToListAsync()
-                );
-            }
+            await _categories.Where(x => x.ParentId == null)
+                .Select(x => new ShowCategoryForCreateProductViewModel()
+                {
+                    Title = x.Title,
+                    HasChild = x.Categories.Any(),
+                    Id = x.Id
+                }).ToListAsync()
+        };
+        for (var counter = 0; counter < selectedCategoriesIds.Length; counter++)
+        {
+            var selectedCategoryId = selectedCategoriesIds[counter];
+            result.Add(
+                await _categories.Where(x => x.ParentId == selectedCategoryId)
+                    .Select(x => new ShowCategoryForCreateProductViewModel()
+                    {
+                        Title = x.Title,
+                        HasChild = x.Categories.Any(),
+                        Id = x.Id
+                    }).ToListAsync()
+            );
         }
 
         return result;
