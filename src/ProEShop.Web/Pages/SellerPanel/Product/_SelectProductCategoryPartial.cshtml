@@ -1,8 +1,12 @@
 ﻿@model List<List<ProEShop.ViewModels.Categories.ShowCategoryForCreateProductViewModel>>
 
+@{
+    var counter = 1;
+}
+
 @foreach (var categories in Model)
 {
-    <div class="list-group col-4">
+    <div class="list-group col-4" category-row="@(counter++)">
         @foreach (var category in categories)
         {
             <button
