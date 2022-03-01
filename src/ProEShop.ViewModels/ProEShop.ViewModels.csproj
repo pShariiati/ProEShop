@@ -16,4 +16,8 @@
 	  <ProjectReference Include="..\ProEShop.Entities\ProEShop.Entities.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Brands\" />
+	</ItemGroup>
+
 </Project>

@@ -1,0 +1,68 @@
+﻿@using ProEShop.Common.Helpers
+@using ProEShop.Entities
+@model ProEShop.ViewModels.Brands.ShowBrandsViewModel
+@if (Model.Brands.Any())
+{
+    <div class="table-responsive data-table-body">
+        <table class="table table-bordered table-striped table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th>@Html.DisplayNameFor(x => x.Brands[0].Id)</th>
+                    <th>@Html.DisplayNameFor(x => x.Brands[0].TitleFa)</th>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var seller in Model.Brands)
+                {
+                    <tr>
+                        <td>@seller.Id</td>
+                        <td>@seller.TitleFa</td>
+                        <td></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <!-- Pagination -->
+    <div class="btn-toolbar my-3 d-flex justify-content-center" id="main-pagianation">
+            <div class="btn-group me-2">
+                @if (Model.Pagination.CurrentPage != 1)
+                {
+                    <button value="1" type="button" class="btn btn-outline-primary">
+                        <i class="bi bi-chevron-double-right"></i>
+                    </button>
+                    <button value="@(Model.Pagination.CurrentPage - 1)" type="button" class="btn btn-outline-primary">قبلی</button>
+                }
+                @for (int counter = Model.Pagination.StartPage; counter <= Model.Pagination.EndPage; counter++)
+                {
+                    <button value="@counter" type="button"
+                    class="@(counter == Model.Pagination.CurrentPage ? "active " : string.Empty)btn btn-outline-primary">
+                        @counter
+                    </button>
+                }
+                @if (Model.Pagination.CurrentPage != Model.Pagination.PagesCount)
+                {
+                    <button value="@(Model.Pagination.CurrentPage + 1)" type="button" class="btn btn-outline-primary">بعدی</button>
+                    <button data-bs-toggle="tooltip" data-bs-placement="top" title="کل صفحات @Model.Pagination.PagesCount" value="@Model.Pagination.PagesCount" type="button" class="btn btn-outline-primary">
+                        <i class="bi bi-chevron-double-left"></i>
+                        @Model.Pagination.PagesCount
+                    </button>
+                }
+            </div>
+            <div>
+                <select id="page-count-selectbox" asp-for="Pagination.PageCount" class="form-select" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.PageCount>()"></select>
+            </div>
+        </div>
+        <div class="col-10 col-sm-6 col-md-4 col-xl-3 m-auto">
+            <div class="input-group">
+                <input id="page-number-input" value="@Model.Pagination.CurrentPage" min="1" max="@Model.Pagination.PagesCount" type="number" class="form-control rtl-direction" placeholder="شماره صفحه">
+                <button id="go-to-page-button" class="btn btn-outline-primary" type="submit">برو به صفحه</button>
+            </div>
+        </div>
+        <!-- End pagination -->
+</div>
+}
+else
+{
+    <partial name="_RecordNotFound" />
+}
