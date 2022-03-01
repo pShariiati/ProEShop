@@ -9,24 +9,66 @@ var selectedCategoriesIds = [];
 
 function showCategories(data) {
     $('#product-category div.row.card-body').html(data);
+    $('#selected-categories-for-add-product').html('');
     selectedCategoriesIds.forEach(element => {
-        $('#product-category button[category-id=' + element + ']').addClass('active');
+        var currentCategory = $('#product-category button[category-id=' + element + ']');
+        currentCategory.addClass('active');
+        var currentCategoryText = currentCategory.text().trim();
+        $('#selected-categories-for-add-product').append(
+            `<span> ${currentCategoryText} <i class="bi bi-chevron-left"></i></span>`
+        );
     });
     $('#product-category div.row.card-body button[has-child=true]').click(function () {
+
+        $('#select-product-category-button').attr('disabled', 'disabled');
+        $('#select-product-category-button').addClass('btn-light');
+        $('#select-product-category-button').removeClass('btn-primary');
+
         var selectedRow = parseInt($(this).parent().attr('category-row'));
-        debugger;
         for (var counter = selectedRow; counter <= selectedCategoriesIds.length; counter++) {
-            debugger;
             $('#product-category div[category-row=' + counter + '] button').removeClass('active');
         }
+        $('#product-category button[has-child=false]').removeClass('active');
         $(this).addClass('active');
         selectedCategoriesIds = [];
         $('#product-category button.active').each(function () {
-            debugger;
-            var a = $(this).attr('category-id');
-            console.log(a);
-            selectedCategoriesIds.push(a);
+            selectedCategoriesIds.push($(this).attr('category-id'));
         });
         getHtmlWithAJAX(`${location.pathname}?handler=GetCategories`, { selectedCategoriesIds: selectedCategoriesIds }, 'showCategories', null);
+    });
+
+    $('#product-category div.row.card-body button[has-child=false]').click(function () {
+        var selectedRow = parseInt($(this).parent().attr('category-row'));
+        $('#product-category div[category-row=' + selectedRow + '] button').removeClass('active');
+        for (var counter = selectedRow; counter <= selectedCategoriesIds.length; counter++) {
+            $('#product-category div[category-row=' + (selectedRow + 1) + ']').remove();
+        }
+        $(this).addClass('active');
+        $('#selected-categories-for-add-product').html('');
+        $('#product-category button.active').each(function () {
+            var currentCategory = $(this);
+            var currentCategoryText = currentCategory.text().trim();
+            if (currentCategory.attr('has-child') === 'true') {
+                $('#selected-categories-for-add-product').append(
+                    `<span> ${currentCategoryText} <i class="bi bi-chevron-left"></i></span>`
+                );
+            }
+            else {
+                $('#selected-categories-for-add-product').append(
+                    `<span> ${currentCategoryText}</span>`
+                );
+            }
+        });
+
+        $('#select-product-category-button').removeAttr('disabled');
+        $('#select-product-category-button').removeClass('btn-light');
+        $('#select-product-category-button').addClass('btn-primary');
+    });
+
+    $('#reset-product-category-button').click(function () {
+        if ($('#selected-categories-for-add-product span').length > 0) {
+            selectedCategoriesIds = [];
+            getCategories();
+        }
     });
 }
