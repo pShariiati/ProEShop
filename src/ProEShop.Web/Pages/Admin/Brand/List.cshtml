@@ -1,6 +1,4 @@
-﻿@using ProEShop.Common.Helpers
-@using ProEShop.Entities
-@model ProEShop.ViewModels.Brands.ShowBrandsViewModel
+﻿@model ProEShop.ViewModels.Brands.ShowBrandsViewModel
 @if (Model.Brands.Any())
 {
     <div class="table-responsive data-table-body">
@@ -9,15 +7,65 @@
                 <tr>
                     <th>@Html.DisplayNameFor(x => x.Brands[0].Id)</th>
                     <th>@Html.DisplayNameFor(x => x.Brands[0].TitleFa)</th>
+                    <th>@Html.DisplayNameFor(x => x.Brands[0].TitleEn)</th>
+                    <th>@Html.DisplayNameFor(x => x.Brands[0].IsIranianBrand)</th>
+                    <th>@Html.DisplayNameFor(x => x.Brands[0].LogoPicture)</th>
+                    <th>@Html.DisplayNameFor(x => x.Brands[0].BrandRegistrationPicture)</th>
+                    <th>@Html.DisplayNameFor(x => x.Brands[0].JudiciaryLink)</th>
+                    <th>@Html.DisplayNameFor(x => x.Brands[0].BrandLinkEn)</th>
                     <th>عملیات</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var seller in Model.Brands)
+                @foreach (var brand in Model.Brands)
                 {
                     <tr>
-                        <td>@seller.Id</td>
-                        <td>@seller.TitleFa</td>
+                        <td>@brand.Id</td>
+                        <td>@brand.TitleFa</td>
+                        <td>@brand.TitleEn</td>
+                        <td class="text-center">
+                            @if (brand.IsIranianBrand)
+                            {
+                                <img src="~/images/application/iran-logo.png" width="100" alt="ایرانی" />
+                            }
+                            else
+                            {
+                                <img src="~/images/application/global-icon.png" width="64" alt="خارجی" />
+                            }
+                        </td>
+                        <td class="text-center">
+                            <img src="~/images/brands/@brand.LogoPicture" alt="@brand.TitleFa" width="64" />
+                        </td>
+                        <td class="text-center">
+                            @if (brand.BrandRegistrationPicture is null)
+                            {
+                                @:ثبت نشده است
+                            }
+                            else
+                            {
+                                <img src="~/images/brands/@brand.LogoPicture" alt="برگه ثبت برند" width="64" />
+                            }
+                        </td>
+                        <td>
+                            @if (brand.JudiciaryLink is null)
+                            {
+                                @:ثبت نشده است
+                            }
+                            else
+                            {
+                                <a href="@brand.JudiciaryLink" target="_blank">@brand.JudiciaryLink</a>
+                            }
+                        </td>
+                        <td>
+                            @if (brand.BrandLinkEn is null)
+                            {
+                                @:ثبت نشده است
+                            }
+                            else
+                            {
+                                <a href="@brand.BrandLinkEn" target="_blank">@brand.BrandLinkEn</a>
+                            }
+                        </td>
                         <td></td>
                     </tr>
                 }
