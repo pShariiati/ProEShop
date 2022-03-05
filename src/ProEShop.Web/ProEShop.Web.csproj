@@ -58,6 +58,7 @@
 
 	<ItemGroup>
 	  <Folder Include="Mappings\" />
+	  <Folder Include="wwwroot\images\brandregistrationpictures\" />
 	</ItemGroup>
 
 </Project>

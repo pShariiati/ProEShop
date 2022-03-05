@@ -44,9 +44,23 @@ public class ShowBrandViewModel
 public class SearchBrandsViewModel
 {
     [Display(Name = "نام فارسی برند")]
-    [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
     [MaxLength(200, ErrorMessage = AttributesErrorMessages.MaxLengthMessage)]
     public string TitleFa { get; set; }
+
+    [Display(Name = "نام انگلیسی برند")]
+    [MaxLength(200, ErrorMessage = AttributesErrorMessages.MaxLengthMessage)]
+    public string TitleEn { get; set; }
+
+    [Display(Name = "نوع برند")]
+    public bool? IsIranianBrand { get; set; }
+
+    [Display(Name = "لینک سایت قوه قضاییه")]
+    [MaxLength(200, ErrorMessage = AttributesErrorMessages.MaxLengthMessage)]
+    public string JudiciaryLink { get; set; }
+
+    [Display(Name = "لینک سایت معتبر خارجی")]
+    [MaxLength(200, ErrorMessage = AttributesErrorMessages.MaxLengthMessage)]
+    public string BrandLinkEn { get; set; }
 
     [Display(Name = "وضعیت حذف شده ها")]
     public DeletedStatus DeletedStatus { get; set; }
@@ -61,5 +75,20 @@ public class SearchBrandsViewModel
 public enum SortingBrands
 {
     [Display(Name = "شناسه")]
-    Id
+    Id,
+
+    [Display(Name = "نام فارسی برند")]
+    TitleFa,
+
+    [Display(Name = "نام انگلیسی برند")]
+    TitleEn,
+
+    [Display(Name = "نوع برند")]
+    IsIranianBrand,
+
+    [Display(Name = "لینک سایت قوه قضاییه")]
+    JudiciaryLink,
+
+    [Display(Name = "لینک سایت معتبر خارجی")]
+    BrandLinkEn
 }

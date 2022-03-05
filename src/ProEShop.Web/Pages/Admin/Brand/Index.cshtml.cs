@@ -26,7 +26,7 @@ public class IndexModel : PageBase
     
     #endregion
 
-    [BindProperty]
+    [BindProperty(SupportsGet = true)]
     public ShowBrandsViewModel Brands { get; set; }
         = new();
 
