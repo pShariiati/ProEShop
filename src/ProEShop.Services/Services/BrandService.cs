@@ -59,6 +59,12 @@ public class BrandService : GenericService<Brand>, IBrandService
             brands = brands.Where(x => x.IsIranianBrand == searchedIsIranianBrand.Value);
         }
 
+        if (model.SearchBrands.DeletedStatus != DeletedStatus.True)
+        {
+            var isOnlyDeleted = model.SearchBrands.DeletedStatus == DeletedStatus.OnlyDeleted;
+            brands = brands.Where(x => x.IsDeleted == isOnlyDeleted);
+        }
+
         #endregion
 
         #region OrderBy

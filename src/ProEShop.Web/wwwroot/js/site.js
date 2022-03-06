@@ -158,10 +158,12 @@ document.addEventListener('focusin', function (e) {
 });
 
 function initializeSelect2() {
-    $('.custom-select2').select2({
-        theme: 'bootstrap-5',
-        dropdownParent: $('#form-modal-place')
-    });
+    if ($('.custom-select2').length > 0) {
+        $('.custom-select2').select2({
+            theme: 'bootstrap-5',
+            dropdownParent: $('#form-modal-place')
+        });
+    }
 }
 
 function initializeSelect2WithoutModal() {
@@ -353,7 +355,6 @@ function initializingAutocomplete() {
 // این فانکشن فرم های مربوط به ایجاد و ویرایش را
 // به صورت ایجکس برگشت میزند که در داخل مودال نمایش دهیم
 function activatingModalForm() {
-
     $('.show-modal-form-button').click(function (e) {
         e.preventDefault();
         var urlToLoadTheForm = $(this).attr('href');
@@ -373,6 +374,9 @@ function activatingModalForm() {
                 initializeSelect2();
                 initializingAutocomplete();
                 activatingInputAttributes();
+                if (typeof actionsAfterLoadModalForm === 'function') {
+                    actionsAfterLoadModalForm();
+                }
                 $.validator.unobtrusive.parse($('#form-modal-place form'));
                 $('#form-modal-place').modal('show');
             }

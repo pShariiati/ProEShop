@@ -7,28 +7,31 @@ namespace ProEShop.Common.Attributes;
 public class MaxFileSizeAttribute : BaseValidationAttribute, IClientModelValidator
 {
     private readonly int _maxFileSize;
-    private readonly string _errorMessage;
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="maxFileSize">By MG</param>
     /// <param name="displayName"></param>
-    public MaxFileSizeAttribute(string displayName, int maxFileSize)
+    public MaxFileSizeAttribute(int maxFileSize)
     {
         _maxFileSize = maxFileSize * 1024 * 1024;
-        _errorMessage = $"اندازه {displayName} نباید بیشتر از {maxFileSize} مگابایت باشد";
+        ErrorMessage = "اندازه {0} نباید بیشتر از {1} مگابایت باشد";
     }
 
     protected override ValidationResult IsValid(
         object value, ValidationContext validationContext)
     {
+        var displayName = validationContext.DisplayName;
+        ErrorMessage = ErrorMessage.Replace("{0}", displayName);
+        ErrorMessage = ErrorMessage.Replace("{1}", _maxFileSize.ToString());
+
         var file = value as IFormFile;
         if (file != null && file.Length > 0)
         {
             if (file.Length > _maxFileSize)
             {
-                return new ValidationResult(_errorMessage);
+                return new ValidationResult(ErrorMessage);
             }
         }
 
@@ -37,8 +40,16 @@ public class MaxFileSizeAttribute : BaseValidationAttribute, IClientModelValidat
 
     public void AddValidation(ClientModelValidationContext context)
     {
+        var displayName = context.ModelMetadata.ContainerMetadata
+            .ModelType.GetProperty(context.ModelMetadata.PropertyName)
+            .GetCustomAttributes(typeof(DisplayAttribute), false)
+            .Cast<DisplayAttribute>()
+            .FirstOrDefault()?.Name;
+        ErrorMessage = ErrorMessage.Replace("{0}", displayName);
+        ErrorMessage = ErrorMessage.Replace("{1}", _maxFileSize.ToString());
+
         MergeAttribute(context.Attributes, "data-val", "true");
-        MergeAttribute(context.Attributes, "data-val-maxFileSize", _errorMessage);
+        MergeAttribute(context.Attributes, "data-val-maxFileSize", ErrorMessage);
         MergeAttribute(context.Attributes, "data-val-maxsize", _maxFileSize.ToString());
     }
 }

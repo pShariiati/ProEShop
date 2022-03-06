@@ -32,5 +32,6 @@ public class MappingProfile : Profile
                     options.MapFrom(src => src.CreatedDateTime.ToLongPersianDate()));
 
         this.CreateMap<Entities.Brand, ShowBrandViewModel>();
+        this.CreateMap<AddBrandViewModel, Entities.Brand>();
     }
 }

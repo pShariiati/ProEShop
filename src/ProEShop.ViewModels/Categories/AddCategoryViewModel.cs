@@ -31,8 +31,8 @@ public class AddCategoryViewModel
     public string Slug { get; set; }
 
     [Display(Name = "تصویر")]
-    [MaxFileSize("تصویر", 2)]
-    [IsImage("تصویر")]
+    [MaxFileSize(2)]
+    [IsImage]
     public IFormFile Picture { get; set; }
 
     [Display(Name = "والد")]

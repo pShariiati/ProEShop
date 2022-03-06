@@ -9,6 +9,11 @@
         <h5 class="card-title">
             @ViewData["Title"]
         </h5>
+        <div class="d-grid d-lg-block mb-2">
+            <a asp-page-handler="Add" class="btn btn-outline-primary show-modal-form-button">
+                افزودن برند
+            </a>
+        </div>
         <form class="alert alert-secondary search-form-via-ajax">
             <input asp-for="Brands.Pagination.CurrentPage" />
             <input asp-for="Brands.Pagination.PageCount" />
@@ -81,5 +86,5 @@
 <script src="~/lib/tinymce/tinymce.min.js"></script>
 }
 @section CustomScripts{
-<script src="~/Pages/Admin/Seller/Index.cshtml.js"></script>
+<script src="~/Pages/Admin/Brand/Index.cshtml.js"></script>
 }
