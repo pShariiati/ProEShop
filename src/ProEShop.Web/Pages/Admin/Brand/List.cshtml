@@ -43,7 +43,7 @@
                             }
                             else
                             {
-                                <img src="~/images/brandregistrationpictures/@brand.LogoPicture" alt="برگه ثبت برند" width="64" />
+                                <img src="~/images/brandregistrationpictures/@brand.BrandRegistrationPicture" alt="برگه ثبت برند" width="64" />
                             }
                         </td>
                         <td>
@@ -66,7 +66,11 @@
                                 <a href="@brand.BrandLinkEn" target="_blank">@brand.BrandLinkEn</a>
                             }
                         </td>
-                        <td></td>
+                        <td>
+                            <a custom-title="ویرایش دسته بندی" asp-page-handler="Edit" asp-route-id="@brand.Id" class="btn btn-warning show-modal-form-button">
+                                ویرایش
+                            </a>
+                        </td>
                     </tr>
                 }
             </tbody>

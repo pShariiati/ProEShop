@@ -25,7 +25,7 @@ public class BrandService : GenericService<Brand>, IBrandService
 
     public async Task<ShowBrandsViewModel> GetBrands(ShowBrandsViewModel model)
     {
-        var brands = _brands.AsQueryable();
+        var brands = _brands.AsNoTracking().AsQueryable();
 
         #region Search
 
@@ -116,5 +116,12 @@ public class BrandService : GenericService<Brand>, IBrandService
                 ).ToListAsync(),
             Pagination = paginationResult.Pagination
         };
+    }
+
+    public Task<EditBrandViewMode> GetForEdit(long id)
+    {
+        return _mapper.ProjectTo<EditBrandViewMode>(
+                _brands
+            ).SingleOrDefaultAsync(x => x.Id == id);
     }
 }

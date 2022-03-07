@@ -1,0 +1,71 @@
+﻿@model ProEShop.ViewModels.Brands.EditBrandViewMode
+
+<form class="alert alert-secondary custom-ajax-form" asp-page-handler="Edit" method="post">
+    <input asp-for="Id" />
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="row">
+        <div class="col-12 col-sm-6 col-lg-3 my-2">
+            <label class="form-label" asp-for="TitleFa"></label>
+            <input class="form-control" asp-for="TitleFa" />
+            <span class="span-error-message" asp-validation-for="TitleFa"></span>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3 my-2">
+            <label class="form-label" asp-for="TitleEn"></label>
+            <input class="form-control" asp-for="TitleEn" />
+            <span class="span-error-message" asp-validation-for="TitleEn"></span>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3 my-2">
+            <label class="form-label" asp-for="BrandLinkEn"></label>
+            <input class="form-control" asp-for="BrandLinkEn" />
+            <span class="span-error-message" asp-validation-for="BrandLinkEn"></span>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3 my-2">
+            <label class="form-label" asp-for="JudiciaryLink"></label>
+            <input class="form-control" asp-for="JudiciaryLink" />
+            <span class="span-error-message" asp-validation-for="JudiciaryLink"></span>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3 my-2">
+            <label class="form-label" asp-for="NewLogoPicture"></label>
+            <input class="form-control" asp-for="NewLogoPicture" />
+            <span class="span-error-message" asp-validation-for="NewLogoPicture"></span>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3 my-2">
+            <label class="form-label" asp-for="NewBrandRegistrationPicture"></label>
+            <input class="form-control" asp-for="NewBrandRegistrationPicture" />
+            <span class="span-error-message" asp-validation-for="NewBrandRegistrationPicture"></span>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3 my-2">
+            <label class="form-label" asp-for="LogoPicture"></label>
+            <img src="~/images/brands/@Model.LogoPicture" width="100" />
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3 my-2">
+            <label class="form-label" asp-for="BrandRegistrationPicture"></label>
+            @if (Model.BrandRegistrationPicture is null)
+            {
+                <div class="btn btn-danger">عکسی بارگذاری نشده است</div>
+            }
+            else{
+                <img src="~/images/brandregistrationpictures/@Model.BrandRegistrationPicture" width="100" />
+            }
+        </div>
+        <div class="col-12 my-2 form-check form-switch px-3">
+            <label class="form-check-label" asp-for="IsIranianBrand">خارجی</label>
+            <div>
+                <input class="form-check-input m-0" asp-for="IsIranianBrand" />
+            </div>
+        </div>
+        <div class="col-12 my-2">
+            <label class="form-label" asp-for="Description"></label>
+            <textarea class="form-control custom-tinymce" asp-for="Description"></textarea>
+            <span class="span-error-message" asp-validation-for="Description"></span>
+        </div>
+        <div class="col-12 my-2">
+            <div class="d-grid d-lg-block">
+                <button type="submit" class="btn btn-primary d-inline-flex align-items-center submit-custom-ajax-button">
+                    ویرایش
+                    <span class="spinner-border spinner-border-sm d-none ms-2"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

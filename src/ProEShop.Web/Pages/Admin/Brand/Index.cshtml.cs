@@ -85,4 +85,47 @@ public class IndexModel : PageBase
         await _uploadFile.SaveFile(model.BrandRegistrationPicture, brandRegistrationFileName, null, "images", "brandregistrationpictures");
         return Json(new JsonResultOperation(true, "برند مورد نظر با موفقیت اضافه شد"));
     }
+
+    public async Task<IActionResult> OnGetEdit(long id)
+    {
+        var model = await _brandService.GetForEdit(id);
+        if (model is null)
+        {
+            return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
+        }
+        return Partial("Edit", model);
+    }
+
+    public async Task<IActionResult> OnPostEdit(EditBrandViewMode model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return Json(new JsonResultOperation(false, PublicConstantStrings.ModelStateErrorMessage)
+            {
+                Data = ModelState.GetModelStateErrors()
+            });
+        }
+
+        var brandToUpdate = await _brandService.FindByIdAsync(model.Id);
+        var oldLogoPictureFileName = brandToUpdate.LogoPicture;
+        var oldBrandRegistrationFileName = brandToUpdate.BrandRegistrationPicture;
+
+        brandToUpdate = _mapper.Map(model, brandToUpdate);
+
+        string logoPictureFileName = null;
+        if (model.NewLogoPicture.IsFileUploaded())
+            logoPictureFileName = model.NewLogoPicture.GenerateFileName();
+        brandToUpdate.LogoPicture = logoPictureFileName;
+
+        string brandRegistrationFileName = null;
+        if (model.NewBrandRegistrationPicture.IsFileUploaded())
+            brandRegistrationFileName = model.NewBrandRegistrationPicture.GenerateFileName();
+        brandToUpdate.BrandRegistrationPicture = brandRegistrationFileName;
+
+        await _brandService.Update(brandToUpdate);
+        await _uow.SaveChangesAsync();
+        await _uploadFile.SaveFile(model.NewLogoPicture, brandToUpdate.LogoPicture, oldLogoPictureFileName, "images", "brands");
+        await _uploadFile.SaveFile(model.NewBrandRegistrationPicture, brandToUpdate.BrandRegistrationPicture, oldBrandRegistrationFileName, "images", "brandregistrationpictures");
+        return Json(new JsonResultOperation(true, "برند مورد نظر با موفقیت ویرایش شد"));
+    }
 }
