@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using ProEShop.Common.Constants;
+using ProEShop.Common.Helpers;
 
 namespace ProEShop.ViewModels.Brands;
 
@@ -43,21 +44,26 @@ public class ShowBrandViewModel
 
 public class SearchBrandsViewModel
 {
+    [ContainsSearch]
     [Display(Name = "نام فارسی برند")]
     [MaxLength(200, ErrorMessage = AttributesErrorMessages.MaxLengthMessage)]
     public string TitleFa { get; set; }
 
+    [ContainsSearch]
     [Display(Name = "نام انگلیسی برند")]
     [MaxLength(200, ErrorMessage = AttributesErrorMessages.MaxLengthMessage)]
     public string TitleEn { get; set; }
 
+    [EqualSearch]
     [Display(Name = "نوع برند")]
     public bool? IsIranianBrand { get; set; }
 
+    [ContainsSearch]
     [Display(Name = "لینک سایت قوه قضاییه")]
     [MaxLength(200, ErrorMessage = AttributesErrorMessages.MaxLengthMessage)]
     public string JudiciaryLink { get; set; }
 
+    [ContainsSearch]
     [Display(Name = "لینک سایت معتبر خارجی")]
     [MaxLength(200, ErrorMessage = AttributesErrorMessages.MaxLengthMessage)]
     public string BrandLinkEn { get; set; }
