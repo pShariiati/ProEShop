@@ -18,12 +18,18 @@ public class IndexModel : PageBase
     private readonly ICategoryService _categoryService;
     private readonly IUnitOfWork _uow;
     private readonly IUploadFileService _uploadFile;
+    private readonly IBrandService _brandService;
 
-    public IndexModel(ICategoryService categoryService, IUnitOfWork uow, IUploadFileService uploadFile)
+    public IndexModel(
+        ICategoryService categoryService,
+        IUnitOfWork uow,
+        IUploadFileService uploadFile,
+        IBrandService brandService)
     {
         _categoryService = categoryService;
         _uow = uow;
         _uploadFile = uploadFile;
+        _brandService = brandService;
     }
 
     #endregion
@@ -222,5 +228,26 @@ public class IndexModel : PageBase
     public async Task<IActionResult> OnPostCheckForSlugOnEdit(string slug, long id)
     {
         return Json(!await _categoryService.IsExistsBy(nameof(Entities.Category.Slug), slug, id));
+    }
+
+    public IActionResult OnGetAddBrand(long categoryId)
+    {
+        return Partial("AddBrand");
+    }
+
+    public IActionResult OnPostAddBrand(AddBrandToCategoryViewModel model)
+    {
+        if (model.SelectedCategoryId < 1)
+        {
+            return Json(new JsonResultOperation(false));
+        }
+
+        return Json(new JsonResultOperation(true,
+            "برند های مورد نظر با موفقیت به دسته بندی مذکور اضافه شدند"));
+    }
+
+    public async Task<IActionResult> OnGetAutocompleteSearch(string term)
+    {
+        return Json(await _brandService.AutocompleteSearch(term));
     }
 }

@@ -1,0 +1,20 @@
+﻿@model ProEShop.ViewModels.Categories.AddBrandToCategoryViewModel
+
+<form class="alert alert-secondary custom-ajax-form" asp-page-handler="AddBrand" method="post">
+    <input asp-for="SelectedCategoryId"/>
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="row">
+        <div class="col-12 my-2">
+            <label class="form-label" for="#search-brand">جستجو برند</label>
+            <input class="autocomplete form-control" id="search-brand"/>
+        </div>
+        <div class="col-12 my-2">
+            <div class="d-grid d-lg-block">
+                <button type="submit" class="btn btn-primary d-inline-flex align-items-center submit-custom-ajax-button">
+                    افزودن برند ها به این دسته بندی
+                    <span class="spinner-border spinner-border-sm d-none ms-2"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

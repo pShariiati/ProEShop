@@ -117,10 +117,10 @@ public class IndexModel : PageBase
             logoPictureFileName = model.NewLogoPicture.GenerateFileName();
         brandToUpdate.LogoPicture = logoPictureFileName;
 
-        string brandRegistrationFileName = null;
         if (model.NewBrandRegistrationPicture.IsFileUploaded())
-            brandRegistrationFileName = model.NewBrandRegistrationPicture.GenerateFileName();
-        brandToUpdate.BrandRegistrationPicture = brandRegistrationFileName;
+            brandToUpdate.BrandRegistrationPicture = model.NewBrandRegistrationPicture.GenerateFileName();
+        else
+            brandToUpdate.LogoPicture = oldLogoPictureFileName;
 
         await _brandService.Update(brandToUpdate);
         await _uow.SaveChangesAsync();

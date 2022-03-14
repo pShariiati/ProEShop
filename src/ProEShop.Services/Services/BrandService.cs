@@ -29,45 +29,7 @@ public class BrandService : GenericService<Brand>, IBrandService
 
         #region Search
 
-        brands = ExpressionHelpers.CreateContainsExpressions(brands, model.SearchBrands);
-        brands = ExpressionHelpers.CreateEqualExpressions(brands, model.SearchBrands);
-        brands = ExpressionHelpers.CreateDeletedStatusExpression(brands, model.SearchBrands);
-
-        //var searchedTitleFa = model.SearchBrands.TitleFa;
-        //if (!string.IsNullOrWhiteSpace(searchedTitleFa))
-        //{
-        //    brands = brands.Where(x => x.TitleFa.Contains(searchedTitleFa));
-        //}
-
-        //var searchedTitleEn = model.SearchBrands.TitleEn;
-        //if (!string.IsNullOrWhiteSpace(searchedTitleEn))
-        //{
-        //    brands = brands.Where(x => x.TitleEn.Contains(searchedTitleEn));
-        //}
-
-        //var searchedBrandLinkEnd = model.SearchBrands.BrandLinkEn;
-        //if (!string.IsNullOrWhiteSpace(searchedBrandLinkEnd))
-        //{
-        //    brands = brands.Where(x => x.BrandLinkEn.Contains(searchedBrandLinkEnd));
-        //}
-
-        //var searchedJudiciaryLink = model.SearchBrands.JudiciaryLink;
-        //if (!string.IsNullOrWhiteSpace(searchedJudiciaryLink))
-        //{
-        //    brands = brands.Where(x => x.JudiciaryLink.Contains(searchedJudiciaryLink));
-        //}
-
-        //var searchedIsIranianBrand = model.SearchBrands.IsIranianBrand;
-        //if (searchedIsIranianBrand is not null)
-        //{
-        //    brands = brands.Where(x => x.IsIranianBrand == searchedIsIranianBrand.Value);
-        //}
-
-        //if (model.SearchBrands.DeletedStatus != DeletedStatus.True)
-        //{
-        //    var isOnlyDeleted = model.SearchBrands.DeletedStatus == DeletedStatus.OnlyDeleted;
-        //    brands = brands.Where(x => x.IsDeleted == isOnlyDeleted);
-        //}
+        brands = ExpressionHelpers.CreateSearchExpressions(brands, model.SearchBrands);
 
         #endregion
 
@@ -127,5 +89,13 @@ public class BrandService : GenericService<Brand>, IBrandService
         return _mapper.ProjectTo<EditBrandViewMode>(
                 _brands
             ).SingleOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<List<string>> AutocompleteSearch(string term)
+    {
+        return await _brands
+            .Where(x => x.TitleFa.Contains(term) || x.TitleEn.Contains(term))
+            .Select(x => x.TitleFa + " " + x.TitleEn)
+            .ToListAsync();
     }
 }
