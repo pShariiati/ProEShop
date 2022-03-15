@@ -107,6 +107,10 @@ public class IndexModel : PageBase
         }
 
         var brandToUpdate = await _brandService.FindByIdAsync(model.Id);
+        if (brandToUpdate is null)
+        {
+            return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
+        }
         var oldLogoPictureFileName = brandToUpdate.LogoPicture;
         var oldBrandRegistrationFileName = brandToUpdate.BrandRegistrationPicture;
 

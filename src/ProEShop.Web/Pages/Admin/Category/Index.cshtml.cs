@@ -6,6 +6,7 @@ using ProEShop.Common.Constants;
 using ProEShop.Common.Helpers;
 using ProEShop.Common.IdentityToolkit;
 using ProEShop.DataLayer.Context;
+using ProEShop.Entities;
 using ProEShop.Services.Contracts;
 using ProEShop.ViewModels.Categories;
 
@@ -33,7 +34,7 @@ public class IndexModel : PageBase
     }
 
     #endregion
-    
+
     public ShowCategoriesViewModel Categories { get; set; }
     = new();
 
@@ -230,18 +231,34 @@ public class IndexModel : PageBase
         return Json(!await _categoryService.IsExistsBy(nameof(Entities.Category.Slug), slug, id));
     }
 
-    public IActionResult OnGetAddBrand(long categoryId)
+    public IActionResult OnGetAddBrand(long selectedCategoryId)
     {
-        return Partial("AddBrand");
+        var model = new AddBrandToCategoryViewModel();
+        return Partial("AddBrand", model);
     }
 
-    public IActionResult OnPostAddBrand(AddBrandToCategoryViewModel model)
+    public async Task<IActionResult> OnPostAddBrand(AddBrandToCategoryViewModel model)
     {
         if (model.SelectedCategoryId < 1)
         {
             return Json(new JsonResultOperation(false));
         }
 
+        var selectedCategory = await _categoryService.FindByIdAsync(model.SelectedCategoryId);
+        if (selectedCategory is null)
+        {
+            return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
+        }
+        selectedCategory.CategoryBrands.Clear();
+
+        model.SelectedBrands = model.SelectedBrands.Distinct().ToList();
+
+        var brandIds = await _brandService.GetBrandIdsByList(model.SelectedBrands);
+        brandIds.ForEach(brandId => selectedCategory.CategoryBrands.Add(new CategoryBrand()
+        {
+            BrandId = brandId
+        }));
+        await _uow.SaveChangesAsync();
         return Json(new JsonResultOperation(true,
             "برند های مورد نظر با موفقیت به دسته بندی مذکور اضافه شدند"));
     }

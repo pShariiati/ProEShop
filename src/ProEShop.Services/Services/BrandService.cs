@@ -95,7 +95,16 @@ public class BrandService : GenericService<Brand>, IBrandService
     {
         return await _brands
             .Where(x => x.TitleFa.Contains(term) || x.TitleEn.Contains(term))
+            .Take(20)
             .Select(x => x.TitleFa + " " + x.TitleEn)
+            .ToListAsync();
+    }
+
+    public async Task<List<long>> GetBrandIdsByList(List<string> brands)
+    {
+        return await _brands
+            .Where(x => brands.Contains(x.TitleFa + " " + x.TitleEn))
+            .Select(x => x.Id)
             .ToListAsync();
     }
 }

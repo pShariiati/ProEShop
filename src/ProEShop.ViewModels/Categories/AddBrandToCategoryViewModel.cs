@@ -13,4 +13,5 @@ public class AddBrandToCategoryViewModel
     public long SelectedCategoryId { get; set; }
 
     public List<string> SelectedBrands { get; set; }
+        = new();
 }

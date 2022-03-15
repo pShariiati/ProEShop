@@ -10,4 +10,6 @@ public interface IBrandService : IGenericService<Brand>
     Task<EditBrandViewMode> GetForEdit(long id);
 
     Task<List<string>> AutocompleteSearch(string term);
+
+    Task<List<long>> GetBrandIdsByList(List<string> brands);
 }
