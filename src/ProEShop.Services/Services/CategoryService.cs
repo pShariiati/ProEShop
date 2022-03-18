@@ -124,6 +124,15 @@ public class CategoryService : GenericService<Category>, ICategoryService
         return result;
     }
 
+    public async Task<List<string>> GetCategoryBrands(long categoryId)
+    {
+        return await _categories
+            .Where(x => x.Id == categoryId)
+            .SelectMany(x => x.CategoryBrands)
+            .Select(x => x.Brand.TitleFa + " " + x.Brand.TitleEn)
+            .ToListAsync();
+    }
+
     public override async Task<DuplicateColumns> AddAsync(Category entity)
     {
         var result = new List<string>();

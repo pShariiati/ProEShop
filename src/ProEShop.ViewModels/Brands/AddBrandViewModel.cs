@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using ProEShop.Common.Attributes;
 using ProEShop.Common.Constants;
 
@@ -8,11 +9,17 @@ namespace ProEShop.ViewModels.Brands;
 
 public class AddBrandViewModel
 {
+    [PageRemote(PageName = "Index", PageHandler = "CheckForTitleFa",
+        HttpMethod = "GET",
+        ErrorMessage = AttributesErrorMessages.RemoteMessage)]
     [Display(Name = "نام فارسی برند")]
     [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
     [MaxLength(200, ErrorMessage = AttributesErrorMessages.MaxLengthMessage)]
     public string TitleFa { get; set; }
 
+    [PageRemote(PageName = "Index", PageHandler = "CheckForTitleEn",
+        HttpMethod = "GET",
+        ErrorMessage = AttributesErrorMessages.RemoteMessage)]
     [Display(Name = "نام انگلیسی برند")]
     [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
     [MaxLength(200, ErrorMessage = AttributesErrorMessages.MaxLengthMessage)]

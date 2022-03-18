@@ -1,6 +1,12 @@
 ﻿@model ProEShop.ViewModels.Categories.AddBrandToCategoryViewModel
-
+@{
+    var showEmptySelectedBrandBox = Model.SelectedBrands.Count > 0 ? " d-none" : string.Empty;
+}
 <form id="add-brand-to-category-form" class="alert alert-secondary custom-ajax-form" asp-page-handler="AddBrand" method="post">
+    @foreach (var brand in Model.SelectedBrands)
+    {
+        <input type="hidden" name="SelectedBrands" value="@brand" />
+    }
     <input asp-for="SelectedCategoryId"/>
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="row">
@@ -8,10 +14,10 @@
             <label class="form-label" for="search-brand">جستجو برند</label>
             <input class="autocomplete form-control" id="search-brand"/>
         </div>
-        <p>
+        <p class="mt-3">
             برند های انتخاب شده برای این دسته بندی
         </p>
-        <div id="selected-brands-box">
+        <div id="selected-brands-box" class="mb-3">
             @if (Model.SelectedBrands.Count > 0)
             {
                 foreach (var brand in Model.SelectedBrands)
@@ -20,16 +26,13 @@
                         <button type="button" class="btn btn-outline-dark">
                             @brand
                         </button>
-                        <button type="button" class="btn btn-danger">
+                        <button type="button" class="btn btn-danger remove-selected-brand">
                             <i class="bi bi-x-lg"></i>
                         </button>
                     </div>
                 }
             }
-            else
-            {
-                <div id="empty-selected-brands" class="btn btn-warning">برندی برای این دسته بندی انتخاب نشده است</div>
-            }
+            <div id="empty-selected-brands" class="btn btn-warning@(showEmptySelectedBrandBox)">برندی برای این دسته بندی انتخاب نشده است</div>
         </div>
         <div class="col-12 my-2">
             <div class="d-grid d-lg-block">

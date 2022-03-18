@@ -79,11 +79,38 @@ public class IndexModel : PageBase
             brandRegistrationFileName = model.BrandRegistrationPicture.GenerateFileName();
         brand.BrandRegistrationPicture = brandRegistrationFileName;
 
-        await _brandService.AddAsync(brand);
+        var result = await _brandService.AddAsync(brand);
+        if (!result.Ok)
+        {
+            return Json(new JsonResultOperation(false, PublicConstantStrings.DuplicateErrorMessage)
+            {
+                Data = result.Columns.SetDuplicateColumnsErrorMessages<AddBrandViewModel>()
+            });
+        }
         await _uow.SaveChangesAsync();
         await _uploadFile.SaveFile(model.LogoPicture, brand.LogoPicture, null, "images", "brands");
         await _uploadFile.SaveFile(model.BrandRegistrationPicture, brandRegistrationFileName, null, "images", "brandregistrationpictures");
         return Json(new JsonResultOperation(true, "برند مورد نظر با موفقیت اضافه شد"));
+    }
+
+    public async Task<IActionResult> OnGetCheckForTitleFa(string titleFa)
+    {
+        return Json(!await _brandService.IsExistsBy(nameof(Entities.Brand.TitleFa), titleFa));
+    }
+
+    public async Task<IActionResult> OnGetCheckForTitleEn(string titleEn)
+    {
+        return Json(!await _brandService.IsExistsBy(nameof(Entities.Brand.TitleEn), titleEn));
+    }
+
+    public async Task<IActionResult> OnGetCheckForTitleFaOnEdit(string titleFa, long id)
+    {
+        return Json(!await _brandService.IsExistsBy(nameof(Entities.Brand.TitleFa), titleFa, id));
+    }
+
+    public async Task<IActionResult> OnGetCheckForTitleEnOnEdit(string titleEn, long id)
+    {
+        return Json(!await _brandService.IsExistsBy(nameof(Entities.Brand.TitleEn), titleEn, id));
     }
 
     public async Task<IActionResult> OnGetEdit(long id)
@@ -126,7 +153,14 @@ public class IndexModel : PageBase
         else
             brandToUpdate.LogoPicture = oldLogoPictureFileName;
 
-        await _brandService.Update(brandToUpdate);
+        var result = await _brandService.Update(brandToUpdate);
+        if (!result.Ok)
+        {
+            return Json(new JsonResultOperation(false, PublicConstantStrings.DuplicateErrorMessage)
+            {
+                Data = result.Columns.SetDuplicateColumnsErrorMessages<AddBrandViewModel>()
+            });
+        }
         await _uow.SaveChangesAsync();
         await _uploadFile.SaveFile(model.NewLogoPicture, brandToUpdate.LogoPicture, oldLogoPictureFileName, "images", "brands");
         await _uploadFile.SaveFile(model.NewBrandRegistrationPicture, brandToUpdate.BrandRegistrationPicture, oldBrandRegistrationFileName, "images", "brandregistrationpictures");

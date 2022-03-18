@@ -231,9 +231,12 @@ public class IndexModel : PageBase
         return Json(!await _categoryService.IsExistsBy(nameof(Entities.Category.Slug), slug, id));
     }
 
-    public IActionResult OnGetAddBrand(long selectedCategoryId)
+    public async Task<IActionResult> OnGetAddBrand(long selectedCategoryId)
     {
-        var model = new AddBrandToCategoryViewModel();
+        var model = new AddBrandToCategoryViewModel
+        {
+            SelectedBrands = await _categoryService.GetCategoryBrands(selectedCategoryId)
+        };
         return Partial("AddBrand", model);
     }
 

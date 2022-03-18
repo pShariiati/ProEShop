@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProEShop.Common.Attributes;
@@ -12,11 +11,19 @@ public class EditBrandViewMode
     [HiddenInput]
     public long Id { get; set; }
 
+    [PageRemote(PageName = "Index", PageHandler = "CheckForTitleFaOnEdit",
+        HttpMethod = "GET",
+        ErrorMessage = AttributesErrorMessages.RemoteMessage,
+        AdditionalFields = nameof(Id))]
     [Display(Name = "نام فارسی برند")]
     [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
     [MaxLength(200, ErrorMessage = AttributesErrorMessages.MaxLengthMessage)]
     public string TitleFa { get; set; }
 
+    [PageRemote(PageName = "Index", PageHandler = "CheckForTitleEnOnEdit",
+        HttpMethod = "GET",
+        ErrorMessage = AttributesErrorMessages.RemoteMessage,
+        AdditionalFields = nameof(Id))]
     [Display(Name = "نام انگلیسی برند")]
     [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
     [MaxLength(200, ErrorMessage = AttributesErrorMessages.MaxLengthMessage)]

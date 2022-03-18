@@ -9,4 +9,5 @@ public interface ICategoryService : IGenericService<Category>
     Task<Dictionary<long, string>> GetCategoriesToShowInSelectBoxAsync(long? id = null);
     Task<EditCategoryViewModel> GetForEdit(long id);
     Task<List<List<ShowCategoryForCreateProductViewModel>>> GetCategoriesForCreateProduct(long[] selectedCategoriesIds);
+    Task<List<string>> GetCategoryBrands(long categoryId);
 }

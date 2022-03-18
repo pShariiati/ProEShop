@@ -12,13 +12,15 @@ var brandBox = `<div class="btn-group m-1">
 
 function onAutocompleteSelect(event, ui) {
     var enteredBrand = ui.item.value;
-    var brandBoxToAppend = brandBox.replace('[brand title]', enteredBrand);
-    $('#empty-selected-brands').addClass('d-none');
-    $('#selected-brands-box').append(brandBoxToAppend);
-    event.preventDefault();
-    $(event.target).val('');
-    var inputToAppend = `<input type="hidden" name="SelectedBrands" value="${enteredBrand}" />`;
-    $('#add-brand-to-category-form').prepend(inputToAppend);
+    if ($('#add-brand-to-category-form input[type="hidden"][value="' + enteredBrand + '"]').length == 0) {
+        var brandBoxToAppend = brandBox.replace('[brand title]', enteredBrand);
+        $('#empty-selected-brands').addClass('d-none');
+        $('#selected-brands-box').append(brandBoxToAppend);
+        event.preventDefault();
+        $(event.target).val('');
+        var inputToAppend = `<input type="hidden" name="SelectedBrands" value="${enteredBrand}" />`;
+        $('#add-brand-to-category-form').prepend(inputToAppend);
+    }
 }
 
 $(document).on('click', '.remove-selected-brand', function () {

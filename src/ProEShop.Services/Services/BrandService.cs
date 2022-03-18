@@ -107,4 +107,41 @@ public class BrandService : GenericService<Brand>, IBrandService
             .Select(x => x.Id)
             .ToListAsync();
     }
+
+    public override async Task<DuplicateColumns> AddAsync(Brand entity)
+    {
+        var result = new List<string>();
+
+        if (await _brands.AnyAsync(x => x.TitleFa == entity.TitleFa))
+            result.Add(nameof(Brand.TitleFa));
+
+        if (await _brands.AnyAsync(x => x.TitleEn == entity.TitleEn))
+            result.Add(nameof(Brand.TitleEn));
+
+        if (!result.Any())
+            await base.AddAsync(entity);
+        return new(!result.Any())
+        {
+            Columns = result
+        };
+    }
+
+    public override async Task<DuplicateColumns> Update(Brand entity)
+    {
+        var query = _brands.Where(x => x.Id != entity.Id);
+        var result = new List<string>();
+
+        if (await query.AnyAsync(x => x.TitleFa == entity.TitleFa))
+            result.Add(nameof(Brand.TitleFa));
+
+        if (await query.AnyAsync(x => x.TitleEn == entity.TitleEn))
+            result.Add(nameof(Brand.TitleEn));
+
+        if (!result.Any())
+            await base.Update(entity);
+        return new(!result.Any())
+        {
+            Columns = result
+        };
+    }
 }
