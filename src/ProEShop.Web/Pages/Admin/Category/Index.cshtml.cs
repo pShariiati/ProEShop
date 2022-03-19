@@ -247,7 +247,7 @@ public class IndexModel : PageBase
             return Json(new JsonResultOperation(false));
         }
 
-        var selectedCategory = await _categoryService.FindByIdAsync(model.SelectedCategoryId);
+        var selectedCategory = await _categoryService.GetCategoryWithItsBrands(model.SelectedCategoryId);
         if (selectedCategory is null)
         {
             return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));

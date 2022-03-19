@@ -108,6 +108,16 @@ public class BrandService : GenericService<Brand>, IBrandService
             .ToListAsync();
     }
 
+    public Task<Dictionary<long, string>> GetBrandsByCategoryId(long categoryId)
+    {
+        return _brands
+            .SelectMany(x => x.CategoryBrands)
+            .Where(x => x.CategoryId == categoryId)
+            .Include(x => x.Brand)
+            .ToDictionaryAsync(x => x.BrandId,
+                x => x.Brand.TitleFa + " " + x.Brand.TitleEn);
+    }
+
     public override async Task<DuplicateColumns> AddAsync(Brand entity)
     {
         var result = new List<string>();

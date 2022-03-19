@@ -133,6 +133,13 @@ public class CategoryService : GenericService<Category>, ICategoryService
             .ToListAsync();
     }
 
+    public Task<Category> GetCategoryWithItsBrands(long categoryId)
+    {
+        return _categories
+            .Include(x=>x.CategoryBrands)
+            .SingleOrDefaultAsync(x => x.Id == categoryId);
+    }
+
     public override async Task<DuplicateColumns> AddAsync(Category entity)
     {
         var result = new List<string>();

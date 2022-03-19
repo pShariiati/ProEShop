@@ -12,4 +12,5 @@ public interface IBrandService : IGenericService<Brand>
     Task<List<string>> AutocompleteSearch(string term);
 
     Task<List<long>> GetBrandIdsByList(List<string> brands);
+    Task<Dictionary<long, string>> GetBrandsByCategoryId(long categoryId);
 }
