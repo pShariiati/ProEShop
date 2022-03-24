@@ -30,6 +30,8 @@ public class Category : EntityBase, IAuditableEntity
 
     public bool ShowInMenus { get; set; }
 
+    public bool CanAddFakeProduct { get; set; }
+
     #endregion
 
     #region Relations

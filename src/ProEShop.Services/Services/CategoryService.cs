@@ -140,6 +140,16 @@ public class CategoryService : GenericService<Category>, ICategoryService
             .SingleOrDefaultAsync(x => x.Id == categoryId);
     }
 
+    public async Task<bool> CanAddFakeProduct(long categoryId)
+    {
+        var category = await _categories.Select(x => new
+        {
+            x.Id,
+            x.CanAddFakeProduct
+        }).SingleOrDefaultAsync(x => x.Id == categoryId);
+        return category?.CanAddFakeProduct ?? false;
+    }
+
     public override async Task<DuplicateColumns> AddAsync(Category entity)
     {
         var result = new List<string>();

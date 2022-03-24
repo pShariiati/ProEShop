@@ -640,7 +640,6 @@ function getDataWithAJAX(url, formData, functionNameToCallInTheEnd) {
         url: url,
         data: formData,
         type: 'GET',
-        enctype: 'multipart/form-data',
         dataType: 'json',
         contentType: false,
         beforeSend: function () {

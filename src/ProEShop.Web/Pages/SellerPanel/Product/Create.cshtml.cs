@@ -48,4 +48,12 @@ public class CreateModel : SellerPanelBase
             Data = brands
         });
     }
+
+    public async Task<IActionResult> OnGetCanAddFakeProduct(long categoryId)
+    {
+        return Json(new JsonResultOperation(true, string.Empty)
+        {
+            Data = await _categoryService.CanAddFakeProduct(categoryId)
+        });
+    }
 }

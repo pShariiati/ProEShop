@@ -43,6 +43,20 @@
                     <div class="card">
                         <div class="card-body row">
                             <div class="my-2 col-md-6 col-lg-4">
+                                <br />
+                                <input class="form-check-input" asp-for="Product.IsFake">
+                                <label class="form-check-label" asp-for="Product.IsFake">
+                                    نشان کالای غیر اصل
+                                    (
+                                    <span class="badge bg-light text-dark">
+                                        غیر اصل
+                                    </span>
+                                    )
+                                    <i class="bi bi-info-circle" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                       title="با انتخاب این گزینه، کلمه “غیراصل” در کنار عنوان کالا و نشان “غیراصل” در کنار تصویر کالای شما در سایت قرار خواهد گرفت. برند کالا باید “متفرقه” درج شود. در صورت فروش کالای غیراصل بدون این نشان، مطابق با قوانین جریمه خواهید شد."></i>
+                                </label>
+                            </div>
+                            <div class="my-2 col-md-6 col-lg-4">
                                 <label class="form-label" asp-for="Product.BrandId"></label>
                                 <select class="form-select custom-select2" asp-for="Product.BrandId"></select>
                                 <span asp-validation-for="Product.BrandId" class="span-error-message"></span>
