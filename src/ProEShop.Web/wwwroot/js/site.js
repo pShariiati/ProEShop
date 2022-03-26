@@ -365,6 +365,7 @@ function activatingModalForm() {
         if (customTitle == undefined) {
             customTitle = $(this).text().trim();
         }
+        appendFormModalPlaceToBody();
         $('#form-modal-place .modal-header h5').html(customTitle);
         showLoading();
         $.get(urlToLoadTheForm, function (data) {

@@ -81,14 +81,14 @@ $('#select-product-category-button').click(function () {
 
 function showCategoryBrands(message, data) {
     $('#Product_BrandId option').remove();
+    $('#Product_BrandId').append('<option value="0">انتخاب کنید</option>');
     for (brandId in data) {
-        $('#Product_BrandId').append(`<option value="${brandId}">${data[brandId]}</option>`)
+        $('#Product_BrandId').append(`<option value="${brandId}">${data[brandId]}</option>`);
     }
     $('#add-product-tab button[data-bs-target="#product-info"]').tab('show');
 }
 
 function changeIsFakeStatus(message, data) {
-    console.log(data)
     if (data === false) {
         $('#Product_IsFake').attr('disabled', 'disabled');
         $('#Product_IsFake').prop('checked', false);

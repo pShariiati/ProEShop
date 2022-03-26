@@ -48,4 +48,7 @@ public class EditCategoryViewModel
     public bool ShowInMenus { get; set; }
 
     public List<SelectListItem> MainCategories { get; set; }
+
+    [Display(Name = "آیا میتوان کالای غیر اصل اضافه کرد ؟")]
+    public bool CanAddFakeProduct { get; set; }
 }

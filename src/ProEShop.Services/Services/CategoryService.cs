@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ProEShop.Common.Helpers;
 using ProEShop.DataLayer.Context;
@@ -11,9 +12,14 @@ namespace ProEShop.Services.Services;
 public class CategoryService : GenericService<Category>, ICategoryService
 {
     private readonly DbSet<Category> _categories;
-    public CategoryService(IUnitOfWork uow)
+    private readonly IMapper _mapper;
+
+    public CategoryService(
+        IUnitOfWork uow,
+        IMapper mapper)
         : base(uow)
     {
+        _mapper = mapper;
         _categories = uow.Set<Category>();
     }
 
@@ -83,16 +89,9 @@ public class CategoryService : GenericService<Category>, ICategoryService
 
     public async Task<EditCategoryViewModel> GetForEdit(long id)
     {
-        return await _categories.Select(x => new EditCategoryViewModel()
-        {
-            SelectedPicture = x.Picture,
-            ParentId = x.ParentId,
-            Id = x.Id,
-            Description = x.Description,
-            Title = x.Title,
-            Slug = x.Slug,
-            ShowInMenus = x.ShowInMenus
-        }).SingleOrDefaultAsync(x => x.Id == id);
+        return await _mapper.ProjectTo<EditCategoryViewModel>(
+            _categories
+        ).SingleOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<List<List<ShowCategoryForCreateProductViewModel>>> GetCategoriesForCreateProduct(long[] selectedCategoriesIds)

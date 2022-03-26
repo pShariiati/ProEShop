@@ -2,6 +2,7 @@
 using ProEShop.Common.Helpers;
 using ProEShop.Entities.Identity;
 using ProEShop.ViewModels.Brands;
+using ProEShop.ViewModels.Categories;
 using ProEShop.ViewModels.Sellers;
 
 namespace ProEShop.Web.Mappings;
@@ -37,6 +38,18 @@ public class MappingProfile : Profile
 
         this.CreateMap<Entities.Brand, EditBrandViewMode>().ReverseMap()
             .AddTransform<string>(str => str != null ? str.Trim() : null);
-        //this.CreateMap<EditBrandViewMode, Entities.Brand>();
+
+        this.CreateMap<AddCategoryViewModel, Entities.Category>()
+            .AddTransform<string>(str => str != null ? str.Trim() : null);
+
+        this.CreateMap<Entities.Category, EditCategoryViewModel>()
+            .ForMember(x => x.Picture,
+                opt => opt.Ignore())
+            .ForMember(dest => dest.SelectedPicture,
+                options =>
+                    options.MapFrom(src => src.Picture));
+
+        this.CreateMap<EditCategoryViewModel, Entities.Category>()
+            .AddTransform<string>(str => str != null ? str.Trim() : null);
     }
 }

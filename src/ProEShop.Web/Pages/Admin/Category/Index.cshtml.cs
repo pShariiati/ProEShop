@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ProEShop.Common;
@@ -20,17 +21,20 @@ public class IndexModel : PageBase
     private readonly IUnitOfWork _uow;
     private readonly IUploadFileService _uploadFile;
     private readonly IBrandService _brandService;
+    private readonly IMapper _mapper;
 
     public IndexModel(
         ICategoryService categoryService,
         IUnitOfWork uow,
         IUploadFileService uploadFile,
-        IBrandService brandService)
+        IBrandService brandService,
+        IMapper mapper)
     {
         _categoryService = categoryService;
         _uow = uow;
         _uploadFile = uploadFile;
         _brandService = brandService;
+        _mapper = mapper;
     }
 
     #endregion
@@ -89,15 +93,10 @@ public class IndexModel : PageBase
         if (model.Picture.IsFileUploaded())
             pictureFileName = model.Picture.GenerateFileName();
 
-        var category = new Entities.Category
-        {
-            Description = model.Description,
-            ShowInMenus = model.ShowInMenus,
-            Title = model.Title,
-            Slug = model.Slug,
-            ParentId = model.ParentId == 0 ? null : model.ParentId,
-            Picture = pictureFileName
-        };
+        var category = _mapper.Map<Entities.Category>(model);
+        if (model.ParentId is 0)
+            category.ParentId = null;
+        category.Picture = pictureFileName;
 
         var result = await _categoryService.AddAsync(category);
         if (!result.Ok)
@@ -152,11 +151,9 @@ public class IndexModel : PageBase
 
         var oldFileName = category.Picture;
 
-        category.Title = model.Title;
-        category.Description = model.Description;
-        category.ShowInMenus = model.ShowInMenus;
-        category.Slug = model.Slug;
-        category.ParentId = model.ParentId == 0 ? null : model.ParentId;
+        category = _mapper.Map(model, category);
+        if (model.ParentId is 0)
+            category.ParentId = null;
         category.Picture = pictureFileName;
 
         var result = await _categoryService.Update(category);
