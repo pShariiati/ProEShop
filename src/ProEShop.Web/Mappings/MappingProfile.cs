@@ -51,5 +51,8 @@ public class MappingProfile : Profile
 
         this.CreateMap<EditCategoryViewModel, Entities.Category>()
             .AddTransform<string>(str => str != null ? str.Trim() : null);
+
+        this.CreateMap<AddBrandBySellerViewModel, Entities.Brand>()
+            .AddTransform<string>(str => str != null ? str.Trim() : null);
     }
 }

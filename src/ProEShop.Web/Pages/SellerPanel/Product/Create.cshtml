@@ -58,7 +58,12 @@
                                     </label>
                                 </div>
                                 <div class="my-2 col-md-6 col-lg-4">
-                                    <label class="form-label" asp-for="Product.BrandId"></label>
+                                    <label class="d-flex justify-content-between form-label" asp-for="Product.BrandId">
+                                        <div>اصالت کالا</div>
+                                        <a id="request-new-brand-url" asp-page-handler="RequestForAddBrand" class="text-info border-bottom-dashed show-modal-form-button">
+                                            درخواست برند جدید
+                                        </a>
+                                    </label>
                                     <select class="form-select custom-select2" asp-for="Product.BrandId">
                                         <option value="0">انتخاب کنید</option>
                                     </select>
@@ -82,6 +87,7 @@
 <partial name="Shared/_ValidationScriptsPartial" />
 <script src="~/lib/select2/js/select2.min.js"></script>
 <script src="~/lib/select2/js/i18n/fa.min.js"></script>
+<script src="~/lib/tinymce/tinymce.min.js"></script>
 }
 @section Styles
 {

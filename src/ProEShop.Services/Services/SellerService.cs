@@ -161,4 +161,16 @@ public class SellerService : GenericService<Seller>, ISellerService
         return await _sellers.Where(x => x.DocumentStatus == DocumentStatus.AwaitingInitialApproval)
             .SingleOrDefaultAsync(x => x.Id == id);
     }
+
+    public async Task<long> GetSellerId(long userId)
+    {
+        var seller = await _sellers
+            .Select(x => new
+            {
+                x.Id,
+                x.UserId
+            })
+            .SingleAsync(x => x.UserId == userId);
+        return seller.Id;
+    }
 }

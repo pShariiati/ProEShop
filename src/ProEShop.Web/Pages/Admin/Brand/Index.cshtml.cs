@@ -73,6 +73,7 @@ public class IndexModel : PageBase
         }
 
         var brand = _mapper.Map<Entities.Brand>(model);
+        brand.IsConfirmed = true;
         brand.LogoPicture = model.LogoPicture.GenerateFileName();
         string brandRegistrationFileName = null;
         if (model.BrandRegistrationPicture.IsFileUploaded())

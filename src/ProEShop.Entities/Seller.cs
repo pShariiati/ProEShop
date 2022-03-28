@@ -123,6 +123,8 @@ public class Seller : EntityBase, IAuditableEntity
 
     public ProvinceAndCity City { get; set; }
 
+    public ICollection<Brand> Brands { get; set; }
+
     #endregion
 }
 

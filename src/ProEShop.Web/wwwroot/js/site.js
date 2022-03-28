@@ -176,12 +176,6 @@ function initializeSelect2WithoutModal() {
 
 initializeSelect2WithoutModal();
 
-// Validation
-
-// fileRequired
-
-var imageInputsWithProblems = [];
-
 // یک آرایه و یک آیتم میگیره
 // آیتم رو از آرایه حذف میکنه
 function removeItemInArray(arr, item) {
@@ -193,6 +187,7 @@ function removeItemInArray(arr, item) {
     }
 }
 
+// Validation
 if (jQuery.validator) {
 
     // برای اعتبار سنجی اینپوت های مخفی از این کد استفاده میکنیم
@@ -220,6 +215,7 @@ if (jQuery.validator) {
         }
     }
 
+    // fileRequired
     jQuery.validator.addMethod("fileRequired", function (value, element, param) {
         if (element.files[0] != null)
             return element.files[0].size > 0;
@@ -237,6 +233,8 @@ if (jQuery.validator) {
     });
     jQuery.validator.unobtrusive.adapters.addBool('allowExtensions');
 
+
+    var imageInputsWithProblems = [];
     // isImage
     jQuery.validator.addMethod('isImage', function (value, element, param) {
         var selectedFile = element.files[0];

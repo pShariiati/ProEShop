@@ -3,6 +3,7 @@
 }
 $(function () {
     getCategories();
+    activatingModalForm();
 });
 
 var selectedCategoriesIds = [];
@@ -73,10 +74,13 @@ function showCategories(data) {
     });
 }
 
+var requestNewBrandUrl = $('#request-new-brand-url').attr('href');
+
 $('#select-product-category-button').click(function () {
     var selectedCategoryId = $('#product-category div.list-group.col-4:last button.active').attr('category-id');
     getDataWithAJAX('?handler=GetCategoryBrands', { categoryId: selectedCategoryId }, 'showCategoryBrands');
     getDataWithAJAX('?handler=CanAddFakeProduct', { categoryId: selectedCategoryId }, 'changeIsFakeStatus');
+    $('#request-new-brand-url').attr('href', requestNewBrandUrl + '&categoryId=' + selectedCategoryId);
 });
 
 function showCategoryBrands(message, data) {

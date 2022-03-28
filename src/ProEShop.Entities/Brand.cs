@@ -47,11 +47,21 @@ public class Brand : EntityBase, IAuditableEntity
     [MaxLength(200)]
     public string BrandLinkEn { get; set; }
 
+    public bool IsConfirmed { get; set; }
+
+    /// <summary>
+    /// فروشنده پیشنهاد دهنده این برند
+    /// </summary>
+    public long? SellerId { get; set; }
+
     #endregion
 
     #region Relations
 
     public ICollection<CategoryBrand> CategoryBrands { get; set; }
+        = new List<CategoryBrand>();
+
+    public Seller Seller { get; set; }
 
     #endregion
 }
