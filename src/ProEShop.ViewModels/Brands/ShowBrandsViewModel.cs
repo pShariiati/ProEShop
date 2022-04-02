@@ -40,6 +40,9 @@ public class ShowBrandViewModel
 
     [Display(Name = "لینک سایت معتبر خارجی")]
     public string BrandLinkEn { get; set; }
+
+    [Display(Name = "وضعیت")]
+    public bool IsConfirmed { get; set; }
 }
 
 public class SearchBrandsViewModel
@@ -57,6 +60,10 @@ public class SearchBrandsViewModel
     [EqualSearch]
     [Display(Name = "نوع برند")]
     public bool? IsIranianBrand { get; set; }
+
+    [EqualSearch]
+    [Display(Name = "تایید شده / تایید نشده")]
+    public bool? IsConfirmed { get; set; }
 
     [ContainsSearch]
     [Display(Name = "لینک سایت قوه قضاییه")]

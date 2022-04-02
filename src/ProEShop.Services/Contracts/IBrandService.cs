@@ -13,4 +13,5 @@ public interface IBrandService : IGenericService<Brand>
 
     Task<List<long>> GetBrandIdsByList(List<string> brands);
     Task<Dictionary<long, string>> GetBrandsByCategoryId(long categoryId);
+    Task<BrandDetailsViewModel> GetBrandDetails(long brandId);
 }

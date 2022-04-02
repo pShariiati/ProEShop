@@ -167,4 +167,12 @@ public class IndexModel : PageBase
         await _uploadFile.SaveFile(model.NewBrandRegistrationPicture, brandToUpdate.BrandRegistrationPicture, oldBrandRegistrationFileName, "images", "brandregistrationpictures");
         return Json(new JsonResultOperation(true, "برند مورد نظر با موفقیت ویرایش شد"));
     }
+
+    public async Task<IActionResult> OnGetBrandDetails(long brandId)
+    {
+        var model = await _brandService.GetBrandDetails(brandId);
+        if (model is null)
+            return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
+        return Partial("BrandDetails", model);
+    }
 }

@@ -118,6 +118,13 @@ public class BrandService : GenericService<Brand>, IBrandService
                 x => x.Brand.TitleFa + " " + x.Brand.TitleEn);
     }
 
+    public Task<BrandDetailsViewModel> GetBrandDetails(long brandId)
+    {
+        return _mapper.ProjectTo<BrandDetailsViewModel>(
+            _brands
+        ).SingleOrDefaultAsync(x => x.Id == brandId);
+    }
+
     public override async Task<DuplicateColumns> AddAsync(Brand entity)
     {
         var result = new List<string>();

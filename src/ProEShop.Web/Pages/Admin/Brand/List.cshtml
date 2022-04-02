@@ -13,6 +13,7 @@
                     <th>@Html.DisplayNameFor(x => x.Brands[0].BrandRegistrationPicture)</th>
                     <th>@Html.DisplayNameFor(x => x.Brands[0].JudiciaryLink)</th>
                     <th>@Html.DisplayNameFor(x => x.Brands[0].BrandLinkEn)</th>
+                    <th>@Html.DisplayNameFor(x => x.Brands[0].IsConfirmed)</th>
                     <th>عملیات</th>
                 </tr>
             </thead>
@@ -26,7 +27,7 @@
                         <td class="text-center">
                             @if (brand.IsIranianBrand)
                             {
-                                <img src="~/images/application/iran-logo.png" width="100" alt="ایرانی" />
+                                <img src="~/images/application/iran-icon.png" width="100" alt="ایرانی" />
                             }
                             else
                             {
@@ -67,9 +68,35 @@
                             }
                         </td>
                         <td>
+                            @if (brand.IsConfirmed)
+                            {
+                                <div class="d-grid">
+                                    <span class="btn btn-success" type="button">فعال</span>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="d-grid">
+                                    <span class="btn btn-warning" type="button">غیر فعال</span>
+                                </div>
+                            }
+                        </td>
+                        <td>
                             <a custom-title="ویرایش برند &quot; @brand.TitleFa - @brand.TitleEn &quot;" asp-page-handler="Edit" asp-route-id="@brand.Id" class="btn btn-warning show-modal-form-button">
                                 ویرایش
                             </a>
+                            @if (brand.IsConfirmed)
+                            {
+                                <a asp-page-handler="BrandDetails" asp-route-brandId="@brand.Id" class="btn btn-primary show-modal-form-button">
+                                    جزییات برند
+                                </a>
+                            }
+                            else
+                            {
+                                <a custom-title="فعال کردن برند" asp-page-handler="BrandDetails" asp-route-brandId="@brand.Id" class="btn btn-success show-modal-form-button">
+                                    فعال کردن
+                                </a>
+                            }
                         </td>
                     </tr>
                 }

@@ -1,0 +1,106 @@
+﻿@model ProEShop.ViewModels.Brands.BrandDetailsViewModel
+@{
+    var createdBy = Model.SellerShopName ?? "ادمین سیستم";
+    var fullName = Model.SellerUserFullName;
+    var isConfirmedText = Model.IsConfirmed ? "فعال" : "غیر فعال";
+    var isIranianBrand = Model.IsIranianBrand ? "ایرانی" : "خارجی";
+}
+
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">
+            اطلاعات کامل برند
+            <button class="btn btn-primary">
+                @Model.TitleFa
+            </button>
+            <button class="btn btn-primary">
+                @Model.TitleEn
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div>
+                <p class="fw-bold">
+                    <span class="btn btn-info">
+                        ایجاد شده توسط :
+                        @createdBy
+                        @if (fullName != null)
+                        {
+                            @:(@fullName)
+                        }
+                    </span>
+                    <span class="btn btn-@(Model.IsConfirmed ? "success" : "warning")">
+                        @isConfirmedText
+                    </span>
+                    <span class="btn btn-outline-primary">
+                        @isIranianBrand
+                        @if (Model.IsIranianBrand)
+                        {
+                            <img src="~/images/application/iran-icon.png" width="38" alt="@isIranianBrand" />
+                        }
+                        else
+                        {
+                            <img src="~/images/application/global-icon.png" width="22" alt="@isIranianBrand" />
+                        }
+                    </span>
+                </p>
+            </div>
+            <div class="row">
+                @if (Model.IsIranianBrand)
+                {
+                    <div class="col-md-4 col-lg-3">
+                        <p class="fw-bold">
+                            @Html.DisplayNameFor(x=> x.JudiciaryLink)
+                        </p>
+                        <p>
+                            <a target="_blank" href="@Model.BrandLinkEn">@Model.JudiciaryLink</a>
+                        </p>
+                    </div>
+                    <div class="col-md-4 col-lg-3">
+                        <p class="fw-bold">
+                            @Html.DisplayNameFor(x=> x.BrandRegistrationPicture)
+                        </p>
+                        <p>
+                            @if (Model.BrandRegistrationPicture is null)
+                            {
+                                <span class="btn btn-primary">بدون برگه ثبت برند</span>
+                            }
+                            else
+                            {
+                                <img width="100" src="~/images/brandregistrationpictures/@Model.BrandRegistrationPicture" alt="برگه ثبت برند" />
+                            }
+                        </p>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-4 col-lg-3">
+                        <p class="fw-bold">
+                            @Html.DisplayNameFor(x => x.BrandLinkEn)
+                        </p>
+                        <p>
+                            <a target="_blank" href="@Model.BrandLinkEn">@Model.BrandLinkEn</a>
+                        </p>
+                    </div>
+                }
+                <div class="col-md-4 col-lg-3">
+                    <p class="fw-bold">
+                        @Html.DisplayNameFor(x => x.LogoPicture)
+                    </p>
+                    <p>
+                        <img width="100" src="~/images/brands/@Model.LogoPicture" alt="لوگو برند"/>
+                    </p>
+                </div>
+                <div>
+                    <p class="fw-bold">
+                        @Html.DisplayNameFor(x => x.Description)
+                    </p>
+                    <p>
+                        @Html.Raw(Model.Description)
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
