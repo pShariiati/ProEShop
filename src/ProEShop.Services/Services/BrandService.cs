@@ -125,6 +125,12 @@ public class BrandService : GenericService<Brand>, IBrandService
         ).SingleOrDefaultAsync(x => x.Id == brandId);
     }
 
+    public Task<Brand> GetInActiveBrand(long brandId)
+    {
+        return _brands.Where(x => !x.IsConfirmed)
+            .SingleOrDefaultAsync(x => x.Id == brandId);
+    }
+
     public override async Task<DuplicateColumns> AddAsync(Brand entity)
     {
         var result = new List<string>();

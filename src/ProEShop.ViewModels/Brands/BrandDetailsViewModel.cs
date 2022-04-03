@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
+using ProEShop.Common.Attributes;
 
 namespace ProEShop.ViewModels.Brands;
 
 public class BrandDetailsViewModel
 {
+    [HiddenInput]
     public long Id { get; set; }
 
     [Display(Name = "نام فارسی برند")]
@@ -35,4 +38,8 @@ public class BrandDetailsViewModel
     public string SellerShopName { get; set; }
 
     public string SellerUserFullName { get; set; }
+
+    [Display(Name = "دلیل رد برند")]
+    [MakeTinyMceRequired]
+    public string RejectReason { get; set; }
 }

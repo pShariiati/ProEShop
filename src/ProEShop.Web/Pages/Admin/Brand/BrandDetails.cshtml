@@ -100,6 +100,28 @@
                         @Html.Raw(Model.Description)
                     </p>
                 </div>
+                @if (!Model.IsConfirmed)
+                {
+                    <hr />
+                    <form functionNameToCallInTheEnd="confirmAndRejectBrand"
+                          method="post" asp-page-handler="RejectBrand" class="public-ajax-form">
+                        <input asp-for="Id" />
+                        <div class="text-danger" asp-validation-summary="All"></div>
+                        <div class="mb-3">
+                            <label asp-for="RejectReason" class="mb-3 form-label"></label>
+                            <textarea asp-for="RejectReason" class="custom-tinymce"></textarea>
+                            <span asp-validation-for="RejectReason" class="span-error-message"></span>
+                        </div>
+                        <button type="submit" class="btn btn-warning">حذف برند و ارسال دلیل رد شدن برند به ایمیل فروشنده</button>
+                    </form>
+
+                    <form functionNameToCallInTheEnd="confirmAndRejectBrand"
+                          method="post" asp-page-handler="ConfirmBrand"
+                          class="mt-3 public-ajax-form">
+                        <input asp-for="Id" />
+                        <button type="submit" class="btn btn-success">تایید کردن برند</button>
+                    </form>
+                }
             </div>
         </div>
     </div>

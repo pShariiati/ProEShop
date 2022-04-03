@@ -141,6 +141,7 @@ public class CreateSellerModel : PageBase
         }
         var seller = _mapper.Map<Entities.Seller>(CreateSeller);
         seller.UserId = user.Id;
+        seller.IsRealPerson = !CreateSeller.IsLegalPerson;
         seller.ShopName = ShopName;
         
 

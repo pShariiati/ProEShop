@@ -175,4 +175,30 @@ public class IndexModel : PageBase
             return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
         return Partial("BrandDetails", model);
     }
+
+    public async Task<IActionResult> OnPostRejectBrand(BrandDetailsViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return Json(new JsonResultOperation(false, "لطفا دلیل رد برند را وارد نمایید"));
+        }
+
+        var brand = await _brandService.GetInActiveBrand(model.Id);
+        if (brand is null)
+            return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
+        _brandService.Remove(brand);
+        await _uow.SaveChangesAsync();
+        //todo: send reject reasons to seller Email
+        return Json(new JsonResultOperation(true, "برند مورد نظر با موفقیت حذف شد"));
+    }
+
+    public async Task<IActionResult> OnPostConfirmBrand(long id)
+    {
+        var brand = await _brandService.GetInActiveBrand(id);
+        if (brand is null)
+            return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
+        brand.IsConfirmed = true;
+        await _uow.SaveChangesAsync();
+        return Json(new JsonResultOperation(true, "برند مورد نظر با موفقیت شد"));
+    }
 }

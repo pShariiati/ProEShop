@@ -17,7 +17,7 @@ public class MakeTinyMceRequiredAttribute : BaseValidationAttribute, IClientMode
         var displayName = validationContext.DisplayName;
         ErrorMessage = ErrorMessage.Replace("{0}", displayName);
 
-        if (string.IsNullOrWhiteSpace(value.ToString()))
+        if (string.IsNullOrWhiteSpace(value?.ToString()))
         {
             return new ValidationResult(ErrorMessage);
         }
