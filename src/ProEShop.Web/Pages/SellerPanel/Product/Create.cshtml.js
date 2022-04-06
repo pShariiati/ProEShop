@@ -101,3 +101,8 @@ function changeIsFakeStatus(message, data) {
         $('#Product_IsFake').removeAttr('disabled');
     }
 }
+
+$(document).on('change', '#IsIranianBrand', function () {
+    var textToReplace = this.checked ? 'ایرانی' : 'خارجی';
+    $(this).parents('.form-switch').find('label').html(textToReplace);
+});

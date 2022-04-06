@@ -158,8 +158,8 @@ document.addEventListener('focusin', function (e) {
 });
 
 function initializeSelect2() {
-    if ($('.custom-select2').length > 0) {
-        $('.custom-select2').select2({
+    if ($('.modal .custom-select2').length > 0) {
+        $('.modal .custom-select2').select2({
             theme: 'bootstrap-5',
             dropdownParent: $('#form-modal-place')
         });

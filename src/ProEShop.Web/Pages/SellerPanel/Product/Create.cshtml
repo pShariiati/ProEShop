@@ -69,6 +69,39 @@
                                     </select>
                                     <span asp-validation-for="Product.BrandId" class="span-error-message"></span>
                                 </div>
+                                <div class="my-2 col-md-6 col-lg-4">
+                                    <label class="d-flex justify-content-between form-label" asp-for="Product.Weight">
+                                        وزن (گرم)
+                                    </label>
+                                    <input asp-for="Product.Weight" class="form-control" />
+                                    <span asp-validation-for="Product.Weight" class="span-error-message"></span>
+                                </div>
+                                <div class="my-2 col-md-6 col-lg-4">
+                                    <label class="d-flex justify-content-between form-label" asp-for="Product.Length">
+                                        طول (سانتیمتر)
+                                    </label>
+                                    <input asp-for="Product.Length" class="form-control" />
+                                    <span asp-validation-for="Product.Length" class="span-error-message"></span>
+                                </div>
+                                <div class="my-2 col-md-6 col-lg-4">
+                                    <label class="d-flex justify-content-between form-label" asp-for="Product.Width">
+                                        عرض (سانتیمتر)
+                                    </label>
+                                    <input asp-for="Product.Width" class="form-control" />
+                                    <span asp-validation-for="Product.Width" class="span-error-message"></span>
+                                </div>
+                                <div class="my-2 col-md-6 col-lg-4">
+                                    <label class="d-flex justify-content-between form-label" asp-for="Product.Height">
+                                        ارتفاع (سانتیمتر)
+                                    </label>
+                                    <input asp-for="Product.Height" class="form-control" />
+                                    <span asp-validation-for="Product.Height" class="span-error-message"></span>
+                                </div>
+                                <div class="my-2">
+                                    <label class="d-flex justify-content-between form-label" asp-for="Product.ShortDescription">
+                                    </label>
+                                    <textarea class="custom-tinymce"></textarea>
+                                </div>
                                 <button class="btn btn-primary">send</button>
                             </div>
                         </div>
