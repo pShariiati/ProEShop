@@ -18,7 +18,12 @@
                     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product-info" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">
                         درج اطلاعات کالا
                     </button>
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#contract" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">تب سوم</button>
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#specialty-check" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">
+                        بررسی تخصصی
+                    </button>
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#contract" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">
+                        بخش چهارم
+                    </button>
                 </div>
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="product-category">
@@ -70,37 +75,49 @@
                                     <span asp-validation-for="Product.BrandId" class="span-error-message"></span>
                                 </div>
                                 <div class="my-2 col-md-6 col-lg-4">
-                                    <label class="d-flex justify-content-between form-label" asp-for="Product.Weight">
-                                        وزن (گرم)
+                                    <label class="d-flex justify-content-between form-label" asp-for="Product.PackWeight">
+                                        وزن بسته بندی (گرم)
                                     </label>
-                                    <input asp-for="Product.Weight" class="form-control" />
-                                    <span asp-validation-for="Product.Weight" class="span-error-message"></span>
+                                    <input asp-for="Product.PackWeight" class="form-control" />
+                                    <span asp-validation-for="Product.PackWeight" class="span-error-message"></span>
                                 </div>
                                 <div class="my-2 col-md-6 col-lg-4">
-                                    <label class="d-flex justify-content-between form-label" asp-for="Product.Length">
-                                        طول (سانتیمتر)
+                                    <label class="d-flex justify-content-between form-label" asp-for="Product.PackLength">
+                                        طول بسته بندی (سانتیمتر)
                                     </label>
-                                    <input asp-for="Product.Length" class="form-control" />
-                                    <span asp-validation-for="Product.Length" class="span-error-message"></span>
+                                    <input asp-for="Product.PackLength" class="form-control" />
+                                    <span asp-validation-for="Product.PackLength" class="span-error-message"></span>
                                 </div>
                                 <div class="my-2 col-md-6 col-lg-4">
-                                    <label class="d-flex justify-content-between form-label" asp-for="Product.Width">
-                                        عرض (سانتیمتر)
+                                    <label class="d-flex justify-content-between form-label" asp-for="Product.PackWidth">
+                                        عرض بسته بندی (سانتیمتر)
                                     </label>
-                                    <input asp-for="Product.Width" class="form-control" />
-                                    <span asp-validation-for="Product.Width" class="span-error-message"></span>
+                                    <input asp-for="Product.PackWidth" class="form-control" />
+                                    <span asp-validation-for="Product.PackWidth" class="span-error-message"></span>
                                 </div>
                                 <div class="my-2 col-md-6 col-lg-4">
-                                    <label class="d-flex justify-content-between form-label" asp-for="Product.Height">
-                                        ارتفاع (سانتیمتر)
+                                    <label class="d-flex justify-content-between form-label" asp-for="Product.PackHeight">
+                                        ارتفاع بسته بندی (سانتیمتر)
                                     </label>
-                                    <input asp-for="Product.Height" class="form-control" />
-                                    <span asp-validation-for="Product.Height" class="span-error-message"></span>
+                                    <input asp-for="Product.PackHeight" class="form-control" />
+                                    <span asp-validation-for="Product.PackHeight" class="span-error-message"></span>
                                 </div>
                                 <div class="my-2">
                                     <label class="d-flex justify-content-between form-label" asp-for="Product.ShortDescription">
                                     </label>
-                                    <textarea class="custom-tinymce"></textarea>
+                                    <textarea asp-for="Product.ShortDescription" class="custom-tinymce"></textarea>
+                                </div>
+                                <button class="btn btn-primary">send</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="specialty-check">
+                        <div class="card">
+                            <div class="card-body row">
+                                <div class="my-2">
+                                    <label class="d-flex justify-content-between form-label" asp-for="Product.SpecialtyCheck">
+                                    </label>
+                                    <textarea asp-for="Product.SpecialtyCheck" class="custom-tinymce"></textarea>
                                 </div>
                                 <button class="btn btn-primary">send</button>
                             </div>

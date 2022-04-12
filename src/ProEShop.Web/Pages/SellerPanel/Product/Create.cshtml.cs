@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using ProEShop.Common.Attributes;
 using ProEShop.Common.Constants;
 using ProEShop.Common.Helpers;
 using ProEShop.Common.IdentityToolkit;
@@ -128,5 +129,19 @@ public class CreateModel : SellerPanelBase
     public async Task<IActionResult> OnGetCheckForTitleEn(string titleEn)
     {
         return Json(!await _brandService.IsExistsBy(nameof(Entities.Brand.TitleEn), titleEn));
+    }
+
+    public IActionResult OnPostUploadSpecialtyCheckImages([IsImage]IFormFile file)
+    {
+        if (ModelState.IsValid && file.IsFileUploaded())
+        {
+            var imageFileName = file.GenerateFileName();
+            _uploadFile.SaveFile(file, imageFileName, null, "images", "products", "specialty-check-images");
+            return Json(new
+            {
+                location = $"/images/products/specialty-check-images/{imageFileName}"
+            });
+        }
+        return Json(false);
     }
 }

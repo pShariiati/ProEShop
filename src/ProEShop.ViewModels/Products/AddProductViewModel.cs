@@ -14,21 +14,24 @@ public class AddProductViewModel
     public bool IsFake { get; set; }
 
     [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
-    [Display(Name = "وزن")]
-    public int Weight { get; set; }
+    [Display(Name = "وزن بسته بندی")]
+    public int PackWeight { get; set; }
 
     [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
-    [Display(Name = "طول")]
-    public int Length { get; set; }
+    [Display(Name = "طول بسته بندی")]
+    public int PackLength { get; set; }
 
     [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
-    [Display(Name = "عرض")]
-    public int Width { get; set; }
+    [Display(Name = "عرض بسته بندی")]
+    public int PackWidth { get; set; }
 
     [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
-    [Display(Name = "ارتفاع")]
-    public int Height { get; set; }
+    [Display(Name = "ارتفاع بسته بندی")]
+    public int PackHeight { get; set; }
 
     [Display(Name = "توضیحات کوتاه")]
     public string ShortDescription { get; set; }
+
+    [Display(Name = "بررسی تخصصی")]
+    public string SpecialtyCheck { get; set; }
 }

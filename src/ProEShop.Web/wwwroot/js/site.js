@@ -103,6 +103,33 @@ function showErrorMessage(message) {
     showToastr('error', message != null ? message : 'خطایی به وجود آمد، لطفا مجددا تلاش نمایید');
 }
 
+function uploadTinyMceImage(blobInfo, success, failure, progress) {
+    debugger;
+    var formData = new FormData();
+    formData.append('file', blobInfo.blob(), blobInfo.filename());
+    formData.append(rvt, $('textarea.custom-tinymce:first').parents('form').find('input[name="' + rvt + '"]').val());
+    console.log($('textarea.custom-tinymce:first').parents('form').find('input[name="' + rvt + '"]').val())
+    $.ajax({
+        url: `${location.pathname}?handler=UploadSpecialtyCheckImages`,
+        data: formData,
+        type: 'POST',
+        enctype: 'multipart/form-data',
+        dataType: 'json',
+        processData: false,
+        contentType: false,
+        success: function (data) {
+            if (data === false) {
+                failure('خطایی به وجود آمد');
+            } else {
+                success(data.location);
+            }
+        },
+        error: function () {
+            failure('خطایی به وجود آمد');
+        }
+    });
+};
+
 function initializeTinyMCE() {
     if ($('textarea.custom-tinymce').length > 0) {
         tinymce.remove('textarea.custom-tinymce');
@@ -114,12 +141,14 @@ function initializeTinyMCE() {
                     $(e.target.formElement).validate().element(`#${elementId}`);
                 });
             },
-            height: 300,
+            min_height: 300,
             max_height: 500,
             language: 'fa_IR',
             language_url: '/js/fa_IR.js',
             content_style: 'body {font-family: Vazir}',
-            plugins: 'link table preview wordcount',
+            images_upload_handler: uploadTinyMceImage,
+            image_title: true,
+            plugins: 'link table preview wordcount autoresize image',
             toolbar: [
                 {
                     name: 'history', items: ['undo', 'redo', 'preview']
@@ -134,7 +163,7 @@ function initializeTinyMCE() {
                     name: 'alignment', items: ['alignleft', 'aligncenter', 'alignright', 'alignjustify', 'forecolor', 'backcolor']
                 },
                 {
-                    name: 'table', items: ['table', 'wordcount']
+                    name: 'table', items: ['table', 'wordcount', 'image']
                 },
                 {
                     name: 'indentation', items: ['outdent', 'indent']
@@ -432,9 +461,9 @@ function fillDataTable() {
             enablingTooltips();
             activatingGetHtmlWithAjax();
         }
-    }).fail(function() {
+    }).fail(function () {
         showErrorMessage();
-    }).always(function() {
+    }).always(function () {
         $('.search-form-submit-button').removeAttr('disabled');
         $('.data-table-loading').addClass('d-none');
     });
@@ -556,7 +585,7 @@ $(document).on('submit', 'form.public-ajax-form', function (e) {
 
 // فعالساز مربوط به تعداد آیتم در هر صفحه
 function activatingPageCount() {
-    $('#page-count-selectbox').change(function() {
+    $('#page-count-selectbox').change(function () {
         var pageCountValue = this.value;
         $('form.search-form-via-ajax input[name$="Pagination.PageCount"]').val(pageCountValue);
         $('form.search-form-via-ajax').submit();
