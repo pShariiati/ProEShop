@@ -131,7 +131,7 @@ public class CreateModel : SellerPanelBase
         return Json(!await _brandService.IsExistsBy(nameof(Entities.Brand.TitleEn), titleEn));
     }
 
-    public IActionResult OnPostUploadSpecialtyCheckImages([IsImage]IFormFile file)
+    public IActionResult OnPostUploadSpecialtyCheckImages([IsImage] IFormFile file)
     {
         if (ModelState.IsValid && file.IsFileUploaded())
         {
@@ -140,6 +140,20 @@ public class CreateModel : SellerPanelBase
             return Json(new
             {
                 location = $"/images/products/specialty-check-images/{imageFileName}"
+            });
+        }
+        return Json(false);
+    }
+
+    public IActionResult OnPostUploadShortDescriptionImages([IsImage] IFormFile file)
+    {
+        if (ModelState.IsValid && file.IsFileUploaded())
+        {
+            var imageFileName = file.GenerateFileName();
+            _uploadFile.SaveFile(file, imageFileName, null, "images", "products", "short-description-images");
+            return Json(new
+            {
+                location = $"/images/products/short-description-images/{imageFileName}"
             });
         }
         return Json(false);

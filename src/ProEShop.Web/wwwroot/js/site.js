@@ -97,20 +97,17 @@ function enablingTooltips() {
     });
 }
 
-enablingTooltips();
-
 function showErrorMessage(message) {
     showToastr('error', message != null ? message : 'خطایی به وجود آمد، لطفا مجددا تلاش نمایید');
 }
 
-function uploadTinyMceImage(blobInfo, success, failure, progress) {
-    debugger;
+// Send `TinyMCE` images to server with specific url
+function sendTinyMceImagesToServer(blobInfo, success, failure, progress, url) {
     var formData = new FormData();
     formData.append('file', blobInfo.blob(), blobInfo.filename());
     formData.append(rvt, $('textarea.custom-tinymce:first').parents('form').find('input[name="' + rvt + '"]').val());
-    console.log($('textarea.custom-tinymce:first').parents('form').find('input[name="' + rvt + '"]').val())
     $.ajax({
-        url: `${location.pathname}?handler=UploadSpecialtyCheckImages`,
+        url: `${location.pathname}?handler=${url}`,
         data: formData,
         type: 'POST',
         enctype: 'multipart/form-data',
@@ -131,10 +128,11 @@ function uploadTinyMceImage(blobInfo, success, failure, progress) {
 };
 
 function initializeTinyMCE() {
-    if ($('textarea.custom-tinymce').length > 0) {
-        tinymce.remove('textarea.custom-tinymce');
+    $('textarea.custom-tinymce').each(function() {
+        var textareaId = `#${$(this).attr('id')}`;
+        tinymce.remove(textareaId);
         tinymce.init({
-            selector: 'textarea.custom-tinymce',
+            selector: textareaId,
             setup: function (editor) {
                 editor.on('blur', function (e) {
                     var elementId = $(e.target.targetElm).attr('id');
@@ -146,9 +144,7 @@ function initializeTinyMCE() {
             language: 'fa_IR',
             language_url: '/js/fa_IR.js',
             content_style: 'body {font-family: Vazir}',
-            images_upload_handler: uploadTinyMceImage,
-            image_title: true,
-            plugins: 'link table preview wordcount autoresize image',
+            plugins: 'link table preview wordcount autoresize',
             toolbar: [
                 {
                     name: 'history', items: ['undo', 'redo', 'preview']
@@ -163,7 +159,7 @@ function initializeTinyMCE() {
                     name: 'alignment', items: ['alignleft', 'aligncenter', 'alignright', 'alignjustify', 'forecolor', 'backcolor']
                 },
                 {
-                    name: 'table', items: ['table', 'wordcount', 'image']
+                    name: 'table', items: ['table', 'wordcount']
                 },
                 {
                     name: 'indentation', items: ['outdent', 'indent']
@@ -172,10 +168,8 @@ function initializeTinyMCE() {
             menubar: false,
             branding: false
         });
-    }
+    });
 }
-
-initializeTinyMCE();
 
 // برای نمایش ادیتور
 // Tinymce
@@ -202,8 +196,6 @@ function initializeSelect2WithoutModal() {
         });
     }
 }
-
-initializeSelect2WithoutModal();
 
 // یک آرایه و یک آیتم میگیره
 // آیتم رو از آرایه حذف میکنه
@@ -737,8 +729,6 @@ function activatingInputAttributes() {
     $('input[data-val-isimage]').attr('accept', 'image/*');
 }
 
-activatingInputAttributes();
-
 // نمایش پیش نمایش عکس
 $('.image-preivew-input').change(function () {
     var selectedFile = this.files[0];
@@ -750,4 +740,19 @@ $('.image-preivew-input').change(function () {
         $(`#${imagePreviewBox} img`).attr('src', '');
         $(`#${imagePreviewBox}`).addClass('d-none');
     }
+});
+
+$(function() {
+    activatingInputAttributes();
+    initializeSelect2WithoutModal();
+    initializeTinyMCE();
+    enablingTooltips();
+
+    $('textarea[add-image-plugin="true"]').each(function() {
+        var elementId = $(this).attr('id');
+        var currentTinyMce = tinymce.get(elementId);
+        currentTinyMce.settings.plugins += ' image';
+        currentTinyMce.settings.toolbar[4].items.push('image');
+        currentTinyMce.settings.image_title = true;
+    });
 });
