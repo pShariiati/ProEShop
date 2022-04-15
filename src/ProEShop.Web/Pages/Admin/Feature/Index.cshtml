@@ -10,8 +10,10 @@
             @ViewData["Title"]
         </h5>
         <div class="d-grid d-lg-block mb-2">
-            <a asp-page-handler="Add" class="btn btn-outline-primary show-modal-form-button">
+            <a id="add-category-feature-link" asp-page-handler="Add" class="btn btn-outline-primary show-modal-form-button">
                 افزودن ویژگی دسته بندی
+            </a>
+            <a id="add-feature-for-selected-category" asp-page-handler="Add" class="btn btn-outline-primary show-modal-form-button d-none">
             </a>
         </div>
         <form class="alert alert-secondary search-form-via-ajax">

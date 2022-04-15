@@ -111,7 +111,7 @@ public class IndexModel : PageBase
         return Json(new JsonResultOperation(true, "ویژگی دسته بندی مورد نظر با موفقیت حذف شد"));
     }
 
-    public async Task<IActionResult> OnGetAdd()
+    public async Task<IActionResult> OnGetAdd(long categoryId)
     {
         var categories = await _categoryService.GetCategoriesToShowInSelectBoxAsync();
         var model = new AddFeatureViewModel()

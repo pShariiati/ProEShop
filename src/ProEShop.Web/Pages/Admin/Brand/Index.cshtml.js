@@ -1,4 +1,7 @@
-﻿fillDataTable();
+﻿$(function () {
+    fillDataTable();
+});
+
 function actionsAfterLoadModalForm() {
     var isIranianBrandChecked = $('#IsIranianBrand').is(':checked');
     $('#IsIranianBrand').parents('.form-switch').find('label').html(isIranianBrandChecked ? 'ایرانی' : 'خارجی');

@@ -475,6 +475,7 @@ function activatingGetHtmlWithAjax() {
 $(document).on('submit', 'form.custom-ajax-form', function (e) {
     e.preventDefault();
     var currentForm = $(this);
+    var closeWhenDone = currentForm.attr('close-when-done');
     var formAction = currentForm.attr('action');
     var formData = new FormData(this);
     $.ajax({
@@ -496,7 +497,9 @@ $(document).on('submit', 'form.custom-ajax-form', function (e) {
             }
             else {
                 fillDataTable();
-                $('#form-modal-place').modal('hide');
+                if (closeWhenDone !== 'false') {
+                    $('#form-modal-place').modal('hide');
+                }
                 showToastr('success', data.message);
             }
         },
@@ -754,5 +757,15 @@ $(function() {
         currentTinyMce.settings.plugins += ' image';
         currentTinyMce.settings.toolbar[4].items.push('image');
         currentTinyMce.settings.image_title = true;
+    });
+
+    // Initialize TinyMCE upload image plugin
+    $('textarea.custom-tinymce').each(function () {
+        var elementId = $(this).attr('id');
+        var uploadImageUrl = $(this).attr('upload-image-url');
+        var tinyMceInstance = tinymce.get(elementId);
+        tinyMceInstance.settings.images_upload_handler = function (blobInfo, success, failure, progress) {
+            sendTinyMceImagesToServer(blobInfo, success, failure, progress, uploadImageUrl);
+        };
     });
 });

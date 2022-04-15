@@ -6,20 +6,8 @@ $(function () {
     activatingModalForm();
 
     var specialtyCheckTinyMce = tinymce.get('Product_SpecialtyCheck');
-    specialtyCheckTinyMce.settings.images_upload_handler = uploadSpecialtyCheckImages;
     specialtyCheckTinyMce.settings.max_height = 1000;
-
-    var shortDescriptionTinyMce = tinymce.get('Product_ShortDescription');
-    shortDescriptionTinyMce.settings.images_upload_handler = uploadShortDescriptionImages;
 });
-
-function uploadSpecialtyCheckImages(blobInfo, success, failure, progress) {
-    sendTinyMceImagesToServer(blobInfo, success, failure, progress, 'UploadSpecialtyCheckImages');
-}
-
-function uploadShortDescriptionImages(blobInfo, success, failure, progress) {
-    sendTinyMceImagesToServer(blobInfo, success, failure, progress, 'UploadShortDescriptionImages');
-}
 
 var selectedCategoriesIds = [];
 

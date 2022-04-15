@@ -15,18 +15,22 @@ public class AddProductViewModel
 
     [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
     [Display(Name = "وزن بسته بندی")]
+    [Range(1, 1000000, ErrorMessage = AttributesErrorMessages.RangeMessage)]
     public int PackWeight { get; set; }
 
     [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
     [Display(Name = "طول بسته بندی")]
+    [Range(1, 20000, ErrorMessage = AttributesErrorMessages.RangeMessage)]
     public int PackLength { get; set; }
 
     [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
     [Display(Name = "عرض بسته بندی")]
+    [Range(1, 20000, ErrorMessage = AttributesErrorMessages.RangeMessage)]
     public int PackWidth { get; set; }
 
     [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
     [Display(Name = "ارتفاع بسته بندی")]
+    [Range(1, 10000, ErrorMessage = AttributesErrorMessages.RangeMessage)]
     public int PackHeight { get; set; }
 
     [Display(Name = "توضیحات کوتاه")]

@@ -1,4 +1,6 @@
-﻿fillDataTable();
+﻿$(function () {
+    fillDataTable();
+});
 
 function getSellerDetails(e) {
     var sellerId = $(e).attr('seller-id');

@@ -1,4 +1,6 @@
-﻿fillDataTable();
+﻿$(function () {
+    fillDataTable();
+});
 
 var brandBox = `<div class="btn-group m-1">
                 <button type="button" class="btn btn-outline-dark">
