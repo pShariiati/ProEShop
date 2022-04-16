@@ -1,0 +1,12 @@
+﻿@model List<ProEShop.ViewModels.CategoryFeatures.CategoryFeatureForCreateProductViewModel>
+
+@foreach (var item in Model)
+{
+    <div class="my-2 col-md-6 col-lg-4">
+        <label class="form-label">
+            @item.FeatureTitle
+        </label>
+        <input class="form-control" />
+        <span class="span-error-message"></span>
+    </div>
+}

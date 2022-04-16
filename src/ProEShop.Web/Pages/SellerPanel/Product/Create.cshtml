@@ -21,8 +21,11 @@
                     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#specialty-check" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">
                         بررسی تخصصی
                     </button>
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product-features" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">
+                        ویژگی های محصول
+                    </button>
                     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#contract" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">
-                        بخش چهارم
+                        بخش پنجم
                     </button>
                 </div>
                 <div class="tab-content">
@@ -75,35 +78,35 @@
                                     <span asp-validation-for="Product.BrandId" class="span-error-message"></span>
                                 </div>
                                 <div class="my-2 col-md-6 col-lg-4">
-                                    <label class="d-flex justify-content-between form-label" asp-for="Product.PackWeight">
+                                    <label class="form-label" asp-for="Product.PackWeight">
                                         وزن بسته بندی (گرم)
                                     </label>
                                     <input asp-for="Product.PackWeight" class="form-control" />
                                     <span asp-validation-for="Product.PackWeight" class="span-error-message"></span>
                                 </div>
                                 <div class="my-2 col-md-6 col-lg-4">
-                                    <label class="d-flex justify-content-between form-label" asp-for="Product.PackLength">
+                                    <label class="form-label" asp-for="Product.PackLength">
                                         طول بسته بندی (سانتیمتر)
                                     </label>
                                     <input asp-for="Product.PackLength" class="form-control" />
                                     <span asp-validation-for="Product.PackLength" class="span-error-message"></span>
                                 </div>
                                 <div class="my-2 col-md-6 col-lg-4">
-                                    <label class="d-flex justify-content-between form-label" asp-for="Product.PackWidth">
+                                    <label class="form-label" asp-for="Product.PackWidth">
                                         عرض بسته بندی (سانتیمتر)
                                     </label>
                                     <input asp-for="Product.PackWidth" class="form-control" />
                                     <span asp-validation-for="Product.PackWidth" class="span-error-message"></span>
                                 </div>
                                 <div class="my-2 col-md-6 col-lg-4">
-                                    <label class="d-flex justify-content-between form-label" asp-for="Product.PackHeight">
+                                    <label class="form-label" asp-for="Product.PackHeight">
                                         ارتفاع بسته بندی (سانتیمتر)
                                     </label>
                                     <input asp-for="Product.PackHeight" class="form-control" />
                                     <span asp-validation-for="Product.PackHeight" class="span-error-message"></span>
                                 </div>
                                 <div class="my-2">
-                                    <label class="d-flex justify-content-between form-label" asp-for="Product.ShortDescription">
+                                    <label class="form-label" asp-for="Product.ShortDescription">
                                     </label>
                                     <textarea upload-image-url="UploadShortDescriptionImages" add-image-plugin="true" asp-for="Product.ShortDescription" class="custom-tinymce"></textarea>
                                 </div>
@@ -115,10 +118,17 @@
                         <div class="card">
                             <div class="card-body row">
                                 <div class="my-2">
-                                    <label class="d-flex justify-content-between form-label" asp-for="Product.SpecialtyCheck">
+                                    <label class="form-label" asp-for="Product.SpecialtyCheck">
                                     </label>
                                     <textarea upload-image-url="UploadSpecialtyCheckImages" add-image-plugin="true" asp-for="Product.SpecialtyCheck" class="custom-tinymce"></textarea>
                                 </div>
+                                <button class="btn btn-primary">send</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="product-features">
+                        <div class="card">
+                            <div class="card-body row">
                                 <button class="btn btn-primary">send</button>
                             </div>
                         </div>

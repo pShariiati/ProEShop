@@ -18,6 +18,7 @@ public class CreateModel : SellerPanelBase
     #region Constructor
 
     private readonly ICategoryService _categoryService;
+    private readonly ICategoryFeatureService _categoryFeatureService;
     private readonly IBrandService _brandService;
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _uow;
@@ -30,7 +31,8 @@ public class CreateModel : SellerPanelBase
         IMapper mapper,
         IUnitOfWork uow,
         IUploadFileService uploadFile,
-        ISellerService sellerService)
+        ISellerService sellerService,
+        ICategoryFeatureService categoryFeatureService)
     {
         _categoryService = categoryService;
         _brandService = brandService;
@@ -38,6 +40,7 @@ public class CreateModel : SellerPanelBase
         _uow = uow;
         _uploadFile = uploadFile;
         _sellerService = sellerService;
+        _categoryFeatureService = categoryFeatureService;
     }
 
     #endregion
@@ -157,5 +160,10 @@ public class CreateModel : SellerPanelBase
             });
         }
         return Json(false);
+    }
+
+    public async Task<IActionResult> OnGetShowCategoryFeatures(long categoryId)
+    {
+        return Partial("_ShowCategoryFeaturesPartial", await _categoryFeatureService.GetCategoryFeatures(categoryId));
     }
 }

@@ -83,8 +83,13 @@ $('#select-product-category-button').click(function () {
     var selectedCategoryId = $('#product-category div.list-group.col-4:last button.active').attr('category-id');
     getDataWithAJAX('?handler=GetCategoryBrands', { categoryId: selectedCategoryId }, 'showCategoryBrands');
     getDataWithAJAX('?handler=CanAddFakeProduct', { categoryId: selectedCategoryId }, 'changeIsFakeStatus');
+    getHtmlWithAJAX('?handler=ShowCategoryFeatures', { categoryId: selectedCategoryId }, 'showCategoryFeatures');
     $('#request-new-brand-url').attr('href', requestNewBrandUrl + '&categoryId=' + selectedCategoryId);
 });
+
+function showCategoryFeatures(data) {
+    $('#product-features .card-body.row').html(data);
+}
 
 function showCategoryBrands(message, data) {
     $('#Product_BrandId option').remove();
