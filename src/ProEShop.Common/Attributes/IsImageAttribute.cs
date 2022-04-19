@@ -26,6 +26,11 @@ public class IsImageAttribute : BaseValidationAttribute, IClientModelValidator
         var displayName = validationContext.DisplayName;
         ErrorMessage = ErrorMessage.Replace("{0}", displayName);
 
+        if (validationContext.ObjectType.GetProperty(validationContext.MemberName).PropertyType.IsGenericType)
+        {
+            ErrorMessage = ErrorMessage.Replace("باشد", "باشند");
+        }
+
         var file = value as IFormFile;
         if (file != null && file.Length > 0)
         {
@@ -55,6 +60,12 @@ public class IsImageAttribute : BaseValidationAttribute, IClientModelValidator
             .Cast<DisplayAttribute>()
             .FirstOrDefault()?.Name;
         ErrorMessage = ErrorMessage.Replace("{0}", displayName);
+
+        if (context.ModelMetadata.ContainerMetadata
+            .ModelType.GetProperty(context.ModelMetadata.PropertyName).PropertyType.IsGenericType)
+        {
+            ErrorMessage = ErrorMessage.Replace("باشد", "باشند");
+        }
 
         MergeAttribute(context.Attributes, "data-val", "true");
         MergeAttribute(context.Attributes, "data-val-isImage", ErrorMessage);

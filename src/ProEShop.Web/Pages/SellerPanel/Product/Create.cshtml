@@ -14,7 +14,7 @@
         <form method="post">
             <nav>
                 <div class="nav nav-tabs nav-fill" id="add-product-tab">
-                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#product-category" type="button" role="tab" aria-controls="nav-home" aria-selected="true">انتخاب گروه کالا</button>
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product-category" type="button" role="tab" aria-controls="nav-home" aria-selected="true">انتخاب گروه کالا</button>
                     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product-info" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">
                         درج اطلاعات کالا
                     </button>
@@ -24,12 +24,12 @@
                     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product-features" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">
                         ویژگی های محصول
                     </button>
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#contract" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">
-                        بخش پنجم
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#product-images" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">
+                        بارگذاری تصاویر
                     </button>
                 </div>
                 <div class="tab-content">
-                    <div class="tab-pane fade show active" id="product-category">
+                    <div class="tab-pane fade" id="product-category">
                         <div class="card overflow-hidden">
                             <div class="card-body row flex-nowrap overflow-auto">
                             </div>
@@ -129,6 +129,19 @@
                     <div class="tab-pane fade" id="product-features">
                         <div class="card">
                             <div class="card-body row">
+                                <button class="btn btn-primary">send</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show active" id="product-images">
+                        <div class="card">
+                            <div class="card-body row">
+                                <div class="my-2">
+                                    <label class="form-label" asp-for="Product.Pictures">
+                                    </label>
+                                    <input asp-for="Product.Pictures" class="form-control" />
+                                    <span asp-validation-for="Product.Pictures" class="span-error-message"></span>
+                                </div>
                                 <button class="btn btn-primary">send</button>
                             </div>
                         </div>

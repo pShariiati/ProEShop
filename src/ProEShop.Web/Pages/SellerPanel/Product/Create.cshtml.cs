@@ -45,9 +45,14 @@ public class CreateModel : SellerPanelBase
 
     #endregion
 
+    [BindProperty]
     public AddProductViewModel Product { get; set; }
 
     public void OnGet()
+    {
+    }
+
+    public void OnPost()
     {
     }
 

@@ -258,14 +258,18 @@ if (jQuery.validator) {
     var imageInputsWithProblems = [];
     // isImage
     jQuery.validator.addMethod('isImage', function (value, element, param) {
-        var selectedFile = element.files[0];
-        if (selectedFile === undefined) {
+        var selectedFiles = element.files;
+        if (selectedFiles[0] === undefined) {
             return true;
         }
         var whiteListExtensions = $(element).data('val-whitelistextensions').split(',');
-        if (!whiteListExtensions.includes(selectedFile.type)) {
-            return false;
+        for (var counter = 0; counter < selectedFiles.length; counter++) {
+            if (!whiteListExtensions.includes(selectedFiles[counter].type)) {
+                return false;
+            }
         }
+
+        /////
         var currentElementId = $(element).attr('id');
         var currentForm = $(element).parents('form');
 
@@ -275,15 +279,19 @@ if (jQuery.validator) {
         }
 
         if ($('#image-preview-box-temp').length === 0) {
-            $('body').append('<img class="d-none" id="image-preview-box-temp" />');
+            for (var counter = 0; counter < selectedFiles.length; counter++) {
+                $('body').append(`<img class="d-none" id="image-preview-box-temp-${counter}" />`);
+            }
         }
-        $('#image-preview-box-temp').attr('src', URL.createObjectURL(selectedFile));
-        $('#image-preview-box-temp').off('error');
-        $('#image-preview-box-temp').on('error',
-            function () {
-                imageInputsWithProblems.push(currentElementId);
-                currentForm.validate().element(`#${currentElementId}`);
-            });
+        for (var counter = 0; counter < selectedFiles.length; counter++) {
+            $(`#image-preview-box-temp-${counter}`).attr('src', URL.createObjectURL(selectedFiles[counter]));
+            $(`#image-preview-box-temp-${counter}`).off('error');
+            $(`#image-preview-box-temp-${counter}`).on('error',
+                function () {
+                    imageInputsWithProblems.push(currentElementId);
+                    currentForm.validate().element(`#${currentElementId}`);
+                });
+        }
         return true;
     });
     jQuery.validator.unobtrusive.adapters.addBool('isImage');
