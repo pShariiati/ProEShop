@@ -277,16 +277,14 @@ if (jQuery.validator) {
             removeItemInArray(imageInputsWithProblems, currentElementId);
             return false;
         }
-
-        if ($('#image-preview-box-temp').length === 0) {
-            for (var counter = 0; counter < selectedFiles.length; counter++) {
-                $('body').append(`<img class="d-none" id="image-preview-box-temp-${counter}" />`);
-            }
+        $('[id^="image-preview-box-temp"]').remove();
+        for (var i = 0; i < selectedFiles.length; i++) {
+            $('body').append(`<img class="d-none" id="image-preview-box-temp-${i}" />`);
         }
-        for (var counter = 0; counter < selectedFiles.length; counter++) {
-            $(`#image-preview-box-temp-${counter}`).attr('src', URL.createObjectURL(selectedFiles[counter]));
-            $(`#image-preview-box-temp-${counter}`).off('error');
-            $(`#image-preview-box-temp-${counter}`).on('error',
+        for (var j = 0; j < selectedFiles.length; j++) {
+            $(`#image-preview-box-temp-${j}`).attr('src', URL.createObjectURL(selectedFiles[j]));
+            $(`#image-preview-box-temp-${j}`).off('error');
+            $(`#image-preview-box-temp-${j}`).on('error',
                 function () {
                     imageInputsWithProblems.push(currentElementId);
                     currentForm.validate().element(`#${currentElementId}`);
@@ -484,6 +482,7 @@ $(document).on('submit', 'form.custom-ajax-form', function (e) {
     e.preventDefault();
     var currentForm = $(this);
     var closeWhenDone = currentForm.attr('close-when-done');
+    var callFunctionInTheEnd = currentForm.attr('call-function-in-the-end');
     var formAction = currentForm.attr('action');
     var formData = new FormData(this);
     $.ajax({
@@ -504,6 +503,10 @@ $(document).on('submit', 'form.custom-ajax-form', function (e) {
                 showToastr('warning', data.message);
             }
             else {
+                debugger;
+                if (callFunctionInTheEnd) {
+                    customAjaxFormFunction(data);
+                }
                 fillDataTable();
                 if (closeWhenDone !== 'false') {
                     $('#form-modal-place').modal('hide');
@@ -531,21 +534,14 @@ $(document).on('submit', 'form.custom-ajax-form', function (e) {
 // شما نیز ایمیل را وارد میکنید
 // اما در قسمت بالای صفحه همچنان متن "لطفا ایمیل را وارد کنید" وجود دارد
 // برای اینکه این مشکل حل شود از این کد استفاده میکنیم
-$('form input').blur(function () {
+$(document).on('blur', 'form input', function () {
     $(this).parents('form').valid();
 });
 
-$('form input.custom-md-persian-datepicker').change(function () {
+$(document).on('change', 'form input.custom-md-persian-datepicker, form select, form input[type="checkbox"], form input[type="file"]', function () {
     $(this).parents('form').valid();
 });
 
-$('form select').change(function () {
-    $(this).parents('form').valid();
-});
-
-$('form input[type="checkbox"], form input[type="file"]').change(function () {
-    $(this).parents('form').valid();
-});
 
 // این فانکشن هر فرمی را به صورت پست به سمت سرور با استفاده از ایجکس
 // ارسال میکند
@@ -741,7 +737,7 @@ function activatingInputAttributes() {
 }
 
 // نمایش پیش نمایش عکس
-$('.image-preivew-input').change(function () {
+$('.image-preview-input').change(function () {
     var selectedFile = this.files[0];
     var imagePreviewBox = $(this).attr('image-preview-box');
     if (selectedFile && selectedFile.size > 0) {
@@ -750,6 +746,23 @@ $('.image-preivew-input').change(function () {
     } else {
         $(`#${imagePreviewBox} img`).attr('src', '');
         $(`#${imagePreviewBox}`).addClass('d-none');
+    }
+});
+
+// نمایش پیش نمایش عکس برای حالت چند عکسی
+$('.multiple-images-preview-input').change(function () {
+    debugger;
+    var selectedFiles = this.files;
+    var imagesPreviewBox = $(this).attr('images-preview-box');
+    if (selectedFiles && selectedFiles.length > 0) {
+        $(`#${imagesPreviewBox}`).removeClass('d-none');
+        for (var i = 0; i < selectedFiles.length; i++) {
+            $(`#${imagesPreviewBox}`).append('<div class="my-2"><img width="100" src="" /></div>');
+            $(`#${imagesPreviewBox} img:last`).attr('src', URL.createObjectURL(selectedFiles[i]));
+        }
+    } else {
+        $(`#${imagesPreviewBox}`).html('')
+        $(`#${imagesPreviewBox}`).addClass('d-none');
     }
 });
 

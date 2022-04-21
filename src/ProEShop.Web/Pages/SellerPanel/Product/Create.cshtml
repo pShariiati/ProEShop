@@ -139,8 +139,13 @@
                                 <div class="my-2">
                                     <label class="form-label" asp-for="Product.Pictures">
                                     </label>
-                                    <input asp-for="Product.Pictures" class="form-control" />
+                                    <input asp-for="Product.Pictures" class="multiple-images-preview-input form-control" images-preview-box="product-images-preview-box" />
                                     <span asp-validation-for="Product.Pictures" class="span-error-message"></span>
+                                    <div class="form-text">
+                                        اولین تصویر، تصویر اصلی محصول میباشد
+                                    </div>
+                                </div>
+                                <div clas="my-2 d-none" id="product-images-preview-box">
                                 </div>
                                 <button class="btn btn-primary">send</button>
                             </div>

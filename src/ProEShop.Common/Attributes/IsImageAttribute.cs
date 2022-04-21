@@ -7,6 +7,8 @@ namespace ProEShop.Common.Attributes;
 
 public class IsImageAttribute : BaseValidationAttribute, IClientModelValidator
 {
+    private readonly bool _multiplePictures;
+
     private readonly string[] _allowExtensions = new[]
     {
             "image/png",
@@ -15,8 +17,9 @@ public class IsImageAttribute : BaseValidationAttribute, IClientModelValidator
             "image/gif"
     };
 
-    public IsImageAttribute()
+    public IsImageAttribute(bool multiplePictures = false)
     {
+        _multiplePictures = multiplePictures;
         ErrorMessage = "{0} حتما باید عکس باشد";
     }
 
@@ -26,7 +29,11 @@ public class IsImageAttribute : BaseValidationAttribute, IClientModelValidator
         var displayName = validationContext.DisplayName;
         ErrorMessage = ErrorMessage.Replace("{0}", displayName);
 
-        if (validationContext.ObjectType.GetProperty(validationContext.MemberName).PropertyType.IsGenericType)
+        //if (validationContext.ObjectType.GetProperty(validationContext.MemberName).PropertyType.IsGenericType)
+        //{
+        //    ErrorMessage = ErrorMessage.Replace("باشد", "باشند");
+        //}
+        if (_multiplePictures)
         {
             ErrorMessage = ErrorMessage.Replace("باشد", "باشند");
         }
@@ -61,8 +68,13 @@ public class IsImageAttribute : BaseValidationAttribute, IClientModelValidator
             .FirstOrDefault()?.Name;
         ErrorMessage = ErrorMessage.Replace("{0}", displayName);
 
-        if (context.ModelMetadata.ContainerMetadata
-            .ModelType.GetProperty(context.ModelMetadata.PropertyName).PropertyType.IsGenericType)
+        //if (context.ModelMetadata.ContainerMetadata
+        //    .ModelType.GetProperty(context.ModelMetadata.PropertyName).PropertyType.IsGenericType)
+        //{
+        //    ErrorMessage = ErrorMessage.Replace("باشد", "باشند");
+        //}
+
+        if (_multiplePictures)
         {
             ErrorMessage = ErrorMessage.Replace("باشد", "باشند");
         }
