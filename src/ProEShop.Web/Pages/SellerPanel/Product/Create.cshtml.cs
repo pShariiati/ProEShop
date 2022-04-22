@@ -52,8 +52,12 @@ public class CreateModel : SellerPanelBase
     {
     }
 
-    public void OnPost()
+    public IActionResult OnPost()
     {
+        return Json(new JsonResultOperation(true, string.Empty)
+        {
+            Data = string.Empty
+        });
     }
 
     public async Task<IActionResult> OnGetGetCategories(long[] selectedCategoriesIds)

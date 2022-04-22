@@ -238,8 +238,15 @@ if (jQuery.validator) {
 
     // fileRequired
     jQuery.validator.addMethod("fileRequired", function (value, element, param) {
-        if (element.files[0] != null)
-            return element.files[0].size > 0;
+        var filesLength = element.files.length;
+        if (filesLength > 0) {
+            for (var i = 0; i < filesLength; i++) {
+                if (element.files[0].size === 0) {
+                    return false;
+                }
+            }
+            return true;
+        }
         return false;
     });
     jQuery.validator.unobtrusive.adapters.addBool("fileRequired");
@@ -503,7 +510,6 @@ $(document).on('submit', 'form.custom-ajax-form', function (e) {
                 showToastr('warning', data.message);
             }
             else {
-                debugger;
                 if (callFunctionInTheEnd) {
                     customAjaxFormFunction(data);
                 }
@@ -751,9 +757,9 @@ $('.image-preview-input').change(function () {
 
 // نمایش پیش نمایش عکس برای حالت چند عکسی
 $('.multiple-images-preview-input').change(function () {
-    debugger;
     var selectedFiles = this.files;
     var imagesPreviewBox = $(this).attr('images-preview-box');
+    $(`#${imagesPreviewBox}`).html('');
     if (selectedFiles && selectedFiles.length > 0) {
         $(`#${imagesPreviewBox}`).removeClass('d-none');
         for (var i = 0; i < selectedFiles.length; i++) {
@@ -761,7 +767,6 @@ $('.multiple-images-preview-input').change(function () {
             $(`#${imagesPreviewBox} img:last`).attr('src', URL.createObjectURL(selectedFiles[i]));
         }
     } else {
-        $(`#${imagesPreviewBox}`).html('')
         $(`#${imagesPreviewBox}`).addClass('d-none');
     }
 });

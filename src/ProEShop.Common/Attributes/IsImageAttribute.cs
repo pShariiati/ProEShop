@@ -38,22 +38,29 @@ public class IsImageAttribute : BaseValidationAttribute, IClientModelValidator
             ErrorMessage = ErrorMessage.Replace("باشد", "باشند");
         }
 
-        var file = value as IFormFile;
-        if (file != null && file.Length > 0)
+        var files = value as List<IFormFile>;
+        if (files != null && files.Count > 0)
         {
-            if (!_allowExtensions.Contains(file.ContentType))
+            foreach (var file in files)
             {
-                return new ValidationResult(ErrorMessage);
-            }
-            try
-            {
-                var img = Image.FromStream(file.OpenReadStream());
-                if (img.Width <= 0)
+                if (file == null || file.Length == 0)
+                {
                     return new ValidationResult(ErrorMessage);
-            }
-            catch
-            {
-                return new ValidationResult(ErrorMessage);
+                }
+                if (!_allowExtensions.Contains(file.ContentType))
+                {
+                    return new ValidationResult(ErrorMessage);
+                }
+                try
+                {
+                    var img = Image.FromStream(file.OpenReadStream());
+                    if (img.Width <= 0)
+                        return new ValidationResult(ErrorMessage);
+                }
+                catch
+                {
+                    return new ValidationResult(ErrorMessage);
+                }
             }
         }
         return ValidationResult.Success;

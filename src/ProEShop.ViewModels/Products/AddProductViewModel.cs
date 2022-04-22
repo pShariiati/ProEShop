@@ -42,6 +42,17 @@ public class AddProductViewModel
     public string SpecialtyCheck { get; set; }
 
     [Display(Name = "تصاویر محصول")]
-    [IsImage]
+    [IsImage(multiplePictures: true)]
+    [FileRequired]
     public List<IFormFile> Pictures { get; set; }
+
+    [Display(Name = "نام فارسی کالا")]
+    [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
+    [MaxLength(200, ErrorMessage = AttributesErrorMessages.MaxLengthMessage)]
+    public string PersianTitle { get; set; }
+
+    [Display(Name = "نام انگلیسی کالا")]
+    [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
+    [MaxLength(200, ErrorMessage = AttributesErrorMessages.MaxLengthMessage)]
+    public string EnglishTitle { get; set; }
 }

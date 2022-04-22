@@ -17,10 +17,17 @@ public class FileRequiredAttribute : BaseValidationAttribute, IClientModelValida
         var displayName = validationContext.DisplayName;
         ErrorMessage = ErrorMessage.Replace("{0}", displayName);
 
-        var file = value as IFormFile;
-        if (file == null || file.Length == 0)
+        var files = value as List<IFormFile>;
+        if (files == null || files.Count == 0)
         {
             return new ValidationResult(ErrorMessage);
+        }
+        foreach (var file in files)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return new ValidationResult(ErrorMessage);
+            }
         }
         return ValidationResult.Success;
     }

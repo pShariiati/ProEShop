@@ -11,7 +11,7 @@
         </div>
     </div>
     <div class="card-body">
-        <form method="post">
+        <form method="post" class="public-ajax-form" functionNameToCallInTheEnd="createProductFunction">
             <nav>
                 <div class="nav nav-tabs nav-fill" id="add-product-tab">
                     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product-category" type="button" role="tab" aria-controls="nav-home" aria-selected="true">انتخاب گروه کالا</button>
@@ -24,8 +24,11 @@
                     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product-features" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">
                         ویژگی های محصول
                     </button>
-                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#product-images" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product-images" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">
                         بارگذاری تصاویر
+                    </button>
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#product-title" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">
+                        عنوان کالا
                     </button>
                 </div>
                 <div class="tab-content">
@@ -133,7 +136,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade show active" id="product-images">
+                    <div class="tab-pane fade" id="product-images">
                         <div class="card">
                             <div class="card-body row">
                                 <div class="my-2">
@@ -146,6 +149,26 @@
                                     </div>
                                 </div>
                                 <div clas="my-2 d-none" id="product-images-preview-box">
+                                </div>
+                                <button class="btn btn-primary">send</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show active" id="product-title">
+                        <div class="card">
+                            <div class="card-body row">
+                                <div class="my-2 col-md-6">
+                                    <label class="form-label" asp-for="Product.PersianTitle">
+                                    </label>
+                                    &quot;
+                                    <input placeholder="ماهیت کالا + برند کالا + کلمه &quot;مدل&quot; + مدل کالا" asp-for="Product.PersianTitle" class="form-control" />
+                                    <span asp-validation-for="Product.PersianTitle" class="span-error-message"></span>
+                                </div>
+                                <div class="my-2 col-md-6">
+                                    <label class="form-label" asp-for="Product.EnglishTitle">
+                                    </label>
+                                    <input asp-for="Product.EnglishTitle" class="form-control"/>
+                                    <span asp-validation-for="Product.EnglishTitle" class="span-error-message"></span>
                                 </div>
                                 <button class="btn btn-primary">send</button>
                             </div>
