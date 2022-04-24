@@ -15,6 +15,8 @@ namespace ProEShop.Web.Pages.Admin.Brand;
 
 public class IndexModel : PageBase
 {
+    #region Constructor
+
     private readonly IBrandService _brandService;
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _uow;
@@ -32,8 +34,6 @@ public class IndexModel : PageBase
         _uploadFile = uploadFile;
     }
 
-    #region Constructor
-    
     #endregion
 
     [BindProperty(SupportsGet = true)]

@@ -1,0 +1,67 @@
+﻿@page
+@model ProEShop.Web.Pages.Admin.FeatureConstantValue.IndexModel
+@{
+    ViewData["Title"] = "مقادیر ثابت ویژگی ها";
+}
+
+<div class="card text-dark bg-white border-0 shadow">
+    <div class="card-body">
+        <h5 class="card-title">
+            @ViewData["Title"]
+        </h5>
+        <div class="d-grid d-lg-block mb-2">
+            <a asp-page-handler="Add" class="btn btn-outline-primary show-modal-form-button">
+                افزودن مقدار ثابت ویژگی
+            </a>
+        </div>
+        <form class="alert alert-secondary search-form-via-ajax">
+            <input asp-for="FeatureConstantValues.Pagination.CurrentPage" />
+            <input asp-for="FeatureConstantValues.Pagination.PageCount" />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <h5>
+                جستجو در
+                @ViewData["Title"]
+            </h5>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-lg-3 my-2">
+                    <label class="form-label" asp-for="FeatureConstantValues.SearchFeatureConstantValues.Value"></label>
+                    <input class="form-control" asp-for="FeatureConstantValues.SearchFeatureConstantValues.Value" />
+                    <span class="span-error-message" asp-validation-for="FeatureConstantValues.SearchFeatureConstantValues.Value"></span>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3 my-2">
+                    <label class="form-label" asp-for="FeatureConstantValues.SearchFeatureConstantValues.DeletedStatus"></label>
+                    <select class="form-select" asp-for="FeatureConstantValues.SearchFeatureConstantValues.DeletedStatus" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.DeletedStatus>()"></select>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3 my-2">
+                    <label class="form-label" asp-for="FeatureConstantValues.SearchFeatureConstantValues.Sorting"></label>
+                    <select class="form-select" asp-for="FeatureConstantValues.SearchFeatureConstantValues.Sorting" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.Brands.SortingBrands>()"></select>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3 my-2">
+                    <label class="form-label" asp-for="FeatureConstantValues.SearchFeatureConstantValues.SortingOrder"></label>
+                    <select class="form-select" asp-for="FeatureConstantValues.SearchFeatureConstantValues.SortingOrder" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.SortingOrder>()"></select>
+                </div>
+                <div class="col-12 my-2">
+                    <div class="d-grid d-lg-block">
+                        <button type="submit" class="btn btn-primary d-inline-flex align-items-center search-form-submit-button" disabled>
+                            جستجو ...
+                            <span class="spinner-border spinner-border-sm d-none ms-2"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="data-table-place">
+                <div class="text-center data-table-loading">
+                    <img src="~/images/application/loading.gif" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+<partial name="_ValidationScriptsPartial" />
+<script src="~/lib/tinymce/tinymce.min.js"></script>
+}
+@section CustomScripts{
+<script src="~/Pages/Admin/Brand/Index.cshtml.js"></script>
+}
