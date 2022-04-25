@@ -31,4 +31,10 @@ public class CategoryFeatureService : CustomGenericService<CategoryFeature>, ICa
             _categoryFeatures.Where(x => x.CategoryId == categoryId)
         ).ToListAsync();
     }
+
+    public Task<bool> CheckCategoryFeature(long categoryId, long featureId)
+    {
+        return _categoryFeatures.Where(x => x.CategoryId == categoryId)
+            .AnyAsync(x => x.FeatureId == featureId);
+    }
 }

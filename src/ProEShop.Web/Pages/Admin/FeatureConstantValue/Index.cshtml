@@ -24,8 +24,20 @@
             </h5>
             <div class="row">
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
+                    <label class="form-label" asp-for="FeatureConstantValues.SearchFeatureConstantValues.CategoryId"></label>
+                    <select class="custom-select2 form-control" asp-for="FeatureConstantValues.SearchFeatureConstantValues.CategoryId" asp-items="Model.FeatureConstantValues.SearchFeatureConstantValues.Categories"></select>
+                    <span class="span-error-message" asp-validation-for="FeatureConstantValues.SearchFeatureConstantValues.CategoryId"></span>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3 my-2">
+                    <label class="form-label" asp-for="FeatureConstantValues.SearchFeatureConstantValues.FeatureId"></label>
+                    <select class="custom-select2 form-control" asp-for="FeatureConstantValues.SearchFeatureConstantValues.FeatureId">
+                        <option value="0">انتخاب کنید</option>
+                    </select>
+                    <span class="span-error-message" asp-validation-for="FeatureConstantValues.SearchFeatureConstantValues.FeatureId"></span>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3 my-2">
                     <label class="form-label" asp-for="FeatureConstantValues.SearchFeatureConstantValues.Value"></label>
-                    <input class="form-control" asp-for="FeatureConstantValues.SearchFeatureConstantValues.Value" />
+                    <input class="form-control" asp-for="FeatureConstantValues.SearchFeatureConstantValues.Value"/>
                     <span class="span-error-message" asp-validation-for="FeatureConstantValues.SearchFeatureConstantValues.Value"></span>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
@@ -34,7 +46,7 @@
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
                     <label class="form-label" asp-for="FeatureConstantValues.SearchFeatureConstantValues.Sorting"></label>
-                    <select class="form-select" asp-for="FeatureConstantValues.SearchFeatureConstantValues.Sorting" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.Brands.SortingBrands>()"></select>
+                    <select class="form-select" asp-for="FeatureConstantValues.SearchFeatureConstantValues.Sorting" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.FeatureConstantValues.SortingBrands>()"></select>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
                     <label class="form-label" asp-for="FeatureConstantValues.SearchFeatureConstantValues.SortingOrder"></label>
@@ -59,9 +71,14 @@
 </div>
 
 @section Scripts{
-<partial name="_ValidationScriptsPartial" />
-<script src="~/lib/tinymce/tinymce.min.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/select2/js/select2.min.js"></script>
+    <script src="~/lib/select2/js/i18n/fa.min.js"></script>
 }
 @section CustomScripts{
-<script src="~/Pages/Admin/Brand/Index.cshtml.js"></script>
+    <script src="~/Pages/Admin/FeatureConstantValue/Index.cshtml.js"></script>
+}
+@section Styles{
+    <link rel="stylesheet" href="~/lib/select2/css/select2.min.css" />
+    <link rel="stylesheet" href="~/lib/select2-bootstrap-5-theme/select2-bootstrap-5-theme.rtl.min.css" />
 }

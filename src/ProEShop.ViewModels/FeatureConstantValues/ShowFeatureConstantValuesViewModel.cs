@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using ProEShop.Common.Constants;
 using ProEShop.Common.Helpers;
 
@@ -32,6 +33,15 @@ public class ShowFeatureConstantValueViewModel
 
 public class SearchFeatureConstantValuesViewModel
 {
+    [EqualSearch]
+    [Display(Name = "دسته بندی")]
+    public long CategoryId { get; set; }
+
+    public List<SelectListItem> Categories { get; set; }
+    
+    [Display(Name = "ویژگی")]
+    public long FeatureId { get; set; }
+
     [ContainsSearch]
     [Display(Name = "مقدار")]
     [MaxLength(200, ErrorMessage = AttributesErrorMessages.MaxLengthMessage)]
@@ -50,5 +60,11 @@ public class SearchFeatureConstantValuesViewModel
 public enum SortingBrands
 {
     [Display(Name = "شناسه")]
-    Id
+    Id,
+
+    [Display(Name = "عنوان ویژگی")]
+    FeatureTitle,
+
+    [Display(Name = "مقدار")]
+    Value
 }

@@ -24,6 +24,10 @@
                             <a asp-page-handler="Edit" asp-route-id="@featureConstantValue.Id" class="btn btn-warning show-modal-form-button">
                                 ویرایش
                             </a>
+                            <form asp-page-handler="Delete" class="d-inline-block">
+                                <input type="hidden" name="featureConstantValueId" value="@featureConstantValue.Id" />
+                                <button type="button" class="btn btn-danger delete-row-button">حذف</button>
+                            </form>
                         </td>
                     </tr>
                 }

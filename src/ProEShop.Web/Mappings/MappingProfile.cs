@@ -62,5 +62,8 @@ public class MappingProfile : Profile
         this.CreateMap<Entities.CategoryFeature, CategoryFeatureForCreateProductViewModel>();
 
         this.CreateMap<Entities.FeatureConstantValue, ShowFeatureConstantValueViewModel>();
+
+        this.CreateMap<AddFeatureConstantValueViewModel, Entities.FeatureConstantValue>()
+            .AddTransform<string>(str => str != null ? str.Trim() : null);
     }
 }

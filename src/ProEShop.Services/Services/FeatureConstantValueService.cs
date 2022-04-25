@@ -8,6 +8,7 @@ using ProEShop.Services.Services;
 using ProEShop.ViewModels;
 using ProEShop.ViewModels.Brands;
 using ProEShop.ViewModels.FeatureConstantValues;
+using SortingBrands = ProEShop.ViewModels.FeatureConstantValues.SortingBrands;
 
 namespace ProEShop.Services.Services;
 
@@ -29,18 +30,28 @@ public class FeatureConstantValueService : GenericService<FeatureConstantValue>,
 
         #region Search
 
+        var searchedFeatureId = model.SearchFeatureConstantValues.FeatureId;
+        if (searchedFeatureId != 0)
+        {
+            featureConstantValues = featureConstantValues.Where(x => x.FeatureId == searchedFeatureId);
+        }
+
         featureConstantValues = ExpressionHelpers.CreateSearchExpressions(featureConstantValues, model.SearchFeatureConstantValues);
 
         #endregion
 
         #region OrderBy
 
-        if (false)
+        if (model.SearchFeatureConstantValues.Sorting == SortingBrands.FeatureTitle)
         {
-
-        }
-        else if (false)
-        {
+            if (model.SearchFeatureConstantValues.SortingOrder == SortingOrder.Asc)
+            {
+                featureConstantValues = featureConstantValues.OrderBy(x => x.Feature.Title);
+            }
+            else
+            {
+                featureConstantValues = featureConstantValues.OrderByDescending(x => x.Feature.Title);
+            }
         }
         else
         {

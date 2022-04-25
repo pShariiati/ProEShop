@@ -10,6 +10,7 @@
 	  <None Remove="Pages\Admin\Category\AddBrand.cshtml.css" />
 	  <None Remove="Pages\Admin\Category\Index - Copy.cshtml.js" />
 	  <None Remove="Pages\Admin\Category\Index.cshtml.js" />
+	  <None Remove="Pages\Admin\FeatureConstantValue\Index.cshtml.js" />
 	  <None Remove="Pages\Admin\Feature\Index.cshtml.js" />
 	  <None Remove="Pages\Admin\Brand\Index.cshtml.js" />
 	  <None Remove="Pages\Admin\Seller\Index.cshtml.js" />
@@ -27,6 +28,7 @@
 	<ItemGroup>
 	  <Content Include="Pages\Admin\Category\AddBrand.cshtml.css" />
 	  <Content Include="Pages\Admin\Category\Index.cshtml.js" />
+	  <Content Include="Pages\Admin\FeatureConstantValue\Index.cshtml.js" />
 	  <Content Include="Pages\Admin\Feature\Index.cshtml.js" />
 	  <Content Include="Pages\Admin\Brand\Index.cshtml.js" />
 	  <Content Include="Pages\Admin\Seller\Index.cshtml.js" />

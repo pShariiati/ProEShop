@@ -42,8 +42,8 @@ public class AddProductViewModel
     public string SpecialtyCheck { get; set; }
 
     [Display(Name = "تصاویر محصول")]
-    [IsImage(multiplePictures: true)]
     [FileRequired]
+    [IsImage(multiplePictures: true)]
     public List<IFormFile> Pictures { get; set; }
 
     [Display(Name = "نام فارسی کالا")]
