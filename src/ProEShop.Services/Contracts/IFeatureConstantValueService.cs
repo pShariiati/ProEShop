@@ -7,4 +7,5 @@ namespace ProEShop.Services.Contracts;
 public interface IFeatureConstantValueService : IGenericService<FeatureConstantValue>
 {
     Task<ShowFeatureConstantValuesViewModel> GetFeatureConstantValues(ShowFeatureConstantValuesViewModel model);
+    Task<List<ShowCategoryFeatureConstantValueViewModel>> GetFeatureConstantValuesByCategoryId(long categoryId);
 }

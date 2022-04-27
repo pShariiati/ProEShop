@@ -71,4 +71,11 @@ public class FeatureConstantValueService : GenericService<FeatureConstantValue>,
             Pagination = paginationResult.Pagination
         };
     }
+
+    public Task<List<ShowCategoryFeatureConstantValueViewModel>> GetFeatureConstantValuesByCategoryId(long categoryId)
+    {
+        return _mapper.ProjectTo<ShowCategoryFeatureConstantValueViewModel>(
+            _featureConstantValues.Where(x => x.CategoryId == categoryId)
+        ).ToListAsync();
+    }
 }

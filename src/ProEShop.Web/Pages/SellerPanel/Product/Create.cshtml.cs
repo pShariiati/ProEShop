@@ -9,6 +9,8 @@ using ProEShop.DataLayer.Context;
 using ProEShop.Entities;
 using ProEShop.Services.Contracts;
 using ProEShop.ViewModels.Brands;
+using ProEShop.ViewModels.CategoryFeatures;
+using ProEShop.ViewModels.FeatureConstantValues;
 using ProEShop.ViewModels.Products;
 
 namespace ProEShop.Web.Pages.SellerPanel.Product;
@@ -19,11 +21,13 @@ public class CreateModel : SellerPanelBase
 
     private readonly ICategoryService _categoryService;
     private readonly ICategoryFeatureService _categoryFeatureService;
+    private readonly IFeatureConstantValueService _featureConstantValueService;
     private readonly IBrandService _brandService;
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _uow;
     private readonly IUploadFileService _uploadFile;
     private readonly ISellerService _sellerService;
+    private readonly IViewRendererService _viewRendererService;
 
     public CreateModel(
         ICategoryService categoryService,
@@ -32,7 +36,9 @@ public class CreateModel : SellerPanelBase
         IUnitOfWork uow,
         IUploadFileService uploadFile,
         ISellerService sellerService,
-        ICategoryFeatureService categoryFeatureService)
+        ICategoryFeatureService categoryFeatureService,
+        IFeatureConstantValueService featureConstantValueService,
+        IViewRendererService viewRendererService)
     {
         _categoryService = categoryService;
         _brandService = brandService;
@@ -41,6 +47,8 @@ public class CreateModel : SellerPanelBase
         _uploadFile = uploadFile;
         _sellerService = sellerService;
         _categoryFeatureService = categoryFeatureService;
+        _featureConstantValueService = featureConstantValueService;
+        _viewRendererService = viewRendererService;
     }
 
     #endregion
@@ -66,25 +74,30 @@ public class CreateModel : SellerPanelBase
         return Partial("_SelectProductCategoryPartial", result);
     }
 
-    public async Task<IActionResult> OnGetGetCategoryBrands(long categoryId)
+    public async Task<IActionResult> OnGetGetCategoryInfo(long categoryId)
     {
         if (categoryId < 1)
         {
             return Json(new JsonResultOperation(false));
         }
 
-        var brands = await _brandService.GetBrandsByCategoryId(categoryId);
-        return Json(new JsonResultOperation(true, string.Empty)
+        var categoryFeatureModel = new ProductFeaturesForCreateProductViewModel
         {
-            Data = brands
-        });
-    }
+            Features = await _categoryFeatureService.GetCategoryFeatures(categoryId),
+            FeaturesConstantValues = await _featureConstantValueService.GetFeatureConstantValuesByCategoryId(categoryId)
+        };
 
-    public async Task<IActionResult> OnGetCanAddFakeProduct(long categoryId)
-    {
+        var model = new
+        {
+            Brands = await _brandService.GetBrandsByCategoryId(categoryId),
+            CanAddFakeProduct = await _categoryService.CanAddFakeProduct(categoryId),
+            CategoryFeatures = await _viewRendererService.RenderViewToStringAsync(
+            "~/Pages/SellerPanel/Product/_ShowCategoryFeaturesPartial.cshtml", categoryFeatureModel)
+        };
+
         return Json(new JsonResultOperation(true, string.Empty)
         {
-            Data = await _categoryService.CanAddFakeProduct(categoryId)
+            Data = model
         });
     }
 
@@ -104,7 +117,7 @@ public class CreateModel : SellerPanelBase
         }
 
         var brand = _mapper.Map<Entities.Brand>(model);
-        
+
         // Add brand category
         brand.CategoryBrands.Add(new CategoryBrand()
         {
@@ -169,10 +182,5 @@ public class CreateModel : SellerPanelBase
             });
         }
         return Json(false);
-    }
-
-    public async Task<IActionResult> OnGetShowCategoryFeatures(long categoryId)
-    {
-        return Partial("_ShowCategoryFeaturesPartial", await _categoryFeatureService.GetCategoryFeatures(categoryId));
     }
 }

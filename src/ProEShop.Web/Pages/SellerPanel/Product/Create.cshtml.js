@@ -81,33 +81,38 @@ var requestNewBrandUrl = $('#request-new-brand-url').attr('href');
 
 $('#select-product-category-button').click(function () {
     var selectedCategoryId = $('#product-category div.list-group.col-4:last button.active').attr('category-id');
-    getDataWithAJAX('?handler=GetCategoryBrands', { categoryId: selectedCategoryId }, 'showCategoryBrands');
-    getDataWithAJAX('?handler=CanAddFakeProduct', { categoryId: selectedCategoryId }, 'changeIsFakeStatus');
-    getHtmlWithAJAX('?handler=ShowCategoryFeatures', { categoryId: selectedCategoryId }, 'showCategoryFeatures');
+    getDataWithAJAX('?handler=GetCategoryInfo', { categoryId: selectedCategoryId }, 'categoryInfo');
     $('#request-new-brand-url').attr('href', requestNewBrandUrl + '&categoryId=' + selectedCategoryId);
 });
 
-function showCategoryFeatures(data) {
-    $('#product-features .card-body.row').html(data);
-}
-
-function showCategoryBrands(message, data) {
+function categoryInfo(message, data) {
+    // showCategoryBrands
     $('#Product_BrandId option').remove();
     $('#Product_BrandId').append('<option value="0">انتخاب کنید</option>');
-    for (brandId in data) {
-        $('#Product_BrandId').append(`<option value="${brandId}">${data[brandId]}</option>`);
+    for (brandId in data.brands) {
+        $('#Product_BrandId').append(`<option value="${brandId}">${data.brands[brandId]}</option>`);
     }
     $('#add-product-tab button[data-bs-target="#product-info"]').tab('show');
-}
 
-function changeIsFakeStatus(message, data) {
-    if (data === false) {
+    // End showCategoryBrands
+
+    // changeIsFakeStatus
+
+    if (data.canAddFakeProduct === false) {
         $('#Product_IsFake').attr('disabled', 'disabled');
         $('#Product_IsFake').prop('checked', false);
     }
     else {
         $('#Product_IsFake').removeAttr('disabled');
     }
+
+    // End changeIsFakeStatus
+
+    // showCategoryFeatures
+
+    $('#product-features .card-body.row').html(data.categoryFeatures);
+
+    // End showCategoryFeatures
 }
 
 $(document).on('change', '#IsIranianBrand', function () {

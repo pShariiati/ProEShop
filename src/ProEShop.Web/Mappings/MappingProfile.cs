@@ -65,5 +65,7 @@ public class MappingProfile : Profile
 
         this.CreateMap<AddFeatureConstantValueViewModel, Entities.FeatureConstantValue>()
             .AddTransform<string>(str => str != null ? str.Trim() : null);
+
+        this.CreateMap<Entities.FeatureConstantValue, ShowCategoryFeatureConstantValueViewModel>();
     }
 }
