@@ -394,6 +394,7 @@ function activatingModalForm() {
         e.preventDefault();
         var urlToLoadTheForm = $(this).attr('href');
         var customTitle = $(this).attr('custom-title');
+        var functionNameToCallInTheEnd = $(this).attr('functionNameToCallInTheEnd');
         if (customTitle == undefined) {
             customTitle = $(this).text().trim();
         }
@@ -410,10 +411,10 @@ function activatingModalForm() {
                 initializeSelect2();
                 initializingAutocomplete();
                 activatingInputAttributes();
-                if (typeof actionsAfterLoadModalForm === 'function') {
-                    actionsAfterLoadModalForm();
-                }
                 $.validator.unobtrusive.parse($('#form-modal-place form'));
+                if (typeof window[functionNameToCallInTheEnd] === 'function') {
+                    window[functionNameToCallInTheEnd](data);
+                }
                 $('#form-modal-place').modal('show');
             }
         }).fail(function () {

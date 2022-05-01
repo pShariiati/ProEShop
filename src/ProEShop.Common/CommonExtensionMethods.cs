@@ -9,7 +9,9 @@ public static class CommonExtensionMethods
         object selectedItem = null,
         bool addChooseOneItem = true,
         string firstItemText = "انتخاب کنید",
-        string firstItemValue = "0"
+        string firstItemValue = "0",
+        string idPropertyName = "Id",
+        string titlePropertyName = "Title"
     )
     {
         var result = new List<SelectListItem>();
@@ -19,8 +21,8 @@ public static class CommonExtensionMethods
         {
             var modelType = items.First().GetType();
 
-            var idProperty = modelType.GetProperty("Id") ?? modelType.GetProperty("Key");
-            var titleProperty = modelType.GetProperty("Title") ?? modelType.GetProperty("Value");
+            var idProperty = modelType.GetProperty(idPropertyName) ?? modelType.GetProperty("Key");
+            var titleProperty = modelType.GetProperty(titlePropertyName) ?? modelType.GetProperty("Value");
             if (idProperty is null || titleProperty is null)
                 throw new ArgumentNullException(
                     $"{typeof(T).Name} must have ```Id (Key)``` and ```Title (Value)``` propeties");

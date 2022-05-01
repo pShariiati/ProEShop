@@ -1,0 +1,34 @@
+﻿@model ProEShop.ViewModels.FeatureConstantValues.EditFeatureConstantValueViewModel
+
+<form class="alert alert-secondary custom-ajax-form" asp-page-handler="Edit" method="post">
+    <input asp-for="Id" />
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="row">
+        <div class="col-12 col-sm-6 col-lg-3 my-2">
+            <label class="form-label" asp-for="CategoryId"></label>
+            <select class="form-select custom-select2" asp-for="CategoryId" asp-items="Model.Categories">
+            </select>
+            <span class="span-error-message" asp-validation-for="CategoryId"></span>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3 my-2">
+            <label class="form-label" asp-for="FeatureId"></label>
+            <select class="form-select custom-select2" asp-for="FeatureId" asp-items="Model.Features">
+                <option value="0">انتخاب کنید</option>
+            </select>
+            <span class="span-error-message" asp-validation-for="FeatureId"></span>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3 my-2">
+            <label class="form-label" asp-for="Value"></label>
+            <input class="form-control" asp-for="Value"/>
+            <span class="span-error-message" asp-validation-for="Value"></span>
+        </div>
+        <div class="col-12 my-2">
+            <div class="d-grid d-lg-block">
+                <button type="submit" class="btn btn-primary d-inline-flex align-items-center submit-custom-ajax-button">
+                    ویرایش
+                    <span class="spinner-border spinner-border-sm d-none ms-2"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
