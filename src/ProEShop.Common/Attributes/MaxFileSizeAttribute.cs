@@ -6,16 +6,20 @@ namespace ProEShop.Common.Attributes;
 
 public class MaxFileSizeAttribute : BaseValidationAttribute, IClientModelValidator
 {
+    private readonly bool _multiplePictures;
     private readonly int _maxFileSize;
+    private readonly int _maxFileSizeInBytes;
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="maxFileSize">By MG</param>
     /// <param name="displayName"></param>
-    public MaxFileSizeAttribute(int maxFileSize)
+    public MaxFileSizeAttribute(int maxFileSize, bool multiplePictures = false)
     {
-        _maxFileSize = maxFileSize * 1024 * 1024;
+        _multiplePictures = multiplePictures;
+        _maxFileSize = maxFileSize;
+        _maxFileSizeInBytes = maxFileSize * 1024 * 1024;
         ErrorMessage = "اندازه {0} نباید بیشتر از {1} مگابایت باشد";
     }
 
@@ -26,12 +30,25 @@ public class MaxFileSizeAttribute : BaseValidationAttribute, IClientModelValidat
         ErrorMessage = ErrorMessage.Replace("{0}", displayName);
         ErrorMessage = ErrorMessage.Replace("{1}", _maxFileSize.ToString());
 
-        var file = value as IFormFile;
-        if (file != null && file.Length > 0)
+        if (_multiplePictures)
         {
-            if (file.Length > _maxFileSize)
+            ErrorMessage = ErrorMessage.Replace("باشد", "باشند");
+        }
+
+        var files = value as List<IFormFile>;
+
+        if (files is { Count: > 0 })
+        {
+            for (int counter = 0; counter < files.Count; counter++)
             {
-                return new ValidationResult(ErrorMessage);
+                var currentFile = value as IFormFile;
+                if (currentFile is { Length: > 0 })
+                {
+                    if (currentFile.Length > _maxFileSizeInBytes)
+                    {
+                        return new ValidationResult(ErrorMessage);
+                    }
+                }
             }
         }
 
@@ -48,8 +65,13 @@ public class MaxFileSizeAttribute : BaseValidationAttribute, IClientModelValidat
         ErrorMessage = ErrorMessage.Replace("{0}", displayName);
         ErrorMessage = ErrorMessage.Replace("{1}", _maxFileSize.ToString());
 
+        if (_multiplePictures)
+        {
+            ErrorMessage = ErrorMessage.Replace("باشد", "باشند");
+        }
+
         MergeAttribute(context.Attributes, "data-val", "true");
         MergeAttribute(context.Attributes, "data-val-maxFileSize", ErrorMessage);
-        MergeAttribute(context.Attributes, "data-val-maxsize", _maxFileSize.ToString());
+        MergeAttribute(context.Attributes, "data-val-maxsize", _maxFileSizeInBytes.ToString());
     }
 }

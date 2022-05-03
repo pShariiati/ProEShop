@@ -113,6 +113,8 @@ function categoryInfo(message, data) {
     $('#product-features .card-body.row').html(data.categoryFeatures);
 
     // End showCategoryFeatures
+
+    initializeSelect2WithoutModal();
 }
 
 $(document).on('change', '#IsIranianBrand', function () {

@@ -253,9 +253,17 @@ if (jQuery.validator) {
 
     // allowExtensions
     jQuery.validator.addMethod('allowExtensions', function (value, element, param) {
-        if (element.files[0] != null) {
-            var whiteListExtensions = $(element).data('val-whitelistextensions').split(',');
-            return whiteListExtensions.includes(element.files[0].type);
+        var selectedFiles = element.files;
+        if (selectedFiles[0] === undefined) {
+            return true;
+        }
+        var whiteListExtensions = $(element).data('val-whitelistextensions').split(',');
+        for (var counter = 0; counter < selectedFiles.length; counter++) {
+            var currentFile = selectedFiles[counter];
+            if (currentFile != null) {
+                if (!whiteListExtensions.includes(currentFile.type))
+                    return false;
+            }
         }
         return true;
     });
@@ -303,10 +311,18 @@ if (jQuery.validator) {
 
     // maxFileSize
     jQuery.validator.addMethod('maxFileSize', function (value, element, param) {
-        if (element.files[0] != null) {
-            var maxFileSize = $(element).data('val-maxsize');
-            var selectedFileSize = element.files[0].size;
-            return maxFileSize >= selectedFileSize;
+        var selectedFiles = element.files;
+        if (selectedFiles[0] === undefined) {
+            return true;
+        }
+        var maxFileSize = $(element).data('val-maxsize');
+        for (var counter = 0; counter < selectedFiles.length; counter++) {
+            var currentFile = selectedFiles[counter];
+            if (currentFile != null) {
+                var currentFileSize = currentFile.size;
+                if (currentFileSize > maxFileSize)
+                    return false;
+            }
         }
         return true;
     });

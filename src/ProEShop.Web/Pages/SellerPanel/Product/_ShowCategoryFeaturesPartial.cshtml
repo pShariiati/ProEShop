@@ -6,7 +6,19 @@
         <label class="form-label">
             @item.FeatureTitle
         </label>
-        <input class="form-control" />
+        @if (Model.FeaturesConstantValues.Any(x => x.FeatureId == item.FeatureId))
+        {
+            <select class="form-select custom-select2" multiple="multiple">
+                @foreach (var constantValue in Model.FeaturesConstantValues.Where(x => x.FeatureId == item.FeatureId))
+                {
+                    <option value="@constantValue.Value">@constantValue.Value</option>
+                }
+            </select>
+        }
+        else
+        {
+            <input class="form-control" />
+        }
         <span class="span-error-message"></span>
     </div>
 }

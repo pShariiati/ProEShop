@@ -6,34 +6,44 @@ namespace ProEShop.Common.Attributes;
 
 public class AllowExtensionsAttribute : BaseValidationAttribute, IClientModelValidator
 {
-    private readonly string[] _allowExtensions;
     private readonly string[] _allowContentTypes;
-    private readonly string _errorMessage;
+    private readonly bool _multipleFiles;
 
-    public AllowExtensionsAttribute(string displayName, string[] allowExtensions, string[] allowContentTypes)
+    public AllowExtensionsAttribute(string[] allowExtensions, string[] allowContentTypes,
+        bool multipleFiles = false)
     {
-        _allowExtensions = allowExtensions;
-        _errorMessage = $"فرمت های مجاز برای {displayName} ";
+        ErrorMessage = $"فرمت های مجاز برای {0}: ";
 
         foreach (var allowExtension in allowExtensions)
         {
-            _errorMessage += $"{allowExtension}, ";
+            ErrorMessage += $"{allowExtension}, ";
         }
 
         _allowContentTypes = allowContentTypes;
-        _errorMessage = _errorMessage.Trim(' ');
-        _errorMessage = _errorMessage.Trim(',');
+        _multipleFiles = multipleFiles;
+        ErrorMessage = ErrorMessage.Trim(' ');
+        ErrorMessage = ErrorMessage.Trim(',');
     }
 
     protected override ValidationResult IsValid(
         object value, ValidationContext validationContext)
     {
-        var file = value as IFormFile;
-        if (file != null && file.Length > 0)
+        var displayName = validationContext.DisplayName;
+        ErrorMessage = ErrorMessage.Replace("{0}", displayName);
+
+        var files = value as List<IFormFile>;
+        if (files is { Count: > 0 })
         {
-            if (!_allowExtensions.Contains(file.ContentType))
+            for (int counter = 0; counter < files.Count; counter++)
             {
-                return new ValidationResult(_errorMessage);
+                var currentFile = files[counter];
+                if (currentFile is { Length: >0 })
+                {
+                    if (!_allowContentTypes.Contains(currentFile.ContentType))
+                    {
+                        return new ValidationResult(ErrorMessage);
+                    }
+                }
             }
         }
         return ValidationResult.Success;
@@ -41,9 +51,21 @@ public class AllowExtensionsAttribute : BaseValidationAttribute, IClientModelVal
 
     public void AddValidation(ClientModelValidationContext context)
     {
+        var displayName = context.ModelMetadata.ContainerMetadata
+            .ModelType.GetProperty(context.ModelMetadata.PropertyName)
+            .GetCustomAttributes(typeof(DisplayAttribute), false)
+            .Cast<DisplayAttribute>()
+            .FirstOrDefault()?.Name;
+        ErrorMessage = ErrorMessage.Replace("{0}", displayName);
+
+        if (_multipleFiles)
+        {
+            ErrorMessage = ErrorMessage.Replace("باشد", "باشند");
+        }
+
         MergeAttribute(context.Attributes, "data-val", "true");
-        MergeAttribute(context.Attributes, "data-val-allowExtensions", _errorMessage);
+        MergeAttribute(context.Attributes, "data-val-allowExtensions", ErrorMessage);
         MergeAttribute(context.Attributes, "data-val-whitelistextensions",
-            string.Join(",", _allowExtensions));
+            string.Join(",", _allowContentTypes));
     }
 }

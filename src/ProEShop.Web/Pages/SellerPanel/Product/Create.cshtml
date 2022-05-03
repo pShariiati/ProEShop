@@ -12,6 +12,7 @@
     </div>
     <div class="card-body">
         <form method="post" class="public-ajax-form" functionNameToCallInTheEnd="createProductFunction">
+            <div asp-validation-summary="All" class="text-danger"></div>
             <nav>
                 <div class="nav nav-tabs nav-fill" id="add-product-tab">
                     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product-category" type="button" role="tab" aria-controls="nav-home" aria-selected="true">انتخاب گروه کالا</button>
@@ -27,7 +28,10 @@
                     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product-images" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">
                         بارگذاری تصاویر
                     </button>
-                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#product-title" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#product-videos" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">
+                        بارگذاری ویدیو
+                    </button>
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product-title" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">
                         عنوان کالا
                     </button>
                 </div>
@@ -55,7 +59,7 @@
                         <div class="card">
                             <div class="card-body row">
                                 <div class="my-2 col-md-6 col-lg-4">
-                                    <br />
+                                    <br/>
                                     <input class="form-check-input" asp-for="Product.IsFake">
                                     <label class="form-check-label" asp-for="Product.IsFake">
                                         نشان کالای غیر اصل
@@ -84,28 +88,28 @@
                                     <label class="form-label" asp-for="Product.PackWeight">
                                         وزن بسته بندی (گرم)
                                     </label>
-                                    <input asp-for="Product.PackWeight" class="form-control" />
+                                    <input asp-for="Product.PackWeight" class="form-control"/>
                                     <span asp-validation-for="Product.PackWeight" class="span-error-message"></span>
                                 </div>
                                 <div class="my-2 col-md-6 col-lg-4">
                                     <label class="form-label" asp-for="Product.PackLength">
                                         طول بسته بندی (سانتیمتر)
                                     </label>
-                                    <input asp-for="Product.PackLength" class="form-control" />
+                                    <input asp-for="Product.PackLength" class="form-control"/>
                                     <span asp-validation-for="Product.PackLength" class="span-error-message"></span>
                                 </div>
                                 <div class="my-2 col-md-6 col-lg-4">
                                     <label class="form-label" asp-for="Product.PackWidth">
                                         عرض بسته بندی (سانتیمتر)
                                     </label>
-                                    <input asp-for="Product.PackWidth" class="form-control" />
+                                    <input asp-for="Product.PackWidth" class="form-control"/>
                                     <span asp-validation-for="Product.PackWidth" class="span-error-message"></span>
                                 </div>
                                 <div class="my-2 col-md-6 col-lg-4">
                                     <label class="form-label" asp-for="Product.PackHeight">
                                         ارتفاع بسته بندی (سانتیمتر)
                                     </label>
-                                    <input asp-for="Product.PackHeight" class="form-control" />
+                                    <input asp-for="Product.PackHeight" class="form-control"/>
                                     <span asp-validation-for="Product.PackHeight" class="span-error-message"></span>
                                 </div>
                                 <div class="my-2">
@@ -142,7 +146,7 @@
                                 <div class="my-2">
                                     <label class="form-label" asp-for="Product.Pictures">
                                     </label>
-                                    <input asp-for="Product.Pictures" class="multiple-images-preview-input form-control" images-preview-box="product-images-preview-box" />
+                                    <input asp-for="Product.Pictures" class="multiple-images-preview-input form-control" images-preview-box="product-images-preview-box"/>
                                     <span asp-validation-for="Product.Pictures" class="span-error-message"></span>
                                     <div class="form-text">
                                         اولین تصویر، تصویر اصلی محصول میباشد
@@ -154,14 +158,27 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade show active" id="product-title">
+                    <div class="tab-pane fade show active" id="product-videos">
+                        <div class="card">
+                            <div class="card-body row">
+                                <div class="my-2">
+                                    <label class="form-label" asp-for="Product.Videos">
+                                    </label>
+                                    <input asp-for="Product.Videos" class="form-control" />
+                                    <span asp-validation-for="Product.Videos" class="span-error-message"></span>
+                                </div>
+                                <button class="btn btn-primary">send</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="product-title">
                         <div class="card">
                             <div class="card-body row">
                                 <div class="my-2 col-md-6">
                                     <label class="form-label" asp-for="Product.PersianTitle">
                                     </label>
                                     &quot;
-                                    <input placeholder="ماهیت کالا + برند کالا + کلمه &quot;مدل&quot; + مدل کالا" asp-for="Product.PersianTitle" class="form-control" />
+                                    <input placeholder="ماهیت کالا + برند کالا + کلمه &quot;مدل&quot; + مدل کالا" asp-for="Product.PersianTitle" class="form-control"/>
                                     <span asp-validation-for="Product.PersianTitle" class="span-error-message"></span>
                                 </div>
                                 <div class="my-2 col-md-6">

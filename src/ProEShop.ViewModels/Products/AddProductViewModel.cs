@@ -43,8 +43,14 @@ public class AddProductViewModel
 
     [Display(Name = "تصاویر محصول")]
     [FileRequired]
+    [MaxFileSize(2, multiplePictures: true)]
     [IsImage(multiplePictures: true)]
     public List<IFormFile> Pictures { get; set; }
+
+    [Display(Name = "ویدیو های محصول")]
+    [MaxFileSize(10, multiplePictures: true)]
+    [AllowExtensions(new[] { "mp4" }, new[] { "video/mp4" })]
+    public List<IFormFile> Videos { get; set; }
 
     [Display(Name = "نام فارسی کالا")]
     [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
