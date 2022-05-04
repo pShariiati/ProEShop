@@ -2,6 +2,15 @@
     getHtmlWithAJAX(`${location.pathname}?handler=GetCategories`, null, 'showCategories', null);
 }
 $(function () {
+    // Disable all tabs except first
+    $('#add-product-tab button:not(:first)').attr('disabled', 'disabled');
+    $('#add-product-tab button:not(:first)').addClass('not-allowed-cursor');
+
+    $(document).on('click', '.go-to-next-tab', function () {
+        var nextTabId = $(this).parents('.tab-pane').next().attr('id');
+        $(`#add-product-tab button[data-bs-target="#${nextTabId}"]`).tab('show');
+    });
+
     getCategories();
     activatingModalForm();
 
@@ -79,11 +88,30 @@ function showCategories(data) {
 
 var requestNewBrandUrl = $('#request-new-brand-url').attr('href');
 
+
+var isCategoryAlreadySelected = false;
+var selectedCategoryId;
 $('#select-product-category-button').click(function () {
-    var selectedCategoryId = $('#product-category div.list-group.col-4:last button.active').attr('category-id');
+    if (isCategoryAlreadySelected) {
+        showSweetAlert2('تغییر دسته بندی منجر به از بین رفتن تمامی اطلاعات وارد شده شما میشود، آیا مطمئن به انجام این کار هستید ؟', 'emptyAllInputsAndShowOtherTabs', 'undoSelectedCategoryButton')
+    }
+    else {
+        // first time that page loaded
+        emptyAllInputsAndShowOtherTabs();
+    }
+    isCategoryAlreadySelected = true;
+});
+
+function emptyAllInputsAndShowOtherTabs() {
+    selectedCategoryId = $('#product-category div.list-group.col-4:last button.active').attr('category-id');
     getDataWithAJAX('?handler=GetCategoryInfo', { categoryId: selectedCategoryId }, 'categoryInfo');
     $('#request-new-brand-url').attr('href', requestNewBrandUrl + '&categoryId=' + selectedCategoryId);
-});
+}
+
+function undoSelectedCategoryButton() {
+    $(`#product-category button`).removeClass('active');
+    $(`#product-category button[category-id="${selectedCategoryId}"]`).addClass('active');
+}
 
 function categoryInfo(message, data) {
     // showCategoryBrands
@@ -115,6 +143,10 @@ function categoryInfo(message, data) {
     // End showCategoryFeatures
 
     initializeSelect2WithoutModal();
+
+    // Active all tabs and remove not-allowed-cursor
+    $('#add-product-tab button:not(:first)').removeAttr('disabled');
+    $('#add-product-tab button:not(:first)').removeClass('not-allowed-cursor');
 }
 
 $(document).on('change', '#IsIranianBrand', function () {

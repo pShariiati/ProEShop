@@ -15,7 +15,9 @@
             <div asp-validation-summary="All" class="text-danger"></div>
             <nav>
                 <div class="nav nav-tabs nav-fill" id="add-product-tab">
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product-category" type="button" role="tab" aria-controls="nav-home" aria-selected="true">انتخاب گروه کالا</button>
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#product-category" type="button" role="tab" aria-controls="nav-home" aria-selected="true">
+                        انتخاب گروه کالا
+                    </button>
                     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product-info" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">
                         درج اطلاعات کالا
                     </button>
@@ -28,7 +30,7 @@
                     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product-images" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">
                         بارگذاری تصاویر
                     </button>
-                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#product-videos" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product-videos" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">
                         بارگذاری ویدیو
                     </button>
                     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product-title" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">
@@ -36,7 +38,7 @@
                     </button>
                 </div>
                 <div class="tab-content">
-                    <div class="tab-pane fade" id="product-category">
+                    <div class="tab-pane fade show active" id="product-category">
                         <div class="card overflow-hidden">
                             <div class="card-body row flex-nowrap overflow-auto">
                             </div>
@@ -117,7 +119,7 @@
                                     </label>
                                     <textarea upload-image-url="UploadShortDescriptionImages" add-image-plugin="true" asp-for="Product.ShortDescription" class="custom-tinymce"></textarea>
                                 </div>
-                                <button class="btn btn-primary">send</button>
+                                <button class="btn btn-primary go-to-next-tab" type="button">مرحله بعد</button>
                             </div>
                         </div>
                     </div>
@@ -129,14 +131,13 @@
                                     </label>
                                     <textarea upload-image-url="UploadSpecialtyCheckImages" add-image-plugin="true" asp-for="Product.SpecialtyCheck" class="custom-tinymce"></textarea>
                                 </div>
-                                <button class="btn btn-primary">send</button>
+                                <button class="btn btn-primary go-to-next-tab" type="button">مرحله بعد</button>
                             </div>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="product-features">
                         <div class="card">
                             <div class="card-body row">
-                                <button class="btn btn-primary">send</button>
                             </div>
                         </div>
                     </div>
@@ -154,11 +155,11 @@
                                 </div>
                                 <div clas="my-2 d-none" id="product-images-preview-box">
                                 </div>
-                                <button class="btn btn-primary">send</button>
+                                <button class="btn btn-primary go-to-next-tab" type="button">مرحله بعد</button>
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade show active" id="product-videos">
+                    <div class="tab-pane fade" id="product-videos">
                         <div class="card">
                             <div class="card-body row">
                                 <div class="my-2">
@@ -167,7 +168,7 @@
                                     <input asp-for="Product.Videos" class="form-control" />
                                     <span asp-validation-for="Product.Videos" class="span-error-message"></span>
                                 </div>
-                                <button class="btn btn-primary">send</button>
+                                <button class="btn btn-primary go-to-next-tab" type="button">مرحله بعد</button>
                             </div>
                         </div>
                     </div>
@@ -187,7 +188,6 @@
                                     <input asp-for="Product.EnglishTitle" class="form-control"/>
                                     <span asp-validation-for="Product.EnglishTitle" class="span-error-message"></span>
                                 </div>
-                                <button class="btn btn-primary">send</button>
                             </div>
                         </div>
                     </div>

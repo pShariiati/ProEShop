@@ -37,6 +37,29 @@ var formModalPlace = `<div class="modal fade" id="form-modal-place" data-bs-back
     </div>
 </div>`;
 
+// Show sweet alert
+
+function showSweetAlert2(text, functionToCallAfterConfirm, functionToCallAfterReject) {
+    Swal.fire({
+        title: 'اعلان',
+        text: text,
+        icon: 'warning',
+        confirmButtonText: 'بله',
+        showDenyButton: true,
+        denyButtonText: 'خیر',
+        confirmButtonColor: '#067719',
+        allowOutsideClick: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window[functionToCallAfterConfirm]();
+        } else {
+            window[functionToCallAfterReject]();
+        }
+    });
+}
+
+// End show sweet alert
+
 function appendFormModalPlaceToBody() {
     if ($('#form-modal-place').length === 0) {
         $('body').append(formModalPlace);

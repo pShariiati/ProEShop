@@ -13,6 +13,10 @@
     cursor: pointer;
 }
 
+.not-allowed-cursor {
+    cursor: not-allowed;
+}
+
 * {
     font-family: Vazir, tahoma;
 }

@@ -41,7 +41,7 @@ public class MaxFileSizeAttribute : BaseValidationAttribute, IClientModelValidat
         {
             for (int counter = 0; counter < files.Count; counter++)
             {
-                var currentFile = value as IFormFile;
+                var currentFile = files[counter];
                 if (currentFile is { Length: > 0 })
                 {
                     if (currentFile.Length > _maxFileSizeInBytes)

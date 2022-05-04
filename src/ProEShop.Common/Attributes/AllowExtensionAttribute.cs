@@ -12,7 +12,7 @@ public class AllowExtensionsAttribute : BaseValidationAttribute, IClientModelVal
     public AllowExtensionsAttribute(string[] allowExtensions, string[] allowContentTypes,
         bool multipleFiles = false)
     {
-        ErrorMessage = $"فرمت های مجاز برای {0}: ";
+        ErrorMessage = "تنها فرمت های مجاز برای {0}: ";
 
         foreach (var allowExtension in allowExtensions)
         {
@@ -37,7 +37,7 @@ public class AllowExtensionsAttribute : BaseValidationAttribute, IClientModelVal
             for (int counter = 0; counter < files.Count; counter++)
             {
                 var currentFile = files[counter];
-                if (currentFile is { Length: >0 })
+                if (currentFile is { Length: > 0 })
                 {
                     if (!_allowContentTypes.Contains(currentFile.ContentType))
                     {
