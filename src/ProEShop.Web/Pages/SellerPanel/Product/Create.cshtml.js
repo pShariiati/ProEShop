@@ -147,6 +147,12 @@ function categoryInfo(message, data) {
     // Active all tabs and remove not-allowed-cursor
     $('#add-product-tab button:not(:first)').removeAttr('disabled');
     $('#add-product-tab button:not(:first)').removeClass('not-allowed-cursor');
+
+    // Empty all inputs
+    $('#create-product-form input').val('');
+    tinyMCE.get('Product_ShortDescription').setContent('');
+    tinyMCE.get('Product_SpecialtyCheck').setContent('');
+    $('#product-images-preview-box').html('');
 }
 
 $(document).on('change', '#IsIranianBrand', function () {

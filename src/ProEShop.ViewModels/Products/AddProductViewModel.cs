@@ -58,7 +58,6 @@ public class AddProductViewModel
     public string PersianTitle { get; set; }
 
     [Display(Name = "نام انگلیسی کالا")]
-    [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
     [MaxLength(200, ErrorMessage = AttributesErrorMessages.MaxLengthMessage)]
     public string EnglishTitle { get; set; }
 }

@@ -17,6 +17,6 @@ public class TestModel : PageModel
     }
     public void OnGet()
     {
-        var products = _context.Set<Product>().Where(x => x.Category.Parent.ParentId == 1);
+
     }
 }

@@ -49,5 +49,7 @@ public class Category : EntityBase, IAuditableEntity
 
     public ICollection<FeatureConstantValue> FeatureConstantValues { get; set; }
 
+    public ICollection<ProductCategory> ProductCategories { get; set; }
+
     #endregion
 }
