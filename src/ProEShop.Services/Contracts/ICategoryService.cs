@@ -12,4 +12,5 @@ public interface ICategoryService : IGenericService<Category>
     Task<List<string>> GetCategoryBrands(long categoryId);
     Task<Category> GetCategoryWithItsBrands(long categoryId);
     Task<bool> CanAddFakeProduct(long categoryId);
+    Task<(bool isSuccessful, List<long> categoryIds)> GetCategoryParentIds(long categoryId);
 }

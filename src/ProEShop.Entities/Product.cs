@@ -39,8 +39,10 @@ public class Product : EntityBase, IAuditableEntity
     #region Relations
 
     public ICollection<ProductMedia> ProductMedia { get; set; }
+        = new List<ProductMedia>();
 
     public ICollection<ProductCategory> ProductCategories { get; set; }
+        = new List<ProductCategory>();
 
     public ICollection<ProductFeature> ProductFeatures { get; set; }
 

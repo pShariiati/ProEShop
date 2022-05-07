@@ -21,17 +21,20 @@ public class IndexModel : PageBase
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _uow;
     private readonly IUploadFileService _uploadFile;
+    private readonly IHtmlSanitizer _htmlSanitizer;
 
     public IndexModel(
         IBrandService brandService,
         IMapper mapper,
         IUnitOfWork uow,
-        IUploadFileService uploadFile)
+        IUploadFileService uploadFile,
+        IHtmlSanitizer htmlSanitizer)
     {
         _brandService = brandService;
         _mapper = mapper;
         _uow = uow;
         _uploadFile = uploadFile;
+        _htmlSanitizer = htmlSanitizer;
     }
 
     #endregion
@@ -73,6 +76,7 @@ public class IndexModel : PageBase
         }
 
         var brand = _mapper.Map<Entities.Brand>(model);
+        brand.Description = _htmlSanitizer.Sanitize(brand.Description);
         brand.IsConfirmed = true;
         brand.LogoPicture = model.LogoPicture.GenerateFileName();
         string brandRegistrationFileName = null;

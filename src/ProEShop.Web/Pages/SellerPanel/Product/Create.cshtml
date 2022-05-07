@@ -12,6 +12,7 @@
     </div>
     <div class="card-body">
         <form id="create-product-form" method="post" class="public-ajax-form" functionNameToCallInTheEnd="createProductFunction">
+            <input asp-for="Product.CategoryId" />
             <div asp-validation-summary="All" class="text-danger"></div>
             <nav>
                 <div class="nav nav-tabs nav-fill" id="add-product-tab">
@@ -165,7 +166,7 @@
                                 <div class="my-2">
                                     <label class="form-label" asp-for="Product.Videos">
                                     </label>
-                                    <input asp-for="Product.Videos" class="form-control" />
+                                    <input asp-for="Product.Videos" class="form-control"/>
                                     <span asp-validation-for="Product.Videos" class="span-error-message"></span>
                                 </div>
                                 <button class="btn btn-primary go-to-next-tab" type="button">مرحله بعد</button>
@@ -188,6 +189,7 @@
                                     <input asp-for="Product.EnglishTitle" class="form-control"/>
                                     <span asp-validation-for="Product.EnglishTitle" class="span-error-message"></span>
                                 </div>
+                                <button class="btn btn-primary">ایجاد محصول</button>
                             </div>
                         </div>
                     </div>

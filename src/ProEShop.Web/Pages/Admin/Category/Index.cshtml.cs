@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using AutoMapper;
+using Ganss.XSS;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ProEShop.Common;
@@ -22,19 +23,22 @@ public class IndexModel : PageBase
     private readonly IUploadFileService _uploadFile;
     private readonly IBrandService _brandService;
     private readonly IMapper _mapper;
+    private readonly IHtmlSanitizer _htmlSanitizer;
 
     public IndexModel(
         ICategoryService categoryService,
         IUnitOfWork uow,
         IUploadFileService uploadFile,
         IBrandService brandService,
-        IMapper mapper)
+        IMapper mapper,
+        IHtmlSanitizer htmlSanitizer)
     {
         _categoryService = categoryService;
         _uow = uow;
         _uploadFile = uploadFile;
         _brandService = brandService;
         _mapper = mapper;
+        _htmlSanitizer = htmlSanitizer;
     }
 
     #endregion
@@ -94,6 +98,7 @@ public class IndexModel : PageBase
             pictureFileName = model.Picture.GenerateFileName();
 
         var category = _mapper.Map<Entities.Category>(model);
+        category.Description = _htmlSanitizer.Sanitize(category.Description);
         if (model.ParentId is 0)
             category.ParentId = null;
         category.Picture = pictureFileName;

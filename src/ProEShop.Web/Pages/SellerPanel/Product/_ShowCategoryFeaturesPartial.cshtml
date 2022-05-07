@@ -6,7 +6,8 @@
         <label class="form-label">
             @item.FeatureTitle
         </label>
-        @if (Model.FeaturesConstantValues.Any(x => x.FeatureId == item.FeatureId))
+        @if (Model.FeaturesConstantValues.Count
+            (x => x.FeatureId == item.FeatureId) > 0)
         {
             <select class="form-select custom-select2" multiple="multiple">
                 @foreach (var constantValue in Model.FeaturesConstantValues.Where(x => x.FeatureId == item.FeatureId))

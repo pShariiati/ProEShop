@@ -8,12 +8,15 @@ namespace ProEShop.ViewModels.Products;
 
 public class AddProductViewModel
 {
+    [HiddenInput]
+    public long CategoryId { get; set; }
+
     [Display(Name = "برند محصول")]
     [Range(1, long.MaxValue, ErrorMessage = AttributesErrorMessages.RequiredMessage)]
     public long BrandId { get; set; }
 
     [Display(Name = "اصالت کالا")]
-    public bool IsFake { get; set; }
+    public bool? IsFake { get; set; }
 
     [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
     [Display(Name = "وزن بسته بندی")]

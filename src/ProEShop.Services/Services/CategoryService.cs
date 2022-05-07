@@ -135,7 +135,7 @@ public class CategoryService : GenericService<Category>, ICategoryService
     public Task<Category> GetCategoryWithItsBrands(long categoryId)
     {
         return _categories
-            .Include(x=>x.CategoryBrands)
+            .Include(x => x.CategoryBrands)
             .SingleOrDefaultAsync(x => x.Id == categoryId);
     }
 
@@ -147,6 +147,41 @@ public class CategoryService : GenericService<Category>, ICategoryService
             x.CanAddFakeProduct
         }).SingleOrDefaultAsync(x => x.Id == categoryId);
         return category?.CanAddFakeProduct ?? false;
+    }
+
+    public async Task<(bool isSuccessful, List<long> categoryIds)> GetCategoryParentIds(long categoryId)
+    {
+        if (!await IsExistsBy(nameof(Entities.Category.Id), categoryId))
+        {
+            return (false, new List<long>());
+        }
+
+        if (await _categories.AnyAsync(x => x.ParentId == categoryId))
+        {
+            return (false, new List<long>());
+        }
+
+        var result = new List<long>() { categoryId };
+        var currentCategoryId = categoryId;
+        while (true)
+        {
+            var categoryToAdd = await _categories
+                .Select(x => new
+                {
+                    x.Id,
+                    x.ParentId
+                })
+                .SingleOrDefaultAsync(x => x.Id == currentCategoryId);
+            if (categoryToAdd.ParentId is null)
+            {
+                break;
+            }
+
+            currentCategoryId = categoryToAdd.ParentId.Value;
+            result.Add(categoryToAdd.ParentId.Value);
+        }
+
+        return (true, result);
     }
 
     public override async Task<DuplicateColumns> AddAsync(Category entity)
