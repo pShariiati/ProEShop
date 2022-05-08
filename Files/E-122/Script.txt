@@ -1,0 +1,1155 @@
+USE [master]
+GO
+/****** Object:  Database [ProEShop]    Script Date: 5/8/2022 10:46:45 AM ******/
+CREATE DATABASE [ProEShop]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'ProEShop', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\ProEShop.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'ProEShop_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\ProEShop_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT
+GO
+ALTER DATABASE [ProEShop] SET COMPATIBILITY_LEVEL = 150
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [ProEShop].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [ProEShop] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [ProEShop] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [ProEShop] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [ProEShop] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [ProEShop] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [ProEShop] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [ProEShop] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [ProEShop] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [ProEShop] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [ProEShop] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [ProEShop] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [ProEShop] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [ProEShop] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [ProEShop] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [ProEShop] SET  ENABLE_BROKER 
+GO
+ALTER DATABASE [ProEShop] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [ProEShop] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [ProEShop] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [ProEShop] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [ProEShop] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [ProEShop] SET READ_COMMITTED_SNAPSHOT ON 
+GO
+ALTER DATABASE [ProEShop] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [ProEShop] SET RECOVERY FULL 
+GO
+ALTER DATABASE [ProEShop] SET  MULTI_USER 
+GO
+ALTER DATABASE [ProEShop] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [ProEShop] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [ProEShop] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [ProEShop] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [ProEShop] SET DELAYED_DURABILITY = DISABLED 
+GO
+EXEC sys.sp_db_vardecimal_storage_format N'ProEShop', N'ON'
+GO
+ALTER DATABASE [ProEShop] SET QUERY_STORE = OFF
+GO
+USE [ProEShop]
+GO
+/****** Object:  Table [dbo].[__EFMigrationsHistory]    Script Date: 5/8/2022 10:46:45 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[__EFMigrationsHistory](
+	[MigrationId] [nvarchar](150) NOT NULL,
+	[ProductVersion] [nvarchar](32) NOT NULL,
+ CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY CLUSTERED 
+(
+	[MigrationId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Brands]    Script Date: 5/8/2022 10:46:45 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Brands](
+	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[TitleFa] [nvarchar](200) NOT NULL,
+	[TitleEn] [nvarchar](200) NOT NULL,
+	[Description] [ntext] NOT NULL,
+	[IsIranianBrand] [bit] NOT NULL,
+	[LogoPicture] [nvarchar](50) NOT NULL,
+	[BrandRegistrationPicture] [nvarchar](50) NULL,
+	[JudiciaryLink] [nvarchar](200) NULL,
+	[BrandLinkEn] [nvarchar](200) NULL,
+	[CreatedByBrowserName] [nvarchar](1000) NULL,
+	[CreatedByIp] [nvarchar](255) NULL,
+	[CreatedByUserId] [bigint] NULL,
+	[CreatedDateTime] [datetime2](7) NOT NULL,
+	[ModifiedByBrowserName] [nvarchar](1000) NULL,
+	[ModifiedByIp] [nvarchar](255) NULL,
+	[ModifiedByUserId] [bigint] NULL,
+	[ModifiedDateTime] [datetime2](7) NULL,
+	[IsDeleted] [bit] NOT NULL,
+	[IsConfirmed] [bit] NOT NULL,
+	[SellerId] [bigint] NULL,
+ CONSTRAINT [PK_Brands] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Categories]    Script Date: 5/8/2022 10:46:45 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Categories](
+	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[Title] [nvarchar](100) NOT NULL,
+	[Description] [ntext] NULL,
+	[Slug] [nvarchar](130) NOT NULL,
+	[Picture] [nvarchar](50) NULL,
+	[ParentId] [bigint] NULL,
+	[ShowInMenus] [bit] NOT NULL,
+	[CreatedByBrowserName] [nvarchar](1000) NULL,
+	[CreatedByIp] [nvarchar](255) NULL,
+	[CreatedByUserId] [bigint] NULL,
+	[CreatedDateTime] [datetime2](7) NOT NULL,
+	[ModifiedByBrowserName] [nvarchar](1000) NULL,
+	[ModifiedByIp] [nvarchar](255) NULL,
+	[ModifiedByUserId] [bigint] NULL,
+	[ModifiedDateTime] [datetime2](7) NULL,
+	[IsDeleted] [bit] NOT NULL,
+	[CanAddFakeProduct] [bit] NOT NULL,
+ CONSTRAINT [PK_Categories] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[CategoryBrands]    Script Date: 5/8/2022 10:46:45 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[CategoryBrands](
+	[CategoryId] [bigint] NOT NULL,
+	[BrandId] [bigint] NOT NULL,
+	[CreatedByBrowserName] [nvarchar](1000) NULL,
+	[CreatedByIp] [nvarchar](255) NULL,
+	[CreatedByUserId] [bigint] NULL,
+	[CreatedDateTime] [datetime2](7) NOT NULL,
+	[ModifiedByBrowserName] [nvarchar](1000) NULL,
+	[ModifiedByIp] [nvarchar](255) NULL,
+	[ModifiedByUserId] [bigint] NULL,
+	[ModifiedDateTime] [datetime2](7) NULL,
+ CONSTRAINT [PK_CategoryBrands] PRIMARY KEY CLUSTERED 
+(
+	[CategoryId] ASC,
+	[BrandId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[CategoryFeatures]    Script Date: 5/8/2022 10:46:45 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[CategoryFeatures](
+	[CategoryId] [bigint] NOT NULL,
+	[FeatureId] [bigint] NOT NULL,
+	[CreatedByBrowserName] [nvarchar](1000) NULL,
+	[CreatedByIp] [nvarchar](255) NULL,
+	[CreatedByUserId] [bigint] NULL,
+	[CreatedDateTime] [datetime2](7) NOT NULL,
+	[ModifiedByBrowserName] [nvarchar](1000) NULL,
+	[ModifiedByIp] [nvarchar](255) NULL,
+	[ModifiedByUserId] [bigint] NULL,
+	[ModifiedDateTime] [datetime2](7) NULL,
+ CONSTRAINT [PK_CategoryFeatures] PRIMARY KEY CLUSTERED 
+(
+	[CategoryId] ASC,
+	[FeatureId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[FeatureConstantValue]    Script Date: 5/8/2022 10:46:45 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[FeatureConstantValue](
+	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[CategoryId] [bigint] NOT NULL,
+	[FeatureId] [bigint] NOT NULL,
+	[Value] [nvarchar](200) NOT NULL,
+	[CreatedByBrowserName] [nvarchar](1000) NULL,
+	[CreatedByIp] [nvarchar](255) NULL,
+	[CreatedByUserId] [bigint] NULL,
+	[CreatedDateTime] [datetime2](7) NOT NULL,
+	[ModifiedByBrowserName] [nvarchar](1000) NULL,
+	[ModifiedByIp] [nvarchar](255) NULL,
+	[ModifiedByUserId] [bigint] NULL,
+	[ModifiedDateTime] [datetime2](7) NULL,
+	[IsDeleted] [bit] NOT NULL,
+ CONSTRAINT [PK_FeatureConstantValue] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Features]    Script Date: 5/8/2022 10:46:45 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Features](
+	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[Title] [nvarchar](150) NOT NULL,
+	[CreatedByBrowserName] [nvarchar](1000) NULL,
+	[CreatedByIp] [nvarchar](255) NULL,
+	[CreatedByUserId] [bigint] NULL,
+	[CreatedDateTime] [datetime2](7) NOT NULL,
+	[ModifiedByBrowserName] [nvarchar](1000) NULL,
+	[ModifiedByIp] [nvarchar](255) NULL,
+	[ModifiedByUserId] [bigint] NULL,
+	[ModifiedDateTime] [datetime2](7) NULL,
+	[IsDeleted] [bit] NOT NULL,
+ CONSTRAINT [PK_Features] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ProductCategories]    Script Date: 5/8/2022 10:46:45 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ProductCategories](
+	[ProductId] [bigint] NOT NULL,
+	[CategoryId] [bigint] NOT NULL,
+	[CreatedByBrowserName] [nvarchar](1000) NULL,
+	[CreatedByIp] [nvarchar](255) NULL,
+	[CreatedByUserId] [bigint] NULL,
+	[CreatedDateTime] [datetime2](7) NOT NULL,
+	[ModifiedByBrowserName] [nvarchar](1000) NULL,
+	[ModifiedByIp] [nvarchar](255) NULL,
+	[ModifiedByUserId] [bigint] NULL,
+	[ModifiedDateTime] [datetime2](7) NULL,
+ CONSTRAINT [PK_ProductCategories] PRIMARY KEY CLUSTERED 
+(
+	[CategoryId] ASC,
+	[ProductId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ProductFeatures]    Script Date: 5/8/2022 10:46:45 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ProductFeatures](
+	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[Value] [nvarchar](2000) NOT NULL,
+	[ProductId] [bigint] NOT NULL,
+	[FeatureId] [bigint] NOT NULL,
+	[CreatedByBrowserName] [nvarchar](1000) NULL,
+	[CreatedByIp] [nvarchar](255) NULL,
+	[CreatedByUserId] [bigint] NULL,
+	[CreatedDateTime] [datetime2](7) NOT NULL,
+	[ModifiedByBrowserName] [nvarchar](1000) NULL,
+	[ModifiedByIp] [nvarchar](255) NULL,
+	[ModifiedByUserId] [bigint] NULL,
+	[ModifiedDateTime] [datetime2](7) NULL,
+	[IsDeleted] [bit] NOT NULL,
+ CONSTRAINT [PK_ProductFeatures] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ProductMedia]    Script Date: 5/8/2022 10:46:45 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ProductMedia](
+	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[FileName] [nvarchar](50) NOT NULL,
+	[IsVideo] [bit] NOT NULL,
+	[ProductId] [bigint] NOT NULL,
+	[CreatedByBrowserName] [nvarchar](1000) NULL,
+	[CreatedByIp] [nvarchar](255) NULL,
+	[CreatedByUserId] [bigint] NULL,
+	[CreatedDateTime] [datetime2](7) NOT NULL,
+	[ModifiedByBrowserName] [nvarchar](1000) NULL,
+	[ModifiedByIp] [nvarchar](255) NULL,
+	[ModifiedByUserId] [bigint] NULL,
+	[ModifiedDateTime] [datetime2](7) NULL,
+	[IsDeleted] [bit] NOT NULL,
+ CONSTRAINT [PK_ProductMedia] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Products]    Script Date: 5/8/2022 10:46:45 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Products](
+	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[CategoryId] [bigint] NULL,
+	[CreatedByBrowserName] [nvarchar](1000) NULL,
+	[CreatedByIp] [nvarchar](255) NULL,
+	[CreatedByUserId] [bigint] NULL,
+	[CreatedDateTime] [datetime2](7) NOT NULL,
+	[ModifiedByBrowserName] [nvarchar](1000) NULL,
+	[ModifiedByIp] [nvarchar](255) NULL,
+	[ModifiedByUserId] [bigint] NULL,
+	[ModifiedDateTime] [datetime2](7) NULL,
+	[IsDeleted] [bit] NOT NULL,
+	[BrandId] [bigint] NOT NULL,
+	[EnglishTitle] [nvarchar](200) NULL,
+	[IsFake] [bit] NOT NULL,
+	[PackHeight] [int] NOT NULL,
+	[PackLength] [int] NOT NULL,
+	[PackWeight] [int] NOT NULL,
+	[PackWidth] [int] NOT NULL,
+	[PersianTitle] [nvarchar](200) NOT NULL,
+	[ShortDescription] [ntext] NULL,
+	[SpecialtyCheck] [ntext] NULL,
+ CONSTRAINT [PK_Products] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ProvincesAndCities]    Script Date: 5/8/2022 10:46:45 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ProvincesAndCities](
+	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[Title] [nvarchar](200) NOT NULL,
+	[ParentId] [bigint] NULL,
+	[CreatedByBrowserName] [nvarchar](1000) NULL,
+	[CreatedByIp] [nvarchar](255) NULL,
+	[CreatedByUserId] [bigint] NULL,
+	[CreatedDateTime] [datetime2](7) NOT NULL,
+	[ModifiedByBrowserName] [nvarchar](1000) NULL,
+	[ModifiedByIp] [nvarchar](255) NULL,
+	[ModifiedByUserId] [bigint] NULL,
+	[ModifiedDateTime] [datetime2](7) NULL,
+	[IsDeleted] [bit] NOT NULL,
+ CONSTRAINT [PK_ProvincesAndCities] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[RoleClaims]    Script Date: 5/8/2022 10:46:45 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[RoleClaims](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[CreatedByBrowserName] [nvarchar](1000) NULL,
+	[CreatedByIp] [nvarchar](255) NULL,
+	[CreatedByUserId] [bigint] NULL,
+	[CreatedDateTime] [datetime2](7) NOT NULL,
+	[ModifiedByBrowserName] [nvarchar](1000) NULL,
+	[ModifiedByIp] [nvarchar](255) NULL,
+	[ModifiedByUserId] [bigint] NULL,
+	[ModifiedDateTime] [datetime2](7) NULL,
+	[RoleId] [bigint] NOT NULL,
+	[ClaimType] [nvarchar](max) NULL,
+	[ClaimValue] [nvarchar](max) NULL,
+ CONSTRAINT [PK_RoleClaims] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Roles]    Script Date: 5/8/2022 10:46:45 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Roles](
+	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[Description] [nvarchar](max) NULL,
+	[CreatedByBrowserName] [nvarchar](1000) NULL,
+	[CreatedByIp] [nvarchar](255) NULL,
+	[CreatedByUserId] [bigint] NULL,
+	[CreatedDateTime] [datetime2](7) NOT NULL,
+	[ModifiedByBrowserName] [nvarchar](1000) NULL,
+	[ModifiedByIp] [nvarchar](255) NULL,
+	[ModifiedByUserId] [bigint] NULL,
+	[ModifiedDateTime] [datetime2](7) NULL,
+	[Name] [nvarchar](256) NULL,
+	[NormalizedName] [nvarchar](256) NULL,
+	[ConcurrencyStamp] [nvarchar](max) NULL,
+ CONSTRAINT [PK_Roles] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Sellers]    Script Date: 5/8/2022 10:46:45 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Sellers](
+	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[UserId] [bigint] NOT NULL,
+	[IsRealPerson] [bit] NOT NULL,
+	[CompanyName] [nvarchar](200) NULL,
+	[RegisterNumber] [nvarchar](100) NULL,
+	[EconomicCode] [nvarchar](12) NULL,
+	[SignatureOwners] [nvarchar](300) NULL,
+	[NationalId] [nvarchar](30) NULL,
+	[CompanyType] [tinyint] NULL,
+	[SellerCode] [int] NOT NULL,
+	[ShopName] [nvarchar](200) NOT NULL,
+	[AboutSeller] [ntext] NULL,
+	[Logo] [nvarchar](50) NULL,
+	[IdCartPicture] [nvarchar](50) NOT NULL,
+	[ShabaNumber] [nvarchar](24) NOT NULL,
+	[Telephone] [nvarchar](11) NOT NULL,
+	[Website] [nvarchar](200) NULL,
+	[ProvinceId] [bigint] NOT NULL,
+	[CityId] [bigint] NOT NULL,
+	[Address] [nvarchar](300) NOT NULL,
+	[PostalCode] [nvarchar](10) NOT NULL,
+	[Location] [nvarchar](100) NULL,
+	[IsActive] [bit] NOT NULL,
+	[CreatedDateTime] [datetime2](7) NOT NULL,
+	[CreatedByBrowserName] [nvarchar](1000) NULL,
+	[CreatedByIp] [nvarchar](255) NULL,
+	[CreatedByUserId] [bigint] NULL,
+	[ModifiedByBrowserName] [nvarchar](1000) NULL,
+	[ModifiedByIp] [nvarchar](255) NULL,
+	[ModifiedByUserId] [bigint] NULL,
+	[ModifiedDateTime] [datetime2](7) NULL,
+	[IsDeleted] [bit] NOT NULL,
+	[DocumentStatus] [tinyint] NOT NULL,
+	[RejectReason] [ntext] NULL,
+ CONSTRAINT [PK_Sellers] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[UserClaims]    Script Date: 5/8/2022 10:46:45 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[UserClaims](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[CreatedByBrowserName] [nvarchar](1000) NULL,
+	[CreatedByIp] [nvarchar](255) NULL,
+	[CreatedByUserId] [bigint] NULL,
+	[CreatedDateTime] [datetime2](7) NOT NULL,
+	[ModifiedByBrowserName] [nvarchar](1000) NULL,
+	[ModifiedByIp] [nvarchar](255) NULL,
+	[ModifiedByUserId] [bigint] NULL,
+	[ModifiedDateTime] [datetime2](7) NULL,
+	[UserId] [bigint] NOT NULL,
+	[ClaimType] [nvarchar](max) NULL,
+	[ClaimValue] [nvarchar](max) NULL,
+ CONSTRAINT [PK_UserClaims] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[UserLogins]    Script Date: 5/8/2022 10:46:45 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[UserLogins](
+	[LoginProvider] [nvarchar](450) NOT NULL,
+	[ProviderKey] [nvarchar](450) NOT NULL,
+	[CreatedByBrowserName] [nvarchar](1000) NULL,
+	[CreatedByIp] [nvarchar](255) NULL,
+	[CreatedByUserId] [bigint] NULL,
+	[CreatedDateTime] [datetime2](7) NOT NULL,
+	[ModifiedByBrowserName] [nvarchar](1000) NULL,
+	[ModifiedByIp] [nvarchar](255) NULL,
+	[ModifiedByUserId] [bigint] NULL,
+	[ModifiedDateTime] [datetime2](7) NULL,
+	[ProviderDisplayName] [nvarchar](max) NULL,
+	[UserId] [bigint] NOT NULL,
+ CONSTRAINT [PK_UserLogins] PRIMARY KEY CLUSTERED 
+(
+	[LoginProvider] ASC,
+	[ProviderKey] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[UserRoles]    Script Date: 5/8/2022 10:46:45 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[UserRoles](
+	[UserId] [bigint] NOT NULL,
+	[RoleId] [bigint] NOT NULL,
+	[CreatedByBrowserName] [nvarchar](1000) NULL,
+	[CreatedByIp] [nvarchar](255) NULL,
+	[CreatedByUserId] [bigint] NULL,
+	[CreatedDateTime] [datetime2](7) NOT NULL,
+	[ModifiedByBrowserName] [nvarchar](1000) NULL,
+	[ModifiedByIp] [nvarchar](255) NULL,
+	[ModifiedByUserId] [bigint] NULL,
+	[ModifiedDateTime] [datetime2](7) NULL,
+ CONSTRAINT [PK_UserRoles] PRIMARY KEY CLUSTERED 
+(
+	[UserId] ASC,
+	[RoleId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Users]    Script Date: 5/8/2022 10:46:45 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Users](
+	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[FirstName] [nvarchar](200) NULL,
+	[LastName] [nvarchar](200) NULL,
+	[IsActive] [bit] NOT NULL,
+	[CreatedDateTime] [datetime2](7) NOT NULL,
+	[Avatar] [nvarchar](50) NOT NULL,
+	[SendSmsLastTime] [datetime2](7) NOT NULL,
+	[CreatedByBrowserName] [nvarchar](1000) NULL,
+	[CreatedByIp] [nvarchar](255) NULL,
+	[CreatedByUserId] [bigint] NULL,
+	[ModifiedByBrowserName] [nvarchar](1000) NULL,
+	[ModifiedByIp] [nvarchar](255) NULL,
+	[ModifiedByUserId] [bigint] NULL,
+	[ModifiedDateTime] [datetime2](7) NULL,
+	[UserName] [nvarchar](256) NULL,
+	[NormalizedUserName] [nvarchar](256) NULL,
+	[Email] [nvarchar](256) NULL,
+	[NormalizedEmail] [nvarchar](256) NULL,
+	[EmailConfirmed] [bit] NOT NULL,
+	[PasswordHash] [nvarchar](max) NULL,
+	[SecurityStamp] [nvarchar](max) NULL,
+	[ConcurrencyStamp] [nvarchar](max) NULL,
+	[PhoneNumber] [nvarchar](max) NULL,
+	[PhoneNumberConfirmed] [bit] NOT NULL,
+	[TwoFactorEnabled] [bit] NOT NULL,
+	[LockoutEnd] [datetimeoffset](7) NULL,
+	[LockoutEnabled] [bit] NOT NULL,
+	[AccessFailedCount] [int] NOT NULL,
+	[BirthDate] [datetime2](7) NULL,
+	[Gender] [tinyint] NULL,
+	[NationalCode] [nvarchar](10) NULL,
+	[IsSeller] [bit] NOT NULL,
+ CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[UserTokens]    Script Date: 5/8/2022 10:46:45 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[UserTokens](
+	[UserId] [bigint] NOT NULL,
+	[LoginProvider] [nvarchar](450) NOT NULL,
+	[Name] [nvarchar](450) NOT NULL,
+	[CreatedByBrowserName] [nvarchar](1000) NULL,
+	[CreatedByIp] [nvarchar](255) NULL,
+	[CreatedByUserId] [bigint] NULL,
+	[CreatedDateTime] [datetime2](7) NOT NULL,
+	[ModifiedByBrowserName] [nvarchar](1000) NULL,
+	[ModifiedByIp] [nvarchar](255) NULL,
+	[ModifiedByUserId] [bigint] NULL,
+	[ModifiedDateTime] [datetime2](7) NULL,
+	[Value] [nvarchar](max) NULL,
+ CONSTRAINT [PK_UserTokens] PRIMARY KEY CLUSTERED 
+(
+	[UserId] ASC,
+	[LoginProvider] ASC,
+	[Name] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20211129132125_V2021_11_29_1651', N'6.0.0')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20211204233733_V2021_12_05_0307', N'6.0.0')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20211231185642_V2021_12_31_2226', N'6.0.0')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20220104143051_V2022_01_04_1800', N'6.0.0')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20220110131152_V2022_01_10_1641', N'6.0.0')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20220111184010_V2022_01_11_2209', N'6.0.0')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20220115192245_V2022_01_15_2252', N'6.0.0')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20220120193710_V2022_01_20_2306', N'6.0.0')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20220129203750_V2022_01_30_0007', N'6.0.0')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20220130201137_V2022_01_30_2341', N'6.0.0')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20220201132830_V2022_02_01_1658', N'6.0.0')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20220208202438_V2022_02_08_2354', N'6.0.0')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20220216222549_V2022_02_17_0155', N'6.0.0')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20220301230642_V2022_03_02_0236', N'6.0.0')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20220315074829_V2022_03_15_1118', N'6.0.0')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20220318010617_V2022_03_18_0435', N'6.0.0')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20220324123953_V2022_03_24_1709', N'6.0.0')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20220328222805_V2022_03_29_0257', N'6.0.0')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20220424043430_V2022_04_24_0904', N'6.0.0')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20220506165912_V2022_05_06_2128', N'6.0.0')
+GO
+SET IDENTITY_INSERT [dbo].[Brands] ON 
+GO
+INSERT [dbo].[Brands] ([Id], [TitleFa], [TitleEn], [Description], [IsIranianBrand], [LogoPicture], [BrandRegistrationPicture], [JudiciaryLink], [BrandLinkEn], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime], [IsDeleted], [IsConfirmed], [SellerId]) VALUES (1, N'سامسونگ', N'Samsung', N'<p>این توضیحات برند سامسونگ است.</p>', 0, N'208f8311036444f592c5475a2dd73cbe.jpg', NULL, NULL, NULL, N'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36', N'::1', 2, CAST(N'2022-05-08T10:36:10.5118968' AS DateTime2), NULL, NULL, NULL, NULL, 0, 1, NULL)
+GO
+INSERT [dbo].[Brands] ([Id], [TitleFa], [TitleEn], [Description], [IsIranianBrand], [LogoPicture], [BrandRegistrationPicture], [JudiciaryLink], [BrandLinkEn], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime], [IsDeleted], [IsConfirmed], [SellerId]) VALUES (3, N'اپل', N'Apple', N'<p>این توضیحات برند اپل می باشد.</p>', 0, N'c12ae9daf8334114be62fe58e1721faf.png', NULL, NULL, NULL, N'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36', N'::1', 2, CAST(N'2022-05-08T10:38:51.6603927' AS DateTime2), NULL, NULL, NULL, NULL, 0, 1, NULL)
+GO
+SET IDENTITY_INSERT [dbo].[Brands] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Categories] ON 
+GO
+INSERT [dbo].[Categories] ([Id], [Title], [Description], [Slug], [Picture], [ParentId], [ShowInMenus], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime], [IsDeleted], [CanAddFakeProduct]) VALUES (1, N'کالای دیجیتال', NULL, N'electronic-devices', NULL, NULL, 0, N'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.82 Safari/537.36', N'::1', NULL, CAST(N'2022-02-11T01:31:35.5119210' AS DateTime2), N'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.82 Safari/537.36', N'::1', NULL, CAST(N'2022-03-27T03:06:41.9356269' AS DateTime2), 0, 1)
+GO
+INSERT [dbo].[Categories] ([Id], [Title], [Description], [Slug], [Picture], [ParentId], [ShowInMenus], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime], [IsDeleted], [CanAddFakeProduct]) VALUES (2, N'محصولات بومی و محلی', NULL, N'rural-products', NULL, NULL, 0, N'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.82 Safari/537.36', N'::1', NULL, CAST(N'2022-02-13T14:25:56.2219105' AS DateTime2), N'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36', N'::1', NULL, CAST(N'2022-02-22T14:36:00.5024735' AS DateTime2), 0, 0)
+GO
+INSERT [dbo].[Categories] ([Id], [Title], [Description], [Slug], [Picture], [ParentId], [ShowInMenus], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime], [IsDeleted], [CanAddFakeProduct]) VALUES (3, N'زیبایی و سلامت', NULL, N'personal-appliance', NULL, NULL, 0, N'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36', N'::1', NULL, CAST(N'2022-02-22T14:36:28.5241848' AS DateTime2), NULL, NULL, NULL, NULL, 0, 0)
+GO
+INSERT [dbo].[Categories] ([Id], [Title], [Description], [Slug], [Picture], [ParentId], [ShowInMenus], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime], [IsDeleted], [CanAddFakeProduct]) VALUES (4, N'خانه و آشپزخانه', NULL, N'home-and-kitchen', NULL, NULL, 0, N'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36', N'::1', NULL, CAST(N'2022-02-22T14:36:53.2488495' AS DateTime2), NULL, NULL, NULL, NULL, 0, 0)
+GO
+INSERT [dbo].[Categories] ([Id], [Title], [Description], [Slug], [Picture], [ParentId], [ShowInMenus], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime], [IsDeleted], [CanAddFakeProduct]) VALUES (5, N'کتاب، لوازم تحریر و هنر', NULL, N'book-and-media', NULL, NULL, 0, N'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36', N'::1', NULL, CAST(N'2022-02-22T14:38:25.0611566' AS DateTime2), NULL, NULL, NULL, NULL, 0, 0)
+GO
+INSERT [dbo].[Categories] ([Id], [Title], [Description], [Slug], [Picture], [ParentId], [ShowInMenus], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime], [IsDeleted], [CanAddFakeProduct]) VALUES (6, N'ورزش و سفر', NULL, N'sport-entertainment', NULL, NULL, 0, N'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36', N'::1', NULL, CAST(N'2022-02-22T14:38:51.0913079' AS DateTime2), NULL, NULL, NULL, NULL, 0, 0)
+GO
+INSERT [dbo].[Categories] ([Id], [Title], [Description], [Slug], [Picture], [ParentId], [ShowInMenus], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime], [IsDeleted], [CanAddFakeProduct]) VALUES (7, N'گوشی موبایل', NULL, N'mobile-phone', NULL, 1, 0, N'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36', N'::1', NULL, CAST(N'2022-02-22T21:54:00.4903053' AS DateTime2), N'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36', N'::1', NULL, CAST(N'2022-02-22T21:54:29.8561499' AS DateTime2), 0, 0)
+GO
+INSERT [dbo].[Categories] ([Id], [Title], [Description], [Slug], [Picture], [ParentId], [ShowInMenus], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime], [IsDeleted], [CanAddFakeProduct]) VALUES (8, N'لوازم جانبی گوشی موبایل', NULL, N'mobile-accessories', NULL, 1, 0, N'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36', N'::1', NULL, CAST(N'2022-02-22T21:57:26.4105749' AS DateTime2), NULL, NULL, NULL, NULL, 0, 0)
+GO
+INSERT [dbo].[Categories] ([Id], [Title], [Description], [Slug], [Picture], [ParentId], [ShowInMenus], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime], [IsDeleted], [CanAddFakeProduct]) VALUES (9, N'خانه و کاشانه بومی محلی', NULL, N'rural-home', NULL, 2, 0, N'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36', N'::1', NULL, CAST(N'2022-02-22T22:04:30.8617891' AS DateTime2), NULL, NULL, NULL, NULL, 0, 0)
+GO
+INSERT [dbo].[Categories] ([Id], [Title], [Description], [Slug], [Picture], [ParentId], [ShowInMenus], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime], [IsDeleted], [CanAddFakeProduct]) VALUES (10, N'تبلت', NULL, N'tablet', NULL, 1, 0, N'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36', N'::1', NULL, CAST(N'2022-02-28T22:53:26.4907271' AS DateTime2), NULL, NULL, NULL, NULL, 0, 1)
+GO
+SET IDENTITY_INSERT [dbo].[Categories] OFF
+GO
+INSERT [dbo].[CategoryBrands] ([CategoryId], [BrandId], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime]) VALUES (7, 1, N'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36', N'::1', 2, CAST(N'2022-05-08T10:44:08.0831286' AS DateTime2), NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[CategoryBrands] ([CategoryId], [BrandId], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime]) VALUES (7, 3, N'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36', N'::1', 2, CAST(N'2022-05-08T10:44:08.0831286' AS DateTime2), NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[CategoryFeatures] ([CategoryId], [FeatureId], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime]) VALUES (7, 1, N'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36', N'::1', 2, CAST(N'2022-05-08T10:40:25.2532974' AS DateTime2), NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[CategoryFeatures] ([CategoryId], [FeatureId], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime]) VALUES (7, 2, N'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36', N'::1', 2, CAST(N'2022-05-08T10:40:34.3721231' AS DateTime2), NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[CategoryFeatures] ([CategoryId], [FeatureId], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime]) VALUES (7, 3, N'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36', N'::1', 2, CAST(N'2022-05-08T10:40:38.5129474' AS DateTime2), NULL, NULL, NULL, NULL)
+GO
+SET IDENTITY_INSERT [dbo].[FeatureConstantValue] ON 
+GO
+INSERT [dbo].[FeatureConstantValue] ([Id], [CategoryId], [FeatureId], [Value], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime], [IsDeleted]) VALUES (1, 7, 1, N'سیستم عامل اندروید', N'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36', N'::1', 2, CAST(N'2022-05-08T10:41:45.5278080' AS DateTime2), NULL, NULL, NULL, NULL, 0)
+GO
+INSERT [dbo].[FeatureConstantValue] ([Id], [CategoryId], [FeatureId], [Value], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime], [IsDeleted]) VALUES (2, 7, 1, N'سیستم عامل iOS', N'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36', N'::1', 2, CAST(N'2022-05-08T10:42:43.5172930' AS DateTime2), NULL, NULL, NULL, NULL, 0)
+GO
+INSERT [dbo].[FeatureConstantValue] ([Id], [CategoryId], [FeatureId], [Value], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime], [IsDeleted]) VALUES (3, 7, 2, N'یک عدد', N'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36', N'::1', 2, CAST(N'2022-05-08T10:42:57.2343555' AS DateTime2), NULL, NULL, NULL, NULL, 0)
+GO
+INSERT [dbo].[FeatureConstantValue] ([Id], [CategoryId], [FeatureId], [Value], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime], [IsDeleted]) VALUES (4, 7, 2, N'دو عدد', N'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36', N'::1', 2, CAST(N'2022-05-08T10:43:06.8105635' AS DateTime2), NULL, NULL, NULL, NULL, 0)
+GO
+INSERT [dbo].[FeatureConstantValue] ([Id], [CategoryId], [FeatureId], [Value], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime], [IsDeleted]) VALUES (5, 7, 2, N'سه عدد', N'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36', N'::1', 2, CAST(N'2022-05-08T10:43:16.5577050' AS DateTime2), NULL, NULL, NULL, NULL, 0)
+GO
+SET IDENTITY_INSERT [dbo].[FeatureConstantValue] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Features] ON 
+GO
+INSERT [dbo].[Features] ([Id], [Title], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime], [IsDeleted]) VALUES (1, N'نوع', N'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36', N'::1', 2, CAST(N'2022-05-08T10:40:25.2532974' AS DateTime2), NULL, NULL, NULL, NULL, 0)
+GO
+INSERT [dbo].[Features] ([Id], [Title], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime], [IsDeleted]) VALUES (2, N'تعداد دوربین', N'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36', N'::1', 2, CAST(N'2022-05-08T10:40:34.3721231' AS DateTime2), NULL, NULL, NULL, NULL, 0)
+GO
+INSERT [dbo].[Features] ([Id], [Title], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime], [IsDeleted]) VALUES (3, N'مقدار رم', N'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36', N'::1', 2, CAST(N'2022-05-08T10:40:38.5129474' AS DateTime2), NULL, NULL, NULL, NULL, 0)
+GO
+SET IDENTITY_INSERT [dbo].[Features] OFF
+GO
+SET IDENTITY_INSERT [dbo].[ProvincesAndCities] ON 
+GO
+INSERT [dbo].[ProvincesAndCities] ([Id], [Title], [ParentId], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime], [IsDeleted]) VALUES (1, N'تهران', NULL, NULL, NULL, NULL, CAST(N'2022-04-15T15:37:50.9713126' AS DateTime2), NULL, NULL, NULL, NULL, 0)
+GO
+INSERT [dbo].[ProvincesAndCities] ([Id], [Title], [ParentId], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime], [IsDeleted]) VALUES (2, N'اصفهان', NULL, NULL, NULL, NULL, CAST(N'2022-04-15T15:37:50.9713126' AS DateTime2), NULL, NULL, NULL, NULL, 0)
+GO
+INSERT [dbo].[ProvincesAndCities] ([Id], [Title], [ParentId], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime], [IsDeleted]) VALUES (3, N'تهران', 1, NULL, NULL, NULL, CAST(N'2022-04-15T15:37:50.9713126' AS DateTime2), NULL, NULL, NULL, NULL, 0)
+GO
+INSERT [dbo].[ProvincesAndCities] ([Id], [Title], [ParentId], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime], [IsDeleted]) VALUES (4, N'شهریار', 1, NULL, NULL, NULL, CAST(N'2022-04-15T15:37:50.9713126' AS DateTime2), NULL, NULL, NULL, NULL, 0)
+GO
+INSERT [dbo].[ProvincesAndCities] ([Id], [Title], [ParentId], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime], [IsDeleted]) VALUES (5, N'اصفهان', 2, NULL, NULL, NULL, CAST(N'2022-04-15T15:37:50.9713126' AS DateTime2), NULL, NULL, NULL, NULL, 0)
+GO
+INSERT [dbo].[ProvincesAndCities] ([Id], [Title], [ParentId], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime], [IsDeleted]) VALUES (6, N'کاشان', 2, NULL, NULL, NULL, CAST(N'2022-04-15T15:37:50.9713126' AS DateTime2), NULL, NULL, NULL, NULL, 0)
+GO
+SET IDENTITY_INSERT [dbo].[ProvincesAndCities] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Roles] ON 
+GO
+INSERT [dbo].[Roles] ([Id], [Description], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime], [Name], [NormalizedName], [ConcurrencyStamp]) VALUES (1, N'ادمین کل سیستم', NULL, NULL, NULL, CAST(N'2022-04-15T15:37:50.3400547' AS DateTime2), NULL, NULL, NULL, NULL, N'Admin', N'ADMIN', N'272638c1-8632-400d-9a62-fc018e3c1c6e')
+GO
+INSERT [dbo].[Roles] ([Id], [Description], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime], [Name], [NormalizedName], [ConcurrencyStamp]) VALUES (2, N'فروشنده سیستم', NULL, NULL, NULL, CAST(N'2022-04-15T15:37:50.8673987' AS DateTime2), NULL, NULL, NULL, NULL, N'Seller', N'SELLER', N'a85b49c9-e025-4830-aa16-33a675e269d7')
+GO
+SET IDENTITY_INSERT [dbo].[Roles] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Sellers] ON 
+GO
+INSERT [dbo].[Sellers] ([Id], [UserId], [IsRealPerson], [CompanyName], [RegisterNumber], [EconomicCode], [SignatureOwners], [NationalId], [CompanyType], [SellerCode], [ShopName], [AboutSeller], [Logo], [IdCartPicture], [ShabaNumber], [Telephone], [Website], [ProvinceId], [CityId], [Address], [PostalCode], [Location], [IsActive], [CreatedDateTime], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime], [IsDeleted], [DocumentStatus], [RejectReason]) VALUES (1, 2, 0, N'شرکت رها گستر دانا', N'12356488942128489', N'123234345456', N'میلاد احمدی - منصور کریمی - سینا شاهرخی', N'159357258456147369', 2, 1, N'فروشگاه برادران احمدی', N'<p>شرکت رها گستر دانا از سال 1380 شروع به کار کرده و در این مدت توانسته با تکیه بر دانش کارکنان خود در زمنیه فروش لوارم جانبی موبایل اقدام به فعالیت کند</p>', N'9dc9cb1134ab42b8978758834445c15b.png', N'35366c86a8fc4a67ac5abba5978ef381.jpg', N'123456789123456789123456', N'02199335484', N'https://rahagostardana.com', 2, 6, N'خیابان آزادی - کوچه بهار 5 - پلاک 39', N'5544184933', NULL, 1, CAST(N'2022-04-15T15:37:51.1599657' AS DateTime2), NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, NULL)
+GO
+SET IDENTITY_INSERT [dbo].[Sellers] OFF
+GO
+INSERT [dbo].[UserRoles] ([UserId], [RoleId], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime]) VALUES (1, 1, NULL, NULL, NULL, CAST(N'2017-07-07T00:00:00.0000000' AS DateTime2), NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[UserRoles] ([UserId], [RoleId], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [CreatedDateTime], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime]) VALUES (2, 2, NULL, NULL, NULL, CAST(N'2017-07-07T00:00:00.0000000' AS DateTime2), NULL, NULL, NULL, NULL)
+GO
+SET IDENTITY_INSERT [dbo].[Users] ON 
+GO
+INSERT [dbo].[Users] ([Id], [FirstName], [LastName], [IsActive], [CreatedDateTime], [Avatar], [SendSmsLastTime], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime], [UserName], [NormalizedUserName], [Email], [NormalizedEmail], [EmailConfirmed], [PasswordHash], [SecurityStamp], [ConcurrencyStamp], [PhoneNumber], [PhoneNumberConfirmed], [TwoFactorEnabled], [LockoutEnd], [LockoutEnabled], [AccessFailedCount], [BirthDate], [Gender], [NationalCode], [IsSeller]) VALUES (1, NULL, NULL, 1, CAST(N'2022-04-15T15:37:50.6686279' AS DateTime2), N'user-default-avatar.png', CAST(N'0001-01-01T00:00:00.0000000' AS DateTime2), NULL, NULL, NULL, NULL, NULL, NULL, CAST(N'2022-04-15T15:37:50.8290978' AS DateTime2), N'Admin', N'ADMIN', N'admin@test.com', N'ADMIN@TEST.COM', 1, N'AQAAAAEAACcQAAAAECsgIs2VkBRjQw/TsREIVASugVGA3bxahw+feoyptq4PxKDeDX5lvSOwT6UNmWgoKA==', N'MPB44MYZPZFZJZJ62AUADBGSZBXL36BY', N'15749a29-bd47-4661-9aa1-1e88a647ae34', NULL, 0, 0, NULL, 0, 0, NULL, NULL, NULL, 0)
+GO
+INSERT [dbo].[Users] ([Id], [FirstName], [LastName], [IsActive], [CreatedDateTime], [Avatar], [SendSmsLastTime], [CreatedByBrowserName], [CreatedByIp], [CreatedByUserId], [ModifiedByBrowserName], [ModifiedByIp], [ModifiedByUserId], [ModifiedDateTime], [UserName], [NormalizedUserName], [Email], [NormalizedEmail], [EmailConfirmed], [PasswordHash], [SecurityStamp], [ConcurrencyStamp], [PhoneNumber], [PhoneNumberConfirmed], [TwoFactorEnabled], [LockoutEnd], [LockoutEnabled], [AccessFailedCount], [BirthDate], [Gender], [NationalCode], [IsSeller]) VALUES (2, N'میلاد', N'احمدی', 1, CAST(N'2022-04-15T15:37:50.8763442' AS DateTime2), N'user-default-avatar.png', CAST(N'2022-05-08T08:54:55.2800917' AS DateTime2), NULL, NULL, NULL, N'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36', N'::1', NULL, CAST(N'2022-05-08T08:54:55.3141123' AS DateTime2), N'09103332211', N'09103332211', N'milad.ahmadi@gmail.com', N'MILAD.AHMADI@GMAIL.COM', 1, NULL, N'FXHY2TRJVUSF3LDPMV2IA5EG2YA34VI7', N'69bdf681-b2cc-4b75-9c87-37741900d5ee', N'09103332211', 1, 0, NULL, 0, 0, CAST(N'1990-08-22T00:00:00.0000000' AS DateTime2), 0, N'123456789', 1)
+GO
+SET IDENTITY_INSERT [dbo].[Users] OFF
+GO
+/****** Object:  Index [IX_Brands_SellerId]    Script Date: 5/8/2022 10:46:45 AM ******/
+CREATE NONCLUSTERED INDEX [IX_Brands_SellerId] ON [dbo].[Brands]
+(
+	[SellerId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [IX_Brands_TitleEn]    Script Date: 5/8/2022 10:46:45 AM ******/
+CREATE UNIQUE NONCLUSTERED INDEX [IX_Brands_TitleEn] ON [dbo].[Brands]
+(
+	[TitleEn] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [IX_Brands_TitleFa]    Script Date: 5/8/2022 10:46:45 AM ******/
+CREATE UNIQUE NONCLUSTERED INDEX [IX_Brands_TitleFa] ON [dbo].[Brands]
+(
+	[TitleFa] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_Categories_ParentId]    Script Date: 5/8/2022 10:46:45 AM ******/
+CREATE NONCLUSTERED INDEX [IX_Categories_ParentId] ON [dbo].[Categories]
+(
+	[ParentId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [IX_Categories_Slug]    Script Date: 5/8/2022 10:46:45 AM ******/
+CREATE UNIQUE NONCLUSTERED INDEX [IX_Categories_Slug] ON [dbo].[Categories]
+(
+	[Slug] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [IX_Categories_Title]    Script Date: 5/8/2022 10:46:45 AM ******/
+CREATE UNIQUE NONCLUSTERED INDEX [IX_Categories_Title] ON [dbo].[Categories]
+(
+	[Title] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_CategoryBrands_BrandId]    Script Date: 5/8/2022 10:46:45 AM ******/
+CREATE NONCLUSTERED INDEX [IX_CategoryBrands_BrandId] ON [dbo].[CategoryBrands]
+(
+	[BrandId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_CategoryFeatures_FeatureId]    Script Date: 5/8/2022 10:46:45 AM ******/
+CREATE NONCLUSTERED INDEX [IX_CategoryFeatures_FeatureId] ON [dbo].[CategoryFeatures]
+(
+	[FeatureId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_FeatureConstantValue_CategoryId]    Script Date: 5/8/2022 10:46:45 AM ******/
+CREATE NONCLUSTERED INDEX [IX_FeatureConstantValue_CategoryId] ON [dbo].[FeatureConstantValue]
+(
+	[CategoryId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_FeatureConstantValue_FeatureId]    Script Date: 5/8/2022 10:46:45 AM ******/
+CREATE NONCLUSTERED INDEX [IX_FeatureConstantValue_FeatureId] ON [dbo].[FeatureConstantValue]
+(
+	[FeatureId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [IX_Features_Title]    Script Date: 5/8/2022 10:46:45 AM ******/
+CREATE UNIQUE NONCLUSTERED INDEX [IX_Features_Title] ON [dbo].[Features]
+(
+	[Title] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_ProductCategories_ProductId]    Script Date: 5/8/2022 10:46:45 AM ******/
+CREATE NONCLUSTERED INDEX [IX_ProductCategories_ProductId] ON [dbo].[ProductCategories]
+(
+	[ProductId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_ProductFeatures_FeatureId]    Script Date: 5/8/2022 10:46:45 AM ******/
+CREATE NONCLUSTERED INDEX [IX_ProductFeatures_FeatureId] ON [dbo].[ProductFeatures]
+(
+	[FeatureId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_ProductFeatures_ProductId]    Script Date: 5/8/2022 10:46:45 AM ******/
+CREATE NONCLUSTERED INDEX [IX_ProductFeatures_ProductId] ON [dbo].[ProductFeatures]
+(
+	[ProductId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_ProductMedia_ProductId]    Script Date: 5/8/2022 10:46:45 AM ******/
+CREATE NONCLUSTERED INDEX [IX_ProductMedia_ProductId] ON [dbo].[ProductMedia]
+(
+	[ProductId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_Products_BrandId]    Script Date: 5/8/2022 10:46:45 AM ******/
+CREATE NONCLUSTERED INDEX [IX_Products_BrandId] ON [dbo].[Products]
+(
+	[BrandId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_Products_CategoryId]    Script Date: 5/8/2022 10:46:45 AM ******/
+CREATE NONCLUSTERED INDEX [IX_Products_CategoryId] ON [dbo].[Products]
+(
+	[CategoryId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_ProvincesAndCities_ParentId]    Script Date: 5/8/2022 10:46:45 AM ******/
+CREATE NONCLUSTERED INDEX [IX_ProvincesAndCities_ParentId] ON [dbo].[ProvincesAndCities]
+(
+	[ParentId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_RoleClaims_RoleId]    Script Date: 5/8/2022 10:46:45 AM ******/
+CREATE NONCLUSTERED INDEX [IX_RoleClaims_RoleId] ON [dbo].[RoleClaims]
+(
+	[RoleId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [RoleNameIndex]    Script Date: 5/8/2022 10:46:45 AM ******/
+CREATE UNIQUE NONCLUSTERED INDEX [RoleNameIndex] ON [dbo].[Roles]
+(
+	[NormalizedName] ASC
+)
+WHERE ([NormalizedName] IS NOT NULL)
+WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_Sellers_CityId]    Script Date: 5/8/2022 10:46:45 AM ******/
+CREATE NONCLUSTERED INDEX [IX_Sellers_CityId] ON [dbo].[Sellers]
+(
+	[CityId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_Sellers_ProvinceId]    Script Date: 5/8/2022 10:46:45 AM ******/
+CREATE NONCLUSTERED INDEX [IX_Sellers_ProvinceId] ON [dbo].[Sellers]
+(
+	[ProvinceId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_Sellers_SellerCode]    Script Date: 5/8/2022 10:46:45 AM ******/
+CREATE UNIQUE NONCLUSTERED INDEX [IX_Sellers_SellerCode] ON [dbo].[Sellers]
+(
+	[SellerCode] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [IX_Sellers_ShabaNumber]    Script Date: 5/8/2022 10:46:45 AM ******/
+CREATE UNIQUE NONCLUSTERED INDEX [IX_Sellers_ShabaNumber] ON [dbo].[Sellers]
+(
+	[ShabaNumber] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [IX_Sellers_ShopName]    Script Date: 5/8/2022 10:46:45 AM ******/
+CREATE UNIQUE NONCLUSTERED INDEX [IX_Sellers_ShopName] ON [dbo].[Sellers]
+(
+	[ShopName] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_Sellers_UserId]    Script Date: 5/8/2022 10:46:45 AM ******/
+CREATE UNIQUE NONCLUSTERED INDEX [IX_Sellers_UserId] ON [dbo].[Sellers]
+(
+	[UserId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_UserClaims_UserId]    Script Date: 5/8/2022 10:46:45 AM ******/
+CREATE NONCLUSTERED INDEX [IX_UserClaims_UserId] ON [dbo].[UserClaims]
+(
+	[UserId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_UserLogins_UserId]    Script Date: 5/8/2022 10:46:45 AM ******/
+CREATE NONCLUSTERED INDEX [IX_UserLogins_UserId] ON [dbo].[UserLogins]
+(
+	[UserId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_UserRoles_RoleId]    Script Date: 5/8/2022 10:46:45 AM ******/
+CREATE NONCLUSTERED INDEX [IX_UserRoles_RoleId] ON [dbo].[UserRoles]
+(
+	[RoleId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [EmailIndex]    Script Date: 5/8/2022 10:46:45 AM ******/
+CREATE NONCLUSTERED INDEX [EmailIndex] ON [dbo].[Users]
+(
+	[NormalizedEmail] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UserNameIndex]    Script Date: 5/8/2022 10:46:45 AM ******/
+CREATE UNIQUE NONCLUSTERED INDEX [UserNameIndex] ON [dbo].[Users]
+(
+	[NormalizedUserName] ASC
+)
+WHERE ([NormalizedUserName] IS NOT NULL)
+WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[Brands] ADD  DEFAULT (CONVERT([bit],(0))) FOR [IsConfirmed]
+GO
+ALTER TABLE [dbo].[Categories] ADD  DEFAULT (CONVERT([bit],(0))) FOR [CanAddFakeProduct]
+GO
+ALTER TABLE [dbo].[Products] ADD  DEFAULT (CONVERT([bigint],(0))) FOR [BrandId]
+GO
+ALTER TABLE [dbo].[Products] ADD  DEFAULT (CONVERT([bit],(0))) FOR [IsFake]
+GO
+ALTER TABLE [dbo].[Products] ADD  DEFAULT ((0)) FOR [PackHeight]
+GO
+ALTER TABLE [dbo].[Products] ADD  DEFAULT ((0)) FOR [PackLength]
+GO
+ALTER TABLE [dbo].[Products] ADD  DEFAULT ((0)) FOR [PackWeight]
+GO
+ALTER TABLE [dbo].[Products] ADD  DEFAULT ((0)) FOR [PackWidth]
+GO
+ALTER TABLE [dbo].[Products] ADD  DEFAULT (N'') FOR [PersianTitle]
+GO
+ALTER TABLE [dbo].[Sellers] ADD  DEFAULT (N'') FOR [ShabaNumber]
+GO
+ALTER TABLE [dbo].[Sellers] ADD  DEFAULT (CONVERT([bigint],(0))) FOR [ProvinceId]
+GO
+ALTER TABLE [dbo].[Sellers] ADD  DEFAULT (CONVERT([bigint],(0))) FOR [CityId]
+GO
+ALTER TABLE [dbo].[Sellers] ADD  DEFAULT (N'') FOR [Address]
+GO
+ALTER TABLE [dbo].[Sellers] ADD  DEFAULT (CONVERT([tinyint],(0))) FOR [DocumentStatus]
+GO
+ALTER TABLE [dbo].[Users] ADD  DEFAULT (CONVERT([bit],(0))) FOR [IsSeller]
+GO
+ALTER TABLE [dbo].[Brands]  WITH CHECK ADD  CONSTRAINT [FK_Brands_Sellers_SellerId] FOREIGN KEY([SellerId])
+REFERENCES [dbo].[Sellers] ([Id])
+GO
+ALTER TABLE [dbo].[Brands] CHECK CONSTRAINT [FK_Brands_Sellers_SellerId]
+GO
+ALTER TABLE [dbo].[Categories]  WITH CHECK ADD  CONSTRAINT [FK_Categories_Categories_ParentId] FOREIGN KEY([ParentId])
+REFERENCES [dbo].[Categories] ([Id])
+GO
+ALTER TABLE [dbo].[Categories] CHECK CONSTRAINT [FK_Categories_Categories_ParentId]
+GO
+ALTER TABLE [dbo].[CategoryBrands]  WITH CHECK ADD  CONSTRAINT [FK_CategoryBrands_Brands_BrandId] FOREIGN KEY([BrandId])
+REFERENCES [dbo].[Brands] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[CategoryBrands] CHECK CONSTRAINT [FK_CategoryBrands_Brands_BrandId]
+GO
+ALTER TABLE [dbo].[CategoryBrands]  WITH CHECK ADD  CONSTRAINT [FK_CategoryBrands_Categories_CategoryId] FOREIGN KEY([CategoryId])
+REFERENCES [dbo].[Categories] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[CategoryBrands] CHECK CONSTRAINT [FK_CategoryBrands_Categories_CategoryId]
+GO
+ALTER TABLE [dbo].[CategoryFeatures]  WITH CHECK ADD  CONSTRAINT [FK_CategoryFeatures_Categories_CategoryId] FOREIGN KEY([CategoryId])
+REFERENCES [dbo].[Categories] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[CategoryFeatures] CHECK CONSTRAINT [FK_CategoryFeatures_Categories_CategoryId]
+GO
+ALTER TABLE [dbo].[CategoryFeatures]  WITH CHECK ADD  CONSTRAINT [FK_CategoryFeatures_Features_FeatureId] FOREIGN KEY([FeatureId])
+REFERENCES [dbo].[Features] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[CategoryFeatures] CHECK CONSTRAINT [FK_CategoryFeatures_Features_FeatureId]
+GO
+ALTER TABLE [dbo].[FeatureConstantValue]  WITH CHECK ADD  CONSTRAINT [FK_FeatureConstantValue_Categories_CategoryId] FOREIGN KEY([CategoryId])
+REFERENCES [dbo].[Categories] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[FeatureConstantValue] CHECK CONSTRAINT [FK_FeatureConstantValue_Categories_CategoryId]
+GO
+ALTER TABLE [dbo].[FeatureConstantValue]  WITH CHECK ADD  CONSTRAINT [FK_FeatureConstantValue_Features_FeatureId] FOREIGN KEY([FeatureId])
+REFERENCES [dbo].[Features] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[FeatureConstantValue] CHECK CONSTRAINT [FK_FeatureConstantValue_Features_FeatureId]
+GO
+ALTER TABLE [dbo].[ProductCategories]  WITH CHECK ADD  CONSTRAINT [FK_ProductCategories_Categories_CategoryId] FOREIGN KEY([CategoryId])
+REFERENCES [dbo].[Categories] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[ProductCategories] CHECK CONSTRAINT [FK_ProductCategories_Categories_CategoryId]
+GO
+ALTER TABLE [dbo].[ProductCategories]  WITH CHECK ADD  CONSTRAINT [FK_ProductCategories_Products_ProductId] FOREIGN KEY([ProductId])
+REFERENCES [dbo].[Products] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[ProductCategories] CHECK CONSTRAINT [FK_ProductCategories_Products_ProductId]
+GO
+ALTER TABLE [dbo].[ProductFeatures]  WITH CHECK ADD  CONSTRAINT [FK_ProductFeatures_Features_FeatureId] FOREIGN KEY([FeatureId])
+REFERENCES [dbo].[Features] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[ProductFeatures] CHECK CONSTRAINT [FK_ProductFeatures_Features_FeatureId]
+GO
+ALTER TABLE [dbo].[ProductFeatures]  WITH CHECK ADD  CONSTRAINT [FK_ProductFeatures_Products_ProductId] FOREIGN KEY([ProductId])
+REFERENCES [dbo].[Products] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[ProductFeatures] CHECK CONSTRAINT [FK_ProductFeatures_Products_ProductId]
+GO
+ALTER TABLE [dbo].[ProductMedia]  WITH CHECK ADD  CONSTRAINT [FK_ProductMedia_Products_ProductId] FOREIGN KEY([ProductId])
+REFERENCES [dbo].[Products] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[ProductMedia] CHECK CONSTRAINT [FK_ProductMedia_Products_ProductId]
+GO
+ALTER TABLE [dbo].[Products]  WITH CHECK ADD  CONSTRAINT [FK_Products_Brands_BrandId] FOREIGN KEY([BrandId])
+REFERENCES [dbo].[Brands] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Products] CHECK CONSTRAINT [FK_Products_Brands_BrandId]
+GO
+ALTER TABLE [dbo].[Products]  WITH CHECK ADD  CONSTRAINT [FK_Products_Categories_CategoryId] FOREIGN KEY([CategoryId])
+REFERENCES [dbo].[Categories] ([Id])
+GO
+ALTER TABLE [dbo].[Products] CHECK CONSTRAINT [FK_Products_Categories_CategoryId]
+GO
+ALTER TABLE [dbo].[ProvincesAndCities]  WITH CHECK ADD  CONSTRAINT [FK_ProvincesAndCities_ProvincesAndCities_ParentId] FOREIGN KEY([ParentId])
+REFERENCES [dbo].[ProvincesAndCities] ([Id])
+GO
+ALTER TABLE [dbo].[ProvincesAndCities] CHECK CONSTRAINT [FK_ProvincesAndCities_ProvincesAndCities_ParentId]
+GO
+ALTER TABLE [dbo].[RoleClaims]  WITH CHECK ADD  CONSTRAINT [FK_RoleClaims_Roles_RoleId] FOREIGN KEY([RoleId])
+REFERENCES [dbo].[Roles] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[RoleClaims] CHECK CONSTRAINT [FK_RoleClaims_Roles_RoleId]
+GO
+ALTER TABLE [dbo].[Sellers]  WITH CHECK ADD  CONSTRAINT [FK_Sellers_ProvincesAndCities_CityId] FOREIGN KEY([CityId])
+REFERENCES [dbo].[ProvincesAndCities] ([Id])
+GO
+ALTER TABLE [dbo].[Sellers] CHECK CONSTRAINT [FK_Sellers_ProvincesAndCities_CityId]
+GO
+ALTER TABLE [dbo].[Sellers]  WITH CHECK ADD  CONSTRAINT [FK_Sellers_ProvincesAndCities_ProvinceId] FOREIGN KEY([ProvinceId])
+REFERENCES [dbo].[ProvincesAndCities] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Sellers] CHECK CONSTRAINT [FK_Sellers_ProvincesAndCities_ProvinceId]
+GO
+ALTER TABLE [dbo].[Sellers]  WITH CHECK ADD  CONSTRAINT [FK_Sellers_Users_UserId] FOREIGN KEY([UserId])
+REFERENCES [dbo].[Users] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Sellers] CHECK CONSTRAINT [FK_Sellers_Users_UserId]
+GO
+ALTER TABLE [dbo].[UserClaims]  WITH CHECK ADD  CONSTRAINT [FK_UserClaims_Users_UserId] FOREIGN KEY([UserId])
+REFERENCES [dbo].[Users] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[UserClaims] CHECK CONSTRAINT [FK_UserClaims_Users_UserId]
+GO
+ALTER TABLE [dbo].[UserLogins]  WITH CHECK ADD  CONSTRAINT [FK_UserLogins_Users_UserId] FOREIGN KEY([UserId])
+REFERENCES [dbo].[Users] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[UserLogins] CHECK CONSTRAINT [FK_UserLogins_Users_UserId]
+GO
+ALTER TABLE [dbo].[UserRoles]  WITH CHECK ADD  CONSTRAINT [FK_UserRoles_Roles_RoleId] FOREIGN KEY([RoleId])
+REFERENCES [dbo].[Roles] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[UserRoles] CHECK CONSTRAINT [FK_UserRoles_Roles_RoleId]
+GO
+ALTER TABLE [dbo].[UserRoles]  WITH CHECK ADD  CONSTRAINT [FK_UserRoles_Users_UserId] FOREIGN KEY([UserId])
+REFERENCES [dbo].[Users] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[UserRoles] CHECK CONSTRAINT [FK_UserRoles_Users_UserId]
+GO
+ALTER TABLE [dbo].[UserTokens]  WITH CHECK ADD  CONSTRAINT [FK_UserTokens_Users_UserId] FOREIGN KEY([UserId])
+REFERENCES [dbo].[Users] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[UserTokens] CHECK CONSTRAINT [FK_UserTokens_Users_UserId]
+GO
+USE [master]
+GO
+ALTER DATABASE [ProEShop] SET  READ_WRITE 
+GO

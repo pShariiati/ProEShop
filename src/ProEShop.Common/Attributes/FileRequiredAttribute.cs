@@ -18,7 +18,11 @@ public class FileRequiredAttribute : BaseValidationAttribute, IClientModelValida
         ErrorMessage = ErrorMessage.Replace("{0}", displayName);
 
         var files = value as List<IFormFile>;
-        if (files == null || files.Count == 0)
+        if (files is null)
+        {
+            files = new List<IFormFile>() { value as IFormFile };
+        }
+        if (files.Count == 0)
         {
             return new ValidationResult(ErrorMessage);
         }

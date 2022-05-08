@@ -40,8 +40,6 @@ public class Category : EntityBase, IAuditableEntity
 
     public ICollection<Category> Categories { get; set; }
 
-    public ICollection<Product> Products { get; set; }
-
     public ICollection<CategoryFeature> CategoryFeatures { get; set; }
 
     public ICollection<CategoryBrand> CategoryBrands { get; set; }

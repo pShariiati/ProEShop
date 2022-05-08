@@ -121,6 +121,51 @@ public class CreateModel : SellerPanelBase
             }
         }
 
+        var featureIds = new List<long>();
+
+        foreach (var item in Request.Form
+                     .Where(x => x.Key.StartsWith("ProductFeatureValue")).ToList())
+        {
+            if (long.TryParse(item.Key.Replace("ProductFeatureValue", string.Empty), out var featureId))
+            {
+                featureIds.Add(featureId);
+            }
+            else
+            {
+                return Json(new JsonResultOperation(false));
+            }
+        }
+
+        if (!await _categoryFeatureService.CheckCategoryFeaturesCount(Product.CategoryId, featureIds))
+        {
+            return Json(new JsonResultOperation(false));
+        }
+
+        foreach (var item in Request.Form
+                     .Where(x => x.Key.StartsWith("ProductFeatureValue")).ToList())
+        {
+            if (long.TryParse(item.Key.Replace("ProductFeatureValue", string.Empty), out var featureId))
+            {
+                var trimmedValue = item.Value.ToString().Trim();
+                if (productToAdd.ProductFeatures.All(x => x.FeatureId != featureId))
+                {
+                    if (trimmedValue.Length > 0)
+                    {
+                        productToAdd.ProductFeatures.Add(new ProductFeature()
+                        {
+                            FeatureId = featureId,
+                            Value = trimmedValue
+                        });
+                        featureIds.Add(featureId);
+                    }
+                }
+            }
+            else
+            {
+                return Json(new JsonResultOperation(false));
+            }
+        }
+
         await _productService.AddAsync(productToAdd);
         await _uow.SaveChangesAsync();
 
@@ -132,7 +177,7 @@ public class CreateModel : SellerPanelBase
             var currentPicture = Product.Pictures[counter];
             if (currentPicture.IsFileUploaded())
             {
-                await _uploadFile.SaveFile(currentPicture, productPictures[counter].FileName,
+                await _uploadFile.SaveFile(currentPicture, productPictures[counter].FileName, null,
                     "images", "products", "images");
             }
         }
@@ -145,7 +190,7 @@ public class CreateModel : SellerPanelBase
             var currentVideo = Product.Pictures[counter];
             if (currentVideo.IsFileUploaded())
             {
-                await _uploadFile.SaveFile(currentVideo, productVideos[counter].FileName,
+                await _uploadFile.SaveFile(currentVideo, productVideos[counter].FileName, null,
                     "images", "products", "videos");
             }
         }
