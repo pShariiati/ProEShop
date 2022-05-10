@@ -9,7 +9,7 @@
         @if (Model.FeaturesConstantValues.Count
             (x => x.FeatureId == item.FeatureId) > 0)
         {
-            <select class="form-select custom-select2" multiple="multiple">
+            <select name="ProductFeatureConstantValue@(item.FeatureId)" class="form-select custom-select2" multiple="multiple">
                 @foreach (var constantValue in Model.FeaturesConstantValues.Where(x => x.FeatureId == item.FeatureId))
                 {
                     <option value="@constantValue.Value">@constantValue.Value</option>

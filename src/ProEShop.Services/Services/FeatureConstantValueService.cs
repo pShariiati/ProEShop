@@ -78,4 +78,20 @@ public class FeatureConstantValueService : GenericService<FeatureConstantValue>,
             _featureConstantValues.Where(x => x.CategoryId == categoryId)
         ).ToListAsync();
     }
+
+    public Task<bool> CheckNonConstantValue(long categoryId, List<long> featureIds)
+    {
+        return _featureConstantValues
+            .Where(x => x.CategoryId == categoryId)
+            .AnyAsync(x => featureIds.Contains(x.FeatureId));
+    }
+
+    public async Task<bool> CheckConstantValue(long categoryId, List<long> featureConstantValueIds)
+    {
+        var featuresCount = await _featureConstantValues
+            .Where(x => x.CategoryId == categoryId)
+            .GroupBy(x=>x.FeatureId)
+            .CountAsync(x => featureConstantValueIds.Contains(x.Key));
+        return featuresCount == featureConstantValueIds.Count;
+    }
 }

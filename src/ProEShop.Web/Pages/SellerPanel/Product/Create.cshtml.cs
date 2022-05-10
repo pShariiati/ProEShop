@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Text;
+using AutoMapper;
 using Ganss.XSS;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -78,6 +79,8 @@ public class CreateModel : SellerPanelBase
         }
 
         var productToAdd = _mapper.Map<Entities.Product>(Product);
+        productToAdd.SellerId = await _sellerService.GetSellerId(User.Identity.GetLoggedInUserId());
+
         productToAdd.ShortDescription = _htmlSanitizer.Sanitize(Product.ShortDescription);
         productToAdd.SpecialtyCheck = _htmlSanitizer.Sanitize(Product.SpecialtyCheck);
 
@@ -121,10 +124,14 @@ public class CreateModel : SellerPanelBase
             }
         }
 
+        #region NonConstantValue
+
         var featureIds = new List<long>();
 
-        foreach (var item in Request.Form
-                     .Where(x => x.Key.StartsWith("ProductFeatureValue")).ToList())
+        var productFeatureValueInputs = Request.Form
+            .Where(x => x.Key.StartsWith("ProductFeatureValue")).ToList();
+
+        foreach (var item in productFeatureValueInputs)
         {
             if (long.TryParse(item.Key.Replace("ProductFeatureValue", string.Empty), out var featureId))
             {
@@ -136,13 +143,12 @@ public class CreateModel : SellerPanelBase
             }
         }
 
-        if (!await _categoryFeatureService.CheckCategoryFeaturesCount(Product.CategoryId, featureIds))
+        if (await _featureConstantValueService.CheckNonConstantValue(Product.CategoryId, featureIds))
         {
             return Json(new JsonResultOperation(false));
         }
 
-        foreach (var item in Request.Form
-                     .Where(x => x.Key.StartsWith("ProductFeatureValue")).ToList())
+        foreach (var item in productFeatureValueInputs)
         {
             if (long.TryParse(item.Key.Replace("ProductFeatureValue", string.Empty), out var featureId))
             {
@@ -166,6 +172,76 @@ public class CreateModel : SellerPanelBase
             }
         }
 
+        #endregion
+
+        #region ConstantValue
+
+        var featureConstantValueIds = new List<long>();
+
+        var productFeatureConstantValueInputs = Request.Form
+            .Where(x => x.Key.StartsWith("ProductFeatureConstantValue")).ToList();
+
+        foreach (var item in productFeatureConstantValueInputs)
+        {
+            if (long.TryParse(item.Key.Replace("ProductFeatureConstantValue", string.Empty), out var featureId))
+            {
+                featureConstantValueIds.Add(featureId);
+            }
+            else
+            {
+                return Json(new JsonResultOperation(false));
+            }
+        }
+
+        featureIds = featureIds.Concat(featureConstantValueIds).ToList();
+
+        if (!await _categoryFeatureService.CheckCategoryFeaturesCount(Product.CategoryId, featureIds))
+        {
+            return Json(new JsonResultOperation(false));
+        }
+
+        if (!await _featureConstantValueService.CheckConstantValue(Product.CategoryId, featureConstantValueIds))
+        {
+            return Json(new JsonResultOperation(false));
+        }
+
+        foreach (var item in productFeatureConstantValueInputs)
+        {
+            if (long.TryParse(item.Key.Replace("ProductFeatureConstantValue", string.Empty), out var featureId))
+            {
+                if (item.Value.Count > 0)
+                {
+                    var valueToAdd = new StringBuilder();
+                    foreach (var value in item.Value)
+                    {
+                        var trimmedValue = value.Trim();
+                        if (trimmedValue.Length > 0)
+                        {
+                            valueToAdd.Append(trimmedValue + "|||");
+                        }
+                    }
+                    if (productToAdd.ProductFeatures.All(x => x.FeatureId != featureId))
+                    {
+                        if (valueToAdd.ToString().Length > 0)
+                        {
+                            productToAdd.ProductFeatures.Add(new ProductFeature()
+                            {
+                                FeatureId = featureId,
+                                Value = valueToAdd.ToString().Substring(0, valueToAdd.Length - 3)
+                            });
+                            featureConstantValueIds.Add(featureId);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                return Json(new JsonResultOperation(false));
+            }
+        }
+
+        #endregion
+
         await _productService.AddAsync(productToAdd);
         await _uow.SaveChangesAsync();
 
@@ -178,7 +254,7 @@ public class CreateModel : SellerPanelBase
             if (currentPicture.IsFileUploaded())
             {
                 await _uploadFile.SaveFile(currentPicture, productPictures[counter].FileName, null,
-                    "images", "products", "images");
+                    "images", "products");
             }
         }
 
@@ -191,7 +267,7 @@ public class CreateModel : SellerPanelBase
             if (currentVideo.IsFileUploaded())
             {
                 await _uploadFile.SaveFile(currentVideo, productVideos[counter].FileName, null,
-                    "images", "products", "videos");
+                    "videos", "products");
             }
         }
 

@@ -7,6 +7,17 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="wwwroot\images\products\images\**" />
+	  <Compile Remove="wwwroot\images\products\videos\**" />
+	  <Content Remove="wwwroot\images\products\images\**" />
+	  <Content Remove="wwwroot\images\products\videos\**" />
+	  <EmbeddedResource Remove="wwwroot\images\products\images\**" />
+	  <EmbeddedResource Remove="wwwroot\images\products\videos\**" />
+	  <None Remove="wwwroot\images\products\images\**" />
+	  <None Remove="wwwroot\images\products\videos\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Remove="Pages\Admin\Category\AddBrand.cshtml.css" />
 	  <None Remove="Pages\Admin\Category\Index - Copy.cshtml.js" />
 	  <None Remove="Pages\Admin\Category\Index.cshtml.js" />
@@ -63,10 +74,8 @@
 	<ItemGroup>
 	  <Folder Include="Mappings\" />
 	  <Folder Include="wwwroot\images\brandregistrationpictures\" />
-	  <Folder Include="wwwroot\images\products\images\" />
 	  <Folder Include="wwwroot\images\products\short-description-images\" />
 	  <Folder Include="wwwroot\images\products\specialty-check-images\" />
-	  <Folder Include="wwwroot\images\products\videos\" />
 	</ItemGroup>
 
 </Project>

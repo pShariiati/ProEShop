@@ -32,6 +32,8 @@ public class Product : EntityBase, IAuditableEntity
     [Column(TypeName = "ntext")]
     public string SpecialtyCheck { get; set; }
 
+    public long SellerId { get; set; }
+
     public long BrandId { get; set; }
 
     #endregion
@@ -48,6 +50,8 @@ public class Product : EntityBase, IAuditableEntity
         = new List<ProductFeature>();
 
     public Brand Brand { get; set; }
+
+    public Seller Seller { get; set; }
 
     #endregion
 }
