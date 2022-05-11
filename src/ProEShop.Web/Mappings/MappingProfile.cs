@@ -75,5 +75,7 @@ public class MappingProfile : Profile
 
         this.CreateMap<AddProductViewModel, Entities.Product>()
             .AddTransform<string>(str => str != null ? str.Trim() : null);
+
+        this.CreateMap<Entities.FeatureConstantValue, FeatureConstantValueForCreateProductViewModel>();
     }
 }

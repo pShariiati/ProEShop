@@ -27,4 +27,6 @@ public interface IFeatureConstantValueService : IGenericService<FeatureConstantV
     /// <param name="featureConstantValueIds"></param>
     /// <returns></returns>
     Task<bool> CheckConstantValue(long categoryId, List<long> featureConstantValueIds);
+
+    Task<List<FeatureConstantValueForCreateProductViewModel>> GetFeatureConstantValuesForCreateProduct(long categoryId);
 }

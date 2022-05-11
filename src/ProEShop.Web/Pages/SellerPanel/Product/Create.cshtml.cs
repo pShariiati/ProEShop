@@ -98,18 +98,18 @@ public class CreateModel : SellerPanelBase
             });
         }
 
-        foreach (var picture in Product.Pictures)
-        {
-            if (picture.IsFileUploaded())
-            {
-                var fileName = picture.GenerateFileName();
-                productToAdd.ProductMedia.Add(new ProductMedia()
-                {
-                    FileName = fileName,
-                    IsVideo = false
-                });
-            }
-        }
+        //foreach (var picture in Product.Pictures)
+        //{
+        //    if (picture.IsFileUploaded())
+        //    {
+        //        var fileName = picture.GenerateFileName();
+        //        productToAdd.ProductMedia.Add(new ProductMedia()
+        //        {
+        //            FileName = fileName,
+        //            IsVideo = false
+        //        });
+        //    }
+        //}
 
         foreach (var video in Product.Videos)
         {
@@ -162,7 +162,6 @@ public class CreateModel : SellerPanelBase
                             FeatureId = featureId,
                             Value = trimmedValue
                         });
-                        featureIds.Add(featureId);
                     }
                 }
             }
@@ -205,6 +204,9 @@ public class CreateModel : SellerPanelBase
             return Json(new JsonResultOperation(false));
         }
 
+        var featureConstantValues =
+            await _featureConstantValueService.GetFeatureConstantValuesForCreateProduct(Product.CategoryId);
+
         foreach (var item in productFeatureConstantValueInputs)
         {
             if (long.TryParse(item.Key.Replace("ProductFeatureConstantValue", string.Empty), out var featureId))
@@ -215,7 +217,7 @@ public class CreateModel : SellerPanelBase
                     foreach (var value in item.Value)
                     {
                         var trimmedValue = value.Trim();
-                        if (trimmedValue.Length > 0)
+                        if (featureConstantValues.Where(x => x.FeatureId == featureId).Any(x => x.Value == trimmedValue))
                         {
                             valueToAdd.Append(trimmedValue + "|||");
                         }
@@ -229,7 +231,6 @@ public class CreateModel : SellerPanelBase
                                 FeatureId = featureId,
                                 Value = valueToAdd.ToString().Substring(0, valueToAdd.Length - 3)
                             });
-                            featureConstantValueIds.Add(featureId);
                         }
                     }
                 }
@@ -271,10 +272,15 @@ public class CreateModel : SellerPanelBase
             }
         }
 
-        return Json(new JsonResultOperation(true, string.Empty)
+        return Json(new JsonResultOperation(true, "محصول مورد نظر با موفقیت ایجاد شد")
         {
-            Data = string.Empty
+            Data = Url.Page(nameof(Successful))
         });
+    }
+
+    public void Successful()
+    {
+
     }
 
     public async Task<IActionResult> OnGetGetCategories(long[] selectedCategoriesIds)

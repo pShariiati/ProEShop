@@ -176,5 +176,6 @@ $(document).on('change', '#IsIranianBrand', function () {
 });
 
 function createProductFunction(message, data) {
-    alert(message);
+    showToastr('success', message);
+    location.href = data;
 }

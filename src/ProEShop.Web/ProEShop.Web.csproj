@@ -76,6 +76,7 @@
 	  <Folder Include="wwwroot\images\brandregistrationpictures\" />
 	  <Folder Include="wwwroot\images\products\short-description-images\" />
 	  <Folder Include="wwwroot\images\products\specialty-check-images\" />
+	  <Folder Include="wwwroot\images\seller-id-cart-pictures\" />
 	</ItemGroup>
 
 </Project>

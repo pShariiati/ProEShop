@@ -36,6 +36,8 @@ public class Product : EntityBase, IAuditableEntity
 
     public long BrandId { get; set; }
 
+    public ProductStatus Status { get; set; }
+
     #endregion
 
     #region Relations
@@ -54,4 +56,16 @@ public class Product : EntityBase, IAuditableEntity
     public Seller Seller { get; set; }
 
     #endregion
+}
+
+public enum ProductStatus : byte
+{
+    [Display(Name = "در انتظار تایید اولیه")]
+    AwaitingInitialApproval,
+
+    [Display(Name = "تایید شده")]
+    Confirmed,
+
+    [Display(Name = "رد شده در حالت اولیه")]
+    Rejected
 }

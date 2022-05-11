@@ -90,8 +90,15 @@ public class FeatureConstantValueService : GenericService<FeatureConstantValue>,
     {
         var featuresCount = await _featureConstantValues
             .Where(x => x.CategoryId == categoryId)
-            .GroupBy(x=>x.FeatureId)
+            .GroupBy(x => x.FeatureId)
             .CountAsync(x => featureConstantValueIds.Contains(x.Key));
         return featuresCount == featureConstantValueIds.Count;
+    }
+
+    public Task<List<FeatureConstantValueForCreateProductViewModel>> GetFeatureConstantValuesForCreateProduct(long categoryId)
+    {
+        return _mapper.ProjectTo<FeatureConstantValueForCreateProductViewModel>(
+            _featureConstantValues.Where(x => x.CategoryId == categoryId)
+        ).ToListAsync();
     }
 }
