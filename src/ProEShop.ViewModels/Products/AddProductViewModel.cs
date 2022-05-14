@@ -45,7 +45,7 @@ public class AddProductViewModel
     public string SpecialtyCheck { get; set; }
 
     [Display(Name = "تصاویر محصول")]
-    //[FileRequired]
+    [FileRequired]
     [MaxFileSize(2, multiplePictures: true)]
     [IsImage(multiplePictures: true)]
     public List<IFormFile> Pictures { get; set; }

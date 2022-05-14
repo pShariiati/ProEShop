@@ -121,7 +121,7 @@ function categoryInfo(message, data) {
     for (brandId in data.brands) {
         $('#Product_BrandId').append(`<option value="${brandId}">${data.brands[brandId]}</option>`);
     }
-    $('#add-product-tab button[data-bs-target="#product-features"]').tab('show');
+    $('#add-product-tab button[data-bs-target="#product-info"]').tab('show');
 
     // End showCategoryBrands
 
@@ -156,18 +156,18 @@ function categoryInfo(message, data) {
     $('#product-images-preview-box').html('');
 
     // Test data
-    $('#Product_PackWeight').val('1');
-    $('#Product_PackLength').val('1');
-    $('#Product_PackWidth').val('1');
-    $('#Product_PackHeight').val('1');
-    $('#Product_PersianTitle').val('Product_EnglishTitle');
-    $('#Product_EnglishTitle').val('Product_EnglishTitle');
+    //$('#Product_PackWeight').val('1');
+    //$('#Product_PackLength').val('1');
+    //$('#Product_PackWidth').val('1');
+    //$('#Product_PackHeight').val('1');
+    //$('#Product_PersianTitle').val('Product_PersianTitle');
+    //$('#Product_EnglishTitle').val('Product_EnglishTitle');
 
-    tinyMCE.get('Product_ShortDescription').setContent('Product_ShortDescription');
-    tinyMCE.get('Product_SpecialtyCheck').setContent('Product_SpecialtyCheck');
+    //tinyMCE.get('Product_ShortDescription').setContent('Product_ShortDescription');
+    //tinyMCE.get('Product_SpecialtyCheck').setContent('Product_SpecialtyCheck');
 
-    var a = $('#Product_BrandId option:last').val();
-    $('#Product_BrandId').select2('val', a);
+    //var a = $('#Product_BrandId option:last').val();
+    //$('#Product_BrandId').select2('val', a);
 }
 
 $(document).on('change', '#IsIranianBrand', function () {

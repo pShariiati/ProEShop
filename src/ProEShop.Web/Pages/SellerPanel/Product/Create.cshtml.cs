@@ -79,6 +79,7 @@ public class CreateModel : SellerPanelBase
         }
 
         var productToAdd = _mapper.Map<Entities.Product>(Product);
+        productToAdd.Slug = productToAdd.PersianTitle.Replace(" ", "-");
         productToAdd.SellerId = await _sellerService.GetSellerId(User.Identity.GetLoggedInUserId());
 
         productToAdd.ShortDescription = _htmlSanitizer.Sanitize(Product.ShortDescription);
@@ -98,18 +99,18 @@ public class CreateModel : SellerPanelBase
             });
         }
 
-        //foreach (var picture in Product.Pictures)
-        //{
-        //    if (picture.IsFileUploaded())
-        //    {
-        //        var fileName = picture.GenerateFileName();
-        //        productToAdd.ProductMedia.Add(new ProductMedia()
-        //        {
-        //            FileName = fileName,
-        //            IsVideo = false
-        //        });
-        //    }
-        //}
+        foreach (var picture in Product.Pictures)
+        {
+            if (picture.IsFileUploaded())
+            {
+                var fileName = picture.GenerateFileName();
+                productToAdd.ProductMedia.Add(new ProductMedia()
+                {
+                    FileName = fileName,
+                    IsVideo = false
+                });
+            }
+        }
 
         foreach (var video in Product.Videos)
         {
@@ -226,10 +227,12 @@ public class CreateModel : SellerPanelBase
                     {
                         if (valueToAdd.ToString().Length > 0)
                         {
-                            productToAdd.ProductFeatures.Add(new ProductFeature()
+                            var a = valueToAdd.ToString()[..(valueToAdd.Length - 3)];
+                            var b = valueToAdd.ToString().Substring(0, valueToAdd.Length - 3);
+                            productToAdd.ProductFeatures.Add(new()
                             {
                                 FeatureId = featureId,
-                                Value = valueToAdd.ToString().Substring(0, valueToAdd.Length - 3)
+                                Value = valueToAdd.ToString()[..(valueToAdd.Length - 3)]
                             });
                         }
                     }

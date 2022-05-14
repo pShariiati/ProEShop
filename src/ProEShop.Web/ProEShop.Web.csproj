@@ -24,6 +24,7 @@
 	  <None Remove="Pages\Admin\FeatureConstantValue\Index.cshtml.js" />
 	  <None Remove="Pages\Admin\Feature\Index.cshtml.js" />
 	  <None Remove="Pages\Admin\Brand\Index.cshtml.js" />
+	  <None Remove="Pages\Admin\Product\Index.cshtml.js" />
 	  <None Remove="Pages\Admin\Seller\Index.cshtml.js" />
 	  <None Remove="Pages\Identity\LoginWithPhoneNumber.cshtml.css" />
 	  <None Remove="Pages\Identity\LoginWithPhoneNumber.cshtml.js" />
@@ -42,6 +43,7 @@
 	  <Content Include="Pages\Admin\FeatureConstantValue\Index.cshtml.js" />
 	  <Content Include="Pages\Admin\Feature\Index.cshtml.js" />
 	  <Content Include="Pages\Admin\Brand\Index.cshtml.js" />
+	  <Content Include="Pages\Admin\Product\Index.cshtml.js" />
 	  <Content Include="Pages\Admin\Seller\Index.cshtml.js" />
 	  <Content Include="Pages\Identity\LoginWithPhoneNumber.cshtml.js" />
 	  <Content Include="Pages\Identity\LoginWithPhoneNumber.cshtml.css" />

@@ -1,33 +1,25 @@
-﻿@model ProEShop.ViewModels.FeatureConstantValues.ShowFeatureConstantValuesViewModel
-@if (Model.FeatureConstantValues.Count > 0)
+﻿@model ProEShop.ViewModels.Products.ShowProductsViewModel
+@if (Model.Products.Count > 0)
 {
     <div class="table-responsive data-table-body">
         <table class="table table-bordered table-striped table-hover">
             <thead class="table-light">
                 <tr>
-                    <th>@Html.DisplayNameFor(x => x.FeatureConstantValues[0].Id)</th>
-                    <th>@Html.DisplayNameFor(x => x.FeatureConstantValues[0].CategoryTitle)</th>
-                    <th>@Html.DisplayNameFor(x => x.FeatureConstantValues[0].FeatureTitle)</th>
-                    <th>@Html.DisplayNameFor(x => x.FeatureConstantValues[0].Value)</th>
+                    <th>@Html.DisplayNameFor(x => x.Products[0].Id)</th>
+                    <th>@Html.DisplayNameFor(x => x.Products[0].PersianTitle)</th>
                     <th>عملیات</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var featureConstantValue in Model.FeatureConstantValues)
+                @foreach (var product in Model.Products)
                 {
                     <tr>
-                        <td>@featureConstantValue.Id</td>
-                        <td>@featureConstantValue.CategoryTitle</td>
-                        <td>@featureConstantValue.FeatureTitle</td>
-                        <td>@featureConstantValue.Value</td>
+                        <td>@product.Id</td>
+                        <td>@product.PersianTitle</td>
                         <td>
-                            <a asp-page-handler="Edit" asp-route-id="@featureConstantValue.Id" class="btn btn-warning show-modal-form-button">
-                                ویرایش
-                            </a>
-                            <form asp-page-handler="Delete" class="d-inline-block">
-                                <input type="hidden" name="featureConstantValueId" value="@featureConstantValue.Id" />
-                                <button type="button" class="btn btn-danger delete-row-button">حذف</button>
-                            </form>
+                            <button seller-id="@product.Id" functionNameToCallOnClick="getSellerDetails" type="button" class="get-html-with-ajax btn btn-info">
+                                اطلاعات فروشنده
+                            </button>
                         </td>
                     </tr>
                 }

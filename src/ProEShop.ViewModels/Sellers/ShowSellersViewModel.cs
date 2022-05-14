@@ -34,11 +34,11 @@ public class SearchSellersViewModel
     [Display(Name = "فعال / غیر فعال")]
     public IsActiveStatus IsActiveStatus { get; set; }
 
-    [Display(Name = "نمایش بر اساس")]
-    public SortingSellers Sorting { get; set; }
-
     [Display(Name = "وضعیت مدارک")]
     public DocumentStatus? DocumentStatus { get; set; }
+
+    [Display(Name = "نمایش بر اساس")]
+    public SortingSellers Sorting { get; set; }
 
     [Display(Name = "مرتب سازی بر اساس")]
     public SortingOrder SortingOrder { get; set; }

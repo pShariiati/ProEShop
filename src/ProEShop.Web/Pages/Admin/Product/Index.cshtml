@@ -1,0 +1,58 @@
+﻿@page
+@model ProEShop.Web.Pages.Admin.Product.IndexModel
+@{
+    ViewData["Title"] = "محصولات";
+}
+
+<div class="card text-dark bg-white border-0 shadow">
+    <div class="card-body">
+        <h5 class="card-title">
+            @ViewData["Title"]
+        </h5>
+        <form class="alert alert-secondary search-form-via-ajax">
+            <input asp-for="Products.Pagination.CurrentPage" />
+            <input asp-for="Products.Pagination.PageCount" />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <h5>
+                جستجو در
+                @ViewData["Title"]
+            </h5>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-lg-3 my-2">
+                    <label class="form-label" asp-for="Products.SearchProducts.PersianTitle"></label>
+                    <input class="form-control" asp-for="Products.SearchProducts.PersianTitle" />
+                    <span class="span-error-message" asp-validation-for="Products.SearchProducts.PersianTitle"></span>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3 my-2">
+                    <label class="form-label" asp-for="Products.SearchProducts.Sorting"></label>
+                    <select class="form-select" asp-for="Products.SearchProducts.Sorting" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.Products.SortingProducts>()"></select>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3 my-2">
+                    <label class="form-label" asp-for="Products.SearchProducts.SortingOrder"></label>
+                    <select class="form-select" asp-for="Products.SearchProducts.SortingOrder" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.SortingOrder>()"></select>
+                </div>
+                <div class="col-12 my-2">
+                    <div class="d-grid d-lg-block">
+                        <button type="submit" class="btn btn-primary d-inline-flex align-items-center search-form-submit-button" disabled>
+                            جستجو ...
+                            <span class="spinner-border spinner-border-sm d-none ms-2"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="data-table-place">
+                <div class="text-center data-table-loading">
+                    <img src="~/images/application/loading.gif" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+<partial name="_ValidationScriptsPartial" />
+<script src="~/lib/tinymce/tinymce.min.js"></script>
+}
+@section CustomScripts{
+<script src="~/Pages/Admin/Product/Index.cshtml.js"></script>
+}

@@ -16,6 +16,10 @@ public class Product : EntityBase, IAuditableEntity
     [MaxLength(200)]
     public string EnglishTitle { get; set; }
 
+    [Required]
+    [MaxLength(200)]
+    public string Slug { get; set; }
+
     public bool IsFake { get; set; }
 
     public int PackWeight { get; set; }
