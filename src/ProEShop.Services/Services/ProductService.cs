@@ -38,8 +38,34 @@ public class ProductService : GenericService<Product>, IProductService
 
         #region OrderBy
 
-        products = products.CreateOrderByExpression(model.SearchProducts.Sorting.ToString(),
+        var sorting = model.SearchProducts.Sorting;
+        var isSortingAsc = model.SearchProducts.SortingOrder == SortingOrder.Asc;
+        if (sorting == SortingProducts.ShopName)
+        {
+            if (isSortingAsc)
+                products = products.OrderBy(x => x.Seller.ShopName);
+            else
+                products = products.OrderByDescending(x => x.Seller.ShopName);
+        }
+        else if (sorting == SortingProducts.BrandFa)
+        {
+            if (isSortingAsc)
+                products = products.OrderBy(x => x.Brand.TitleFa);
+            else
+                products = products.OrderByDescending(x => x.Brand.TitleFa);
+        }
+        else if (sorting == SortingProducts.BrandEn)
+        {
+            if (isSortingAsc)
+                products = products.OrderBy(x => x.Brand.TitleEn);
+            else
+                products = products.OrderByDescending(x => x.Brand.TitleEn);
+        }
+        else
+        {
+            products = products.CreateOrderByExpression(model.SearchProducts.Sorting.ToString(),
             model.SearchProducts.SortingOrder.ToString());
+        }
 
         #endregion
 

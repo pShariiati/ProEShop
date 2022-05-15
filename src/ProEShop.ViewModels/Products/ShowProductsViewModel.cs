@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using ProEShop.Common.Helpers;
+using ProEShop.Entities;
 using ProEShop.ViewModels.Sellers;
 
 namespace ProEShop.ViewModels.Products;
@@ -21,6 +22,18 @@ public class ShowProductViewModel
 
     [Display(Name = "عنوان فارسی")]
     public string PersianTitle { get; set; }
+
+    [Display(Name = "تصویر محصول")]
+    public string MainPicture { get; set; }
+
+    [Display(Name = "نام فروشگاه")]
+    public string SellerShopName { get; set; }
+
+    [Display(Name = "برند محصول")]
+    public string BrandFullTitle { get; set; }
+
+    [Display(Name = "وضعیت محصول")]
+    public ProductStatus Status { get; set; }
 }
 
 public class SearchProductsViewModel
@@ -46,5 +59,14 @@ public enum SortingProducts
     Id,
 
     [Display(Name = "عنوان")]
-    PersianTitle
+    PersianTitle,
+
+    [Display(Name = "نام فروشگاه")]
+    ShopName,
+
+    [Display(Name = "برند فارسی")]
+    BrandFa,
+
+    [Display(Name = "برند انگلیسی")]
+    BrandEn
 }

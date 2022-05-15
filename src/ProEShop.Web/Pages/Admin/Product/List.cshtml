@@ -1,4 +1,6 @@
-﻿@model ProEShop.ViewModels.Products.ShowProductsViewModel
+﻿@using ProEShop.Common.Helpers
+@using ProEShop.Entities
+@model ProEShop.ViewModels.Products.ShowProductsViewModel
 @if (Model.Products.Count > 0)
 {
     <div class="table-responsive data-table-body">
@@ -7,6 +9,10 @@
                 <tr>
                     <th>@Html.DisplayNameFor(x => x.Products[0].Id)</th>
                     <th>@Html.DisplayNameFor(x => x.Products[0].PersianTitle)</th>
+                    <th>@Html.DisplayNameFor(x => x.Products[0].MainPicture)</th>
+                    <th>@Html.DisplayNameFor(x => x.Products[0].SellerShopName)</th>
+                    <th>@Html.DisplayNameFor(x => x.Products[0].BrandFullTitle)</th>
+                    <th>@Html.DisplayNameFor(x => x.Products[0].Status)</th>
                     <th>عملیات</th>
                 </tr>
             </thead>
@@ -16,6 +22,26 @@
                     <tr>
                         <td>@product.Id</td>
                         <td>@product.PersianTitle</td>
+                        <td>
+                            <img src="~/images/products/@product.MainPicture" alt="@product.PersianTitle" width="100" />
+                        </td>
+                        <td>@product.SellerShopName</td>
+                        <td>@product.BrandFullTitle</td>
+                        <td>
+                            @{
+                                string GetButtonClass(ProductStatus status) => status switch
+                                {
+                                    ProductStatus.Confirmed => "success",
+                                    ProductStatus.AwaitingInitialApproval => "warning",
+                                    _ => "danger"
+                                };
+                            }
+                            <div class="d-grid">
+                                <span class="btn btn-@GetButtonClass(product.Status)" type="button">
+                                    @product.Status.GetEnumDisplayName()
+                                </span>
+                            </div>
+                        </td>
                         <td>
                             <button seller-id="@product.Id" functionNameToCallOnClick="getSellerDetails" type="button" class="get-html-with-ajax btn btn-info">
                                 اطلاعات فروشنده

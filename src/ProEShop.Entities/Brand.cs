@@ -22,6 +22,8 @@ public class Brand : EntityBase, IAuditableEntity
     [MaxLength(200)]
     public string TitleEn { get; set; }
 
+    public string FullTitle => $"{TitleFa} - {TitleEn}";
+
     [Display(Name = "شرح برند")]
     [Required]
     [Column(TypeName = "ntext")]
