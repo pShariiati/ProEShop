@@ -28,9 +28,21 @@ public class ProductService : GenericService<Product>, IProductService
 
     public async Task<ShowProductsViewModel> GetProducts(ShowProductsViewModel model)
     {
-        var products = _products.AsQueryable();
+        var products = _products.AsNoTracking().AsQueryable();
 
         #region Search
+
+        var searchedShopName = model.SearchProducts.ShopName;
+        if (!string.IsNullOrWhiteSpace(searchedShopName))
+        {
+            products = products.Where(x => x.Seller.ShopName.Contains(searchedShopName));
+        }
+
+        var searchedStatus = model.SearchProducts.Status;
+        if (searchedStatus is not null)
+        {
+            products = products.Where(x => x.Status == searchedStatus);
+        }
 
         products = ExpressionHelpers.CreateSearchExpressions(products, model.SearchProducts);
 
@@ -78,5 +90,13 @@ public class ProductService : GenericService<Product>, IProductService
                 .ToListAsync(),
             Pagination = paginationResult.Pagination
         };
+    }
+
+    public Task<List<string>> GetPersianTitlesForAutocomplete(string input)
+    {
+        return _products.Where(x => x.PersianTitle.Contains(input))
+            .Take(20)
+            .Select(x => x.PersianTitle)
+            .ToListAsync();
     }
 }

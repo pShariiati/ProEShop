@@ -1,5 +1,6 @@
 ﻿$(function () {
     fillDataTable();
+    initializingAutocomplete();
 });
 
 function getSellerDetails(e) {

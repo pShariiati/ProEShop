@@ -12,7 +12,7 @@ public class Product : EntityBase, IAuditableEntity
     [Required]
     [MaxLength(200)]
     public string PersianTitle { get; set; }
-    
+
     [MaxLength(200)]
     public string EnglishTitle { get; set; }
 
@@ -42,6 +42,9 @@ public class Product : EntityBase, IAuditableEntity
 
     public ProductStatus Status { get; set; }
 
+    [ForeignKey(nameof(Category))]
+    public long MainCategoryId { get; set; }
+
     #endregion
 
     #region Relations
@@ -58,6 +61,8 @@ public class Product : EntityBase, IAuditableEntity
     public Brand Brand { get; set; }
 
     public Seller Seller { get; set; }
+
+    public Category Category { get; set; }
 
     #endregion
 }

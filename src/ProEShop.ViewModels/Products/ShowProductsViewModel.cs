@@ -34,6 +34,9 @@ public class ShowProductViewModel
 
     [Display(Name = "وضعیت محصول")]
     public ProductStatus Status { get; set; }
+
+    [Display(Name = "دسته بندی اصلی")]
+    public string CategoryTitle { get; set; }
 }
 
 public class SearchProductsViewModel
@@ -42,6 +45,13 @@ public class SearchProductsViewModel
     [Display(Name = "عنوان فارسی")]
     [MaxLength(200)]
     public string PersianTitle { get; set; }
+    
+    [Display(Name = "نام فروشگاه")]
+    [MaxLength(200)]
+    public string ShopName { get; set; }
+
+    [Display(Name = "وضعیت محصول")]
+    public ProductStatus? Status { get; set; }
 
     [Display(Name = "وضعیت حذف شده ها")]
     public DeletedStatus DeletedStatus { get; set; }

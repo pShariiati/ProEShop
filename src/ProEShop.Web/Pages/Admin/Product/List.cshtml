@@ -9,6 +9,7 @@
                 <tr>
                     <th>@Html.DisplayNameFor(x => x.Products[0].Id)</th>
                     <th>@Html.DisplayNameFor(x => x.Products[0].PersianTitle)</th>
+                    <th>@Html.DisplayNameFor(x => x.Products[0].CategoryTitle)</th>
                     <th>@Html.DisplayNameFor(x => x.Products[0].MainPicture)</th>
                     <th>@Html.DisplayNameFor(x => x.Products[0].SellerShopName)</th>
                     <th>@Html.DisplayNameFor(x => x.Products[0].BrandFullTitle)</th>
@@ -22,6 +23,7 @@
                     <tr>
                         <td>@product.Id</td>
                         <td>@product.PersianTitle</td>
+                        <td>@product.CategoryTitle</td>
                         <td>
                             <img src="~/images/products/@product.MainPicture" alt="@product.PersianTitle" width="100" />
                         </td>

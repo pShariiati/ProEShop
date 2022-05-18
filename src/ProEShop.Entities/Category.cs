@@ -49,5 +49,7 @@ public class Category : EntityBase, IAuditableEntity
 
     public ICollection<ProductCategory> ProductCategories { get; set; }
 
+    public ICollection<Product> Products { get; set; }
+
     #endregion
 }

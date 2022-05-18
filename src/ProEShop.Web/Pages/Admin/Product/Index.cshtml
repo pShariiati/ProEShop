@@ -20,8 +20,19 @@
             <div class="row">
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
                     <label class="form-label" asp-for="Products.SearchProducts.PersianTitle"></label>
-                    <input class="form-control" asp-for="Products.SearchProducts.PersianTitle" />
+                    <input autocomplete-search-url="@(Url.Page("./Index", "AutocompleteSearchForPersianTitle"))" class="autocomplete form-control" asp-for="Products.SearchProducts.PersianTitle" />
                     <span class="span-error-message" asp-validation-for="Products.SearchProducts.PersianTitle"></span>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3 my-2">
+                    <label class="form-label" asp-for="Products.SearchProducts.ShopName"></label>
+                    <input autocomplete-search-url="@(Url.Page("./Index", "AutocompleteSearchForShopName"))" class="autocomplete form-control" asp-for="Products.SearchProducts.ShopName" />
+                    <span class="span-error-message" asp-validation-for="Products.SearchProducts.ShopName"></span>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3 my-2">
+                    <label class="form-label" asp-for="Products.SearchProducts.Status"></label>
+                    <select class="form-select" asp-for="Products.SearchProducts.Status" asp-items="Html.GetEnumSelectList<ProEShop.Entities.ProductStatus>()">
+                        <option value="">همه</option>
+                    </select>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
                     <label class="form-label" asp-for="Products.SearchProducts.Sorting"></label>
@@ -52,7 +63,12 @@
 @section Scripts{
 <partial name="_ValidationScriptsPartial" />
 <script src="~/lib/tinymce/tinymce.min.js"></script>
+<script src="~/lib/jqueryui/jquery-ui.min.js"></script>
 }
 @section CustomScripts{
 <script src="~/Pages/Admin/Product/Index.cshtml.js"></script>
+}
+@section Styles
+{
+    <link rel="stylesheet" href="~/lib/jqueryui/jquery-ui.min.css" />
 }

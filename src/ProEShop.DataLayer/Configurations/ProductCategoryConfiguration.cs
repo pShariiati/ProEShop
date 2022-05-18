@@ -11,3 +11,14 @@ public class ProductCategoryConfiguration : IEntityTypeConfiguration<ProductCate
         builder.HasKey(x => new { x.CategoryId, x.ProductId });
     }
 }
+
+public class ProductConfiguration : IEntityTypeConfiguration<Product>
+{
+    public void Configure(EntityTypeBuilder<Product> builder)
+    {
+        builder.HasOne(x => x.Category)
+            .WithMany(x => x.Products)
+            .HasForeignKey(x => x.MainCategoryId)
+            .OnDelete(DeleteBehavior.NoAction);
+    }
+}

@@ -414,16 +414,18 @@ function activatingDeleteButtons(isModalMode) {
 }
 
 function initializingAutocomplete() {
-    if ($('.autocomplete').length > 0) {
-        $('.autocomplete').autocomplete({
-            source: `${location.pathname}?handler=AutocompleteSearch`,
+    $('.autocomplete').each(function() {
+        var currentSearchUrl = $(this).attr('autocomplete-search-url');
+        var currentId = $(this).attr('id');
+        $(`#${currentId}`).autocomplete({
+            source: currentSearchUrl,
             minLength: 2,
             delay: 500,
             select: function (event, ui) {
                 window['onAutocompleteSelect'](event, ui);
             }
         });
-    }
+    });
 }
 
 // این فانکشن فرم های مربوط به ایجاد و ویرایش را
