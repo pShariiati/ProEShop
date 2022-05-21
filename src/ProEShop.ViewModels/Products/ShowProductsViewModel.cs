@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using ProEShop.Common.Helpers;
 using ProEShop.Entities;
 using ProEShop.ViewModels.Sellers;
@@ -41,6 +42,12 @@ public class ShowProductViewModel
 
 public class SearchProductsViewModel
 {
+    [EqualSearch]
+    [Display(Name = "دسته بندی اصلی")]
+    public long? MainCategoryId { get; set; }
+
+    public List<SelectListItem> Categories { get; set; }
+
     [ContainsSearch]
     [Display(Name = "عنوان فارسی")]
     [MaxLength(200)]

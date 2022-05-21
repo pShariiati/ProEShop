@@ -2,6 +2,7 @@
 using Ganss.XSS;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using ProEShop.Common;
 using ProEShop.Common.Constants;
 using ProEShop.Common.Helpers;
 using ProEShop.Common.IdentityToolkit;
@@ -19,13 +20,16 @@ public class IndexModel : PageBase
 
     private readonly IProductService _productService;
     private readonly ISellerService _sellerService;
+    private readonly ICategoryService _categoryService;
 
     public IndexModel(
         IProductService productService,
-        ISellerService sellerService)
+        ISellerService sellerService,
+        ICategoryService categoryService)
     {
         _productService = productService;
         _sellerService = sellerService;
+        _categoryService = categoryService;
     }
 
     #endregion
@@ -36,6 +40,8 @@ public class IndexModel : PageBase
 
     public void OnGet()
     {
+        Products.SearchProducts.Categories = _categoryService.GetCategoriesWithNoChild()
+            .Result.CreateSelectListItem(firstItemText: "همه", firstItemValue: string.Empty);
     }
 
     public async Task<IActionResult> OnGetGetDataTableAsync()

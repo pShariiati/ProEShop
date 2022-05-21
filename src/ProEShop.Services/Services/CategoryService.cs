@@ -87,6 +87,12 @@ public class CategoryService : GenericService<Category>, ICategoryService
             .ToDictionaryAsync(x => x.Id, x => x.Title);
     }
 
+    public Task<Dictionary<long, string>> GetCategoriesWithNoChild()
+    {
+        return _categories.Where(x => !x.Categories.Any())
+            .ToDictionaryAsync(x => x.Id, x => x.Title);
+    }
+
     public async Task<EditCategoryViewModel> GetForEdit(long id)
     {
         return await _mapper.ProjectTo<EditCategoryViewModel>(

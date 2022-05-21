@@ -7,6 +7,13 @@ public interface ICategoryService : IGenericService<Category>
 {
     Task<ShowCategoriesViewModel> GetCategories(ShowCategoriesViewModel model);
     Task<Dictionary<long, string>> GetCategoriesToShowInSelectBoxAsync(long? id = null);
+
+    /// <summary>
+    /// گرفتن دسته بندی هایی که زیر مجموعه ندارند
+    /// جهت استفاده برای جستجو در صفحه مدیریت محصولات
+    /// </summary>
+    /// <returns></returns>
+    Task<Dictionary<long, string>> GetCategoriesWithNoChild();
     Task<EditCategoryViewModel> GetForEdit(long id);
     Task<List<List<ShowCategoryForCreateProductViewModel>>> GetCategoriesForCreateProduct(long[] selectedCategoriesIds);
     Task<List<string>> GetCategoryBrands(long categoryId);

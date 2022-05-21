@@ -422,7 +422,9 @@ function initializingAutocomplete() {
             minLength: 2,
             delay: 500,
             select: function (event, ui) {
-                window['onAutocompleteSelect'](event, ui);
+                if (typeof window['onAutocompleteSelect'] === 'function') {
+                    window['onAutocompleteSelect'](event, ui);
+                }
             }
         });
     });

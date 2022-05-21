@@ -79,7 +79,7 @@ public class CreateModel : SellerPanelBase
         }
 
         var productToAdd = _mapper.Map<Entities.Product>(Product);
-        productToAdd.Slug = productToAdd.PersianTitle.Replace(" ", "-");
+        productToAdd.Slug = productToAdd.PersianTitle.ToUrlSlug();
         productToAdd.SellerId = await _sellerService.GetSellerId(User.Identity.GetLoggedInUserId());
 
         productToAdd.ShortDescription = _htmlSanitizer.Sanitize(Product.ShortDescription);
