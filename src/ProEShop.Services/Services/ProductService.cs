@@ -99,4 +99,10 @@ public class ProductService : GenericService<Product>, IProductService
             .Select(x => x.PersianTitle)
             .ToListAsync();
     }
+
+    public Task<ProductDetailsViewModel> GetProductDetails(long productId)
+    {
+        return _mapper.ProjectTo<ProductDetailsViewModel>(
+            _products).SingleOrDefaultAsync(x => x.Id == productId);
+    }
 }

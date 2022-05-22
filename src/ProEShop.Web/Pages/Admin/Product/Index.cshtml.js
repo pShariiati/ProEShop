@@ -3,12 +3,12 @@
     initializingAutocomplete();
 });
 
-function getSellerDetails(e) {
-    var sellerId = $(e).attr('seller-id');
-    getHtmlWithAJAX('?handler=GetSellerDetails', { sellerId: sellerId }, 'showSellerDetailsInModal', e);
+function getProductDetails(e) {
+    var productId = $(e).attr('product-id');
+    getHtmlWithAJAX('?handler=GetProductDetails', { productId: productId }, 'showProductDetailsInModal', e);
 }
 
-function showSellerDetailsInModal(result, clickedButton) {
+function showProductDetailsInModal(result, clickedButton) {
     appendHtmlModalPlaceToBody();
     var currnetModal = $('#html-modal-place');
     currnetModal.find('.modal-body').html(result);
@@ -19,7 +19,8 @@ function showSellerDetailsInModal(result, clickedButton) {
     activatingDeleteButtons(true);
 }
 
-function sellerDocumentInManagingSellers(message) {
+// بعد از تایید و یا رد کردن محصول گرید را رفرش میکنیم
+function productStatusInManagingProducts(message) {
     showToastr('success', message);
     $('#html-modal-place').modal('hide');
     fillDataTable();

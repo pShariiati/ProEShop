@@ -508,7 +508,6 @@ function fillDataTable() {
             activatingDeleteButtons();
             activatingPageCount();
             enablingTooltips();
-            activatingGetHtmlWithAjax();
         }
     }).fail(function () {
         showErrorMessage();
@@ -518,12 +517,12 @@ function fillDataTable() {
     });
 }
 
-function activatingGetHtmlWithAjax() {
-    $('.get-html-with-ajax').click(function () {
+$(document).on('click',
+    '.get-html-with-ajax',
+    function() {
         var funcToCall = $(this).attr('functionNameToCallOnClick');
         window[funcToCall](this);
     });
-}
 
 //fillDataTable();
 
@@ -691,7 +690,6 @@ $(document).on('submit', 'form.search-form-via-ajax', function (e) {
             activatingDeleteButtons();
             activatingPageCount();
             enablingTooltips();
-            activatingGetHtmlWithAjax();
         }
     });
 });

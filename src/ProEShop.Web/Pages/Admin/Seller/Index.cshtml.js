@@ -18,6 +18,7 @@ function showSellerDetailsInModal(result, clickedButton) {
     activatingDeleteButtons(true);
 }
 
+// بعد از تایید و یا رد کردن فروشنده گرید را رفرش میکنیم
 function sellerDocumentInManagingSellers(message) {
     showToastr('success', message);
     $('#html-modal-place').modal('hide');

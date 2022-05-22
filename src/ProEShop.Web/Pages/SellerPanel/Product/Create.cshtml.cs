@@ -78,6 +78,12 @@ public class CreateModel : SellerPanelBase
             });
         }
 
+        var categoriesToAdd = await _categoryService.GetCategoryParentIds(Product.CategoryId);
+        if (!categoriesToAdd.isSuccessful)
+        {
+            return Json(new JsonResultOperation(false));
+        }
+
         var productToAdd = _mapper.Map<Entities.Product>(Product);
         productToAdd.Slug = productToAdd.PersianTitle.ToUrlSlug();
         productToAdd.SellerId = await _sellerService.GetSellerId(User.Identity.GetLoggedInUserId());
@@ -85,10 +91,9 @@ public class CreateModel : SellerPanelBase
         productToAdd.ShortDescription = _htmlSanitizer.Sanitize(Product.ShortDescription);
         productToAdd.SpecialtyCheck = _htmlSanitizer.Sanitize(Product.SpecialtyCheck);
 
-        var categoriesToAdd = await _categoryService.GetCategoryParentIds(Product.CategoryId);
-        if (!categoriesToAdd.isSuccessful)
+        if (!await _categoryService.CanAddFakeProduct(Product.CategoryId))
         {
-            return Json(new JsonResultOperation(false));
+            productToAdd.IsFake = false;
         }
 
         foreach (var categoryId in categoriesToAdd.categoryIds)

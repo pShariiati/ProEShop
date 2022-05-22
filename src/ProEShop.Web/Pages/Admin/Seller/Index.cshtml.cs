@@ -103,7 +103,7 @@ public class IndexModel : PageBase
         return Json(new JsonResultOperation(true, "مدارک فروشنده مورد نظر با موفقیت تایید شد"));
     }
 
-    public async Task<IActionResult> OnPostRemoveUser(long id)
+    public async Task<IActionResult> OnPostRemoveSeller(long id)
     {
         if (id < 1)
         {

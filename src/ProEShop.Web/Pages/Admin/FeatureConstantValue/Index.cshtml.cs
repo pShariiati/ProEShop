@@ -45,7 +45,7 @@ public class IndexModel : PageBase
     public async Task OnGet()
     {
         var categories = await _categoryService.GetCategoriesToShowInSelectBoxAsync();
-        FeatureConstantValues.SearchFeatureConstantValues.Categories = categories.CreateSelectListItem();
+        FeatureConstantValues.SearchFeatureConstantValues.Categories = categories.CreateSelectListItem(firstItemValue: string.Empty);
     }
 
     public async Task<IActionResult> OnGetGetDataTableAsync()
@@ -62,8 +62,8 @@ public class IndexModel : PageBase
     }
 
     public async Task<IActionResult> OnGetGetCategoryFeatures(long categoryId)
-    {
-        if (categoryId < 1)
+    {   
+        if (categoryId < 0)
         {
             return Json(new JsonResultOperation(false));
         }

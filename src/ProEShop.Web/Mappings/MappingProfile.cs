@@ -82,5 +82,10 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.MainPicture,
                 options =>
                     options.MapFrom(src => src.ProductMedia.First().FileName));
+
+        this.CreateMap<Entities.Product, ProductDetailsViewModel>()
+            .ForMember(dest => dest.MainPicture,
+                options =>
+                    options.MapFrom(src => src.ProductMedia.First().FileName));
     }
 }

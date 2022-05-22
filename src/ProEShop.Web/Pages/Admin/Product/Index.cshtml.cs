@@ -56,6 +56,16 @@ public class IndexModel : PageBase
         return Partial("List", await _productService.GetProducts(Products));
     }
 
+    public async Task<IActionResult> OnGetGetProductDetails(long productId)
+    {
+        var product = await _productService.GetProductDetails(productId);
+        if (product is null)
+        {
+            return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
+        }
+        return Partial("ProductDetails", product);
+    }
+
     public async Task<IActionResult> OnGetAutocompleteSearchForPersianTitle(string term)
     {
         return Json(await _productService.GetPersianTitlesForAutocomplete(term));

@@ -45,6 +45,9 @@ public class Product : EntityBase, IAuditableEntity
     [ForeignKey(nameof(Category))]
     public long MainCategoryId { get; set; }
 
+    [Column(TypeName = "ntext")]
+    public string RejectReason { get; set; }
+
     #endregion
 
     #region Relations

@@ -1,0 +1,181 @@
+﻿@using ProEShop.Entities
+@using ProEShop.Common.Helpers
+@model ProEShop.ViewModels.Products.ProductDetailsViewModel
+@{
+    var statusButtonClass = Model.Status switch
+    {
+        ProductStatus.Confirmed => "success",
+        ProductStatus.Rejected => "danger",
+        _ => "warning"
+        };
+}
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">
+            جزییات محصول
+            <b>
+                <a href="@Model.Slug">
+                    @Model.PersianTitle
+                </a>
+            </b>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div>
+                <p class="fw-bold">
+                    <span class="btn btn-info">
+                        @if (Model.IsFake)
+                        {
+                            @:محصول غیر اصل میباشد
+                        }
+                        else
+                        {
+                            <text>اصل</text>
+                        }
+                    </span>
+                    <span class="btn btn-@(statusButtonClass)">
+                        وضعیت:
+                        @Model.Status.GetEnumDisplayName()
+                    </span>
+                    <span class="btn btn-primary">
+                        دسته بندی اصلی:
+                        @Model.CategoryTitle
+                    </span>
+                </p>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-lg-3">
+                    <p class="fw-bold">
+                        @Html.DisplayNameFor(x=> x.EnglishTitle)
+                    </p>
+                    <p>
+                        @(Model.EnglishTitle ?? "ندارد")
+                    </p>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <p class="fw-bold">
+                        @Html.DisplayNameFor(x=> x.PackWeight)
+                    </p>
+                    <p>
+                        @Model.PackWeight
+                        گرم
+                    </p>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <p class="fw-bold">
+                        @Html.DisplayNameFor(x=> x.PackLength)
+                    </p>
+                    <p>
+                        @Model.PackLength
+                        سانتیمتر
+                    </p>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <p class="fw-bold">
+                        @Html.DisplayNameFor(x=> x.PackWidth)
+                    </p>
+                    <p>
+                        @Model.PackWidth
+                        سانتیمتر
+                    </p>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <p class="fw-bold">
+                        @Html.DisplayNameFor(x=> x.PackHeight)
+                    </p>
+                    <p>
+                        @Model.PackWeight
+                        سانتیمتر
+                    </p>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <p class="fw-bold">
+                        @Html.DisplayNameFor(x=> x.SellerShopName)
+                    </p>
+                    <p>
+                        @Model.SellerShopName
+                    </p>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <p class="fw-bold">
+                        @Html.DisplayNameFor(x=> x.BrandFullTitle)
+                    </p>
+                    <p>
+                        @Model.BrandFullTitle
+                    </p>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <p class="fw-bold">
+                        @Html.DisplayNameFor(x=> x.MainPicture)
+                    </p>
+                    <p>
+                        <img width="100" src="~/images/products/@Model.MainPicture" alt="@Model.PersianTitle" />
+                    </p>
+                </div>
+                <div>
+                    <p class="fw-bold">
+                        @Html.DisplayNameFor(x=> x.ShortDescription)
+                    </p>
+                    <p>
+                        @if (!string.IsNullOrWhiteSpace(Model.ShortDescription))
+                        {
+                            <text>بدون توضیح</text>
+                        }
+                        else
+                        {
+                            @Model.ShortDescription
+                        }
+                    </p>
+                </div>
+                <div>
+                    <p class="fw-bold">
+                        @Html.DisplayNameFor(x=> x.SpecialtyCheck)
+                    </p>
+                    <p>
+                        @if (!string.IsNullOrWhiteSpace(Model.SpecialtyCheck))
+                        {
+                            <text>بدون توضیح</text>
+                        }
+                        else
+                        {
+                            @Model.SpecialtyCheck
+                        }
+                    </p>
+                </div>
+                @if (Model.Status == ProductStatus.AwaitingInitialApproval)
+                {
+                    <hr />
+                    <form functionNameToCallInTheEnd="productStatusInManagingProducts"
+                      method="post" asp-page-handler="RejectProduct" class="public-ajax-form">
+                        <input asp-for="Id" />
+                        <div class="text-danger" asp-validation-summary="All"></div>
+                        <div class="mb-3">
+                            <label asp-for="RejectReason" class="mb-3 form-label"></label>
+                            <textarea asp-for="RejectReason" class="custom-tinymce"></textarea>
+                            <span asp-validation-for="RejectReason" class="span-error-message"></span>
+                        </div>
+                        <button type="submit" class="btn btn-warning">ارسال مشکلات محصول</button>
+                    </form>
+
+                    <form functionNameToCallInTheEnd="productStatusInManagingProducts"
+                      method="post" asp-page-handler="ConfirmProduct"
+                      class="mt-3 public-ajax-form">
+                        <input asp-for="Id" />
+                        <button type="submit" class="btn btn-success">تایید کردن محصول</button>
+                    </form>
+                }
+
+                @if (Model.Status == ProductStatus.AwaitingInitialApproval)
+                {
+                    <form functionNameToCallInTheEnd="productStatusInManagingProducts"
+                      method="post" asp-page-handler="RemoveProduct"
+                      class="mt-3 public-ajax-form">
+                        <input asp-for="Id" />
+                        <button type="button" class="delete-row-button btn btn-danger">حذف دائمی محصول</button>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+</div>
