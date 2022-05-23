@@ -12,7 +12,7 @@
     </div>
     <div class="card-body">
         <form id="create-product-form" method="post" class="public-ajax-form" functionNameToCallInTheEnd="createProductFunction">
-            <input asp-for="Product.CategoryId" />
+            <input asp-for="Product.MainCategoryId" />
             <div asp-validation-summary="All" class="text-danger"></div>
             <nav>
                 <div class="nav nav-tabs nav-fill" id="add-product-tab">

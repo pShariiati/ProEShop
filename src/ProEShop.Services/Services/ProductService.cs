@@ -105,4 +105,11 @@ public class ProductService : GenericService<Product>, IProductService
         return _mapper.ProjectTo<ProductDetailsViewModel>(
             _products).SingleOrDefaultAsync(x => x.Id == productId);
     }
+
+    public Task<Product> GetProductToRemoveInManagingProducts(long id)
+    {
+        return _products.Where(x => x.Status == ProductStatus.AwaitingInitialApproval)
+            .Include(x => x.ProductMedia)
+            .SingleOrDefaultAsync(x => x.Id == id);
+    }
 }

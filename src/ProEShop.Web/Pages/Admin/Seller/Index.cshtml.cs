@@ -115,6 +115,8 @@ public class IndexModel : PageBase
         {
             return Json(new JsonResultOperation(false, "فروشنده مورد نظر یافت نشد"));
         }
+
+        seller.User.IsSeller = false;
         _sellerService.Remove(seller);
         await _uow.SaveChangesAsync();
         _uploadFile.DeleteFile(seller.IdCartPicture, "images", "seller-id-cart-pictures");

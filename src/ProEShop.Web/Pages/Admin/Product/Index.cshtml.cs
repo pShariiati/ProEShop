@@ -21,15 +21,24 @@ public class IndexModel : PageBase
     private readonly IProductService _productService;
     private readonly ISellerService _sellerService;
     private readonly ICategoryService _categoryService;
+    private readonly IUploadFileService _uploadFile;
+    private readonly IUnitOfWork _uow;
+    private readonly IHtmlSanitizer _htmlSanitizer;
 
     public IndexModel(
         IProductService productService,
         ISellerService sellerService,
-        ICategoryService categoryService)
+        ICategoryService categoryService,
+        IUploadFileService uploadFile,
+        IUnitOfWork uow,
+        IHtmlSanitizer htmlSanitizer)
     {
         _productService = productService;
         _sellerService = sellerService;
         _categoryService = categoryService;
+        _uploadFile = uploadFile;
+        _uow = uow;
+        _htmlSanitizer = htmlSanitizer;
     }
 
     #endregion
@@ -64,6 +73,66 @@ public class IndexModel : PageBase
             return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
         }
         return Partial("ProductDetails", product);
+    }
+
+    public async Task<IActionResult> OnPostRemoveProduct(long id)
+    {
+        if (id < 1)
+        {
+            return Json(new JsonResultOperation(false));
+        }
+
+        var product = await _productService.GetProductToRemoveInManagingProducts(id);
+        if (product is null)
+        {
+            return Json(new JsonResultOperation(false, "محصول مورد نظر یافت نشد"));
+        }
+        
+        _productService.Remove(product);
+        await _uow.SaveChangesAsync();
+        foreach (var media in product.ProductMedia)
+        {
+            _uploadFile.DeleteFile(media.FileName, "images", "products");
+        }
+        return Json(new JsonResultOperation(true, "محصول مورد نظر با موفقیت حذف شد"));
+    }
+
+    public async Task<IActionResult> OnPostRejectProduct(ProductDetailsViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return Json(new JsonResultOperation(false, "لطفا دلایل رد کردن محصول را وارد نمایید"));
+        }
+
+        var product = await _productService.FindByIdAsync(model.Id);
+        if (product is null)
+        {
+            return Json(new JsonResultOperation(false, "محصول مورد نظر یافت نشد"));
+        }
+
+        product.Status = ProductStatus.Rejected;
+        product.RejectReason = _htmlSanitizer.Sanitize(model.RejectReason);
+        await _uow.SaveChangesAsync();
+        return Json(new JsonResultOperation(true, "محصول مورد نظر با موفقیت رد شد"));
+    }
+
+    public async Task<IActionResult> OnPostConfirmProduct(long id)
+    {
+        if (id < 1)
+        {
+            return Json(new JsonResultOperation(false));
+        }
+
+        var product = await _productService.FindByIdAsync(id);
+        if (product is null)
+        {
+            return Json(new JsonResultOperation(false, "محصول مورد نظر یافت نشد"));
+        }
+
+        product.Status = ProductStatus.Confirmed;
+        product.RejectReason = null;
+        await _uow.SaveChangesAsync();
+        return Json(new JsonResultOperation(true, "محصول مورد نظر با موفقیت تایید شد"));
     }
 
     public async Task<IActionResult> OnGetAutocompleteSearchForPersianTitle(string term)

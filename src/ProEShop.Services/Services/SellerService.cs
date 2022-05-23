@@ -159,6 +159,7 @@ public class SellerService : GenericService<Seller>, ISellerService
     public async Task<Seller> GetSellerToRemoveInManagingSellers(long id)
     {
         return await _sellers.Where(x => x.DocumentStatus == DocumentStatus.AwaitingInitialApproval)
+            .Include(x => x.User)
             .SingleOrDefaultAsync(x => x.Id == id);
     }
 

@@ -104,7 +104,7 @@ $('#select-product-category-button').click(function () {
 
 function emptyAllInputsAndShowOtherTabs() {
     selectedCategoryId = $('#product-category div.list-group.col-4:last button.active').attr('category-id');
-    $('#Product_CategoryId').val(selectedCategoryId);
+    $('#Product_MainCategoryId').val(selectedCategoryId);
     getDataWithAJAX('?handler=GetCategoryInfo', { categoryId: selectedCategoryId }, 'categoryInfo');
     $('#request-new-brand-url').attr('href', requestNewBrandUrl + '&categoryId=' + selectedCategoryId);
 }
@@ -150,7 +150,7 @@ function categoryInfo(message, data) {
     $('#add-product-tab button:not(:first)').removeClass('not-allowed-cursor');
 
     // Empty all inputs
-    $('#create-product-form input').not(`[name="${rvt}"], #Product_CategoryId`).val('');
+    $('#create-product-form input').not(`[name="${rvt}"], #Product_MainCategoryId`).val('');
     tinyMCE.get('Product_ShortDescription').setContent('');
     tinyMCE.get('Product_SpecialtyCheck').setContent('');
     $('#product-images-preview-box').html('');

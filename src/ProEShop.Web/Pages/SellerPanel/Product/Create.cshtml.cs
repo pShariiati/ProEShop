@@ -32,6 +32,7 @@ public class CreateModel : SellerPanelBase
     private readonly IViewRendererService _viewRendererService;
     private readonly IHtmlSanitizer _htmlSanitizer;
     private readonly IProductService _productService;
+    private readonly ICategoryBrandService _categoryBrandService;
 
     public CreateModel(
         ICategoryService categoryService,
@@ -44,7 +45,8 @@ public class CreateModel : SellerPanelBase
         IFeatureConstantValueService featureConstantValueService,
         IViewRendererService viewRendererService,
         IHtmlSanitizer htmlSanitizer,
-        IProductService productService)
+        IProductService productService,
+        ICategoryBrandService categoryBrandService)
     {
         _categoryService = categoryService;
         _brandService = brandService;
@@ -57,6 +59,7 @@ public class CreateModel : SellerPanelBase
         _viewRendererService = viewRendererService;
         _htmlSanitizer = htmlSanitizer;
         _productService = productService;
+        _categoryBrandService = categoryBrandService;
     }
 
     #endregion
@@ -78,12 +81,16 @@ public class CreateModel : SellerPanelBase
             });
         }
 
-        var categoriesToAdd = await _categoryService.GetCategoryParentIds(Product.CategoryId);
+        var categoriesToAdd = await _categoryService.GetCategoryParentIds(Product.MainCategoryId);
         if (!categoriesToAdd.isSuccessful)
         {
             return Json(new JsonResultOperation(false));
         }
 
+        if (!await _categoryBrandService.CheckCategoryBrand(Product.MainCategoryId, Product.BrandId))
+        {
+            return Json(new JsonResultOperation(false));
+        }
         var productToAdd = _mapper.Map<Entities.Product>(Product);
         productToAdd.Slug = productToAdd.PersianTitle.ToUrlSlug();
         productToAdd.SellerId = await _sellerService.GetSellerId(User.Identity.GetLoggedInUserId());
@@ -91,7 +98,7 @@ public class CreateModel : SellerPanelBase
         productToAdd.ShortDescription = _htmlSanitizer.Sanitize(Product.ShortDescription);
         productToAdd.SpecialtyCheck = _htmlSanitizer.Sanitize(Product.SpecialtyCheck);
 
-        if (!await _categoryService.CanAddFakeProduct(Product.CategoryId))
+        if (!await _categoryService.CanAddFakeProduct(Product.MainCategoryId))
         {
             productToAdd.IsFake = false;
         }
@@ -149,7 +156,7 @@ public class CreateModel : SellerPanelBase
             }
         }
 
-        if (await _featureConstantValueService.CheckNonConstantValue(Product.CategoryId, featureIds))
+        if (await _featureConstantValueService.CheckNonConstantValue(Product.MainCategoryId, featureIds))
         {
             return Json(new JsonResultOperation(false));
         }
@@ -200,18 +207,18 @@ public class CreateModel : SellerPanelBase
 
         featureIds = featureIds.Concat(featureConstantValueIds).ToList();
 
-        if (!await _categoryFeatureService.CheckCategoryFeaturesCount(Product.CategoryId, featureIds))
+        if (!await _categoryFeatureService.CheckCategoryFeaturesCount(Product.MainCategoryId, featureIds))
         {
             return Json(new JsonResultOperation(false));
         }
 
-        if (!await _featureConstantValueService.CheckConstantValue(Product.CategoryId, featureConstantValueIds))
+        if (!await _featureConstantValueService.CheckConstantValue(Product.MainCategoryId, featureConstantValueIds))
         {
             return Json(new JsonResultOperation(false));
         }
 
         var featureConstantValues =
-            await _featureConstantValueService.GetFeatureConstantValuesForCreateProduct(Product.CategoryId);
+            await _featureConstantValueService.GetFeatureConstantValuesForCreateProduct(Product.MainCategoryId);
 
         foreach (var item in productFeatureConstantValueInputs)
         {
