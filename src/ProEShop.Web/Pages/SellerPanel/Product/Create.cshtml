@@ -62,7 +62,7 @@
                         <div class="card">
                             <div class="card-body row">
                                 <div class="my-2 col-md-6 col-lg-4">
-                                    <br/>
+                                    <br />
                                     <input class="form-check-input" asp-for="Product.IsFake">
                                     <label class="form-check-label" asp-for="Product.IsFake">
                                         نشان کالای غیر اصل
@@ -87,32 +87,34 @@
                                     </select>
                                     <span asp-validation-for="Product.BrandId" class="span-error-message"></span>
                                 </div>
+                                <div class="my-2 col-md-6 col-lg-4 alert alert-info invisible" id="commission-percentage-place-in-create-product">
+                                </div>
                                 <div class="my-2 col-md-6 col-lg-4">
                                     <label class="form-label" asp-for="Product.PackWeight">
                                         وزن بسته بندی (گرم)
                                     </label>
-                                    <input asp-for="Product.PackWeight" class="form-control"/>
+                                    <input asp-for="Product.PackWeight" class="form-control" />
                                     <span asp-validation-for="Product.PackWeight" class="span-error-message"></span>
                                 </div>
                                 <div class="my-2 col-md-6 col-lg-4">
                                     <label class="form-label" asp-for="Product.PackLength">
                                         طول بسته بندی (سانتیمتر)
                                     </label>
-                                    <input asp-for="Product.PackLength" class="form-control"/>
+                                    <input asp-for="Product.PackLength" class="form-control" />
                                     <span asp-validation-for="Product.PackLength" class="span-error-message"></span>
                                 </div>
                                 <div class="my-2 col-md-6 col-lg-4">
                                     <label class="form-label" asp-for="Product.PackWidth">
                                         عرض بسته بندی (سانتیمتر)
                                     </label>
-                                    <input asp-for="Product.PackWidth" class="form-control"/>
+                                    <input asp-for="Product.PackWidth" class="form-control" />
                                     <span asp-validation-for="Product.PackWidth" class="span-error-message"></span>
                                 </div>
                                 <div class="my-2 col-md-6 col-lg-4">
                                     <label class="form-label" asp-for="Product.PackHeight">
                                         ارتفاع بسته بندی (سانتیمتر)
                                     </label>
-                                    <input asp-for="Product.PackHeight" class="form-control"/>
+                                    <input asp-for="Product.PackHeight" class="form-control" />
                                     <span asp-validation-for="Product.PackHeight" class="span-error-message"></span>
                                 </div>
                                 <div class="my-2">
@@ -148,7 +150,7 @@
                                 <div class="my-2">
                                     <label class="form-label" asp-for="Product.Pictures">
                                     </label>
-                                    <input asp-for="Product.Pictures" class="multiple-images-preview-input form-control" images-preview-box="product-images-preview-box"/>
+                                    <input asp-for="Product.Pictures" class="multiple-images-preview-input form-control" images-preview-box="product-images-preview-box" />
                                     <span asp-validation-for="Product.Pictures" class="span-error-message"></span>
                                     <div class="form-text">
                                         اولین تصویر، تصویر اصلی محصول میباشد
@@ -166,7 +168,7 @@
                                 <div class="my-2">
                                     <label class="form-label" asp-for="Product.Videos">
                                     </label>
-                                    <input asp-for="Product.Videos" class="form-control"/>
+                                    <input asp-for="Product.Videos" class="form-control" />
                                     <span asp-validation-for="Product.Videos" class="span-error-message"></span>
                                 </div>
                                 <button class="btn btn-primary go-to-next-tab" type="button">مرحله بعد</button>
@@ -180,13 +182,13 @@
                                     <label class="form-label" asp-for="Product.PersianTitle">
                                     </label>
                                     &quot;
-                                    <input placeholder="ماهیت کالا + برند کالا + کلمه &quot;مدل&quot; + مدل کالا" asp-for="Product.PersianTitle" class="form-control"/>
+                                    <input placeholder="ماهیت کالا + برند کالا + کلمه &quot;مدل&quot; + مدل کالا" asp-for="Product.PersianTitle" class="form-control" />
                                     <span asp-validation-for="Product.PersianTitle" class="span-error-message"></span>
                                 </div>
                                 <div class="my-2 col-md-6">
                                     <label class="form-label" asp-for="Product.EnglishTitle">
                                     </label>
-                                    <input asp-for="Product.EnglishTitle" class="form-control"/>
+                                    <input asp-for="Product.EnglishTitle" class="form-control" />
                                     <span asp-validation-for="Product.EnglishTitle" class="span-error-message"></span>
                                 </div>
                                 <button class="btn btn-primary">ایجاد محصول</button>

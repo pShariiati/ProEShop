@@ -2,6 +2,21 @@
     getHtmlWithAJAX(`${location.pathname}?handler=GetCategories`, null, 'showCategories', null);
 }
 $(function () {
+
+    $('#Product_BrandId').change(function () {
+        var selectedBrandId = $(this).val();
+        if (selectedBrandId == 0) {
+            $('#commission-percentage-place-in-create-product').addClass('invisible');
+        }
+        else {
+            var formToSend = {
+                brandId: selectedBrandId,
+                categoryId: selectedCategoryId
+            }
+            getDataWithAJAX('?handler=GetCommissionPercentage', formToSend, 'showCommissionPercentage');
+        }
+    });
+
     // Disable all tabs except first
     $('#add-product-tab button:not(:first)').attr('disabled', 'disabled');
     $('#add-product-tab button:not(:first)').addClass('not-allowed-cursor');
@@ -17,6 +32,14 @@ $(function () {
     var specialtyCheckTinyMce = tinymce.get('Product_SpecialtyCheck');
     specialtyCheckTinyMce.settings.max_height = 1000;
 });
+
+function showCommissionPercentage(message, data) {
+    $('#commission-percentage-place-in-create-product').removeClass('invisible');
+    $('#commission-percentage-place-in-create-product')
+        .html(`درصد کمیسیون فروش برای این دسته بندی و این برند
+               <span class="text-danger">${data}</span>
+               درصد میباشد`);
+}
 
 var selectedCategoriesIds = [];
 

@@ -13,4 +13,14 @@ public interface ICategoryBrandService : IGenericService<CategoryBrand>
     /// <param name="brandId"></param>
     /// <returns></returns>
     Task<bool> CheckCategoryBrand(long categoryId, long brandId);
+
+    /// <summary>
+    /// گرفتن میزان درصد کمیسیون یک برند و دسته بندی
+    /// جهت استفاده در صفحه ایجاد محصول
+    /// هنگام عوض شدن سلکت باکس برند، این متود فراخوانی میشود
+    /// </summary>
+    /// <param name="categoryId"></param>
+    /// <param name="brandId"></param>
+    /// <returns></returns>
+    Task<(bool isSucessfull, byte value)> GetCommissionPercentage(long categoryId, long brandId);
 }

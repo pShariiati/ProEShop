@@ -412,4 +412,23 @@ public class CreateModel : SellerPanelBase
         }
         return Json(false);
     }
+
+    public async Task<IActionResult> OnGetGetCommissionPercentage(long brandId, long categoryId)
+    {
+        if (brandId < 1 || categoryId < 1)
+        {
+            return Json(new JsonResultOperation(false));
+        }
+
+        var result = await _categoryBrandService.GetCommissionPercentage(categoryId, brandId);
+        if (!result.isSucessfull)
+        {
+            return Json(new JsonResultOperation(false));
+        }
+
+        return Json(new JsonResultOperation(true, string.Empty)
+        {
+            Data = result.value
+        });
+    }
 }

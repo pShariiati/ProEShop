@@ -8,7 +8,7 @@ var brandBox = `<div class="btn-group m-1">
                 </button>
                 <button type="button" class="btn btn-info text-white">
                     %
-                    [commisson percentage]
+                    [commission percentage]
                 </button>
                 <button type="button" class="btn btn-danger remove-selected-brand">
                     <i class="bi bi-x-lg"></i>
@@ -31,7 +31,7 @@ function onAutocompleteSelect(event, ui) {
     }
     if ($('#add-brand-to-category-form input[type="hidden"][value^="' + enteredBrand + '"]').length == 0) {
         var brandBoxToAppend = brandBox.replace('[brand title]', enteredBrand);
-        brandBoxToAppend = brandBoxToAppend.replace('[commisson percentage]', commissionPercentage);
+        brandBoxToAppend = brandBoxToAppend.replace('[commission percentage]', commissionPercentage);
         $('#empty-selected-brands').addClass('d-none');
         $('#selected-brands-box').append(brandBoxToAppend);
         var inputToAppend = `<input type="hidden" name="SelectedBrands" value="${enteredBrand}|||${commissionPercentage}" />`;

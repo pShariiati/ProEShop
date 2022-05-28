@@ -101,12 +101,11 @@ public class BrandService : GenericService<Brand>, IBrandService
             .ToListAsync();
     }
 
-    public async Task<List<long>> GetBrandIdsByList(List<string> brands)
+    public Task<Dictionary<long, string>> GetBrandsByFullTitle(List<string> brandTitles)
     {
-        return await _brands
-            .Where(x => brands.Contains(x.TitleFa + " " + x.TitleEn))
-            .Select(x => x.Id)
-            .ToListAsync();
+        return _brands
+            .Where(x => brandTitles.Contains(x.TitleFa + " " + x.TitleEn))
+            .ToDictionaryAsync(x => x.Id, x => x.TitleFa + " " + x.TitleEn);
     }
 
     public Task<Dictionary<long, string>> GetBrandsByCategoryId(long categoryId)

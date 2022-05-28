@@ -257,12 +257,43 @@ public class IndexModel : PageBase
         selectedCategory.CategoryBrands.Clear();
 
         model.SelectedBrands = model.SelectedBrands.Distinct().ToList();
-
-        var brandIds = await _brandService.GetBrandIdsByList(model.SelectedBrands);
-        brandIds.ForEach(brandId => selectedCategory.CategoryBrands.Add(new CategoryBrand()
+        var brandsInDictionary = new Dictionary<string, byte>();
+        foreach (var brand in model.SelectedBrands)
         {
-            BrandId = brandId
-        }));
+            // سامسونگ ||| 1
+            var splitBrand = brand.Split("|||");
+            if (!byte.TryParse(splitBrand[1], out var commissionPercentage))
+            {
+                return Json(new JsonResultOperation(false));
+            }
+
+            if (commissionPercentage > 20 || commissionPercentage < 1)
+            {
+                return Json(new JsonResultOperation(false));
+            }
+            brandsInDictionary.Add(splitBrand[0], commissionPercentage);
+        }
+
+        var brands = await _brandService
+            .GetBrandsByFullTitle(brandsInDictionary.Select(x=>x.Key).ToList());
+        // اگر کاربر سه برند را سمت کلاینت وارد کرد
+        // باید همان مقدار را از پایگاه داده بخوانیم
+        // و اگر اینطور نبود حتما یک یا چند برند را وارد کرده
+        // که در پایگاه داده ما وجود ندارد
+        if (model.SelectedBrands.Count != brands.Count)
+        {
+            return Json(new JsonResultOperation(false));
+        }
+
+        foreach (var brand in brands)
+        {
+            var commissionPercentage = brandsInDictionary[brand.Value];
+            selectedCategory.CategoryBrands.Add(new CategoryBrand()
+            {
+                BrandId = brand.Key,
+                CommissionPercentage = commissionPercentage
+            });
+        }
         await _uow.SaveChangesAsync();
         return Json(new JsonResultOperation(true,
             "برند های مورد نظر با موفقیت به دسته بندی مذکور اضافه شدند"));

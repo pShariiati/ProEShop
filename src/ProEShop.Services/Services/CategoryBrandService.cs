@@ -23,4 +23,12 @@ public class CategoryBrandService : GenericService<CategoryBrand>, ICategoryBran
         return _categoryBrands.Where(x => x.CategoryId == categoryId)
             .AnyAsync(x => x.BrandId == brandId);
     }
+
+    public async Task<(bool isSucessfull, byte value)> GetCommissionPercentage(long categoryId, long brandId)
+    {
+        var query = await _categoryBrands.Where(x => x.CategoryId == categoryId)
+            .Where(x => x.BrandId == brandId)
+            .SingleOrDefaultAsync();
+        return (query != null, query?.CommissionPercentage ?? 0);
+    }
 }
