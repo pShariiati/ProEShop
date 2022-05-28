@@ -7,13 +7,13 @@ using ProEShop.ViewModels.CategoryFeatures;
 
 namespace ProEShop.Services.Services;
 
-public class CategoryBrandService : CustomGenericService<CategoryBrand>, ICategoryBrandService
+public class CategoryBrandService : GenericService<CategoryBrand>, ICategoryBrandService
 {
     private readonly DbSet<CategoryBrand> _categoryBrands;
 
     public CategoryBrandService(
-        IUnitOfWork uow,
-        IMapper mapper) : base(uow)
+        IUnitOfWork uow)
+        : base(uow)
     {
         _categoryBrands = uow.Set<CategoryBrand>();
     }

@@ -10,9 +10,13 @@
     <input asp-for="SelectedCategoryId"/>
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="row">
-        <div class="col-12 my-2">
+        <div class="col-12 col-md-6 my-2">
+            <label class="form-label" for="commission-percentage-input">درصد کمیسیون</label>
+            <input class="form-control" id="commission-percentage-input" type="number" value="0" />
+        </div>
+        <div class="col-12 col-md-6 my-2">
             <label class="form-label" for="search-brand">جستجو برند</label>
-            <input autocomplete-search-url="@(Url.Page("./Index", "AutocompleteSearch"))" class="autocomplete form-control" id="search-brand"/>
+            <input autocomplete-search-url="@(Url.Page("./Index", "AutocompleteSearch"))" class="autocomplete form-control" id="search-brand" />
         </div>
         <p class="mt-3">
             برند های انتخاب شده برای این دسته بندی
@@ -22,9 +26,14 @@
             {
                 foreach (var brand in Model.SelectedBrands)
                 {
+                    var splitBrand = brand.Split("|||");
                     <div class="btn-group m-1">
                         <button type="button" class="btn btn-outline-dark">
-                            @brand
+                            @splitBrand[0]
+                        </button>
+                        <button type="button" class="btn btn-info text-white">
+                            %
+                            @splitBrand[1]
                         </button>
                         <button type="button" class="btn btn-danger remove-selected-brand">
                             <i class="bi bi-x-lg"></i>

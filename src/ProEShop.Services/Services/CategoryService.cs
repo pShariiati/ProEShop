@@ -134,7 +134,7 @@ public class CategoryService : GenericService<Category>, ICategoryService
         return await _categories
             .Where(x => x.Id == categoryId)
             .SelectMany(x => x.CategoryBrands)
-            .Select(x => x.Brand.TitleFa + " " + x.Brand.TitleEn)
+            .Select(x => x.Brand.TitleFa + " " + x.Brand.TitleEn + "|||" + x.CommissionPercentage)
             .ToListAsync();
     }
 

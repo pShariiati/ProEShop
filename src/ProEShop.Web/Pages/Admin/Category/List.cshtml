@@ -78,7 +78,7 @@
                                     <button type="button" class="btn btn-danger delete-row-button">حذف تصویر</button>
                                 </form>
                             }
-                            <a asp-page-handler="AddBrand" asp-route-selectedCategoryId="@category.Id" class="btn btn-primary show-modal-form-button">
+                            <a custom-title="افزودن برند برای دسته &quot; @category.Title &quot;" asp-page-handler="AddBrand" asp-route-selectedCategoryId="@category.Id" class="btn btn-primary show-modal-form-button">
                                 افزودن برند
                             </a>
                         </td>
