@@ -39,6 +39,10 @@ public class IsImageAttribute : BaseValidationAttribute, IClientModelValidator
         }
 
         var files = value as List<IFormFile>;
+        if (files is null)
+        {
+            files = new List<IFormFile>() { value as IFormFile };
+        }
         if (files is { Count: > 0 })
         {
             foreach (var file in files)

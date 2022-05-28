@@ -92,7 +92,8 @@ public class IndexModel : PageBase
         await _uow.SaveChangesAsync();
         foreach (var media in product.ProductMedia)
         {
-            _uploadFile.DeleteFile(media.FileName, "images", "products");
+            _uploadFile.DeleteFile(media.FileName,
+                media.IsVideo ? "videos" : "images", "products");
         }
         return Json(new JsonResultOperation(true, "محصول مورد نظر با موفقیت حذف شد"));
     }

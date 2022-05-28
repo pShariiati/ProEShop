@@ -7,7 +7,7 @@
         ProductStatus.Confirmed => "success",
         ProductStatus.Rejected => "danger",
         _ => "warning"
-        };
+    };
 }
 <div class="card">
     <div class="card-header">
@@ -24,6 +24,14 @@
         <div class="row">
             <div>
                 <p class="fw-bold">
+                    <span class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#product-files-collapse">
+                        فایل (ها) |
+                        تعداد عکس :@Model.ProductMedia.Count(x=> !x.IsVideo)
+                        تعداد ویدیو :@Model.ProductMedia.Count(x=> x.IsVideo)
+                    </span>
+                    <span class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#product-features-collapse">
+                        ویژگی های محصول: @Model.ProductFeatures.Count
+                    </span>
                     <span class="btn btn-info">
                         @if (Model.IsFake)
                         {
@@ -45,9 +53,38 @@
                 </p>
             </div>
             <div class="row">
+                <div class="collapse" id="product-files-collapse">
+                    <div class="card card-body d-inline-block w-100">
+                        @foreach (var image in Model.ProductMedia.Where(x => !x.IsVideo))
+                        {
+                            <img src="~/images/products/@image.FileName" width="100" />
+                        }
+                        @foreach (var video in Model.ProductMedia.Where(x => x.IsVideo))
+                        {
+                            <video class="product-videos-managing-sellers" controls>
+                                <source src="~/videos/products/@video.FileName">
+                                مرورگر شما از تگ ویدیو پشتیبانی نمیکند
+                            </video>
+                        }
+                    </div>
+                </div>
+                <div class="collapse" id="product-features-collapse">
+                    <div class="card card-body d-inline-block w-100">
+                        @foreach (var feature in Model.ProductFeatures)
+                        {
+                            <p>
+                                @feature.Feature.Title:
+                                @foreach (var value in feature.Value.Split("|||"))
+                                {
+                                    <span class="badge bg-primary">@value</span>
+                                }
+                            </p>
+                        }
+                    </div>
+                </div>
                 <div class="col-md-4 col-lg-3">
                     <p class="fw-bold">
-                        @Html.DisplayNameFor(x=> x.EnglishTitle)
+                        @Html.DisplayNameFor(x => x.EnglishTitle)
                     </p>
                     <p>
                         @(Model.EnglishTitle ?? "ندارد")
@@ -55,7 +92,7 @@
                 </div>
                 <div class="col-md-4 col-lg-3">
                     <p class="fw-bold">
-                        @Html.DisplayNameFor(x=> x.PackWeight)
+                        @Html.DisplayNameFor(x => x.PackWeight)
                     </p>
                     <p>
                         @Model.PackWeight
@@ -64,7 +101,7 @@
                 </div>
                 <div class="col-md-4 col-lg-3">
                     <p class="fw-bold">
-                        @Html.DisplayNameFor(x=> x.PackLength)
+                        @Html.DisplayNameFor(x => x.PackLength)
                     </p>
                     <p>
                         @Model.PackLength
@@ -73,7 +110,7 @@
                 </div>
                 <div class="col-md-4 col-lg-3">
                     <p class="fw-bold">
-                        @Html.DisplayNameFor(x=> x.PackWidth)
+                        @Html.DisplayNameFor(x => x.PackWidth)
                     </p>
                     <p>
                         @Model.PackWidth
@@ -82,7 +119,7 @@
                 </div>
                 <div class="col-md-4 col-lg-3">
                     <p class="fw-bold">
-                        @Html.DisplayNameFor(x=> x.PackHeight)
+                        @Html.DisplayNameFor(x => x.PackHeight)
                     </p>
                     <p>
                         @Model.PackWeight
@@ -91,7 +128,7 @@
                 </div>
                 <div class="col-md-4 col-lg-3">
                     <p class="fw-bold">
-                        @Html.DisplayNameFor(x=> x.SellerShopName)
+                        @Html.DisplayNameFor(x => x.SellerShopName)
                     </p>
                     <p>
                         @Model.SellerShopName
@@ -99,23 +136,15 @@
                 </div>
                 <div class="col-md-4 col-lg-3">
                     <p class="fw-bold">
-                        @Html.DisplayNameFor(x=> x.BrandFullTitle)
+                        @Html.DisplayNameFor(x => x.BrandFullTitle)
                     </p>
                     <p>
                         @Model.BrandFullTitle
                     </p>
                 </div>
-                <div class="col-md-4 col-lg-3">
-                    <p class="fw-bold">
-                        @Html.DisplayNameFor(x=> x.MainPicture)
-                    </p>
-                    <p>
-                        <img width="100" src="~/images/products/@Model.MainPicture" alt="@Model.PersianTitle" />
-                    </p>
-                </div>
                 <div>
                     <p class="fw-bold">
-                        @Html.DisplayNameFor(x=> x.ShortDescription)
+                        @Html.DisplayNameFor(x => x.ShortDescription)
                     </p>
                     <p>
                         @if (!string.IsNullOrWhiteSpace(Model.ShortDescription))
@@ -130,7 +159,7 @@
                 </div>
                 <div>
                     <p class="fw-bold">
-                        @Html.DisplayNameFor(x=> x.SpecialtyCheck)
+                        @Html.DisplayNameFor(x => x.SpecialtyCheck)
                     </p>
                     <p>
                         @if (!string.IsNullOrWhiteSpace(Model.SpecialtyCheck))

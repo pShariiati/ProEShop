@@ -52,6 +52,7 @@ public class ProductDetailsViewModel
 
     public string CategoryTitle { get; set; }
 
-    [Display(Name = "عکس اصلی محصول")]
-    public string MainPicture { get; set; }
+    public List<ProductMedia> ProductMedia { get; set; }
+
+    public List<ProductFeature> ProductFeatures { get; set; }
 }

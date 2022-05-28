@@ -63,15 +63,14 @@ public class CreateModel : SellerPanelBase
     }
 
     #endregion
-
-    [BindProperty]
+    
     public AddProductViewModel Product { get; set; }
 
     public void OnGet()
     {
     }
 
-    public async Task<IActionResult> OnPost()
+    public async Task<IActionResult> OnPost(AddProductViewModel product)
     {
         if (!ModelState.IsValid)
         {
@@ -279,7 +278,7 @@ public class CreateModel : SellerPanelBase
             .ToList();
         for (int counter = 0; counter < productVideos.Count; counter++)
         {
-            var currentVideo = Product.Pictures[counter];
+            var currentVideo = Product.Videos[counter];
             if (currentVideo.IsFileUploaded())
             {
                 await _uploadFile.SaveFile(currentVideo, productVideos[counter].FileName, null,
