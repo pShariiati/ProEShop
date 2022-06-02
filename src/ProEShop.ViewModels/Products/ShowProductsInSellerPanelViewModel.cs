@@ -6,17 +6,17 @@ using ProEShop.ViewModels.Sellers;
 
 namespace ProEShop.ViewModels.Products;
 
-public class ShowProductsViewModel
+public class ShowProductsInSellerPanelViewModel
 {
-    public List<ShowProductViewModel> Products { get; set; }
+    public List<ShowProductInSellerPanelViewModel> Products { get; set; }
 
-    public SearchProductsViewModel SearchProducts { get; set; }
+    public SearchProductsInSellerPanelViewModel SearchProducts { get; set; }
         = new();
     public PaginationViewModel Pagination { get; set; }
         = new();
 }
 
-public class ShowProductViewModel
+public class ShowProductInSellerPanelViewModel
 {
     [Display(Name = "شناسه")]
     public long Id { get; set; }
@@ -43,7 +43,7 @@ public class ShowProductViewModel
     public int ProductCode { get; set; }
 }
 
-public class SearchProductsViewModel
+public class SearchProductsInSellerPanelViewModel
 {
     [EqualSearch]
     [Display(Name = "دسته بندی اصلی")]
@@ -59,10 +59,6 @@ public class SearchProductsViewModel
     [Display(Name = "عنوان فارسی")]
     [MaxLength(200)]
     public string PersianTitle { get; set; }
-    
-    [Display(Name = "نام فروشگاه")]
-    [MaxLength(200)]
-    public string ShopName { get; set; }
 
     [Display(Name = "وضعیت محصول")]
     public ProductStatus? Status { get; set; }
@@ -71,22 +67,19 @@ public class SearchProductsViewModel
     public DeletedStatus DeletedStatus { get; set; }
 
     [Display(Name = "نمایش بر اساس")]
-    public SortingProducts Sorting { get; set; }
+    public SortingProductsInSellerPanel Sorting { get; set; }
 
     [Display(Name = "مرتب سازی بر اساس")]
     public SortingOrder SortingOrder { get; set; }
 }
 
-public enum SortingProducts
+public enum SortingProductsInSellerPanel
 {
     [Display(Name = "شناسه")]
     Id,
 
     [Display(Name = "عنوان")]
     PersianTitle,
-
-    [Display(Name = "نام فروشگاه")]
-    ShopName,
 
     [Display(Name = "برند فارسی")]
     BrandFa,

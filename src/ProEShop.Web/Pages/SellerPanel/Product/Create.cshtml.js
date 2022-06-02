@@ -178,6 +178,9 @@ function categoryInfo(message, data) {
     tinyMCE.get('Product_SpecialtyCheck').setContent('');
     $('#product-images-preview-box').html('');
 
+    // invisible commission percentage box
+    $('#commission-percentage-place-in-create-product').addClass('invisible');
+
     // Test data
     //$('#Product_PackWeight').val('1');
     //$('#Product_PackLength').val('1');

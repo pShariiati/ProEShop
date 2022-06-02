@@ -93,6 +93,7 @@ public class CreateModel : SellerPanelBase
         var productToAdd = _mapper.Map<Entities.Product>(Product);
         productToAdd.Slug = productToAdd.PersianTitle.ToUrlSlug();
         productToAdd.SellerId = await _sellerService.GetSellerId(User.Identity.GetLoggedInUserId());
+        productToAdd.ProductCode = await _productService.GetProductCodeForCreateProduct();
 
         productToAdd.ShortDescription = _htmlSanitizer.Sanitize(Product.ShortDescription);
         productToAdd.SpecialtyCheck = _htmlSanitizer.Sanitize(Product.SpecialtyCheck);

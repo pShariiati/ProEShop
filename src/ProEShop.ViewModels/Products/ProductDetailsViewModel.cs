@@ -52,7 +52,21 @@ public class ProductDetailsViewModel
 
     public string CategoryTitle { get; set; }
 
-    public List<ProductMedia> ProductMedia { get; set; }
+    public List<ProductMediaForCreateProductViewModel> ProductMedia { get; set; }
 
-    public List<ProductFeature> ProductFeatures { get; set; }
+    public List<ProductFeatureForCreateProductViewModel> ProductFeatures { get; set; }
+}
+
+public class ProductMediaForCreateProductViewModel
+{
+    public string FileName { get; set; }
+
+    public bool IsVideo { get; set; }
+}
+
+public class ProductFeatureForCreateProductViewModel
+{
+    public string Value { get; set; }
+
+    public string FeatureTitle { get; set; }
 }

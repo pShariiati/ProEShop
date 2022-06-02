@@ -1,10 +1,12 @@
 ﻿using ProEShop.Entities.AuditableEntity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProEShop.Entities;
 
 [Table("Products")]
+[Index(nameof(Product.ProductCode), IsUnique = true)]
 public class Product : EntityBase, IAuditableEntity
 {
     #region Properties
@@ -47,6 +49,8 @@ public class Product : EntityBase, IAuditableEntity
 
     [Column(TypeName = "ntext")]
     public string RejectReason { get; set; }
+
+    public int ProductCode { get; set; }
 
     #endregion
 

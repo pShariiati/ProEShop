@@ -1,7 +1,9 @@
 ﻿using System.Linq.Expressions;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using ProEShop.Common.Helpers;
+using ProEShop.Common.IdentityToolkit;
 using ProEShop.DataLayer.Context;
 using ProEShop.Entities;
 using ProEShop.Services.Contracts;
@@ -16,13 +18,19 @@ public class ProductService : GenericService<Product>, IProductService
 {
     private readonly DbSet<Product> _products;
     private readonly IMapper _mapper;
+    private readonly ISellerService _sellerService;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
     public ProductService(
         IUnitOfWork uow,
-        IMapper mapper)
+        IMapper mapper,
+        ISellerService sellerService,
+        IHttpContextAccessor httpContextAccessor)
         : base(uow)
     {
         _mapper = mapper;
+        _sellerService = sellerService;
+        _httpContextAccessor = httpContextAccessor;
         _products = uow.Set<Product>();
     }
 
@@ -92,6 +100,63 @@ public class ProductService : GenericService<Product>, IProductService
         };
     }
 
+    public async Task<ShowProductsInSellerPanelViewModel> GetProductsInSellerPanel(ShowProductsInSellerPanelViewModel model)
+    {
+        var userId = _httpContextAccessor.HttpContext.User.Identity.GetLoggedInUserId();
+        var sellerId = await _sellerService.GetSellerId(userId);
+        var products = _products.AsNoTracking()
+            .Where(x => x.SellerId == sellerId)
+            .AsQueryable();
+
+        #region Search
+
+        var searchedStatus = model.SearchProducts.Status;
+        if (searchedStatus is not null)
+        {
+            products = products.Where(x => x.Status == searchedStatus);
+        }
+
+        products = ExpressionHelpers.CreateSearchExpressions(products, model.SearchProducts);
+
+        #endregion
+
+        #region OrderBy
+
+        var sorting = model.SearchProducts.Sorting;
+        var isSortingAsc = model.SearchProducts.SortingOrder == SortingOrder.Asc;
+        if (sorting == SortingProductsInSellerPanel.BrandFa)
+        {
+            if (isSortingAsc)
+                products = products.OrderBy(x => x.Brand.TitleFa);
+            else
+                products = products.OrderByDescending(x => x.Brand.TitleFa);
+        }
+        else if (sorting == SortingProductsInSellerPanel.BrandEn)
+        {
+            if (isSortingAsc)
+                products = products.OrderBy(x => x.Brand.TitleEn);
+            else
+                products = products.OrderByDescending(x => x.Brand.TitleEn);
+        }
+        else
+        {
+            products = products.CreateOrderByExpression(model.SearchProducts.Sorting.ToString(),
+            model.SearchProducts.SortingOrder.ToString());
+        }
+
+        #endregion
+
+        var paginationResult = await GenericPaginationAsync(products, model.Pagination);
+
+        return new()
+        {
+            Products = await _mapper.ProjectTo<ShowProductInSellerPanelViewModel>(
+                    paginationResult.Query)
+                .ToListAsync(),
+            Pagination = paginationResult.Pagination
+        };
+    }
+
     public Task<List<string>> GetPersianTitlesForAutocomplete(string input)
     {
         return _products.Where(x => x.PersianTitle.Contains(input))
@@ -106,8 +171,6 @@ public class ProductService : GenericService<Product>, IProductService
             _products
                 .AsNoTracking()
                 .AsSplitQuery()
-                .Include(x => x.ProductFeatures)
-                    .ThenInclude(x => x.Feature)
             ).SingleOrDefaultAsync(x => x.Id == productId);
     }
 
@@ -116,5 +179,13 @@ public class ProductService : GenericService<Product>, IProductService
         return _products.Where(x => x.Status == ProductStatus.AwaitingInitialApproval)
             .Include(x => x.ProductMedia)
             .SingleOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<int> GetProductCodeForCreateProduct()
+    {
+        var lastProductNumber = await _products.OrderByDescending(x => x.Id)
+            .Select(x => x.ProductCode)
+            .FirstOrDefaultAsync();
+        return lastProductNumber + 1;
     }
 }

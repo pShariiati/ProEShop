@@ -46,7 +46,7 @@ function onAutocompleteSelect(event, ui) {
 $(document).on('click', '.remove-selected-brand', function () {
     var selectedBrandText = $(this).parent().find('button:first').text().trim();
     $(this).parent().remove();
-    $('#add-brand-to-category-form input[value="' + selectedBrandText + '"]').remove();
+    $('#add-brand-to-category-form input[value^="' + selectedBrandText + '"]').remove();
     showToastr('success', 'برند مورد نظر با موفقیت از این دسته بندی حذف شد')
     if ($('#selected-brands-box .btn-group').length == 0) {
         $('#empty-selected-brands').removeClass('d-none');
