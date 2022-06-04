@@ -22,6 +22,8 @@ public class ProductDetailsViewModel
     
     public string Slug { get; set; }
 
+    public int ProductCode { get; set; }
+
     public bool IsFake { get; set; }
 
     [Display(Name = "وزن بسته بندی")]
@@ -52,21 +54,7 @@ public class ProductDetailsViewModel
 
     public string CategoryTitle { get; set; }
 
-    public List<ProductMediaForCreateProductViewModel> ProductMedia { get; set; }
+    public List<ProductMediaForProductDetailsViewModel> ProductMedia { get; set; }
 
-    public List<ProductFeatureForCreateProductViewModel> ProductFeatures { get; set; }
-}
-
-public class ProductMediaForCreateProductViewModel
-{
-    public string FileName { get; set; }
-
-    public bool IsVideo { get; set; }
-}
-
-public class ProductFeatureForCreateProductViewModel
-{
-    public string Value { get; set; }
-
-    public string FeatureTitle { get; set; }
+    public List<ProductFeatureForProductDetailsViewModel> ProductFeatures { get; set; }
 }

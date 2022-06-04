@@ -1,7 +1,7 @@
 ﻿@page
-@model ProEShop.Web.Pages.Admin.Product.IndexModel
+@model ProEShop.Web.Pages.SellerPanel.Product.AllModel
 @{
-    ViewData["Title"] = "محصولات";
+    ViewData["Title"] = "تمامی محصولات";
 }
 
 <div class="card text-dark bg-white border-0 shadow">
@@ -27,11 +27,6 @@
                     <label class="form-label" asp-for="Products.SearchProducts.MainCategoryId"></label>
                     <select class="custom-select2 form-select" asp-for="Products.SearchProducts.MainCategoryId" asp-items="Model.Products.SearchProducts.Categories">
                     </select>
-                </div>
-                <div class="col-12 col-sm-6 col-lg-3 my-2">
-                    <label class="form-label" asp-for="Products.SearchProducts.ShopName"></label>
-                    <input autocomplete-search-url="@(Url.Page("./Index", "AutocompleteSearchForShopName"))" class="autocomplete form-control" asp-for="Products.SearchProducts.ShopName" />
-                    <span class="span-error-message" asp-validation-for="Products.SearchProducts.ShopName"></span>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
                     <label class="form-label" asp-for="Products.SearchProducts.ProductCode"></label>

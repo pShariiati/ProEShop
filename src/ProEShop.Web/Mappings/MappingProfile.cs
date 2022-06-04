@@ -88,8 +88,13 @@ public class MappingProfile : Profile
                 options =>
                     options.MapFrom(src => src.ProductMedia.First().FileName));
 
+        this.CreateMap<Entities.Product, ShowAllProductInSellerPanelViewModel>()
+            .ForMember(dest => dest.MainPicture,
+                options =>
+                    options.MapFrom(src => src.ProductMedia.First().FileName));
+
         this.CreateMap<Entities.Product, ProductDetailsViewModel>();
-        this.CreateMap<Entities.ProductMedia, ProductMediaForCreateProductViewModel>();
-        this.CreateMap<Entities.ProductFeature, ProductFeatureForCreateProductViewModel>();
+        this.CreateMap<Entities.ProductMedia, ProductMediaForProductDetailsViewModel>();
+        this.CreateMap<Entities.ProductFeature, ProductFeatureForProductDetailsViewModel>();
     }
 }

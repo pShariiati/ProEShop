@@ -51,7 +51,11 @@ public class SearchProductsInSellerPanelViewModel
 
     [EqualSearch]
     [Display(Name = "کد محصول")]
-    public long? ProductCode { get; set; }
+    public int? ProductCode { get; set; }
+
+    [EqualSearch]
+    [Display(Name = "محصول اصل /غیر اصل")]
+    public bool? IsFake { get; set; }
 
     public List<SelectListItem> Categories { get; set; }
 

@@ -8,6 +8,7 @@ public interface IProductService : IGenericService<Product>
 {
     Task<ShowProductsViewModel> GetProducts(ShowProductsViewModel model);
     Task<ShowProductsInSellerPanelViewModel> GetProductsInSellerPanel(ShowProductsInSellerPanelViewModel model);
+    Task<ShowAllProductsInSellerPanelViewModel> GetAllProductsInSellerPanel(ShowAllProductsInSellerPanelViewModel model);
     Task<List<string>> GetPersianTitlesForAutocomplete(string input);
     Task<ProductDetailsViewModel> GetProductDetails(long productId);
 
@@ -25,4 +26,12 @@ public interface IProductService : IGenericService<Product>
     /// </summary>
     /// <returns></returns>
     Task<int> GetProductCodeForCreateProduct();
+
+    /// <summary>
+    /// جستجو محصولات بر اساس نام فارسی محصول
+    /// استفاده شده در صفحه مدیریت محصولات پنل فروشنده
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    Task<List<string>> GetPersianTitlesForAutocompleteInSellerPanel(string input);
 }

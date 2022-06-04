@@ -34,6 +34,14 @@
                     <span class="span-error-message" asp-validation-for="Products.SearchProducts.ProductCode"></span>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
+                    <label class="form-label" asp-for="Products.SearchProducts.IsFake"></label>
+                    <select class="form-select" asp-for="Products.SearchProducts.IsFake">
+                        <option value="">همه</option>
+                        <option value="false">اصل</option>
+                        <option value="true">غیر اصل</option>
+                    </select>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3 my-2">
                     <label class="form-label" asp-for="Products.SearchProducts.Status"></label>
                     <select class="form-select" asp-for="Products.SearchProducts.Status" asp-items="Html.GetEnumSelectList<ProEShop.Entities.ProductStatus>()">
                         <option value="">همه</option>

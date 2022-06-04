@@ -1,7 +1,5 @@
-ï»¿using AutoMapper;
 using Ganss.XSS;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using ProEShop.Common;
 using ProEShop.Common.Constants;
 using ProEShop.Common.Helpers;
@@ -10,11 +8,10 @@ using ProEShop.DataLayer.Context;
 using ProEShop.Entities;
 using ProEShop.Services.Contracts;
 using ProEShop.ViewModels.Products;
-using ProEShop.ViewModels.Sellers;
 
 namespace ProEShop.Web.Pages.SellerPanel.Product;
 
-public class IndexModel : PageBase
+public class AllModel : SellerPanelBase
 {
     #region Constructor
 
@@ -25,7 +22,7 @@ public class IndexModel : PageBase
     private readonly IUnitOfWork _uow;
     private readonly IHtmlSanitizer _htmlSanitizer;
 
-    public IndexModel(
+    public AllModel(
         IProductService productService,
         ISellerService sellerService,
         ICategoryService categoryService,
@@ -44,13 +41,13 @@ public class IndexModel : PageBase
     #endregion
 
     [BindProperty(SupportsGet = true)]
-    public ShowProductsInSellerPanelViewModel Products { get; set; }
+    public ShowAllProductsInSellerPanelViewModel Products { get; set; }
         = new();
 
     public void OnGet()
     {
-        Products.SearchProducts.Categories = _categoryService.GetSellerCategories()
-            .Result.CreateSelectListItem(firstItemText: "Ù‡Ù…Ù‡", firstItemValue: string.Empty);
+        Products.SearchProducts.Categories = _categoryService.GetCategoriesWithNoChild()
+            .Result.CreateSelectListItem(firstItemText: "åãå", firstItemValue: string.Empty);
     }
 
     public async Task<IActionResult> OnGetGetDataTableAsync()
@@ -62,7 +59,7 @@ public class IndexModel : PageBase
                 Data = ModelState.GetModelStateErrors()
             });
         }
-        return Partial("List", await _productService.GetProductsInSellerPanel(Products));
+        return Partial("ListForAll", await _productService.GetAllProductsInSellerPanel(Products));
     }
 
     public async Task<IActionResult> OnGetGetProductDetails(long productId)
@@ -77,6 +74,6 @@ public class IndexModel : PageBase
 
     public async Task<IActionResult> OnGetAutocompleteSearchForPersianTitle(string term)
     {
-        return Json(await _productService.GetPersianTitlesForAutocompleteInSellerPanel(term));
+        return Json(await _productService.GetPersianTitlesForAutocomplete(term));
     }
 }

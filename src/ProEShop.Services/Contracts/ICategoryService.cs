@@ -20,4 +20,12 @@ public interface ICategoryService : IGenericService<Category>
     Task<Category> GetCategoryWithItsBrands(long categoryId);
     Task<bool> CanAddFakeProduct(long categoryId);
     Task<(bool isSuccessful, List<long> categoryIds)> GetCategoryParentIds(long categoryId);
+
+    /// <summary>
+    /// فروشنده مورد نظر از چه دسته بندی هایی استفاده کرده است
+    /// آنها را برگشت میزنیم
+    /// جهت استفاده در صفحه مدیریت محصولات در بخش پنل فروشنده
+    /// </summary>
+    /// <returns></returns>
+    Task<Dictionary<long, string>> GetSellerCategories();
 }

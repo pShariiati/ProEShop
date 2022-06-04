@@ -14,7 +14,7 @@
         <div class="card-title">
             جزییات محصول
             <b>
-                <a href="@Model.Slug">
+                <a asp-page="/Product/Index" asp-route-productCode="@Model.ProductCode" asp-route-slug="@Model.Slug">
                     @Model.PersianTitle
                 </a>
             </b>
