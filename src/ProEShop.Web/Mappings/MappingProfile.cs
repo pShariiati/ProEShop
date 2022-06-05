@@ -7,6 +7,7 @@ using ProEShop.ViewModels.CategoryFeatures;
 using ProEShop.ViewModels.FeatureConstantValues;
 using ProEShop.ViewModels.Products;
 using ProEShop.ViewModels.Sellers;
+using ProEShop.ViewModels.Variants;
 
 namespace ProEShop.Web.Mappings;
 
@@ -96,5 +97,7 @@ public class MappingProfile : Profile
         this.CreateMap<Entities.Product, ProductDetailsViewModel>();
         this.CreateMap<Entities.ProductMedia, ProductMediaForProductDetailsViewModel>();
         this.CreateMap<Entities.ProductFeature, ProductFeatureForProductDetailsViewModel>();
+
+        this.CreateMap<Entities.Variant, ShowVariantViewModel>();
     }
 }

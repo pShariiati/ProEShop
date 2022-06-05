@@ -172,38 +172,6 @@
                         }
                     </p>
                 </div>
-                @if (Model.Status == ProductStatus.AwaitingInitialApproval)
-                {
-                    <hr />
-                    <form functionNameToCallInTheEnd="productStatusInManagingProducts"
-                      method="post" asp-page-handler="RejectProduct" class="public-ajax-form">
-                        <input asp-for="Id" />
-                        <div class="text-danger" asp-validation-summary="All"></div>
-                        <div class="mb-3">
-                            <label asp-for="RejectReason" class="mb-3 form-label"></label>
-                            <textarea asp-for="RejectReason" class="custom-tinymce"></textarea>
-                            <span asp-validation-for="RejectReason" class="span-error-message"></span>
-                        </div>
-                        <button type="submit" class="btn btn-warning">ارسال مشکلات محصول</button>
-                    </form>
-
-                    <form functionNameToCallInTheEnd="productStatusInManagingProducts"
-                      method="post" asp-page-handler="ConfirmProduct"
-                      class="mt-3 public-ajax-form">
-                        <input asp-for="Id" />
-                        <button type="submit" class="btn btn-success">تایید کردن محصول</button>
-                    </form>
-                }
-
-                @if (Model.Status == ProductStatus.AwaitingInitialApproval)
-                {
-                    <form functionNameToCallInTheEnd="productStatusInManagingProducts"
-                      method="post" asp-page-handler="RemoveProduct"
-                      class="mt-3 public-ajax-form">
-                        <input asp-for="Id" />
-                        <button type="button" class="delete-row-button btn btn-danger">حذف دائمی محصول</button>
-                    </form>
-                }
             </div>
         </div>
     </div>

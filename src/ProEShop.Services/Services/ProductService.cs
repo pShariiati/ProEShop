@@ -159,7 +159,9 @@ public class ProductService : GenericService<Product>, IProductService
 
     public async Task<ShowAllProductsInSellerPanelViewModel> GetAllProductsInSellerPanel(ShowAllProductsInSellerPanelViewModel model)
     {
-        var products = _products.AsNoTracking().AsQueryable();
+        var products = _products
+            .Where(x => x.Status == ProductStatus.Confirmed)
+            .AsNoTracking().AsQueryable();
 
         #region Search
 
@@ -248,7 +250,7 @@ public class ProductService : GenericService<Product>, IProductService
         var userId = _httpContextAccessor.HttpContext.User.Identity.GetLoggedInUserId();
         var sellerId = await _sellerService.GetSellerId(userId);
         return await _products.Where(x => x.PersianTitle.Contains(input))
-            .Where(x=>x.SellerId == sellerId)
+            .Where(x => x.SellerId == sellerId)
             .AsNoTracking()
             .Take(20)
             .Select(x => x.PersianTitle)
