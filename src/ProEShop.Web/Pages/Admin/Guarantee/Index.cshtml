@@ -1,7 +1,7 @@
 ﻿@page
-@model ProEShop.Web.Pages.Admin.Variant.IndexModel
+@model ProEShop.Web.Pages.Admin.Guarantee.IndexModel
 @{
-    ViewData["Title"] = "تنوع های دسته بندی";
+    ViewData["Title"] = "گارانتی ها";
 }
 
 <div class="card text-dark bg-white border-0 shadow">
@@ -11,12 +11,12 @@
         </h5>
         <div class="d-grid d-lg-block mb-2">
             <a id="add-category-feature-link" asp-page-handler="Add" class="btn btn-outline-primary show-modal-form-button">
-                افزودن تنوع
+                افزودن گارانتی
             </a>
         </div>
         <form class="alert alert-secondary search-form-via-ajax">
-            <input asp-for="Variants.Pagination.CurrentPage" />
-            <input asp-for="Variants.Pagination.PageCount" />
+            <input asp-for="Guarantees.Pagination.CurrentPage" />
+            <input asp-for="Guarantees.Pagination.PageCount" />
             <div asp-validation-summary="All" class="text-danger"></div>
             <h5>
                 جستجو در
@@ -24,38 +24,30 @@
             </h5>
             <div class="row">
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
-                    <label class="form-label" asp-for="Variants.SearchVariants.Value"></label>
-                    <input class="form-control" asp-for="Variants.SearchVariants.Value" />
-                    <span class="span-error-message" asp-validation-for="Variants.SearchVariants.Value"></span>
+                    <label class="form-label" asp-for="Guarantees.SearchGuarantees.Title"></label>
+                    <input class="form-control" asp-for="Guarantees.SearchGuarantees.Title" />
+                    <span class="span-error-message" asp-validation-for="Guarantees.SearchGuarantees.Title"></span>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
-                    <label class="form-label" asp-for="Variants.SearchVariants.ColorCode"></label>
-                    <input class="form-control" asp-for="Variants.SearchVariants.ColorCode" />
-                    <span class="span-error-message" asp-validation-for="Variants.SearchVariants.ColorCode"></span>
+                    <label class="form-label" asp-for="Guarantees.SearchGuarantees.MonthsCount"></label>
+                    <input class="form-control" asp-for="Guarantees.SearchGuarantees.MonthsCount" />
+                    <span class="span-error-message" asp-validation-for="Guarantees.SearchGuarantees.MonthsCount"></span>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
-                    <label class="form-label" asp-for="Variants.SearchVariants.IsConfirmed"></label>
-                    <select class="form-select" asp-for="Variants.SearchVariants.IsConfirmed">
+                    <label class="form-label" asp-for="Guarantees.SearchGuarantees.IsConfirmed"></label>
+                    <select class="form-select" asp-for="Guarantees.SearchGuarantees.IsConfirmed">
                         <option value="">همه</option>
                         <option value="true">تایید شده</option>
                         <option value="false">تایید نشده</option>
                     </select>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
-                    <label class="form-label" asp-for="Variants.SearchVariants.IsColor"></label>
-                    <select class="form-select" asp-for="Variants.SearchVariants.IsColor">
-                        <option value="">همه</option>
-                        <option value="true">فقط رنگ</option>
-                        <option value="false">فقط اندازه</option>
-                    </select>
+                    <label class="form-label" asp-for="Guarantees.SearchGuarantees.Sorting"></label>
+                    <select class="form-select" asp-for="Guarantees.SearchGuarantees.Sorting" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.Guarantees.SortingGuarantees>()"></select>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
-                    <label class="form-label" asp-for="Variants.SearchVariants.Sorting"></label>
-                    <select class="form-select" asp-for="Variants.SearchVariants.Sorting" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.Variants.SortingVariants>()"></select>
-                </div>
-                <div class="col-12 col-sm-6 col-lg-3 my-2">
-                    <label class="form-label" asp-for="Variants.SearchVariants.SortingOrder"></label>
-                    <select class="form-select" asp-for="Variants.SearchVariants.SortingOrder" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.SortingOrder>()"></select>
+                    <label class="form-label" asp-for="Guarantees.SearchGuarantees.SortingOrder"></label>
+                    <select class="form-select" asp-for="Guarantees.SearchGuarantees.SortingOrder" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.SortingOrder>()"></select>
                 </div>
                 <div class="col-12 my-2">
                     <div class="d-grid d-lg-block">
@@ -83,7 +75,7 @@
 <script src="~/lib/select2/js/i18n/fa.min.js"></script>
 }
 @section CustomScripts{
-<script src="~/Pages/Admin/Variant/Index.cshtml.js"></script>
+<script src="~/Pages/Admin/Guarantee/Index.cshtml.js"></script>
 }
 @section Styles
 {

@@ -26,6 +26,9 @@ public class ShowVariantViewModel
 
     [Display(Name = "رنگ / اندازه")]
     public bool IsColor { get; set; }
+
+    [Display(Name = "وضعیت")]
+    public bool IsConfirmed { get; set; }
 }
 
 public class SearchVariantsViewModel
@@ -37,6 +40,9 @@ public class SearchVariantsViewModel
     [ContainsSearch]
     [Display(Name = "کد رنگ")]
     public string ColorCode { get; set; }
+
+    [Display(Name = "وضعیت")]
+    public bool? IsConfirmed { get; set; }
 
     [EqualSearch]
     [Display(Name = "رنگ / اندازه")]
@@ -55,5 +61,5 @@ public enum SortingVariants
     Id,
 
     [Display(Name = "مقدار")]
-    Value,
+    Value
 }

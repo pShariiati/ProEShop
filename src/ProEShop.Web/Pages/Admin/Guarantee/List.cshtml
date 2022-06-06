@@ -1,49 +1,39 @@
-﻿@model ProEShop.ViewModels.Variants.ShowVariantsViewModel
-@if (Model.Variants.Count > 0)
+﻿@model ProEShop.ViewModels.Guarantees.ShowGuaranteesViewModel
+@if (Model.Guarantees.Count > 0)
 {
     <div class="table-responsive data-table-body">
         <table class="table table-bordered table-striped table-hover">
             <thead class="table-light">
                 <tr>
-                    <th>@Html.DisplayNameFor(x => x.Variants[0].Id)</th>
-                    <th>@Html.DisplayNameFor(x => x.Variants[0].Value)</th>
-                    <th>@Html.DisplayNameFor(x => x.Variants[0].IsConfirmed)</th>
-                    <th>@Html.DisplayNameFor(x => x.Variants[0].IsColor)</th>
+                    <th>@Html.DisplayNameFor(x => x.Guarantees[0].Id)</th>
+                    <th>@Html.DisplayNameFor(x => x.Guarantees[0].FullTitle)</th>
+                    <th>@Html.DisplayNameFor(x => x.Guarantees[0].Title)</th>
+                    <th>@Html.DisplayNameFor(x => x.Guarantees[0].Picture)</th>
+                    <th>@Html.DisplayNameFor(x => x.Guarantees[0].MonthsCount)</th>
+                    <th>@Html.DisplayNameFor(x => x.Guarantees[0].IsConfirmed)</th>
                     <th>عملیات</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var variant in Model.Variants)
+                @foreach (var guarantee in Model.Guarantees)
                 {
                     <tr>
-                        <td>@variant.Id</td>
-                        <td>
-                            @variant.Value
-                            @if (variant.IsColor)
-                            {
-                                <span class="rounded" style="background: @variant.ColorCode">
-                                    &nbsp;
-                                    &nbsp;
-                                    &nbsp;
-                                </span>
-                            }
+                        <td>@guarantee.Id</td>
+                        <td>@guarantee.FullTitle</td>
+                        <td>@guarantee.Title</td>
+                        <td class="text-center">
+                            <img src="~/images/guarantees/@guarantee.Picture" width="100" alt="@guarantee.FullTitle" />
                         </td>
+                        <td>@guarantee.MonthsCount</td>
                         <td>
                             <div class="d-grid">
-                                <button class="btn btn-@(variant.IsConfirmed ? "success" : "warning")">
-                                    @(variant.IsConfirmed ? "تایید شده" : "تایید نشده")
+                                <button class="btn btn-@(guarantee.IsConfirmed ? "success" : "warning")">
+                                    @(guarantee.IsConfirmed ? "تایید شده" : "تایید نشده")
                                 </button>
                             </div>
                         </td>
                         <td>
-                            <div class="d-grid">
-                                <button class="btn btn-@(variant.IsColor ? "warning" : "primary")">
-                                    @(variant.IsColor ? "رنگ" : "اندازه")
-                                </button>
-                            </div>
-                        </td>
-                        <td>
-                            <a custom-title="ویرایش تنوع" asp-page-handler="Edit" asp-route-id="@variant.Id" class="btn btn-warning show-modal-form-button">
+                            <a custom-title="ویرایش گارانتی" asp-page-handler="Edit" asp-route-id="@guarantee.Id" class="btn btn-warning show-modal-form-button">
                                 ویرایش
                             </a>
                         </td>
