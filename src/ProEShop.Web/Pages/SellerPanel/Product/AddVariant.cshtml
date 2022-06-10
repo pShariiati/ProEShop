@@ -1,0 +1,94 @@
+﻿@page "{productId}"
+@model ProEShop.Web.Pages.SellerPanel.Product.AddVariantModel
+@{
+    ViewData["Title"] = "افزودن تنوع برای";
+}
+
+<div class="row">
+    <div class="card text-dark bg-white border-0 shadow">
+        <div class="card-body">
+            <div class="alert alert-danger">
+                توجه:
+                <br />
+                لطفاً قبل از درج تنوع، مشخصات فنی کالا (مانند: رنگ، ابعاد، اقلام همراه کالا، جنس کالا، تصویر بسته‌بندی و ...) را در سایت چک کرده و اطمینان حاصل کنید که تنوع شما با مشخصات فنی کالا در سایت مطابقت داشته باشد.
+            </div>
+            <div class="row">
+                <div class="col-md-3 text-center">
+                    <img src="~/images/products/0e5f216893894b1db93cdd492a45ba16.jpg" class="w-50" alt="test" />
+                </div>
+                <div class="col-md-9">
+                    <div class="alert alert-secondary">
+                        <p class="mb-3 text-center text-primary">
+                            <a asp-page="/Product/Index" asp-route-slug="@Model.Variant.Slug" asp-route-productCode="@Model.Variant.ProductCode" target="_blank">
+                                @Model.Variant.ProductTitle
+                            </a>
+                        </p>
+                        <div class="row text-center">
+                            <div class="col-md-3">
+                                دسته بندی:
+                                @Model.Variant.CategoryTitle
+                            </div>
+                            <div class="col-md-3">
+                                تنوع مجاز این کالا:
+                                @(Model.Variant.CategoryIsVariantColor ? "رنگ" : "سایز")
+                            </div>
+                            <div class="col-md-3">
+                                برند کالا:
+                                @Model.Variant.BrandFullTitle
+                            </div>
+                            <div class="col-md-3">
+                                کمیسیون فروش این کالا:
+                                %@Model.Variant.CommissionPercentage
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <form>
+                <div class="row mt-5">
+                    <div>
+                        <label class="d-flex justify-content-between form-label">
+                            <span>
+                                تست
+                            </span>
+                            <a id="request-new-guarantee" asp-page-handler="RequestForAddGuarantee" class="text-info border-bottom-dashed show-modal-form-button">
+                                درخواست
+                                گارانتی جدید
+                            </a>
+                        </label>
+                        <input asp-for="Variant.GuaranteeId" class="form-control" />
+                        <span asp-validation-for="Variant.GuaranteeId" class="span-error-message"></span>
+                    </div>
+                    <div class="my-2">
+                        <label class="d-flex justify-content-between form-label">
+                            <span>
+                                تست
+                            </span>
+                            <a id="request-new-variant" asp-page-handler="RequestForAddVariant" class="text-info border-bottom-dashed show-modal-form-button">
+                                درخواست
+                                سایز جدید
+                            </a>
+                        </label>
+                        <span asp-validation-for="Variant.VariantId" class="span-error-message"></span>
+                        <div class="border border-1 rounded mt-2 p-2" id="all-variant-box">
+                            <button class="p-2 badge rounded-pill bg-primary border-0">1 * 1 سانتی متر</button>
+                        </div>
+                    </div>
+                    <div class="my-2">
+                        <label class="d-flex justify-content-between form-label" asp-for="Variant.Price">
+                        </label>
+                        <input asp-for="Variant.Price" class="form-control" />
+                        <span asp-validation-for="Variant.Price" class="span-error-message"></span>
+                    </div>
+                </div>
+                <div class="d-grid">
+                    <input type="submit" class="btn btn-primary" value="افزودن تنوع" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+<partial name="_ValidationScriptsPartial" />
+}

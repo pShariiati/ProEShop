@@ -102,5 +102,25 @@ public class MappingProfile : Profile
         this.CreateMap<Entities.Variant, ShowVariantViewModel>();
 
         this.CreateMap<Entities.Guarantee, ShowGuaranteeViewModel>();
+
+        this.CreateMap<Entities.Product, AddVariantViewModel>()
+            .ForMember(dest => dest.ProductId,
+                options =>
+                    options.MapFrom(src => src.Id))
+            .ForMember(dest => dest.ProductTitle,
+                options =>
+                    options.MapFrom(src => src.PersianTitle))
+            .ForMember(dest => dest.CommissionPercentage,
+                options =>
+                    options.MapFrom(
+                        src => src.Category.CategoryBrands
+                            .Select(x => new
+                            {
+                                x.BrandId,
+                                x.CommissionPercentage
+                            })
+                            .Single(x => x.BrandId == src.BrandId)
+                            .CommissionPercentage
+                        ));
     }
 }

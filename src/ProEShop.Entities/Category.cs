@@ -32,6 +32,8 @@ public class Category : EntityBase, IAuditableEntity
 
     public bool CanAddFakeProduct { get; set; }
 
+    public bool IsVariantColor { get; set; }
+
     #endregion
 
     #region Relations

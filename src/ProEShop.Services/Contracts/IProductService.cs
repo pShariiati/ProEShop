@@ -1,6 +1,7 @@
 ﻿using ProEShop.Entities;
 using ProEShop.ViewModels.Brands;
 using ProEShop.ViewModels.Products;
+using ProEShop.ViewModels.Variants;
 
 namespace ProEShop.Services.Contracts;
 
@@ -34,4 +35,12 @@ public interface IProductService : IGenericService<Product>
     /// <param name="input"></param>
     /// <returns></returns>
     Task<List<string>> GetPersianTitlesForAutocompleteInSellerPanel(string input);
+
+    /// <summary>
+    /// گرفتن اطلاعات مربوط به محصول با آیدی مشخص
+    /// جهت استفاده در صفحه افزودن تنوع محصول
+    /// </summary>
+    /// <param name="productId"></param>
+    /// <returns></returns>
+    Task<AddVariantViewModel> GetProductInfoForAddVariant(long productId);
 }

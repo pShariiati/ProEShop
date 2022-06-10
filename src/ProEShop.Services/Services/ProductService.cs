@@ -11,6 +11,7 @@ using ProEShop.ViewModels;
 using ProEShop.ViewModels.Brands;
 using ProEShop.ViewModels.Categories;
 using ProEShop.ViewModels.Products;
+using ProEShop.ViewModels.Variants;
 
 namespace ProEShop.Services.Services;
 
@@ -255,5 +256,12 @@ public class ProductService : GenericService<Product>, IProductService
             .Take(20)
             .Select(x => x.PersianTitle)
             .ToListAsync();
+    }
+
+    public Task<AddVariantViewModel> GetProductInfoForAddVariant(long productId)
+    {
+        return _mapper.ProjectTo<AddVariantViewModel>(
+            _products
+        ).SingleOrDefaultAsync(x => x.ProductId == productId);
     }
 }

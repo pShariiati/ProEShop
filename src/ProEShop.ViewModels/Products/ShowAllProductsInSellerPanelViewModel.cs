@@ -33,9 +33,6 @@ public class ShowAllProductInSellerPanelViewModel
     [Display(Name = "برند محصول")]
     public string BrandFullTitle { get; set; }
 
-    [Display(Name = "وضعیت محصول")]
-    public ProductStatus Status { get; set; }
-
     [Display(Name = "دسته بندی اصلی")]
     public string CategoryTitle { get; set; }
 

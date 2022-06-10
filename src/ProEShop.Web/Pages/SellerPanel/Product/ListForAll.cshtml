@@ -14,7 +14,6 @@
                     <th>@Html.DisplayNameFor(x => x.Products[0].MainPicture)</th>
                     <th>@Html.DisplayNameFor(x => x.Products[0].SellerShopName)</th>
                     <th>@Html.DisplayNameFor(x => x.Products[0].BrandFullTitle)</th>
-                    <th>@Html.DisplayNameFor(x => x.Products[0].Status)</th>
                     <th>عملیات</th>
                 </tr>
             </thead>
@@ -32,24 +31,12 @@
                         <td>@product.SellerShopName</td>
                         <td>@product.BrandFullTitle</td>
                         <td>
-                            @{
-                                string GetButtonClass(ProductStatus status) => status switch
-                                {
-                                    ProductStatus.Confirmed => "success",
-                                    ProductStatus.AwaitingInitialApproval => "warning",
-                                    _ => "danger"
-                                };
-                            }
-                            <div class="d-grid">
-                                <span class="btn btn-@GetButtonClass(product.Status)" type="button">
-                                    @product.Status.GetEnumDisplayName()
-                                </span>
-                            </div>
-                        </td>
-                        <td>
                             <button product-id="@product.Id" functionNameToCallOnClick="getProductDetails" type="button" class="get-html-with-ajax btn btn-info">
                                 جزییات محصول
                             </button>
+                            <a asp-page="./AddVariant" asp-route-productId="@product.Id" class="btn btn-primary">
+                                شما هم فروشده شوید
+                            </a>
                         </td>
                     </tr>
                 }

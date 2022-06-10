@@ -77,7 +77,9 @@
                                 </div>
                                 <div class="my-2 col-md-6 col-lg-4">
                                     <label class="d-flex justify-content-between form-label" asp-for="Product.BrandId">
-                                        <div>اصالت کالا</div>
+                                        <span>
+                                            @Html.DisplayNameFor(x => x.Product.BrandId)
+                                        </span>
                                         <a id="request-new-brand-url" asp-page-handler="RequestForAddBrand" class="text-info border-bottom-dashed show-modal-form-button">
                                             درخواست برند جدید
                                         </a>
