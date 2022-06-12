@@ -121,6 +121,14 @@ public class MappingProfile : Profile
                             })
                             .Single(x => x.BrandId == src.BrandId)
                             .CommissionPercentage
-                        ));
+                        ))
+            .ForMember(dest => dest.MainPicture,
+                options =>
+                    options.MapFrom(src => src.ProductMedia.First().FileName))
+            .ForMember(dest => dest.Variants,
+            options =>
+                options.MapFrom(src => src.Category.CategoryVariants));
+
+        this.CreateMap<Entities.CategoryVariant, ShowCategoryVariantInAddVariantViewModel>();
     }
 }

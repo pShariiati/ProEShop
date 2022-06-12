@@ -19,6 +19,7 @@ public class AddVariantModel : PageModel
 
     #endregion
 
+    [BindProperty]
     public AddVariantViewModel Variant { get; set; }
 
     public async Task<IActionResult> OnGet(long productId)
@@ -31,5 +32,14 @@ public class AddVariantModel : PageModel
 
         Variant = productInfo;
         return Page();
+    }
+
+    public IActionResult OnPost()
+    {
+        if (!ModelState.IsValid)
+        {
+
+        }
+        return RedirectToPage("Test");
     }
 }
