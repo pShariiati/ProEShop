@@ -125,6 +125,8 @@ public class Seller : EntityBase, IAuditableEntity
 
     public ICollection<Brand> Brands { get; set; }
 
+    public ICollection<ProductVariant> ProductVariants { get; set; }
+
     #endregion
 }
 

@@ -19,11 +19,11 @@ public class AddVariantViewModel
     public long VariantId { get; set; }
 
     [Display(Name = "گارانتی")]
-    [Range(1, long.MaxValue, ErrorMessage = AttributesErrorMessages.RequiredMessage)]
+    [Range(1, long.MaxValue, ErrorMessage = AttributesErrorMessages.RegularExpressionMessage)]
     public long GuaranteeId { get; set; }
 
     [Display(Name = "قیمت")]
-    [Range(1, int.MaxValue, ErrorMessage = AttributesErrorMessages.RequiredMessage)]
+    [Range(1, 2000000000, ErrorMessage = AttributesErrorMessages.RangeMessage)]
     public int Price { get; set; }
 
     public string ProductTitle { get; set; }

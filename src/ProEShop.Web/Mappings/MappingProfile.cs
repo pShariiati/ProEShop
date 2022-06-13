@@ -130,5 +130,7 @@ public class MappingProfile : Profile
                 options.MapFrom(src => src.Category.CategoryVariants));
 
         this.CreateMap<Entities.CategoryVariant, ShowCategoryVariantInAddVariantViewModel>();
+
+        this.CreateMap<AddVariantViewModel, Entities.ProductVariant>();
     }
 }
