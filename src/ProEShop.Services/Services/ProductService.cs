@@ -103,10 +103,10 @@ public class ProductService : GenericService<Product>, IProductService
 
     public async Task<ShowProductsInSellerPanelViewModel> GetProductsInSellerPanel(ShowProductsInSellerPanelViewModel model)
     {
-        var userId = _httpContextAccessor.HttpContext.User.Identity.GetLoggedInUserId();
-        var sellerId = await _sellerService.GetSellerId(userId);
+        var sellerId = await _sellerService.GetSellerId();
         var products = _products.AsNoTracking()
-            .Where(x => x.SellerId == sellerId)
+            .Where(x => x.SellerId == sellerId || x.ProductVariants
+                .Any(pv => pv.SellerId == sellerId))
             .AsQueryable();
 
         #region Search

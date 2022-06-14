@@ -1,0 +1,52 @@
+﻿@model List<ProEShop.ViewModels.ProductVariants.ShowProductVariantViewModel>
+<div class="card">
+    <div class="card-body">
+        @if (Model.Count > 0)
+        {
+            <div class="table-responsive data-table-body">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>@Html.DisplayNameFor(x=>x[0].VariantValue)</th>
+                            <th>@Html.DisplayNameFor(x=>x[0].GuaranteeTitle)</th>
+                            <th>@Html.DisplayNameFor(x=>x[0].Price)</th>
+                            <th>عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var productVariant in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @productVariant.VariantValue
+                                    @if (productVariant.VariantIsColor)
+                                    {
+                                        <span class="rounded" style="background: @productVariant.VariantColorCode">
+                                            &nbsp;
+                                            &nbsp;
+                                            &nbsp;
+                                        </span>
+                                    }
+                                </td>
+                                <td>@productVariant.GuaranteeTitle</td>
+                                <td>
+                                    @productVariant.Price
+                                    تومان
+                                </td>
+                                <td>
+                                    <button class="btn btn-warning">
+                                        ویرایش
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <partial name="_RecordNotFound" />
+        }
+    </div>
+</div>

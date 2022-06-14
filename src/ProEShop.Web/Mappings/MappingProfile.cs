@@ -7,6 +7,7 @@ using ProEShop.ViewModels.CategoryFeatures;
 using ProEShop.ViewModels.FeatureConstantValues;
 using ProEShop.ViewModels.Guarantees;
 using ProEShop.ViewModels.Products;
+using ProEShop.ViewModels.ProductVariants;
 using ProEShop.ViewModels.Sellers;
 using ProEShop.ViewModels.Variants;
 
@@ -132,5 +133,7 @@ public class MappingProfile : Profile
         this.CreateMap<Entities.CategoryVariant, ShowCategoryVariantInAddVariantViewModel>();
 
         this.CreateMap<AddVariantViewModel, Entities.ProductVariant>();
+
+        this.CreateMap<Entities.ProductVariant, ShowProductVariantViewModel>();
     }
 }

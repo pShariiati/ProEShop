@@ -14,9 +14,6 @@ function showProductDetailsInModal(result, clickedButton) {
     currnetModal.find('.modal-body').html(result);
     currnetModal.modal('show');
     $('#html-modal-place .modal-header h5').html($(clickedButton).text().trim());
-    initializeTinyMCE();
-    $.validator.unobtrusive.parse($('#html-modal-place form'));
-    activatingDeleteButtons(true);
 }
 
 // بعد از تایید و یا رد کردن محصول گرید را رفرش میکنیم

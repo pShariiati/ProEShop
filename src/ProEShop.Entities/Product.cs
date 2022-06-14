@@ -71,6 +71,8 @@ public class Product : EntityBase, IAuditableEntity
 
     public Category Category { get; set; }
 
+    public ICollection<ProductVariant> ProductVariants { get; set; }
+
     #endregion
 }
 

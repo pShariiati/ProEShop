@@ -1,7 +1,9 @@
 ﻿using System.Linq.Expressions;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using ProEShop.Common.Helpers;
+using ProEShop.Common.IdentityToolkit;
 using ProEShop.DataLayer.Context;
 using ProEShop.Entities;
 using ProEShop.Services.Contracts;
@@ -15,10 +17,16 @@ public class SellerService : GenericService<Seller>, ISellerService
 {
     private readonly DbSet<Seller> _sellers;
     private readonly IMapper _mapper;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public SellerService(IUnitOfWork uow, IMapper mapper) : base(uow)
+    public SellerService(
+        IUnitOfWork uow,
+        IMapper mapper,
+        IHttpContextAccessor httpContextAccessor)
+        : base(uow)
     {
         _mapper = mapper;
+        _httpContextAccessor = httpContextAccessor;
         _sellers = uow.Set<Seller>();
     }
 
@@ -165,6 +173,20 @@ public class SellerService : GenericService<Seller>, ISellerService
 
     public async Task<long> GetSellerId(long userId)
     {
+        var seller = await _sellers
+            .Select(x => new
+            {
+                x.Id,
+                x.UserId
+            })
+            .SingleAsync(x => x.UserId == userId);
+        return seller.Id;
+    }
+
+    public async Task<long> GetSellerId()
+    {
+        var userId = _httpContextAccessor.HttpContext.User
+            .Identity.GetLoggedInUserId();
         var seller = await _sellers
             .Select(x => new
             {
