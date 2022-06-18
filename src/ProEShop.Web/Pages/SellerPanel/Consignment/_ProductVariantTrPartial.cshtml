@@ -1,0 +1,30 @@
+﻿@model ProEShop.ViewModels.ProductVariants.ShowProductVariantInCreateConsignmentViewModel
+
+<tr>
+    <td>@Model.ProductId</td>
+    <td>@Model.ProductPersianTitle</td>
+    <td>
+        @Model.VariantValue
+        @if (Model.VariantIsColor)
+        {
+            <span class="rounded" style="background: @Model.VariantColorCode">
+                &nbsp;
+                &nbsp;
+                &nbsp;
+            </span>
+        }
+    </td>
+    <td>@Model.GuaranteeFullTitle</td>
+    <td>
+        @Model.Price
+        تومان
+    </td>
+    <td class="text-center">
+        <input class="form-control text-center" type="number" value="1" />
+    </td>
+    <td class="text-center align-middle">
+        <button class="btn remove-product-variant-tr">
+            <i class="bi bi-trash-fill text-danger"></i>
+        </button>
+    </td>
+</tr>

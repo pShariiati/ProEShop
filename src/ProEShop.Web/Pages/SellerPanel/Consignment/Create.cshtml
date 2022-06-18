@@ -1,0 +1,51 @@
+﻿@page
+@model ProEShop.Web.Pages.SellerPanel.Consignment.CreateModel
+@{
+    ViewData["Title"] = "ایجاد محموله به سمت انبار پروشاپ";
+}
+
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">
+            @ViewData["Title"]
+        </div>
+    </div>
+    <div class="card-body">
+        <form asp-page-handler="GetConsignmentTr" functionNameToCallInTheEnd="appendProductVariantTr"
+              method="post" class="get-html-by-sending-form">
+            <div class="mb-3">
+                <label class="form-label" asp-for="VariantCode"></label>
+                <input class="form-control" asp-for="VariantCode" value="" />
+                <span class="span-error-message" asp-validation-for="VariantCode"></span>
+            </div>
+            <button class="btn btn-primary">
+                افزودن محصول به محموله
+            </button>
+        </form>
+        <hr />
+        <div class="table-responsive data-table-body">
+            <table class="table table-bordered table-striped table-hover">
+                <thead class="table-light">
+                <tr>
+                    <th>شناسه محصول</th>
+                    <th>عنوان محصول</th>
+                    <th>مقدار تنوع</th>
+                    <th>گارانتی محصول</th>
+                    <th>قیمت محصول</th>
+                    <th>تعداد</th>
+                    <th>عملیات</th>
+                </tr>
+                </thead>
+                <tbody id="consignment-items"></tbody>
+            </table>
+            <partial name="Shared/_RecordNotFound" />
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
+@section CustomScripts{
+    <script src="~/Pages/SellerPanel/Consignment/Create.cshtml.js"></script>
+}

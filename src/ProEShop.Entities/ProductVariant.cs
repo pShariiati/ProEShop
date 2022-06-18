@@ -10,6 +10,7 @@ namespace ProEShop.Entities;
     nameof(ProductVariant.ProductId),
     nameof(ProductVariant.VariantId),
     IsUnique = true)]
+[Index(nameof(ProductVariant.VariantCode), IsUnique = true)]
 public class ProductVariant : EntityBase, IAuditableEntity
 {
     #region Properties
@@ -23,6 +24,8 @@ public class ProductVariant : EntityBase, IAuditableEntity
     public long SellerId { get; set; }
 
     public int Price { get; set; }
+
+    public int VariantCode { get; set; }
 
     #endregion
 

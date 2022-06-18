@@ -37,4 +37,20 @@ public class ProductVariantService : GenericService<ProductVariant>, IProductVar
                 .Where(x => x.SellerId == sellerId)
         ).ToListAsync();
     }
+
+    public async Task<int> GetVariantCodeForCreateProductVariant()
+    {
+        var lastProductVariantNumber = await _productVariants.OrderByDescending(x => x.Id)
+            .Select(x => x.VariantCode)
+            .FirstOrDefaultAsync();
+        return lastProductVariantNumber + 1;
+    }
+
+    public async Task<ShowProductVariantInCreateConsignmentViewModel> GetProductVariantForCreateConsignment(int variantCode)
+    {
+        var sellerId = await _sellerService.GetSellerId();
+        return await _mapper.ProjectTo<ShowProductVariantInCreateConsignmentViewModel>(
+            _productVariants.Where(x => x.SellerId == sellerId)
+        ).SingleOrDefaultAsync(x => x.VariantCode == variantCode);
+    }
 }

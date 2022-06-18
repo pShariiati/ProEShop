@@ -632,6 +632,46 @@ $(document).on('submit', 'form.public-ajax-form', function (e) {
     });
 });
 
+// این فانکشن هر فرمی را به صورت پست به سمت سرور با استفاده از ایجکس
+// ارسال میکند و یک صفحه اچ تی ام ال برگشت میزند
+$(document).on('submit', '.get-html-by-sending-form', function (e) {
+    e.preventDefault();
+    var currentForm = $(this);
+    var formAction = currentForm.attr('action');
+    var functionName = currentForm.attr('functionNameToCallInTheEnd');
+    var formData = new FormData(this);
+    $.ajax({
+        url: formAction,
+        data: formData,
+        type: 'POST',
+        enctype: 'multipart/form-data',
+        dataType: 'html',
+        processData: false,
+        contentType: false,
+        beforeSend: function () {
+            $('#html-modal-place').modal('hide');
+            showLoading();
+        },
+        success: function (data) {
+            if (data.isSuccessful === false) {
+                //var finalData = data.data != null ? data.data : [data.message];
+                var finalData = data.data || [data.message];
+                fillValidationForm(finalData, currentForm);
+                showToastr('warning', data.message);
+            }
+            else {
+                window[functionName](data);
+            }
+        },
+        complete: function () {
+            hideLoading();
+        },
+        error: function () {
+            showErrorMessage();
+        }
+    });
+});
+
 // فعالساز مربوط به تعداد آیتم در هر صفحه
 function activatingPageCount() {
     $('#page-count-selectbox').change(function () {

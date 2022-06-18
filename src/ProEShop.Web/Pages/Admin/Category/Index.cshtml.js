@@ -29,7 +29,7 @@ function onAutocompleteSelect(event, ui) {
         showToastr('error', 'درصد کمیسیون باید بین 1 تا 20 درصد باشد');
         return;
     }
-    if ($('#add-brand-to-category-form input[type="hidden"][value^="' + enteredBrand + '"]').length == 0) {
+    if ($('#add-brand-to-category-form input[type="hidden"][value^="' + enteredBrand + '|||"]').length == 0) {
         var brandBoxToAppend = brandBox.replace('[brand title]', enteredBrand);
         brandBoxToAppend = brandBoxToAppend.replace('[commission percentage]', commissionPercentage);
         $('#empty-selected-brands').addClass('d-none');
@@ -46,7 +46,7 @@ function onAutocompleteSelect(event, ui) {
 $(document).on('click', '.remove-selected-brand', function () {
     var selectedBrandText = $(this).parent().find('button:first').text().trim();
     $(this).parent().remove();
-    $('#add-brand-to-category-form input[value^="' + selectedBrandText + '"]').remove();
+    $('#add-brand-to-category-form input[value^="' + selectedBrandText + '|||"]').remove();
     showToastr('success', 'برند مورد نظر با موفقیت از این دسته بندی حذف شد')
     if ($('#selected-brands-box .btn-group').length == 0) {
         $('#empty-selected-brands').removeClass('d-none');

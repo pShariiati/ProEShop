@@ -16,4 +16,7 @@ public class ShowProductVariantViewModel
 
     [Display(Name = "قیمت")]
     public int Price { get; set; }
+
+    [Display(Name = "کد تنوع")]
+    public int VariantCode { get; set; }
 }

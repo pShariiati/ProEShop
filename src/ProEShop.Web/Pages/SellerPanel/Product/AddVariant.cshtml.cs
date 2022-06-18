@@ -62,6 +62,7 @@ public class AddVariantModel : SellerPanelBase
         }
 
         var productVariantToAdd = _mapper.Map<Entities.ProductVariant>(Variant);
+        productVariantToAdd.VariantCode = await _productVariantService.GetVariantCodeForCreateProductVariant();
 
         // Get seller id for entity
         var userId = User.Identity.GetLoggedInUserId();
