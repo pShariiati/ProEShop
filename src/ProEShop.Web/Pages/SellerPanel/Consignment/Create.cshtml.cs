@@ -5,6 +5,7 @@ using ProEShop.Common.Constants;
 using ProEShop.Common.Helpers;
 using ProEShop.Common.IdentityToolkit;
 using ProEShop.Services.Contracts;
+using ProEShop.ViewModels.Consignments;
 
 namespace ProEShop.Web.Pages.SellerPanel.Consignment;
 
@@ -13,10 +14,14 @@ public class CreateModel : SellerPanelBase
     #region Constructor
 
     private readonly IProductVariantService _productVariantService;
+    private readonly IViewRendererService _viewRendererService;
 
-    public CreateModel(IProductVariantService productVariantService)
+    public CreateModel(
+        IProductVariantService productVariantService,
+        IViewRendererService viewRendererService)
     {
         _productVariantService = productVariantService;
+        _viewRendererService = viewRendererService;
     }
 
     #endregion
@@ -26,6 +31,8 @@ public class CreateModel : SellerPanelBase
     [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
     [Range(1, int.MaxValue, ErrorMessage = AttributesErrorMessages.RegularExpressionMessage)]
     public int VariantCode { get; set; }
+
+    public CreateConsignmentViewModel CreateConsignment { get; set; }
 
     public void OnGet()
     {
@@ -47,6 +54,11 @@ public class CreateModel : SellerPanelBase
             return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
         }
 
-        return Partial("_ProductVariantTrPartial", productVariant);
+        return Json(new JsonResultOperation(true, string.Empty)
+        {
+            Data = await _viewRendererService.RenderViewToStringAsync(
+                "~/Pages/SellerPanel/Consignment/_ProductVariantTrPartial.cshtml",
+                productVariant)
+        });
     }
 }

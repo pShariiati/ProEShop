@@ -645,7 +645,7 @@ $(document).on('submit', '.get-html-by-sending-form', function (e) {
         data: formData,
         type: 'POST',
         enctype: 'multipart/form-data',
-        dataType: 'html',
+        dataType: 'json',
         processData: false,
         contentType: false,
         beforeSend: function () {
@@ -660,7 +660,7 @@ $(document).on('submit', '.get-html-by-sending-form', function (e) {
                 showToastr('warning', data.message);
             }
             else {
-                window[functionName](data);
+                window[functionName](data.data);
             }
         },
         complete: function () {
