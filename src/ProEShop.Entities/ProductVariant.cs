@@ -39,5 +39,7 @@ public class ProductVariant : EntityBase, IAuditableEntity
 
     public Guarantee Guarantee { get; set; }
 
+    public ICollection<ConsignmentItem> ConsignmentItems { get; set; }
+
     #endregion
 }

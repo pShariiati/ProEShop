@@ -38,6 +38,19 @@ public class CreateModel : SellerPanelBase
     {
     }
 
+    public IActionResult OnPost(CreateConsignmentViewModel createConsignment)
+    {
+        if (!ModelState.IsValid)
+        {
+            return Json(new JsonResultOperation(false, PublicConstantStrings.ModelStateErrorMessage)
+            {
+                Data = ModelState.GetModelStateErrors()
+            });
+        }
+
+        return Json(new JsonResultOperation(true, string.Empty));
+    }
+
     public async Task<IActionResult> OnPostGetConsignmentTr()
     {
         if (!ModelState.IsValid)
