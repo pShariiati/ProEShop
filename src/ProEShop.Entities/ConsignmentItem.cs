@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 using ProEShop.Entities.AuditableEntity;
 
 namespace ProEShop.Entities;
 
 [Table("ConsignmentItems")]
+[Index(nameof(ConsignmentItem.ConsignmentId),
+    nameof(ConsignmentItem.ProductVariantId), IsUnique = true)]
 public class ConsignmentItem : EntityBase, IAuditableEntity
 {
     #region Properties

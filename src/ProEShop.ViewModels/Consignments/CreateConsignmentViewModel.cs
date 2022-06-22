@@ -10,4 +10,5 @@ public class CreateConsignmentViewModel
     public string DeliveryDate { get; set; }
 
     public List<string> Variants { get; set; }
+        = new();
 }

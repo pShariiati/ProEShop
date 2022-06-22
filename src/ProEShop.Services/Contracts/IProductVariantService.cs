@@ -22,4 +22,12 @@ public interface IProductVariantService : IGenericService<ProductVariant>
     /// <param name="variantCode"></param>
     /// <returns></returns>
     Task<ShowProductVariantInCreateConsignmentViewModel> GetProductVariantForCreateConsignment(int variantCode);
+
+    /// <summary>
+    /// گرفتن آیدی و کد تنوع در جدول تنوع های محصول برای بخش
+    /// بک اند ساخت محموله
+    /// </summary>
+    /// <param name="variantCodes"></param>
+    /// <returns></returns>
+    Task<List<GetProductVariantInCreateConsignmentViewModel>> GetProductVariantsForCreateConsignment(List<int> variantCodes);
 }

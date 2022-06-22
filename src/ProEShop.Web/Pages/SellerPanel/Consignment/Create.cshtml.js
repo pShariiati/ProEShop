@@ -3,6 +3,8 @@
         var currentVariantCode = $(this).parents('tr').attr('variant-code');
         $('#variant-code-items-form-in-create-consignment')
             .find('input[value="' + currentVariantCode + '"]').remove();
+        $('#variant-code-items-form-in-create-consignment')
+            .find('input[value^="' + currentVariantCode + '|||"]').remove();
         $(this).parents('tr').remove();
         if ($('#consignment-items tr').length === 0) {
             $('#record-not-found-box').removeClass('d-none');
@@ -17,28 +19,27 @@
 
     $('.get-html-by-sending-form').submit(function () {
         var selectedVariantCode = $('#VariantCode').val();
-        if ($('#variant-code-items-form-in-create-consignment input[value="' + selectedVariantCode + '"]').length > 0) {
+        if ($('#variant-code-items-form-in-create-consignment')
+            .find('input:hidden[value^="' + selectedVariantCode + '|||"]').length > 0) {
             showToastr('warning', 'این تنوع محصول از قبل اضافه شده است');
             return false;
         }
     });
 
     $('#variant-code-items-form-in-create-consignment').submit(function () {
-        if ($(this).valid()) {
-            $(this).find('input:hidden').not('input[name="' + rvt + '"]').remove();
-            $(this).find('table tbody tr').each(function () {
-                var currentVariantCode = $(this).attr('variant-code');
-                var currentProductCount = $(this).find('input').val();
-                var parsedProductCount = parseInt(currentProductCount);
-                if (parsedProductCount > maxCount || parsedProductCount < 1) {
-                    showToastr('warning', `تعداد هر محصول باید بین 1 تا ${maxCount} باشد`);
-                    return false;
-                }
-                $('#variant-code-items-form-in-create-consignment').prepend(
-                    `<input name="CreateConsignment.Variants" type="hidden" value="${currentVariantCode}|||${currentProductCount}" />`
-                );
-            });
-        }
+        $(this).find('input:hidden').not('input[name="' + rvt + '"]').remove();
+        $(this).find('table tbody tr').each(function () {
+            var currentVariantCode = $(this).attr('variant-code');
+            var currentProductCount = $(this).find('input').val();
+            var parsedProductCount = parseInt(currentProductCount);
+            if (parsedProductCount > maxCount || parsedProductCount < 1) {
+                showToastr('warning', `تعداد هر محصول باید بین 1 تا ${maxCount} باشد`);
+                return false;
+            }
+            $('#variant-code-items-form-in-create-consignment').prepend(
+                `<input name="CreateConsignment.Variants" type="hidden" value="${currentVariantCode}|||${currentProductCount}" />`
+            );
+        });
     });
 });
 
@@ -49,7 +50,12 @@ function appendProductVariantTr(result) {
     $('#consignment-items tr:last').find('input').attr('max', maxCount);
     var currentVariantCode = $('#consignment-items tr:last').attr('variant-code');
     $('#variant-code-items-form-in-create-consignment').prepend(
-        `<input type="hidden" value="${currentVariantCode}" />`
+        `<input type="hidden" value="${currentVariantCode}|||1" />`
     );
     $('#send-consignment-submit-button').removeAttr('disabled');
+}
+
+function addConsignmentFunction(message, data) {
+    showToastr('success', message);
+    //location.href = data;
 }

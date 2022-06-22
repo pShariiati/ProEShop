@@ -52,6 +52,20 @@ public static class DateTimeHelper
 
     public static ConvertDateForCreateSeller ToGregorianDateForCreateSeller(this string input)
     {
+        var convertedDateTime = ToGregorianDateTime(input);
+        if (!convertedDateTime.IsSuccesful)
+            return new(false);
+        var age = convertedDateTime.Result.GetAge();
+        if (age is < 18 or > 100)
+        {
+            return new(true, false);
+        }
+
+        return new(true, true, convertedDateTime.Result);
+    }
+
+    public static (bool IsSuccesful, DateTime Result) ToGregorianDateTime(this string input)
+    {
         input = input.ToEnglishNumbers();
 
         var splitInput = input.Split('/');
@@ -62,19 +76,12 @@ public static class DateTimeHelper
 
         try
         {
-            var convertedDateTime = new DateTime(year, month, day, new PersianCalendar());
-            var age = convertedDateTime.GetAge();
-            if (age is < 18 or > 100)
-            {
-                return new(true, false);
-            }
-
-            return new(true, true, convertedDateTime);
+            return (true, new DateTime(year, month, day, new PersianCalendar()));
 
         }
         catch
         {
-            return new(false);
+            return (false, new DateTime());
         }
     }
 }

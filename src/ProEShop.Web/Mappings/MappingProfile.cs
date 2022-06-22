@@ -137,5 +137,7 @@ public class MappingProfile : Profile
         this.CreateMap<Entities.ProductVariant, ShowProductVariantViewModel>();
 
         this.CreateMap<Entities.ProductVariant, ShowProductVariantInCreateConsignmentViewModel>();
+
+        this.CreateMap<Entities.ProductVariant, GetProductVariantInCreateConsignmentViewModel>();
     }
 }
