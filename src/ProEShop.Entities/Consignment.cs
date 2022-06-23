@@ -33,9 +33,18 @@ public class Consignment : EntityBase, IAuditableEntity
 
 public enum ConsignmentStatus : byte
 {
+    [Display(Name = "در انتظار تایید")]
     AwaitingApproval,
+
+    [Display(Name = "تایید شده و در انتظار ارسال محموله")]
     ConfirmAndAwaitingForConsignment,
+
+    [Display(Name = "دریافت شده")]
     Received,
+
+    [Display(Name = "رد شده")]
     Rejected,
+
+    [Display(Name = "لغو شده")]
     Canceled
 }

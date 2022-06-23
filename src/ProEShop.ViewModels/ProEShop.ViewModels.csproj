@@ -16,8 +16,4 @@
 	  <ProjectReference Include="..\ProEShop.Entities\ProEShop.Entities.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Consignments\" />
-	</ItemGroup>
-
 </Project>

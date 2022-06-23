@@ -56,8 +56,12 @@ public class ProductVariantService : GenericService<ProductVariant>, IProductVar
 
     public Task<List<GetProductVariantInCreateConsignmentViewModel>> GetProductVariantsForCreateConsignment(List<int> variantCodes)
     {
+        var sellerId = _sellerService.GetSellerId().GetAwaiter().GetResult();
+        //var sellerId = await _sellerService.GetSellerId();
         return _mapper.ProjectTo<GetProductVariantInCreateConsignmentViewModel>(
-            _productVariants.Where(x => variantCodes.Contains(x.VariantCode))
+            _productVariants
+                .Where(x => x.SellerId == sellerId)
+                .Where(x => variantCodes.Contains(x.VariantCode))
         ).ToListAsync();
     }
 }

@@ -32,6 +32,7 @@
 	  <None Remove="Pages\Identity\LoginWithPhoneNumber.cshtml.css" />
 	  <None Remove="Pages\Identity\LoginWithPhoneNumber.cshtml.js" />
 	  <None Remove="Pages\Identity\RegisterLogin.cshtml.css" />
+	  <None Remove="Pages\Inventory\Consignment\Index.cshtml.js" />
 	  <None Remove="Pages\SellerPanel\Consignment\Create.cshtml.js" />
 	  <None Remove="Pages\SellerPanel\Product\AddVariant.cshtml.css" />
 	  <None Remove="Pages\SellerPanel\Product\AddVariant.cshtml.js" />
@@ -60,6 +61,7 @@
 	  <Content Include="Pages\Identity\LoginWithPhoneNumber.cshtml.js" />
 	  <Content Include="Pages\Identity\LoginWithPhoneNumber.cshtml.css" />
 	  <Content Include="Pages\Identity\RegisterLogin.cshtml.css" />
+	  <Content Include="Pages\Inventory\Consignment\Index.cshtml.js" />
 	  <Content Include="Pages\SellerPanel\Consignment\Create.cshtml.js" />
 	  <Content Include="Pages\SellerPanel\Product\AddVariant.cshtml.js" />
 	  <Content Include="Pages\SellerPanel\Product\AddVariant.cshtml.css" />

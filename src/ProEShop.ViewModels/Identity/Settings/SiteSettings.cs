@@ -4,7 +4,6 @@ namespace ProEShop.ViewModels.Identity.Settings;
 
 public class SiteSettings
 {
-    public AdminUserSeed AdminUserSeed { get; set; }
     public string UsersAvatarsFolder { get; set; }
     public string UserDefaultAvatar { get; set; }
     public ConnectionStrings ConnectionStrings { get; set; }
