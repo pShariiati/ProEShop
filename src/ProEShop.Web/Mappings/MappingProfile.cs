@@ -4,6 +4,7 @@ using ProEShop.Entities.Identity;
 using ProEShop.ViewModels.Brands;
 using ProEShop.ViewModels.Categories;
 using ProEShop.ViewModels.CategoryFeatures;
+using ProEShop.ViewModels.ConsignmentItems;
 using ProEShop.ViewModels.Consignments;
 using ProEShop.ViewModels.FeatureConstantValues;
 using ProEShop.ViewModels.Guarantees;
@@ -145,5 +146,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.DeliveryDate,
                 options =>
                     options.MapFrom(src => src.DeliveryDate.ToLongPersianDate()));
+
+        this.CreateMap<Entities.ConsignmentItem, ShowConsignmentItemViewModel>();
     }
 }

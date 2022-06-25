@@ -1,0 +1,53 @@
+#sidebar a, #sidebar i {
+    color: white;
+}
+
+#sidebar li {
+    margin: 5px 0;
+}
+
+#sidebar div i {
+    margin-left: 7px;
+}
+
+#sidebar {
+    height: calc(100vh - 82px);
+    transition: transform .3s;
+    z-index: 999;
+}
+
+@media screen and (max-width:991px) {
+    #sidebar {
+        height: calc(100vh - 56px);
+    }
+}
+
+#sidebar .nav-link i.bi.bi-chevron-left {
+    transform: rotate(-90deg);
+    transition: all .3s;
+}
+
+#sidebar .nav-link.collapsed i.bi.bi-chevron-left {
+    transform: rotate(0deg);
+}
+
+#sidebar.collapse.show {
+    transform: translate(0, 0);
+}
+
+#sidebar.collapsing {
+    transform: translate(100%, 0);
+}
+
+#menus-icon {
+    transition: all .3s;
+    transform: rotate(90deg);
+}
+
+    #menus-icon.collapsed {
+        transform: rotate(0deg);
+    }
+
+#main-content {
+    transition: all .3s;
+}

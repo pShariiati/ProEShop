@@ -72,4 +72,10 @@ public class ConsignmentService : GenericService<Consignment>, IConsignmentServi
             Pagination = paginationResult.Pagination
         };
     }
+
+    public Task<Consignment> GetConsignmentForConfirmation(long consignmentId)
+    {
+        return _consignments.Where(x => x.ConsignmentStatus == ConsignmentStatus.AwaitingApproval)
+            .SingleOrDefaultAsync(x => x.Id == consignmentId);
+    }
 }

@@ -25,3 +25,22 @@ function productStatusInManagingProducts(message) {
     $('#html-modal-place').modal('hide');
     fillDataTable();
 }
+
+function getConsignmentItems(e) {
+    var consignmentId = $(e).attr('consignment-id');
+    getHtmlWithAJAX('?handler=GetConsignmentItems', { consignmentId: consignmentId }, 'showCosignmentItemsInModal', e);
+}
+
+
+function showCosignmentItemsInModal(result, clickedButton) {
+    appendHtmlModalPlaceToBody();
+    var currnetModal = $('#html-modal-place');
+    currnetModal.find('.modal-body').html(result);
+    currnetModal.modal('show');
+    $('#html-modal-place .modal-header h5').html($(clickedButton).text().trim());
+}
+
+function confirmationConsignment(message) {
+    showToastr('success', message);
+    fillDataTable();
+}
