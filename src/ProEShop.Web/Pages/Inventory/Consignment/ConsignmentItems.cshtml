@@ -1,4 +1,5 @@
-﻿@model List<ProEShop.ViewModels.ConsignmentItems.ShowConsignmentItemViewModel>
+﻿@using ProEShop.Common.Helpers
+@model List<ProEShop.ViewModels.ConsignmentItems.ShowConsignmentItemViewModel>
 <div class="table-responsive data-table-body">
     <table class="table table-bordered table-striped table-hover">
         <thead class="table-light">
@@ -9,6 +10,7 @@
                 <th>@Html.DisplayNameFor(x => x[0].ProductVariantVariantValue)</th>
                 <th>@Html.DisplayNameFor(x => x[0].ProductVariantPrice)</th>
                 <th>@Html.DisplayNameFor(x => x[0].Count)</th>
+                <th>@Html.DisplayNameFor(x => x[0].Barcode)</th>
             </tr>
         </thead>
         <tbody>
@@ -34,6 +36,9 @@
                         تومان
                     </td>
                     <td>@consignmentItem.Count</td>
+                    <td>
+                        <img src="data:image/png;base64, @FileHelpers.GenerateBarcode(consignmentItem.Barcode, consignmentItem.ProductVariantProductPersianTitle, consignmentItem.ProductVariantVariantIsColor, consignmentItem.ProductVariantVariantValue)" />
+                    </td>
                 </tr>
             }
         </tbody>

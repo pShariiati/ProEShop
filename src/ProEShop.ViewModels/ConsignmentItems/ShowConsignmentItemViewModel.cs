@@ -27,4 +27,7 @@ public class ShowConsignmentItemViewModel
 
     [Display(Name = "تعداد")]
     public int Count { get; set; }
+
+    [Display(Name = "بارکد")]
+    public string Barcode { get; set; }
 }

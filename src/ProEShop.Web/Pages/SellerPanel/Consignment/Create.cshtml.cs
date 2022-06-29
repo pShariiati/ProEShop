@@ -89,11 +89,12 @@ public class CreateModel : SellerPanelBase
             return Json(new JsonResultOperation(false));
         }
 
-        var consignmentToAdd = new Entities.Consignment()
+        var consignmentToAdd = new Entities.Consignment
         {
-            DeliveryDate = deliveryDate.Result
+            DeliveryDate = deliveryDate.Result,
+            SellerId = await _sellerService.GetSellerId()
         };
-        
+
         // تنوع های اومده از طرف فروشنده رو از پایگاه داده میخونیم
         // آیدی برای استفاده در جدول آیتم های محموله
         // کد تنوع هم برای جستجو در داخل ورودی های کاربر که بفهمیم
@@ -130,11 +131,12 @@ public class CreateModel : SellerPanelBase
             consignmentToAdd.ConsignmentItems.Add(new ConsignmentItem()
             {
                 Count = productCount,
-                ProductVariantId = productVariant.Id
+                ProductVariantId = productVariant.Id,
+                Barcode = $"{productVariant.Id}--{consignmentToAdd.SellerId}"
             });
         }
 
-        consignmentToAdd.SellerId = await _sellerService.GetSellerId();
+        
         await _consignmentService.AddAsync(consignmentToAdd);
         await _uow.SaveChangesAsync();
         return Json(new JsonResultOperation(true, "محموله مورد نظر ایجاد شد")
