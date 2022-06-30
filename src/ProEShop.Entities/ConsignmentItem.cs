@@ -17,11 +17,7 @@ public class ConsignmentItem : EntityBase, IAuditableEntity
     public long ConsignmentId { get; set; }
 
     public int Count { get; set; }
-
-    public ConsignmentItem()
-    {
-        var a = long.MaxValue;
-    }
+    
     [Required]
     [MaxLength(40)]
     // 4--1
