@@ -57,5 +57,5 @@ function appendProductVariantTr(result) {
 
 function addConsignmentFunction(message, data) {
     showToastr('success', message);
-    //location.href = data;
+    location.href = data;
 }

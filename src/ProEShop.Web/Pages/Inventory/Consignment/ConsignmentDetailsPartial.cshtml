@@ -1,0 +1,83 @@
+﻿@using ProEShop.Common.Helpers
+@using ProEShop.Entities
+@model ProEShop.ViewModels.Consignments.ShowConsignmentDetailsViewModel
+@{
+    string GetButtonClass(ConsignmentStatus status) => status switch
+    {
+        ConsignmentStatus.Received => "success",
+        ConsignmentStatus.ConfirmAndAwaitingForConsignment => "primary",
+        ConsignmentStatus.AwaitingApproval => "warning",
+        ConsignmentStatus.Rejected
+            or
+            ConsignmentStatus.Canceled => "danger",
+        _ => "danger"
+        };
+}
+<div class="alert alert-primary">
+    <span class="btn btn-primary">
+        تاریخ تحویل:
+        @Model.DeliveryDate
+    </span>
+    <span class="btn btn-@GetButtonClass(Model.ConsignmentStatus)">
+        @Model.ConsignmentStatus.GetEnumDisplayName()
+    </span>
+    <span class="btn btn-dark">@Model.SellerShopName</span>
+    <span>
+        <img src="data:image/png;base64, @FileHelpers.GenerateConsignmentBarcode(Model.Id.ToString(), Model.SellerShopName, Model.DeliveryDate)" />
+    </span>
+</div>
+<div class="table-responsive data-table-body">
+    <table class="table table-bordered table-striped table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>@Html.DisplayNameFor(x => x.Items[0].Id)</th>
+                <th>@Html.DisplayNameFor(x => x.Items[0].ProductVariantProductId)</th>
+                <th>@Html.DisplayNameFor(x => x.Items[0].ProductVariantProductPersianTitle)</th>
+                <th>@Html.DisplayNameFor(x => x.Items[0].ProductVariantVariantValue)</th>
+                <th>@Html.DisplayNameFor(x => x.Items[0].ProductVariantPrice)</th>
+                <th>@Html.DisplayNameFor(x => x.Items[0].Count)</th>
+                <th>@Html.DisplayNameFor(x => x.Items[0].Barcode)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var consignmentItem in Model.Items)
+            {
+                <tr>
+                    <td>@consignmentItem.Id</td>
+                    <td>@consignmentItem.ProductVariantProductId</td>
+                    <td>@consignmentItem.ProductVariantProductPersianTitle</td>
+                    <td>
+                        @consignmentItem.ProductVariantVariantValue
+                        @if (consignmentItem.ProductVariantVariantIsColor)
+                        {
+                            <span class="rounded" style="background: @consignmentItem.ProductVariantVariantColorCode">
+                                &nbsp;
+                                &nbsp;
+                                &nbsp;
+                            </span>
+                        }
+                    </td>
+                    <td>
+                        @consignmentItem.ProductVariantPrice
+                        تومان
+                    </td>
+                    <td>@consignmentItem.Count</td>
+                    <td>
+                        <img src="data:image/png;base64, @FileHelpers.GenerateConsignmentItemBarcode(consignmentItem.Barcode, consignmentItem.ProductVariantProductPersianTitle, consignmentItem.ProductVariantVariantIsColor, consignmentItem.ProductVariantVariantValue)" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (Model.ConsignmentStatus == ConsignmentStatus.AwaitingApproval)
+    {
+        <form functionNameToCallInTheEnd="confirmationConsignment"
+          class="public-ajax-form" method="post" asp-page-handler="ConfirmationConsignment">
+            <input type="hidden" name="consignmentId" value="@Model.Id" />
+            <div class="d-grid p-1">
+                <button class="btn btn-success">تایید کردن محموله</button>
+            </div>
+        </form>
+    }
+
+</div>

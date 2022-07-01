@@ -50,20 +50,20 @@ public class IndexModel : InventoryPanelBase
         return Partial("List", await _consignmentService.GetConsignments(Consignments));
     }
 
-    public async Task<IActionResult> OnGetGetConsignmentItems(long consignmentId)
+    public async Task<IActionResult> OnGetGetConsignmentDetails(long consignmentId)
     {
         if (consignmentId < 1)
         {
             return Json(new JsonResultOperation(false));
         }
 
-        var consignmentItems = await _consignmentItemService.GetConsignmentItems(consignmentId);
-        if (consignmentItems.Count < 1)
+        var consignmentDetails = await _consignmentService.GetConsignmentDetails(consignmentId);
+        if (consignmentDetails.Items.Count < 1)
         {
             return Json(new JsonResultOperation(false));
         }
 
-        return Partial("ConsignmentItems", consignmentItems);
+        return Partial("ConsignmentDetailsPartial", consignmentDetails);
     }
 
     public async Task<IActionResult> OnPostConfirmationConsignment(long consignmentId)

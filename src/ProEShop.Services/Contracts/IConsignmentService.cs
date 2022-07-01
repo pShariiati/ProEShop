@@ -1,6 +1,5 @@
 ﻿using ProEShop.Entities;
 using ProEShop.ViewModels.Brands;
-using ProEShop.ViewModels.ConsignmentItems;
 using ProEShop.ViewModels.Consignments;
 
 namespace ProEShop.Services.Contracts;
@@ -16,4 +15,6 @@ public interface IConsignmentService : IGenericService<Consignment>
     /// <param name="consignmentId"></param>
     /// <returns></returns>
     Task<Consignment> GetConsignmentForConfirmation(long consignmentId);
+
+    Task<ShowConsignmentDetailsViewModel> GetConsignmentDetails(long consignmentId);
 }

@@ -141,7 +141,7 @@ public class CreateModel : SellerPanelBase
         await _uow.SaveChangesAsync();
         return Json(new JsonResultOperation(true, "محموله مورد نظر ایجاد شد")
         {
-            Data = "/"
+            Data = Url.Page("ConfirmationConsignment")
         });
     }
 

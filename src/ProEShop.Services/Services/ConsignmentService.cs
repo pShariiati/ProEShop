@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using ProEShop.Common.Helpers;
 using ProEShop.DataLayer.Context;
@@ -39,7 +40,7 @@ public class ConsignmentService : GenericService<Consignment>, IConsignmentServi
             consignments = consignments.Where(x => x.Seller.ShopName.Contains(searchedShopName));
         }
 
-        consignments = ExpressionHelpers.CreateSearchExpressions(consignments, model.SearchConsignments,false);
+        consignments = ExpressionHelpers.CreateSearchExpressions(consignments, model.SearchConsignments, false);
 
         #endregion
 
@@ -76,6 +77,13 @@ public class ConsignmentService : GenericService<Consignment>, IConsignmentServi
     public Task<Consignment> GetConsignmentForConfirmation(long consignmentId)
     {
         return _consignments.Where(x => x.ConsignmentStatus == ConsignmentStatus.AwaitingApproval)
+            .SingleOrDefaultAsync(x => x.Id == consignmentId);
+    }
+
+    public Task<ShowConsignmentDetailsViewModel> GetConsignmentDetails(long consignmentId)
+    {
+        return _consignments.ProjectTo<ShowConsignmentDetailsViewModel>(
+                configuration: _mapper.ConfigurationProvider, parameters: new { consignmentId = consignmentId })
             .SingleOrDefaultAsync(x => x.Id == consignmentId);
     }
 }
