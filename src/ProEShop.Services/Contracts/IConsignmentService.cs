@@ -16,5 +16,21 @@ public interface IConsignmentService : IGenericService<Consignment>
     /// <returns></returns>
     Task<Consignment> GetConsignmentForConfirmation(long consignmentId);
 
+
+    /// <summary>
+    /// گرفتن جزییات محموله جهت استفاده در صفحه مدیریت محموله ها
+    /// در پنل انبارداری
+    /// </summary>
+    /// <param name="consignmentId"></param>
+    /// <returns></returns>
     Task<ShowConsignmentDetailsViewModel> GetConsignmentDetails(long consignmentId);
+
+    /// <summary>
+    ///  گرفتن محموله برای برای تغییر وضعیت آن به دریافت شده
+    /// استفاده شده در صفحه مدیریت محموله ها
+    /// در پنل انبارداری
+    /// </summary>
+    /// <param name="consignmentId"></param>
+    /// <returns></returns>
+    Task<Consignment> GetConsignmentToChangeStatusToReceived(long consignmentId);
 }

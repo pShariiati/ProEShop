@@ -55,6 +55,13 @@
                             <button consignment-id="@consignment.Id" functionNameToCallOnClick="getConsignmentDetails" type="button" class="get-html-with-ajax btn btn-info">
                                 جزییات محموله
                             </button>
+                            @if (consignment.ConsignmentStatus == ConsignmentStatus.ConfirmAndAwaitingForConsignment)
+                            {
+                                <form asp-page-handler="ReceiveConsignment" class="d-inline-block">
+                                    <input type="hidden" name="consignmentId" value="@consignment.Id" />
+                                    <button custom-message="آیا مطمئن به دریافت این محموله هستید ؟" type="button" class="btn btn-warning delete-row-button">دریافت محموله</button>
+                                </form>
+                            }
                         </td>
                     </tr>
                 }

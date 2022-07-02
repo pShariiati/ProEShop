@@ -38,6 +38,10 @@ public class SearchConsignmentsViewModel
     [Display(Name = "نام فروشگاه")]
     public string ShopName { get; set; }
 
+    [Display(Name = "تاریخ تحویل")]
+    [EqualDateTimeSearch]
+    public string DeliveryDate { get; set; }
+
     [EqualSearch]
     [Display(Name = "وضعیت محموله")]
     public ConsignmentStatus? ConsignmentStatus { get; set; }

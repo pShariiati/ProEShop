@@ -64,7 +64,7 @@ public class CreateModel : SellerPanelBase
         }
 
         var deliveryDate = createConsignment.DeliveryDate.ToGregorianDateTime();
-        if (!deliveryDate.IsSuccesful)
+        if (!deliveryDate.IsSuccessful)
         {
             return Json(new JsonResultOperation(false));
         }

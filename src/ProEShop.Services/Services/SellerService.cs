@@ -200,6 +200,7 @@ public class SellerService : GenericService<Seller>, ISellerService
     public Task<List<string>> GetShopNamesForAutocomplete(string input)
     {
         return _sellers.Where(x => x.ShopName.Contains(input))
+            .OrderBy(x => x.Id)
             .Take(20)
             .Select(x => x.ShopName)
             .ToListAsync();

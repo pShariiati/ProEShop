@@ -15,17 +15,17 @@ public class IndexModel : InventoryPanelBase
     #region Constructor
 
     private readonly IConsignmentService _consignmentService;
-    private readonly IConsignmentItemService _consignmentItemService;
     private readonly IUnitOfWork _uow;
+    private readonly ISellerService _sellerService;
 
     public IndexModel(
         IConsignmentService consignmentService,
-        IConsignmentItemService consignmentItemService,
-        IUnitOfWork uow)
+        IUnitOfWork uow,
+        ISellerService sellerService)
     {
         _consignmentService = consignmentService;
-        _consignmentItemService = consignmentItemService;
         _uow = uow;
+        _sellerService = sellerService;
     }
 
     #endregion
@@ -84,5 +84,29 @@ public class IndexModel : InventoryPanelBase
         // Send email to the seller
         return Json(new JsonResultOperation(true,
             "محموله مورد نظر با موفقیت تایید شد و در انتظار دریافت توسط فروشنده قرار گرفت"));
+    }
+
+    public async Task<IActionResult> OnGetAutocompleteSearch(string term)
+    {
+        return Json(await _sellerService.GetShopNamesForAutocomplete(term));
+    }
+
+    public async Task<IActionResult> OnPostReceiveConsignment(long consignmentId)
+    {
+        if (consignmentId < 1)
+        {
+            return Json(new JsonResultOperation(false));
+        }
+
+        var consignment = await _consignmentService.GetConsignmentToChangeStatusToReceived(consignmentId);
+        if (consignment is null)
+        {
+            return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
+        }
+
+        consignment.ConsignmentStatus = ConsignmentStatus.Received;
+        await _uow.SaveChangesAsync();
+        return Json(new JsonResultOperation(true,
+            "محموله مورد نظر با موفقیت دریافت شد، لطفا موجودی کالا ها را افزایش دهید"));
     }
 }

@@ -1,6 +1,13 @@
 ﻿$(function () {
     fillDataTable();
     initializingAutocomplete();
+
+    const dtp1Instance = new mds.MdsPersianDateTimePicker(document.getElementById('delivery-date-icon-inventory-consignment'), {
+        targetTextSelector: '#Consignments_SearchConsignments_DeliveryDate',
+        persianNumber: true,
+        selectedDate: new Date(),
+        selectedDateToShow: new Date()
+    });
 });
 
 function getProductDetails(e) {

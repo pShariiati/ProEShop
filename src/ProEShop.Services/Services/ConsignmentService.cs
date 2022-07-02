@@ -86,4 +86,11 @@ public class ConsignmentService : GenericService<Consignment>, IConsignmentServi
                 configuration: _mapper.ConfigurationProvider, parameters: new { consignmentId = consignmentId })
             .SingleOrDefaultAsync(x => x.Id == consignmentId);
     }
+
+    public Task<Consignment> GetConsignmentToChangeStatusToReceived(long consignmentId)
+    {
+        return _consignments
+            .Where(x => x.ConsignmentStatus == ConsignmentStatus.ConfirmAndAwaitingForConsignment)
+            .SingleOrDefaultAsync(x => x.Id == consignmentId);
+    }
 }
