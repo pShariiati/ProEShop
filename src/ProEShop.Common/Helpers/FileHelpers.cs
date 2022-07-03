@@ -15,6 +15,13 @@ public static class FileHelpers
 
     public static string GenerateConsignmentItemBarcode(string barcode, string productTitle, bool isVariantColor, string variantValue)
     {
+        // barcode 50
+        // margin top 5
+        // product title 52 or 34
+        // margin top 5
+        // variant 19
+        // sum = 131 or 113
+
         var resultWidth = 250;
         var resultHeight = productTitle.Length > 70 ? 131 : 113;
         var barcodeHeight = 50;
@@ -89,6 +96,8 @@ public static class FileHelpers
 
         var variantText = isVariantColor ? "رنگ" : "اندازه";
         variantText += $": {variantValue}";
+        // 1--4
+        variantText += $" ({barcode.Split("--")[0]})";
 
         var barcodeWithProductTitleBitmap = (Bitmap)Image.FromStream(productTitleStream);
         using var graphics2 = Graphics.FromImage(barcodeWithProductTitleBitmap);

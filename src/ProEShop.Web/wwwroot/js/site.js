@@ -584,7 +584,11 @@ $(document).on('submit', 'form.custom-ajax-form', function (e) {
 // اما در قسمت بالای صفحه همچنان متن "لطفا ایمیل را وارد کنید" وجود دارد
 // برای اینکه این مشکل حل شود از این کد استفاده میکنیم
 $(document).on('blur', 'form input', function () {
-    $(this).parents('form').valid();
+    var currentForm = $(this).parents('form');
+    currentForm.valid();
+    if (currentForm.valid()) {
+        currentForm.find('div[class*="validation-summary"] ul').html('');
+    }
 });
 
 $(document).on('change', 'form input.custom-md-persian-datepicker, form select, form input[type="checkbox"], form input[type="file"]', function () {

@@ -19,4 +19,10 @@ public class ConsignmentItemService : GenericService<ConsignmentItem>, IConsignm
         _mapper = mapper;
         _consignmentItems = uow.Set<ConsignmentItem>();
     }
+
+    public Task<bool> IsExistsByProductVariantIdAndConsignmentId(long productVariantId, long consignmentId)
+    {
+        return _consignmentItems.Where(x => x.ConsignmentId == consignmentId)
+            .AnyAsync(x => x.ProductVariantId == productVariantId);
+    }
 }

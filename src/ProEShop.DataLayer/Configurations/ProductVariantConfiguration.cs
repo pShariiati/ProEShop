@@ -13,5 +13,10 @@ public class ProductVariantConfiguration : IEntityTypeConfiguration<ProductVaria
             .WithOne(x => x.ProductVariant)
             .HasForeignKey(x => x.ProductVariantId)
             .OnDelete(DeleteBehavior.NoAction);
+
+        builder.HasMany(x => x.ProductStocks)
+            .WithOne(x => x.ProductVariant)
+            .HasForeignKey(x => x.ProductVariantId)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

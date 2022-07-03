@@ -20,5 +20,25 @@
                 </ul>
             </div>
         </li>
+        <li class="nav-item">
+            <a href="#sub-menu2" class="d-flex justify-content-between collapsed nav-link"
+               data-bs-toggle="collapse">
+                <div>
+                    <i class="bi bi-bar-chart-fill"></i>
+                    مدیریت موجودی محصولات
+                </div>
+                <i class="bi bi-chevron-left"></i>
+            </a>
+            <div class="collapse bg-secondary rounded" id="sub-menu2">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a asp-page="/Inventory/ProductStock/AddProductStockByConsignment" class="nav-link">
+                            <i class="bi bi-bar-chart-fill"></i>
+                            افزایش موجودی بر اساس محموله
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
     </ul>
 </div>

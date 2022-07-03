@@ -41,5 +41,7 @@ public class ProductVariant : EntityBase, IAuditableEntity
 
     public ICollection<ConsignmentItem> ConsignmentItems { get; set; }
 
+    public ICollection<ProductStock> ProductStocks { get; set; }
+
     #endregion
 }
