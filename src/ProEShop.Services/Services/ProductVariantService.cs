@@ -64,4 +64,10 @@ public class ProductVariantService : GenericService<ProductVariant>, IProductVar
                 .Where(x => variantCodes.Contains(x.VariantCode))
         ).ToListAsync();
     }
+
+    public Task<List<ProductVariant>> GetProductVariantsToAddCount(List<long> ids)
+    {
+        return _productVariants.Where(x => ids.Contains(x.Id))
+            .ToListAsync();
+    }
 }

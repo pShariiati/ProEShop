@@ -10,7 +10,6 @@
                     <th>@Html.DisplayNameFor(x => x.Consignments[0].Id)</th>
                     <th>@Html.DisplayNameFor(x => x.Consignments[0].SellerShopName)</th>
                     <th>@Html.DisplayNameFor(x => x.Consignments[0].DeliveryDate)</th>
-                    <th>@Html.DisplayNameFor(x => x.Consignments[0].Description)</th>
                     <th>@Html.DisplayNameFor(x => x.Consignments[0].ConsignmentStatus)</th>
                     <th>عملیات</th>
                 </tr>
@@ -23,21 +22,12 @@
                         <td>@consignment.SellerShopName</td>
                         <td>@consignment.DeliveryDate</td>
                         <td>
-                            @if (!string.IsNullOrWhiteSpace(consignment.Description))
-                            {
-                                @Html.Raw(consignment.Description)
-                            }
-                            else
-                            {
-                                @:بدون توضیح
-                            }
-                        </td>
-                        <td>
                             @{
                                 string GetButtonClass(ConsignmentStatus status) => status switch
                                 {
                                     ConsignmentStatus.Received => "success",
-                                    ConsignmentStatus.ConfirmAndAwaitingForConsignment => "primary",
+                                    ConsignmentStatus.ConfirmAndAwaitingForConsignment 
+                                        or ConsignmentStatus.ReceivedAndAddStock => "primary",
                                     ConsignmentStatus.AwaitingApproval => "warning",
                                     ConsignmentStatus.Rejected
                                         or
@@ -61,6 +51,12 @@
                                     <input type="hidden" name="consignmentId" value="@consignment.Id" />
                                     <button custom-message="آیا مطمئن به دریافت این محموله هستید ؟" type="button" class="btn btn-warning delete-row-button">دریافت محموله</button>
                                 </form>
+                            }
+                            @if (consignment.ConsignmentStatus == ConsignmentStatus.Received)
+                            {
+                                <button consignment-id="@consignment.Id" functionNameToCallOnClick="changeConsginmentStatus" type="button" class="get-html-with-ajax btn btn-info">
+                                    افزایش موجودی و ثبت نظر
+                                </button>
                             }
                         </td>
                     </tr>

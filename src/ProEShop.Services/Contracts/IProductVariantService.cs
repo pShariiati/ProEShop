@@ -30,4 +30,12 @@ public interface IProductVariantService : IGenericService<ProductVariant>
     /// <param name="variantCodes"></param>
     /// <returns></returns>
     Task<List<GetProductVariantInCreateConsignmentViewModel>> GetProductVariantsForCreateConsignment(List<int> variantCodes);
+
+    /// <summary>
+    /// گرفتن تنوع محصولات برای افزایش موجودی
+    /// استفاده شده در صفحه ثبت نظر برای محموله
+    /// </summary>
+    /// <param name="ids"></param>
+    /// <returns></returns>
+    Task<List<ProductVariant>> GetProductVariantsToAddCount(List<long> ids);
 }

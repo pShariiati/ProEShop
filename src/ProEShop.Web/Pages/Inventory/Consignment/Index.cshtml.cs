@@ -1,5 +1,7 @@
 ﻿using System.Text.Json.Serialization;
+using Ganss.XSS;
 using Microsoft.AspNetCore.Mvc;
+using ProEShop.Common.Attributes;
 using ProEShop.Common.Constants;
 using ProEShop.Common.Helpers;
 using ProEShop.Common.IdentityToolkit;
@@ -10,6 +12,7 @@ using ProEShop.ViewModels.Consignments;
 
 namespace ProEShop.Web.Pages.Inventory.Consignment;
 
+[CheckModelStateInRazorPages]
 public class IndexModel : InventoryPanelBase
 {
     #region Constructor
@@ -17,15 +20,24 @@ public class IndexModel : InventoryPanelBase
     private readonly IConsignmentService _consignmentService;
     private readonly IUnitOfWork _uow;
     private readonly ISellerService _sellerService;
+    private readonly IHtmlSanitizer _htmlSanitizer;
+    private readonly IProductStockService _productStockService;
+    private readonly IProductVariantService _productVariantService;
 
     public IndexModel(
         IConsignmentService consignmentService,
         IUnitOfWork uow,
-        ISellerService sellerService)
+        ISellerService sellerService,
+        IHtmlSanitizer htmlSanitizer,
+        IProductStockService productStockService,
+        IProductVariantService productVariantService)
     {
         _consignmentService = consignmentService;
         _uow = uow;
         _sellerService = sellerService;
+        _htmlSanitizer = htmlSanitizer;
+        _productStockService = productStockService;
+        _productVariantService = productVariantService;
     }
 
     #endregion
@@ -108,5 +120,58 @@ public class IndexModel : InventoryPanelBase
         await _uow.SaveChangesAsync();
         return Json(new JsonResultOperation(true,
             "محموله مورد نظر با موفقیت دریافت شد، لطفا موجودی کالا ها را افزایش دهید"));
+    }
+
+    public async Task<IActionResult> OnGetChangeConsignmentStatus(long consignmentId)
+    {
+        if (consignmentId < 1)
+        {
+            return Json(new JsonResultOperation(false));
+        }
+
+        if (!await _consignmentService.IsExistsConsignmentWithReceivedStatus(consignmentId))
+        {
+            return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
+        }
+
+        var model = new AddDescriptionForConsignmentViewModel()
+        {
+            ConsignmentId = consignmentId
+        };
+        return Partial("ChangeConsignmentStatusToReceivedAndAddStockPartial", model);
+    }
+
+    public async Task<IActionResult> OnPostChangeConsignmentStatusToReceivedAndAddStock(AddDescriptionForConsignmentViewModel model)
+    {
+        var consignment = await _consignmentService.GetConsignmentWithReceivedStatus(model.ConsignmentId);
+        if (consignment is null)
+        {
+            return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
+        }
+
+        consignment.ConsignmentStatus = ConsignmentStatus.ReceivedAndAddStock;
+        consignment.Description = _htmlSanitizer.Sanitize(model.Description);
+
+        #region AddStock
+
+        var productStocks = await _productStockService.GetProductStocksForAddProductVariantsCount(model.ConsignmentId);
+        var productVariantIds = productStocks.Select(x => x.Key).ToList();
+        var productVariants = await _productVariantService.GetProductVariantsToAddCount(productVariantIds);
+
+        foreach (var productStock in productStocks)
+        {
+            var productVariant = productVariants.SingleOrDefault(x => x.Id == productStock.Key);
+            if (productVariant is not null)
+            {
+                productVariant.Count += productStock.Value;
+            }
+        }
+
+        #endregion
+
+        await _uow.SaveChangesAsync();
+        return Json(new JsonResultOperation(true,
+            "موجودی کالا ها با موفقیت افزایش یافت"
+        ));
     }
 }

@@ -1,0 +1,31 @@
+﻿@model ProEShop.ViewModels.Consignments.AddDescriptionForConsignmentViewModel
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">
+            <span class="btn btn-primary">
+                @Html.DisplayNameFor(x=> x.ConsignmentId)
+                @Model.ConsignmentId
+            </span>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="row">
+                <form functionNameToCallInTheEnd="consignmentReceivedAndAddStockSuccess"
+                      method="post" asp-page-handler="ChangeConsignmentStatusToReceivedAndAddStock"
+                      class="public-ajax-form">
+                    <input asp-for="ConsignmentId" />
+                    <div class="text-danger" asp-validation-summary="All"></div>
+                    <div class="mb-3">
+                        <label asp-for="Description" class="mb-3 form-label"></label>
+                        <textarea asp-for="Description" class="custom-tinymce"></textarea>
+                        <span asp-validation-for="Description" class="span-error-message"></span>
+                    </div>
+                    <button type="submit" class="btn btn-success">
+                        ثبت نظر و افزایش موجودی کالا های محموله
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

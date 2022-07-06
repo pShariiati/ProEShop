@@ -11,6 +11,8 @@ public class ShowConsignmentDetailsViewModel
 
     public string SellerShopName { get; set; }
 
+    public string Description { get; set; }
+
     public ConsignmentStatus ConsignmentStatus { get; set; }
 
     public List<ShowConsignmentItemViewModel> Items { get; set; }

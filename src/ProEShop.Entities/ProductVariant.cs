@@ -27,6 +27,8 @@ public class ProductVariant : EntityBase, IAuditableEntity
 
     public int VariantCode { get; set; }
 
+    public int Count { get; set; }
+
     #endregion
 
     #region Relations

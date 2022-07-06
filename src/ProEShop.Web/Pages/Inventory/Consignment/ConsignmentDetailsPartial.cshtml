@@ -5,7 +5,8 @@
     string GetButtonClass(ConsignmentStatus status) => status switch
     {
         ConsignmentStatus.Received => "success",
-        ConsignmentStatus.ConfirmAndAwaitingForConsignment => "primary",
+        ConsignmentStatus.ConfirmAndAwaitingForConsignment
+            or ConsignmentStatus.ReceivedAndAddStock => "primary",
         ConsignmentStatus.AwaitingApproval => "warning",
         ConsignmentStatus.Rejected
             or
@@ -29,6 +30,16 @@
     <span>
         <img src="data:image/png;base64, @FileHelpers.GenerateConsignmentBarcode(Model.Id.ToString(), Model.SellerShopName, Model.DeliveryDate)" />
     </span>
+</div>
+<div class="alert alert-primary">
+    @if (!string.IsNullOrWhiteSpace(Model.Description))
+    {
+        @Html.Raw(Model.Description)
+    }
+    else
+    {
+        @:بدون توضیح
+    }
 </div>
 <div class="table-responsive data-table-body">
     <table class="table table-bordered table-striped table-hover">

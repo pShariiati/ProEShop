@@ -18,4 +18,14 @@ public interface IProductStockService : IGenericService<ProductStock>
     /// <param name="consignmentId"></param>
     /// <returns></returns>
     Task<ProductStock> GetByProductVariantIdAndConsignmentId(long productVariantId, long consignmentId);
+
+    /// <summary>
+    /// خواندن موجودی کالا ها برای افزایش موجودی در جدول تنوع محصولات
+    /// برای اینکه همیشه به جدول موجودی کالا ها کوئری نزنیم که بفهمیم موجودی کالا چقدر هستش
+    /// این مورد رو به جدول تنوع محصولات اضافه میکنیم که موجودی کالا همیشه در دسترس باشه
+    /// این متد در صفحه ثبت نظر برای محموله استفاده میشه
+    /// </summary>
+    /// <param name="consignmentId"></param>
+    /// <returns></returns>
+    Task<Dictionary<long, int>> GetProductStocksForAddProductVariantsCount(long consignmentId);
 }

@@ -33,4 +33,22 @@ public interface IConsignmentService : IGenericService<Consignment>
     /// <param name="consignmentId"></param>
     /// <returns></returns>
     Task<Consignment> GetConsignmentToChangeStatusToReceived(long consignmentId);
+
+    /// <summary>
+    /// آیا محموله ایی با این آیدی وجود دارد
+    /// که وضعیت آن دریافت شده باشد
+    /// جهت استفاده در صفحه افزایش موجودی و ثبت نظر محموله
+    /// </summary>
+    /// <param name="consignmentId"></param>
+    /// <returns></returns>
+    Task<bool> IsExistsConsignmentWithReceivedStatus(long consignmentId);
+
+    /// <summary>
+    /// گرفتن محموله برای تغییر وضعیت آن به
+    /// "دریافت شده و افزایش موجودی"
+    /// برای محموله نظر ثبت میشه و بعد از اون موجودی تنوع محصولات رو افزایش میدیم
+    /// </summary>
+    /// <param name="consignmentId"></param>
+    /// <returns></returns>
+    Task<Consignment> GetConsignmentWithReceivedStatus(long consignmentId);
 }

@@ -26,9 +26,6 @@ public class ShowConsignmentViewModel
     [Display(Name = "تاریخ تحویل")]
     public string DeliveryDate { get; set; }
 
-    [Display(Name = "توضیحات")]
-    public string Description { get; set; }
-
     [Display(Name = "وضعیت محموله")]
     public ConsignmentStatus ConsignmentStatus { get; set; }
 }
