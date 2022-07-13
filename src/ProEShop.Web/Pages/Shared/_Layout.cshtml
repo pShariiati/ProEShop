@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="~/css/site.css">
     <link rel="stylesheet" href="~/css/main-styles.css">
+    <link rel="stylesheet" href="~/ProEShop.Web.styles.css">
     <title>سلام به دنیا | @ViewData["Title"]</title>
 </head>
 
@@ -43,7 +44,7 @@
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-person rem1and3"></i>
                     </button>
-                    <ul class="dropdown-menu custom-box-shadow" aria-labelledby="profile-dropdown-menu"
+                    <ul class="dropdown-menu shadow-sm" aria-labelledby="profile-dropdown-menu"
                         id="ul-profile-menus">
                         <li>
                             <a class="dropdown-item" href="#">
@@ -121,7 +122,7 @@
                             ۱۰
                         </span>
                     </button>
-                    <div class="dropdown-menu custom-box-shadow" aria-labelledby="profile-dropdown-menu"
+                    <div class="dropdown-menu shadow-sm" aria-labelledby="profile-dropdown-menu"
                          id="ul-profile-menus">
                         body
                     </div>
@@ -129,6 +130,8 @@
             </div>
         </div>
     </div>
+
+    <vc:main-menu></vc:main-menu>
 
     @RenderBody()
 

@@ -34,6 +34,7 @@
 	  <None Remove="Pages\Identity\RegisterLogin.cshtml.css" />
 	  <None Remove="Pages\Inventory\Consignment\Index.cshtml.js" />
 	  <None Remove="Pages\Inventory\ProductStock\AddProductStockByConsignmentModel.cshtml.js" />
+	  <None Remove="Pages\Product\Index.cshtml.css" />
 	  <None Remove="Pages\SellerPanel\Consignment\Create.cshtml.js" />
 	  <None Remove="Pages\SellerPanel\Product\AddVariant.cshtml.css" />
 	  <None Remove="Pages\SellerPanel\Product\AddVariant.cshtml.js" />
@@ -64,6 +65,7 @@
 	  <Content Include="Pages\Identity\RegisterLogin.cshtml.css" />
 	  <Content Include="Pages\Inventory\Consignment\Index.cshtml.js" />
 	  <Content Include="Pages\Inventory\ProductStock\AddProductStockByConsignment.cshtml.js" />
+	  <Content Include="Pages\Product\Index.cshtml.css" />
 	  <Content Include="Pages\SellerPanel\Consignment\Create.cshtml.js" />
 	  <Content Include="Pages\SellerPanel\Product\AddVariant.cshtml.js" />
 	  <Content Include="Pages\SellerPanel\Product\AddVariant.cshtml.css" />

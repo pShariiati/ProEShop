@@ -264,4 +264,12 @@ public class ProductService : GenericService<Product>, IProductService
             _products
         ).SingleOrDefaultAsync(x => x.ProductId == productId);
     }
+
+    public Task<ShowProductInfoViewModel> GetProductInfo(long productCode)
+    {
+        return _mapper.ProjectTo<ShowProductInfoViewModel>(
+                _products
+            )
+            .SingleOrDefaultAsync(x => x.ProductCode == productCode);
+    }
 }

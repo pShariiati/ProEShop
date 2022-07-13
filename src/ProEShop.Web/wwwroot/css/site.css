@@ -1,10 +1,10 @@
 @font-face {
-    font-family: Vazird;
-    src: url('fonts/vazir/Vazir-Regular.eot');
-    src: url('fonts/vazir/Vazir-Regular.eot?#iefix') format('embedded-opentype'),
-         url('fonts/vazir/Vazir-Regular.woff2') format('woff2'),
-         url('fonts/vazir/Vazir-Regular.woff') format('woff'),
-         url('fonts/vazir/Vazir-Regular.ttf') format('truetype');
+    font-family: 'Vazir';
+    src: url('../fonts/vazir/Vazir-Regular.eot');
+    src: url('../fonts/vazir/Vazir-Regular.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/vazir/Vazir-Regular.woff2') format('woff2'),
+         url('../fonts/vazir/Vazir-Regular.woff') format('woff'),
+         url('../fonts/vazir/Vazir-Regular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -18,15 +18,11 @@
 }
 
 * {
-    font-family: Vazir, tahoma;
+    font-family: 'Vazir', 'Tahoma';
 }
 
 body {
     background-color: #f5f5f5;
-}
-
-.custom-box-shadow{
-    box-shadow: 0px 2px 12px 1px rgb(0 0 0 / .47);
 }
 
 a{
@@ -79,4 +75,59 @@ a{
 
 .custom-overflow-y {
     overflow-y: scroll;
+}
+
+/* 21px */
+.rem21px {
+    font-size: 1.313rem;
+}
+
+/* 20px */
+.rem20px {
+    font-size: 1.25rem;
+}
+
+/* 19px */
+.rem19px {
+    font-size: 1.188rem;
+}
+
+/* 18px */
+.rem18px {
+    font-size: 1.125rem;
+}
+
+/* 17px */
+.rem17px {
+    font-size: 1.063rem;
+}
+
+/* 16px */
+.rem16px {
+    font-size: 1rem;
+}
+
+/* 15px */
+.rem15px {
+    font-size: .938rem;
+}
+
+/* 14px */
+.rem14px {
+    font-size: .875rem;
+}
+
+/* 13px */
+.rem13px {
+    font-size: .813rem;
+}
+
+/* 12px */
+.rem12px {
+    font-size: 0.75rem;
+}
+
+/* 11px */
+.rem11px {
+    font-size: 0.688rem;
 }

@@ -34,6 +34,9 @@ public class Category : EntityBase, IAuditableEntity
 
     public bool IsVariantColor { get; set; }
 
+    [MaxLength(1000)]
+    public string ProductPageGuide { get; set; }
+
     #endregion
 
     #region Relations

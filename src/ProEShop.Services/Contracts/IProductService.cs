@@ -43,4 +43,12 @@ public interface IProductService : IGenericService<Product>
     /// <param name="productId"></param>
     /// <returns></returns>
     Task<AddVariantViewModel> GetProductInfoForAddVariant(long productId);
+
+    /// <summary>
+    /// گرفتن اطلاعات کامل یک محصول بر اساس آیدی
+    /// جهت استفده در صفحه نمایش محصول
+    /// </summary>
+    /// <param name="productCode"></param>
+    /// <returns></returns>
+    Task<ShowProductInfoViewModel> GetProductInfo(long productCode);
 }

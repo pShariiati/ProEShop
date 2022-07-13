@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="libraries/bootstrap/css/bootstrap.rtl.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="css/style.css">
+
+  <title>قالب فروشگاهی</title>
+</head>
+
+<body>
+
+  <!-- Start header -->
+
+  <div class="container-fluid shadow-sm bg-white">
+    <div class="row p-3">
+      <div class="col-lg-2 col-md-3 col box-logo pr-2">
+        <span class="logo">
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- End header -->
+
+  <!-- Start main menu -->
+
+  <nav class="navbar navbar-expand-md navbar-light custom-navbar px-2 py-0">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-menu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="main-menu">
+      <div class="nav-line bg-dark position-absolute bottom-0 start-0 w-100"></div>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link rem14px text-white dropdown-toggle" data-bs-toggle="dropdown" href="#">
+            کالای دیجیتال
+          </a>
+          <div class="dropdown-menu rounded-bottom rounded-0 shadow-sm border-0 main-menu-dropdown"
+            id="custom-main-dropdown-menu">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-6 col-md-3">
+                  <div class="main-link-dropdown-in-main-menu">
+                    <a class="rem15px" href="#">
+                      <i class="bi bi-chevron-left rem14px"></i>
+                      لوازم جانبی گوشی
+                    </a>
+                  </div>
+                  <ul class="list-group list-gruop-main-menu">
+                    <li class="list-group-item border-0 px-0 py-1">
+                      <a class="rem13px" href="#">کیف و کاور گوشی</a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-md-3 my-auto ms-auto text-center">
+                  <img src="images/categories/cat1.png" class="img-fluid" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link rem14px text-white" data-bs-toggle="dropdown" href="#">
+            ورزش و سفر
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link rem14px text-white" data-bs-toggle="dropdown" href="#">
+            مد و پوشاک
+          </a>
+        </li>
+      </ul>
+      <div class="ms-auto">
+        <ul class="navbar-nav main-menu-left-link">
+          <li>
+            <a href="#" class="nav-link rem14px text-white">
+              لینک
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- End main menu -->
+
+  <!-- Start breadcrumb -->
+
+  <div class="container-fluid mt-3">
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="#">فروشگاه پروشاپ</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="#">مردانه</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="#">اکسسوری مردانه</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="#">ساعت مردانه</a>
+        </li>
+        <li class="breadcrumb-item active">ساعت عقربه ای مردانه</li>
+      </ol>
+    </nav>
+  </div>
+
+  <!-- End breadcrumb -->
+
+  <!-- Start show product info -->
+
+  <div class="container-fluid bg-white" id="show-product-box">
+    <div class="row mt-3">
+      <div class="col-lg-4">
+        <div class="row">
+          <div class="col-2" id="buttons-next-to-gallery-box">
+            <ul class="list-inline">
+              <li class="text-danger">
+                فروش ویژه
+              </li>
+              <li>
+                <button type="button" class="btn" data-bs-toggle="tooltip" data-bs-placement="left"
+                  title="افزودن به علاقه مندی ها">
+                  <i class="bi bi-heart"></i>
+                </button>
+              </li>
+              <li>
+                <button type="button" class="btn" data-bs-toggle="tooltip" data-bs-placement="left"
+                  title="اشتراک گذاری">
+                  <i class="bi bi-share-fill"></i>
+                </button>
+              </li>
+              <li>
+                <button type="button" class="btn" data-bs-toggle="tooltip" data-bs-placement="left"
+                  title="اطلاع رسانی شگفت انگیز">
+                  <i class="bi bi-bell"></i>
+                </button>
+              </li>
+              <li>
+                <button type="button" class="btn" data-bs-toggle="tooltip" data-bs-placement="left" title="نمودار قیمت">
+                  <i class="bi bi-graph-up"></i>
+                </button>
+              </li>
+              <li>
+                <button type="button" class="btn" data-bs-toggle="tooltip" data-bs-placement="left" title="مقایسه">
+                  <i class="bi bi-square-half"></i>
+                </button>
+              </li>
+              <li>
+                <button type="button" class="btn" data-bs-toggle="tooltip" data-bs-placement="left"
+                  title="اضافه به لیست">
+                  <i class="bi bi-list-ul"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+          <div class="col-10">
+            <div class="border-bottom text-center">
+              <img src="images/products/product1.jpg" class="img-fluid pb-2 border-bottom" alt="">
+            </div>
+          </div>
+          <div class="text-center mt-3" id="product-thumbnails-box">
+            <ul class="list-inline">
+              <li class="list-inline-item rounded-3">
+                <button class="btn p-0 w-100 h-100">
+                  <img src="images/products/product1.jpg" class="w-100 h-100 p-1" alt="">
+                </button>
+              </li>
+              <li class="list-inline-item rounded-3">
+                <button class="btn p-0 w-100 h-100">
+                  <img src="images/products/product1.jpg" class="w-100 h-100 p-1" alt="">
+                </button>
+              </li>
+              <li class="list-inline-item rounded-3">
+                <button class="btn p-0 w-100 h-100">
+                  <img src="images/products/product1.jpg" class="w-100 h-100 p-1" alt="">
+                </button>
+              </li>
+              <li class="list-inline-item rounded-3">
+                <button class="btn p-0 w-100 h-100">
+                  <img src="images/products/product1.jpg" class="w-100 h-100 p-1" alt="">
+                </button>
+              </li>
+              <li class="list-inline-item rounded-3">
+                <button class="btn p-0 w-100 h-100">
+                  <i class="bi bi-three-dots"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="row">
+          <div class="d-flex">
+            <div>
+              <img src="images/brands/mi.png" width="70" class="me-3">
+            </div>
+            <div class="d-flex flex-column justify-content-between">
+              <div>
+                <a href="#">شیائومی</a>/
+                <a href="#">گوشی موبایل شیائومی</a>
+              </div>
+              <h5 id="product-fa-title-in-show-product-info">
+                گوشی موبایل سامسونگ مدل Galaxy A32 SM-A325F/DS دو سیم‌کارت ظرفیت 128 گیگابایت و رم 6 گیگابایت
+              </h5>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-2 mt-sm-3 mt-md-4">
+          <div class="col-md-8">
+            <div class="d-flex align-items-center text-muted">
+              <small class="me-2 text-custom-grey">
+                Samsung Galaxy Phone test test test Phone test test test Phone test test test Phone test test test
+              </small>
+              <div id="product-en-title-line" class="flex-grow-1 bg-custom-grey"></div>
+            </div>
+            <div class="mt-2 d-flex">
+              <!-- Stars -->
+
+              <div class="d-flex align-items-center me-2">
+                <span>
+                  <i class="bi bi-star-fill text-warning"></i>
+                  <span class="rem13px">
+                    ۴.۳
+                  </span>
+                  <span class="text-custom-grey rem12px">
+                    (
+                    ۶۲۵۰
+                    نفر
+                    )
+                  </span>
+                </span>
+                <div class="bg-custom-grey mx-2 rounded-circle product-info-dots"></div>
+              </div>
+
+              <!-- End stars -->
+
+              <!-- Comments -->
+
+              <div class="d-flex align-items-center me-2">
+                <span class="rem13px text-info">
+                  ۴۶۷۶
+                  دیدگاه
+                </span>
+                <div class="bg-custom-grey mx-2 rounded-circle product-info-dots"></div>
+              </div>
+
+              <!-- End comments -->
+
+              <!-- Questions -->
+
+              <div class="d-flex align-items-center">
+                <span class="rem13px text-info">
+                  ۴۶۷۶
+                  پرسش
+                </span>
+              </div>
+
+              <!-- End questions -->
+            </div>
+            <div class="row mt-2 mt-md-3">
+              <span class="d-flex align-items-center">
+                <i class="bi bi-hand-thumbs-up text-success me-1 rem16px"></i>
+                <span class="rem13px">
+                  ۸۵%
+                  (
+                  ۹۹۹
+                  ) نفر از خریداران، این کالا را پیشنهاد کرده اند
+                </span>
+                <i class="bi bi-info-circle ms-2" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                  title="خریداران کالا با انتخاب یکی از گزینه های پیشنهاد یا عدم پیشنهاد، تجربه خرید خود را با کاربران به اشتراک می گذارند."></i>
+              </span>
+            </div>
+            <div class="mt-4">
+              <div class="fw-bold rem17px">
+                رنگ: قرمز
+              </div>
+              <div class="d-flex mt-3" id="product-variants-box-in-show-product-info">
+                <div
+                  class="rounded-circle d-flex justify-content-center align-items-center selected-variant-in-show-product-info">
+                  <span class="rounded-circle d-flex justify-content-center align-items-center">
+                    <i class="bi bi-check2 rem21px text-white"></i>
+                  </span>
+                </div>
+                <div class="rounded-circle d-flex justify-content-center align-items-center">
+                  <span class="rounded-circle d-flex justify-content-center align-items-center">
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4">
+              <div class="fw-bold rem17px">
+                ویژگی ها
+              </div>
+              <ul class="mt-3 p-0 rem13px">
+                <li class="d-flex align-items-center my-2">
+                  <div class="bg-custom-grey mx-2 rounded-circle product-info-dots">
+                  </div>
+                  <div class="text-secondary">
+                    فناوری صفحه نمایش :
+                    &nbsp;
+                  </div>
+                  <div class="fw-bold rem16px">
+                    128 گیگابایت
+                  </div>
+                </li>
+                <li class="d-flex align-items-center my-2">
+                  <div class="bg-custom-grey mx-2 rounded-circle product-info-dots">
+                  </div>
+                  <div class="text-secondary">
+                    فناوری صفحه نمایش :
+                    &nbsp;
+                  </div>
+                  <div class="fw-bold rem16px">
+                    128 گیگابایت
+                  </div>
+                </li>
+                <li class="d-flex align-items-center my-2">
+                  <div class="bg-custom-grey mx-2 rounded-circle product-info-dots">
+                  </div>
+                  <div class="text-secondary">
+                    فناوری صفحه نمایش :
+                    &nbsp;
+                  </div>
+                  <div class="fw-bold rem16px">
+                    128 گیگابایت
+                  </div>
+                </li>
+              </ul>
+              <div class="text-info rem13px">
+                مشاهده بیشتر
+                <i class="bi bi-chevron-left"></i>
+              </div>
+            </div>
+            <div class="d-flex rem13px border-top mt-3 text-secondary">
+              <div class="d-flex align-items-center me-3">
+                <i class="bi bi-info-circle"></i>
+              </div>
+              <div class="pt-2" id="category-guide">
+                هشدار سامانه همتا: در صورت انجام معامله، از فروشنده کد فعالسازی را گرفته و حتما در حضور ایشان، دستگاه را
+                از طریق #7777*، برای سیمکارت خود فعالسازی نمایید. آموزش تصویری در آدرس اینترنتی hmti.ir/06 امکان برگشت
+                کالا در گروه موبایل با دلیل "انصراف از خرید" تنها در صورتی مورد قبول است که پلمب کالا باز نشده باشد.
+                تمام گوشی‌های دیجی‌کالا ضمانت رجیستری دارند. در صورت وجود مشکل رجیستری، می‌توانید بعد از مهلت قانونی ۳۰
+                روزه، گوشی خریداری‌شده را مرجوع کنید.
+              </div>
+            </div>
+            <div class="d-flex border rounded-3 mt-4 justify-content-between p-3">
+              <div class="d-flex flex-column justify-content-between">
+                <span class="fw-bold">ارسال رایگان</span>
+                <span class="rem13px text-secondary">
+                  برای سفارش‌ بالای
+                  ۵۰۰
+                  هزار تومان
+                </span>
+              </div>
+              <img width="100" src="images/application/free-delivery.png" />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="border rounded-2 p-3" id="product-info-left-side-box">
+              <!-- 1 -->
+
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="fw-bold">فروشنده</div>
+                <div class="text-info rem13px">2 فروشنده دیگر</div>
+              </div>
+
+              <!-- End 1 -->
+
+              <!-- 2 -->
+
+              <div class="d-flex align-items-center mt-3">
+                <img class="me-3" width="50" src="images/brands/dgkala-brand.jpg" alt="" />
+                <div>
+                  دیجیکالا
+                </div>
+              </div>
+
+              <!-- End 2 -->
+
+              <hr class="bg-secondary" />
+
+              <!-- 3 -->
+
+              <div class="d-flex align-items-center mt-3">
+                <i class="bi bi-shield-check me-2 rem21px"></i>
+                <div class="rem14px">
+                  گارانتی ۱۸ ماهه داریا همراه پایتخت
+                </div>
+              </div>
+
+              <!-- End 3 -->
+
+              <hr class="bg-secondary" />
+
+              <!-- 4 -->
+
+              <div class="d-flex align-items-center mt-3">
+                <i class="bi bi-trophy me-2 rem21px"></i>
+                <div class="rem14px">
+                  ۱۵۰
+                  امتیاز دیجی‌کلاب
+                  <i class="bi bi-info-circle" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                    title="بعد از پایان مهلت مرجوعی، برای دریافت امتیاز به صفحه ماموریت های کلابی سر بزنید."></i>
+                </div>
+              </div>
+
+              <!-- End 4 -->
+
+              <hr class="bg-secondary" />
+
+              <!-- 5 -->
+
+              <div class="d-flex justify-content-end align-items-center mt-3">
+                <span class="fw-bold rem21px">
+                  ۵,۹۱۹,۰۰۰
+                  تومان
+                </span>
+              </div>
+
+              <!-- End 5 -->
+
+              <div class="d-grid mt-3">
+                <button class="btn btn-danger rounded-3">
+                  افزودن به سبد خرید
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End show product info -->
+
+  <div style="height: 1000px;">
+  </div>
+
+  <script src="libraries/jquery/jquery.min.js"></script>
+  <script src="libraries/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="js/custom.js"></script>
+</body>
+
+</html>
