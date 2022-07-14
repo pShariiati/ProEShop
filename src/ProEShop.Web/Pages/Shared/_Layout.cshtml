@@ -12,7 +12,11 @@
     <link rel="stylesheet" href="~/css/site.css">
     <link rel="stylesheet" href="~/css/main-styles.css">
     <link rel="stylesheet" href="~/ProEShop.Web.styles.css">
-    <title>سلام به دنیا | @ViewData["Title"]</title>
+    <title>@ViewData["Title"] | پروشاپ</title>
+    @if (ViewData["HeaderDescription"] != null)
+    {
+        <meta name="description" content="@ViewData["HeaderDescription"]" />
+    }
 </head>
 
 <body>

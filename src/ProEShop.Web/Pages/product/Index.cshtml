@@ -1,6 +1,14 @@
 ﻿@page "/product/pc-{productCode}/{slug}"
 @model ProEShop.Web.Pages.Product.IndexModel
 @{
+    var productTitle = Model.ProductInfo.PersianTitle;
+    var productCategory = Model.ProductInfo.CategoryTitle;
+    var productBrand = Model.ProductInfo.BrandTitleFa;
+    var firstProductPicture = Model.ProductInfo.ProductMedia
+        .First(x => !x.IsVideo).FileName;
+    ViewData["Title"] = $"مشخصات، قیمت و خرید {productTitle}";
+    ViewData["HeaderDescription"] =
+        $"خرید اینترنتی {productTitle} و قیمت انواع {productCategory} {productBrand} از فروشگاه آنلاین پروشاپ. جدیدترین مدل های {productCategory} {productBrand} با بهترین قیمت در پروشاپ";
 }
 <!-- Start breadcrumb -->
 
@@ -8,18 +16,23 @@
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">فروشگاه پروشاپ</a>
+                <a asp-page="../Index">فروشگاه پروشاپ</a>
             </li>
-            <li class="breadcrumb-item">
-                <a href="#">مردانه</a>
+            @{
+                var productCategoriesCount = Model.ProductInfo.ProductCategories.Count;
+                var lastCategory = Model.ProductInfo.ProductCategories.Last();
+            }
+            @foreach (var category in Model.ProductInfo.ProductCategories.Take(productCategoriesCount - 1))
+            {
+                <li class="breadcrumb-item">
+                    <a asp-page="@category.CategorySlug">
+                        @category.CategoryTitle
+                    </a>
+                </li>
+            }
+            <li class="breadcrumb-item active">
+                @lastCategory.CategoryTitle
             </li>
-            <li class="breadcrumb-item">
-                <a href="#">اکسسوری مردانه</a>
-            </li>
-            <li class="breadcrumb-item">
-                <a href="#">ساعت مردانه</a>
-            </li>
-            <li class="breadcrumb-item active">ساعت عقربه ای مردانه</li>
         </ol>
     </nav>
 </div>
@@ -74,36 +87,30 @@
                 </div>
                 <div class="col-10">
                     <div class="border-bottom text-center">
-                        <img src="~/images/products/product1.jpg" class="img-fluid pb-2 border-bottom" alt="">
+                        <img src="~/images/products/@firstProductPicture" class="img-fluid pb-2 border-bottom"
+                             alt="@productTitle">
                     </div>
                 </div>
                 <div class="text-center mt-3" id="product-thumbnails-box">
                     <ul class="list-inline">
-                        <li class="list-inline-item rounded-3">
-                            <button class="btn p-0 w-100 h-100">
-                                <img src="~/images/products/product1.jpg" class="w-100 h-100 p-1" alt="">
-                            </button>
-                        </li>
-                        <li class="list-inline-item rounded-3">
-                            <button class="btn p-0 w-100 h-100">
-                                <img src="~/images/products/product1.jpg" class="w-100 h-100 p-1" alt="">
-                            </button>
-                        </li>
-                        <li class="list-inline-item rounded-3">
-                            <button class="btn p-0 w-100 h-100">
-                                <img src="~/images/products/product1.jpg" class="w-100 h-100 p-1" alt="">
-                            </button>
-                        </li>
-                        <li class="list-inline-item rounded-3">
-                            <button class="btn p-0 w-100 h-100">
-                                <img src="~/images/products/product1.jpg" class="w-100 h-100 p-1" alt="">
-                            </button>
-                        </li>
-                        <li class="list-inline-item rounded-3">
-                            <button class="btn p-0 w-100 h-100">
-                                <i class="bi bi-three-dots"></i>
-                            </button>
-                        </li>
+                        @foreach (var media in Model.ProductInfo.ProductMedia.Where(x => !x.IsVideo))
+                        {
+                            <li class="list-inline-item rounded-3">
+                                <button class="btn p-0 w-100 h-100">
+                                    <img src="~/images/products/@media.FileName" class="w-100 h-100 p-1"
+                                     alt="@productTitle">
+                                </button>
+                            </li>
+                        }
+                        @if (Model.ProductInfo.ProductMedia.Count(x => !x.IsVideo) > 4
+                        || Model.ProductInfo.ProductMedia.Count(x => x.IsVideo) > 0)
+                        {
+                            <li class="list-inline-item rounded-3">
+                                <button class="btn p-0 w-100 h-100">
+                                    <i class="bi bi-three-dots"></i>
+                                </button>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -115,7 +122,7 @@
                     {
                         <div>
                             <img src="~/images/brands/@Model.ProductInfo.BrandLogoPicture"
-                                 width="70" class="me-3" alt="@Model.ProductInfo.BrandTitleFa">
+                             width="70" class="me-3" alt="@Model.ProductInfo.BrandTitleFa">
                         </div>
                     }
                     <div class="d-flex flex-column justify-content-between">
@@ -130,7 +137,7 @@
                             </a>
                         </div>
                         <h5 id="product-fa-title-in-show-product-info">
-                            @Model.ProductInfo.PersianTitle
+                            @productTitle
                         </h5>
                     </div>
                 </div>
@@ -261,14 +268,17 @@
                             <i class="bi bi-chevron-left"></i>
                         </div>
                     </div>
-                    <div class="d-flex rem13px border-top mt-3 text-secondary">
-                        <div class="d-flex align-items-center me-3">
-                            <i class="bi bi-info-circle"></i>
+                    @if (!string.IsNullOrWhiteSpace(Model.ProductInfo.CategoryProductPageGuide))
+                    {
+                        <div class="d-flex rem13px border-top mt-3 text-secondary">
+                            <div class="d-flex align-items-center me-3">
+                                <i class="bi bi-info-circle"></i>
+                            </div>
+                            <div class="pt-2" id="category-guide">
+                                @Model.ProductInfo.CategoryProductPageGuide
+                            </div>
                         </div>
-                        <div class="pt-2" id="category-guide">
-                            @Model.ProductInfo.CategoryProductPageGuide
-                        </div>
-                    </div>
+                    }
                     <div class="d-flex border rounded-3 mt-4 justify-content-between p-3">
                         <div class="d-flex flex-column justify-content-between">
                             <span class="fw-bold">ارسال رایگان</span>
@@ -297,8 +307,8 @@
                             @if (!string.IsNullOrWhiteSpace(Model.ProductInfo.SellerLogo))
                             {
                                 <img class="me-3" width="50"
-                                     src="~/images/seller-logos/@Model.ProductInfo.SellerLogo"
-                                     alt="@Model.ProductInfo.SellerShopName" />
+                                 src="~/images/seller-logos/@Model.ProductInfo.SellerLogo"
+                                 alt="@Model.ProductInfo.SellerShopName" />
                             }
                             else
                             {

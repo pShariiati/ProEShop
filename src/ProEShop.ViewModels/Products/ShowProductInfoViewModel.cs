@@ -21,4 +21,22 @@ public class ShowProductInfoViewModel
     public string SellerLogo { get; set; }
 
     public string CategoryProductPageGuide { get; set; }
+
+    public List<ProductMediaForProductInfoViewModel> ProductMedia { get; set; }
+
+    public List<ProductCategoryForProductInfoViewModel> ProductCategories { get; set; }
+}
+
+public class ProductMediaForProductInfoViewModel
+{
+    public string FileName { get; set; }
+
+    public bool IsVideo { get; set; }
+}
+
+public class ProductCategoryForProductInfoViewModel
+{
+    public string CategorySlug { get; set; }
+
+    public string CategoryTitle { get; set; }
 }
