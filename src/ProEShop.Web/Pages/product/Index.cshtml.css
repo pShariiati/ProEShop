@@ -80,10 +80,6 @@
     border: 3px solid #19bfd3 !important;
 }
 
-li {
-    list-style-type: none;
-}
-
 #category-guide {
     line-height: 1.6rem;
 }

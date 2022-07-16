@@ -77,6 +77,10 @@ a{
     overflow-y: scroll;
 }
 
+li {
+    list-style-type: none;
+}
+
 /* 21px */
 .rem21px {
     font-size: 1.313rem;

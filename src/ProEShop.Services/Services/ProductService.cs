@@ -269,6 +269,8 @@ public class ProductService : GenericService<Product>, IProductService
     {
         return _mapper.ProjectTo<ShowProductInfoViewModel>(
                 _products
+                .AsNoTracking()
+                .AsSplitQuery()
             )
             .SingleOrDefaultAsync(x => x.ProductCode == productCode);
     }

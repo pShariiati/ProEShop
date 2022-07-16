@@ -21,7 +21,7 @@ public class ProductComment : EntityBase, IAuditableEntity
 
     public long ProductId { get; set; }
 
-    public long VariantId { get; set; }
+    public long? VariantId { get; set; }
 
     public byte Score { get; set; }
 
@@ -39,7 +39,7 @@ public class ProductComment : EntityBase, IAuditableEntity
     [MaxLength(1000)]
     public string NegativeItems { get; set; }
 
-    public long SellerShopNameId { get; set; }
+    public long? SellerShopNameId { get; set; }
 
     public DateTime CreatedDateTime { get; set; }
 

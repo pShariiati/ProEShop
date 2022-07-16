@@ -154,13 +154,41 @@ public class MappingProfile : Profile
                     options.MapFrom(src => src.DeliveryDate.ToLongPersianDate()))
             .ForMember(dest => dest.Items,
             options =>
-                options.MapFrom(src => src.ConsignmentItems.Where(x=>x.ConsignmentId == consignmentId)));
+                options.MapFrom(src => src.ConsignmentItems.Where(x => x.ConsignmentId == consignmentId)));
 
         this.CreateMap<Entities.ConsignmentItem, ShowConsignmentItemViewModel>();
 
         this.CreateMap<AddProductStockByConsignmentViewModel, Entities.ProductStock>();
 
-        this.CreateMap<Entities.Product, ShowProductInfoViewModel>();
+        this.CreateMap<Entities.Product, ShowProductInfoViewModel>()
+            .ForMember(dest => dest.Score,
+                options =>
+                        options.MapFrom(src =>
+                        src.ProductComments.Average(pc => pc.Score)
+                    ))
+            .ForMember(dest => dest.ProductCommentsCount,
+                options =>
+                        options.MapFrom(src =>
+                        src.ProductComments.LongCount(pc => pc.CommentTitle != null)
+                    ))
+            .ForMember(dest => dest.SuggestCount,
+                options =>
+                        options.MapFrom(src =>
+                        src.ProductComments
+                        .Where(x => x.IsBuyer)
+                        .LongCount(pc => pc.Suggest == true)
+                    ))
+        .ForMember(dest => dest.BuyerCount,
+                options =>
+                        options.MapFrom(src =>
+                        src.ProductComments
+                        .LongCount(x => x.IsBuyer)
+                    ));
+        //.ForMember(dest => dest.ProductCommentsLongCount,
+        //        options =>
+        //                options.MapFrom(src =>
+        //                src.ProductComments.LongCount()
+        //            ));
 
         this.CreateMap<Entities.ProductMedia, ProductMediaForProductInfoViewModel>();
 

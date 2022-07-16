@@ -73,6 +73,8 @@ public class Product : EntityBase, IAuditableEntity
 
     public ICollection<ProductVariant> ProductVariants { get; set; }
 
+    public ICollection<ProductComment> ProductComments { get; set; }
+
     #endregion
 }
 

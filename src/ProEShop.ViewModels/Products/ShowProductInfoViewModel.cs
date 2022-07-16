@@ -22,6 +22,25 @@ public class ShowProductInfoViewModel
 
     public string CategoryProductPageGuide { get; set; }
 
+    public double Score { get; set; }
+
+    public long ProductCommentsLongCount { get; set; }
+
+    public long ProductCommentsCount { get; set; }
+
+    public long SuggestCount { get; set; }
+
+    public long BuyerCount { get; set; }
+
+    public double SuggestPercentage
+    {
+        get
+        {
+            var divideResult = (double)BuyerCount / SuggestCount;
+            return 100 / divideResult;
+        }
+    }
+
     public List<ProductMediaForProductInfoViewModel> ProductMedia { get; set; }
 
     public List<ProductCategoryForProductInfoViewModel> ProductCategories { get; set; }
