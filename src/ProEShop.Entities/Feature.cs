@@ -15,6 +15,8 @@ public class Feature : EntityBase, IAuditableEntity
     [MaxLength(150)]
     public string Title { get; set; }
 
+    public bool ShowNextToProduct { get; set; }
+
     #endregion
 
     #region Relations

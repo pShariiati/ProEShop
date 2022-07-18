@@ -164,7 +164,9 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Score,
                 options =>
                         options.MapFrom(src =>
-                        src.ProductComments.Average(pc => pc.Score)
+                            src.ProductComments.Any() ?
+                            src.ProductComments.Average(pc => pc.Score)
+                            : 0
                     ))
             .ForMember(dest => dest.ProductCommentsCount,
                 options =>
@@ -193,5 +195,7 @@ public class MappingProfile : Profile
         this.CreateMap<Entities.ProductMedia, ProductMediaForProductInfoViewModel>();
 
         this.CreateMap<Entities.ProductCategory, ProductCategoryForProductInfoViewModel>();
+
+        this.CreateMap<Entities.ProductFeature, ProductFeatureForProductInfoViewModel>();
     }
 }

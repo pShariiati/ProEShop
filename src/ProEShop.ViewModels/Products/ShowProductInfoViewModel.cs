@@ -24,8 +24,14 @@ public class ShowProductInfoViewModel
 
     public double Score { get; set; }
 
+    /// <summary>
+    /// تعداد کل رکورد های جدول کامنت محصول
+    /// </summary>
     public long ProductCommentsLongCount { get; set; }
 
+    /// <summary>
+    /// تعداد نظراتی که برای محصول وجود دارد
+    /// </summary>
     public long ProductCommentsCount { get; set; }
 
     public long SuggestCount { get; set; }
@@ -44,6 +50,8 @@ public class ShowProductInfoViewModel
     public List<ProductMediaForProductInfoViewModel> ProductMedia { get; set; }
 
     public List<ProductCategoryForProductInfoViewModel> ProductCategories { get; set; }
+
+    public List<ProductFeatureForProductInfoViewModel> ProductFeatures { get; set; }
 }
 
 public class ProductMediaForProductInfoViewModel
@@ -58,4 +66,13 @@ public class ProductCategoryForProductInfoViewModel
     public string CategorySlug { get; set; }
 
     public string CategoryTitle { get; set; }
+}
+
+public class ProductFeatureForProductInfoViewModel
+{
+    public string FeatureTitle { get; set; }
+
+    public string Value { get; set; }
+
+    public bool FeatureShowNextToProduct { get; set; }
 }
