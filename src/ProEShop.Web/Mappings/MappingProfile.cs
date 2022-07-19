@@ -185,6 +185,11 @@ public class MappingProfile : Profile
                         options.MapFrom(src =>
                         src.ProductComments
                         .LongCount(x => x.IsBuyer)
+                    ))
+            .ForMember(dest => dest.ProductVariants,
+                options =>
+                    options.MapFrom(src =>
+                        src.ProductVariants.Where(x => x.Count > 0)
                     ));
         //.ForMember(dest => dest.ProductCommentsLongCount,
         //        options =>
@@ -197,5 +202,7 @@ public class MappingProfile : Profile
         this.CreateMap<Entities.ProductCategory, ProductCategoryForProductInfoViewModel>();
 
         this.CreateMap<Entities.ProductFeature, ProductFeatureForProductInfoViewModel>();
+
+        this.CreateMap<Entities.ProductVariant, ProductVariantForProductInfoViewModel>();
     }
 }

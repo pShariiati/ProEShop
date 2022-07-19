@@ -51,4 +51,14 @@ public interface IConsignmentService : IGenericService<Consignment>
     /// <param name="consignmentId"></param>
     /// <returns></returns>
     Task<Consignment> GetConsignmentWithReceivedStatus(long consignmentId);
+
+    /// <summary>
+    /// موقعی که انباردار موجودی یک کالا را از طریق محموله افزایش میدهد
+    /// باید وضعیت آن محموله در حالت دریافت شده باشد و نه هیچ وضعیت دیگری
+    /// این متود بررسی میکند که آیا محموله مورد نظر در وضعیت دریافت شده قرار دارد یا خیر
+    /// استفاده شده در صفحه افزایش موجودی توسط انباردار
+    /// </summary>
+    /// <param name="consignmentId"></param>
+    /// <returns></returns>
+    Task<bool> CanAddStockForConsignmentItems(long consignmentId);
 }

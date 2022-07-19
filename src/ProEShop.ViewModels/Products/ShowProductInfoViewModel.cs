@@ -52,6 +52,8 @@ public class ShowProductInfoViewModel
     public List<ProductCategoryForProductInfoViewModel> ProductCategories { get; set; }
 
     public List<ProductFeatureForProductInfoViewModel> ProductFeatures { get; set; }
+
+    public List<ProductVariantForProductInfoViewModel> ProductVariants { get; set; }
 }
 
 public class ProductMediaForProductInfoViewModel
@@ -75,4 +77,11 @@ public class ProductFeatureForProductInfoViewModel
     public string Value { get; set; }
 
     public bool FeatureShowNextToProduct { get; set; }
+}
+
+public class ProductVariantForProductInfoViewModel
+{
+    public string VariantValue { get; set; }
+
+    public string VariantColorCode { get; set; }
 }

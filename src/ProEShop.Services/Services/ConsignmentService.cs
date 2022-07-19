@@ -105,4 +105,10 @@ public class ConsignmentService : GenericService<Consignment>, IConsignmentServi
         return _consignments.Where(x => x.ConsignmentStatus == ConsignmentStatus.Received)
             .SingleOrDefaultAsync(x => x.Id == consignmentId);
     }
+
+    public Task<bool> CanAddStockForConsignmentItems(long consignmentId)
+    {
+        return _consignments.Where(x => x.ConsignmentStatus == ConsignmentStatus.Received)
+            .AnyAsync(x => x.Id == consignmentId);
+    }
 }
