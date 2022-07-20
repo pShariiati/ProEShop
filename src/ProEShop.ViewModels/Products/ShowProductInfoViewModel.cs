@@ -16,10 +16,6 @@ public class ShowProductInfoViewModel
 
     public string BrandLogoPicture { get; set; }
 
-    public string SellerShopName { get; set; }
-
-    public string SellerLogo { get; set; }
-
     public string CategoryProductPageGuide { get; set; }
 
     public double Score { get; set; }
@@ -84,4 +80,25 @@ public class ProductVariantForProductInfoViewModel
     public string VariantValue { get; set; }
 
     public string VariantColorCode { get; set; }
+
+    public int Price { get; set; }
+
+    public string SellerShopName { get; set; }
+
+    public string SellerLogo { get; set; }
+
+    public string GuaranteeFullTitle { get; set; }
+
+    public byte Score
+    {
+        get
+        {
+            var result = Price / 10000;
+            if (result <= 1)
+                return 1;
+            if (result >= 150)
+                return 150;
+            return (byte)result;
+        }
+    }
 }
