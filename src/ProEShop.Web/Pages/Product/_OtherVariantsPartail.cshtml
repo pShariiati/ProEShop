@@ -1,31 +1,39 @@
 ﻿@model List<ProEShop.ViewModels.Products.ProductVariantForProductInfoViewModel>
-
+@{
+    var groupedVariants = Model.GroupBy(x => x.VariantValue);
+    var variantCount = 1;
+}
 <!-- Other variants -->
 
-<div class="container mt-3">
+<div class="container mt-3" id="other-sellers-box">
     <div class="row">
         <p class="fw-bold mb-2">فروشندگان این کالا</p>
         <span class="border border-danger ms-2" id="other-sellers-bottom-line"></span>
         <!-- Other sellers table -->
-        <div class="table-responsive mt-4" id="other-sellers-table">
-            <table class="table table-bordered box-shadow align-middle">
-                <thead class="bg-primary text-white">
+        @foreach (var variants in groupedVariants)
+        {
+            @if (variants.Count() == 1)
+                continue;
+            <div variant-value="@variants.First().VariantValue"
+                class="table-responsive mt-4 other-sellers-table@(variantCount++ == 1 ? string.Empty : " d-none")">
+                <table class="table table-bordered shadow-sm align-middle">
+                    <thead class="bg-primary text-white">
                     <tr>
                         <th>فروشنده</th>
                         <th>گارانتی</th>
                         <th>قیمت</th>
                         <th></th>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach (var variant in Model)
+                    </thead>
+                    <tbody>
+                    @foreach (var variant in variants.Skip(1))
                     {
                         <tr>
                             <td>
                                 @if (!string.IsNullOrWhiteSpace(variant.SellerLogo))
                                 {
                                     <img src="~/images/seller-logos/@variant.SellerLogo" width="50"
-                                 alt="@variant.SellerShopName" />
+                                         alt="@variant.SellerShopName" />
                                 }
                                 else
                                 {
@@ -45,9 +53,10 @@
                             </td>
                         </tr>
                     }
-                </tbody>
-            </table>
-        </div>
+                    </tbody>
+                </table>
+            </div>
+        }
         <!-- End other sellers table -->
     </div>
 </div>

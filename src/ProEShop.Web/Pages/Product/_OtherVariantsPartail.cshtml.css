@@ -5,7 +5,7 @@
     height: 2px;
 }
 
-#other-sellers-table th, #other-sellers-table td {
+.other-sellers-table th, .other-sellers-table td {
     padding: 0.8rem .8rem;
 }
 
