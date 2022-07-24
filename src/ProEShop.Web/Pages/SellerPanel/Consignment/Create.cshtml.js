@@ -1,4 +1,12 @@
 ﻿$(function () {
+
+    $(document).on('keydown', '#variant-code-items-form-in-create-consignment input[type=number]', function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
+
     $(document).on('click', '.remove-product-variant-tr', function () {
         var currentVariantCode = $(this).parents('tr').attr('variant-code');
         $('#variant-code-items-form-in-create-consignment')

@@ -233,7 +233,9 @@
                     <div class="mt-4">
                         <div class="fw-bold rem17px">
                             رنگ:
-                            @firstProductVariant.VariantValue
+                            <span id="product-variant-value">
+                                @firstProductVariant.VariantValue
+                            </span>
                         </div>
                         <div class="d-flex mt-3" id="product-variants-box-in-show-product-info">
                             @foreach (var variant in productVariants
@@ -333,17 +335,14 @@
                         <!-- End 1 -->
                         <!-- 2 -->
 
-                        <div class="d-flex align-items-center mt-3">
-                            @if (!string.IsNullOrWhiteSpace(firstProductVariant.SellerLogo))
-                            {
-                                <img class="me-3" width="50"
+                        <div class="d-flex align-items-center mt-3" id="shop-details-in-single-page-of-product">
+                            @{
+                                var hasSellerLogo = !string.IsNullOrWhiteSpace(firstProductVariant.SellerLogo);
+                            }
+                            <img class="me-3@(hasSellerLogo ? string.Empty : " d-none")" width="50"
                                  src="~/images/seller-logos/@firstProductVariant.SellerLogo"
                                  alt="@firstProductVariant.SellerShopName" />
-                            }
-                            else
-                            {
-                                <i class="bi bi-shop me-2 rem21px"></i>
-                            }
+                            <i class="bi bi-shop me-2 rem21px@(hasSellerLogo ? " d-none" : string.Empty)"></i>
                             <div>
                                 @firstProductVariant.SellerShopName
                             </div>
@@ -357,7 +356,7 @@
 
                         <div class="d-flex align-items-center mt-3">
                             <i class="bi bi-shield-check me-2 rem21px"></i>
-                            <div class="rem14px">
+                            <div class="rem14px" id="product-guarantee-in-single-page-of-product">
                                 @firstProductVariant.GuaranteeFullTitle
                             </div>
                         </div>
@@ -385,8 +384,8 @@
                         <!-- 5 -->
 
                         <div class="d-flex justify-content-end align-items-center mt-3">
-                            <span class="fw-bold rem21px">
-                                @firstProductVariant.Price
+                            <span class="fw-bold rem21px" id="product-price-in-single-page-of-product">
+                                @firstProductVariant.Price.ToString("0,#")
                                 تومان
                             </span>
                         </div>
@@ -405,6 +404,46 @@
     </div>
 </div>
 <!-- End show product info -->
+
+<!-- Website features -->
+
+<div class="container mt-3 bg-white p-2 shadow-sm rem14px" id="webstie-features">
+    <div class="row">
+        <div class="col p-md-3 text-center">
+            <a href="#" class="text-secondary">
+                <i class="bi bi-box-seam"></i>
+                امکان تحویل اکسپرس
+            </a>
+        </div>
+        <div class="col p-md-3 text-center">
+            <a href="#" class="text-secondary">
+                <i class="bi bi-headset"></i>
+                ۲۴ ساعته،
+                ۷ روز هفته
+            </a>
+        </div>
+        <div class="col p-md-3 text-center">
+            <a href="#" class="text-secondary">
+                <i class="bi bi-credit-card-fill"></i>
+                امکان پرداخت در محل
+            </a>
+        </div>
+        <div class="col p-md-3 text-center">
+            <a href="#" class="text-secondary">
+                <i class="bi bi-box-seam-fill"></i>
+                هفت روز ضمانت بازگشت کالا
+            </a>
+        </div>
+        <div class="col p-md-3 text-center">
+            <a href="#" class="text-secondary">
+                <i class="bi bi-patch-check"></i>
+                ضمانت اصل بودن کالا
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- End website features -->
 
 <!-- Other variants -->
 

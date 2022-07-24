@@ -12,47 +12,52 @@
         <!-- Other sellers table -->
         @foreach (var variants in groupedVariants)
         {
-            @if (variants.Count() == 1)
-                continue;
             <div variant-value="@variants.First().VariantValue"
-                class="table-responsive mt-4 other-sellers-table@(variantCount++ == 1 ? string.Empty : " d-none")">
+             class="table-responsive mt-4 other-sellers-table@(variantCount++ == 1 ? string.Empty : " d-none")">
                 <table class="table table-bordered shadow-sm align-middle">
                     <thead class="bg-primary text-white">
-                    <tr>
-                        <th>فروشنده</th>
-                        <th>گارانتی</th>
-                        <th>قیمت</th>
-                        <th></th>
-                    </tr>
+                        <tr>
+                            <th>فروشنده</th>
+                            <th>گارانتی</th>
+                            <th>قیمت</th>
+                            <th>امتیاز</th>
+                            <th></th>
+                        </tr>
                     </thead>
                     <tbody>
-                    @foreach (var variant in variants.Skip(1))
-                    {
-                        <tr>
-                            <td>
-                                @if (!string.IsNullOrWhiteSpace(variant.SellerLogo))
-                                {
-                                    <img src="~/images/seller-logos/@variant.SellerLogo" width="50"
-                                         alt="@variant.SellerShopName" />
-                                }
-                                else
-                                {
-                                    <i class="bi bi-shop me-2 rem21px"></i>
-                                }
-                                @variant.SellerShopName
-                            </td>
-                            <td>@variant.GuaranteeFullTitle</td>
-                            <td>
-                                @variant.Price
-                                تومان
-                            </td>
-                            <td class="text-center">
-                                <button class="btn btn-danger rounded-3">
-                                    افزودن به سبد
-                                </button>
-                            </td>
-                        </tr>
-                    }
+                        @foreach (var variant in variants)
+                        {
+                            <tr>
+                                <td>
+                                    @if (!string.IsNullOrWhiteSpace(variant.SellerLogo))
+                                    {
+                                        <img src="~/images/seller-logos/@variant.SellerLogo" width="50"
+                                 alt="@variant.SellerShopName" />
+                                    }
+                                    else
+                                    {
+                                        <i class="bi bi-shop me-2 rem21px"></i>
+                                    }
+                                    @variant.SellerShopName
+                                </td>
+                                <td>@variant.GuaranteeFullTitle</td>
+                                <td>
+                                    @variant.Price.ToString("0,#")
+                                    تومان
+                                </td>
+                                <td>
+                                    @variant.Score
+                                    امتیاز پروشاپ
+                                    <i class="bi bi-info-circle" data-bs-toggle="tooltip" data-bs-placement="top"
+                               title="بعد از پایان مهلت مرجوعی، برای دریافت امتیاز به صفحه ماموریت های پروشاپی سر بزنید."></i>
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-danger rounded-3">
+                                        افزودن به سبد
+                                    </button>
+                                </td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>
