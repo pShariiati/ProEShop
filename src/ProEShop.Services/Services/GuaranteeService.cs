@@ -52,4 +52,18 @@ public class GuaranteeService : GenericService<Guarantee>, IGuaranteeService
             Pagination = paginationResult.Pagination
         };
     }
+
+    public Task<List<ShowSelect2DataByAjaxViewModel>> SearchOnGuaranteesForSelect2(string input)
+    {
+        return _guarantees
+            .Where(x => x.Title.Contains(input))
+            .Select(x => new ShowSelect2DataByAjaxViewModel()
+            {
+                Id = x.Id,
+                Text = x.FullTitle
+            })
+            .OrderBy(x => x.Id)
+            .Take(20)
+            .ToListAsync();
+    }
 }

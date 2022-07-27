@@ -19,6 +19,7 @@ public class AddVariantViewModel
     public long VariantId { get; set; }
 
     [Display(Name = "گارانتی")]
+    [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
     [Range(1, long.MaxValue, ErrorMessage = AttributesErrorMessages.RegularExpressionMessage)]
     public long GuaranteeId { get; set; }
 

@@ -15,6 +15,7 @@ public class AddVariantModel : SellerPanelBase
     #region Constructor
 
     private readonly IProductService _productService;
+    private readonly IGuaranteeService _guaranteeService;
     private readonly IMapper _mapper;
     private readonly ISellerService _sellerService;
     private readonly IProductVariantService _productVariantService;
@@ -25,13 +26,15 @@ public class AddVariantModel : SellerPanelBase
         IMapper mapper,
         ISellerService sellerService,
         IProductVariantService productVariantService,
-        IUnitOfWork uow)
+        IUnitOfWork uow,
+        IGuaranteeService guaranteeService)
     {
         _productService = productService;
         _mapper = mapper;
         _sellerService = sellerService;
         _productVariantService = productVariantService;
         _uow = uow;
+        _guaranteeService = guaranteeService;
     }
 
     #endregion
@@ -75,6 +78,17 @@ public class AddVariantModel : SellerPanelBase
         return Json(new JsonResultOperation(true, "تنوع محصول با موفقیت اضافه شد")
         {
             Data = Url.Page("SuccessfulProductVariant")
+        });
+    }
+
+    public async Task<IActionResult> OnGetGetGuarantees(string input)
+    {
+        var result = await _guaranteeService
+            .SearchOnGuaranteesForSelect2(input);
+
+        return Json(new
+        {
+            results = result
         });
     }
 }

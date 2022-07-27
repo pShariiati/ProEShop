@@ -7,6 +7,22 @@
         var selectedButtonText = $(this).html();
         $('#variant-box label span').html(variantTitle + selectedButtonText);
     });
+
+    $('.custom-select2').select2({
+        theme: 'bootstrap-5',
+        ajax: {
+            url: location.pathname + '?handler=GetGuarantees',
+            delay: 250,
+            data: function (params) {
+                return {
+                    input: params.term
+                };
+            },
+            cache: true
+        },
+        placeholder: 'انتخاب کنید',
+        minimumInputLength: 2
+    });
 });
 
 function addProductVariantFunction(message, data) {

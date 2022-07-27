@@ -3,6 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ProEShop.ViewModels;
 
+public class ShowSelect2DataByAjaxViewModel
+{
+    public long Id { get; set; }
+
+    public string Text { get; set; }
+}
+
 public enum PageCount
 {
     [Display(Name = "۱۰ سطر")]
