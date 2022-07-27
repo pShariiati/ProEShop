@@ -1,4 +1,10 @@
-﻿$(function() {
+﻿$(function () {
+	
+	// Hide other sellers box if it has just one item
+    if ($('.other-sellers-table:first tbody tr').length === 1) {
+        $('#other-sellers-box, #other-sellers-count-box').addClass('d-none');
+    }
+
     $('#show-all-product-features').click(function() {
         $(this).addClass('d-none');
         $('#features-next-to-product-box li').removeClass('d-none');
@@ -23,12 +29,6 @@
         $('.other-sellers-table').addClass('d-none');
 
         $('.other-sellers-table[variant-value="' + selectedVariantValue + '"]').removeClass('d-none');
-
-        if ($('.other-sellers-table[variant-value="' + selectedVariantValue + '"]').length === 0) {
-            $('#other-sellers-box').addClass('d-none');
-        } else {
-            $('#other-sellers-box').removeClass('d-none');
-        }
 
         // Change variant value
         $('#product-variant-value').html(selectedVariantValue);
@@ -61,5 +61,23 @@
         // Change product price
         var selectedPrice = selectedSeller.find('td:eq(2)').html();
         $('#product-price-in-single-page-of-product').html(selectedPrice);
+
+        // Hide other sellers box if it has just one item
+        if ($('.other-sellers-table[variant-value="' + selectedVariantValue + '"] tbody tr').length === 1) {
+            $('#other-sellers-box, #other-sellers-count-box').addClass('d-none');
+        } else {
+            $('#other-sellers-box, #other-sellers-count-box').removeClass('d-none');
+        }
+
+        // Change product score
+        var selectedPrice = selectedSeller.find('td:eq(3) span').html();
+        $('#product-score-in-single-page-of-product span').html(selectedPrice);
+
+        // Show or hide free delivery box
+        if (selectedSeller.attr('free-delivery') === 'true') {
+            $('#free-delivery-box').removeClass('d-none');
+        } else {
+            $('#free-delivery-box').addClass('d-none');
+        }
     });
 });

@@ -7,6 +7,7 @@
     var firstProductVariant = productVariants.First();
     var productFeatures = Model.ProductInfo.ProductFeatures
         .Where(x => x.FeatureShowNextToProduct).ToList();
+    var isVariantColor = !string.IsNullOrWhiteSpace(Model.ProductInfo.ProductVariants.First().VariantColorCode);
     var showScore = Model.ProductInfo.Score > 0;
     var showCommentsCount = Model.ProductInfo.ProductCommentsCount > 0;
     var showQuestionsCount = false;
@@ -162,7 +163,7 @@
                         }
                         <div id="product-en-title-line" class="flex-grow-1 bg-custom-grey"></div>
                     </div>
-                    <div class="mt-2 d-flex@(!showScore && !showCommentsCount && !showQuestionsCount ? " d-none" : string.Empty)">
+                    <div class="border-bottom pb-3 mt-2 d-flex@(!showScore && !showCommentsCount && !showQuestionsCount ? " d-none" : string.Empty)">
                         @if (showScore)
                         {
                             <!-- Stars -->
@@ -180,7 +181,6 @@
                                         )
                                     </span>
                                 </span>
-                                <div class="bg-custom-grey mx-2 rounded-circle product-info-dots"></div>
                             </div>
 
                             <!-- End stars -->
@@ -190,11 +190,11 @@
                             <!-- Comments -->
 
                             <div class="d-flex align-items-center me-2">
+                                <div class="bg-custom-grey mx-2 rounded-circle product-info-dots"></div>
                                 <span class="rem13px text-info">
                                     @Model.ProductInfo.ProductCommentsCount
                                     دیدگاه
                                 </span>
-                                <div class="bg-custom-grey mx-2 rounded-circle product-info-dots"></div>
                             </div>
 
                             <!-- End comments -->
@@ -204,6 +204,7 @@
                             <!-- Questions -->
 
                             <div class="d-flex align-items-center">
+                                <div class="bg-custom-grey mx-2 rounded-circle product-info-dots"></div>
                                 <span class="rem13px text-info">
                                     ۴۶۷۶
                                     پرسش
@@ -230,25 +231,50 @@
                             </span>
                         </div>
                     }
-                    <div class="mt-4">
+                    <div class="mt-3">
                         <div class="fw-bold rem17px">
-                            رنگ:
+                            @if (isVariantColor)
+                            {
+                                @:رنگ:
+                            }
+                            else
+                            {
+                                <text>اندازه:</text>
+                            }
                             <span id="product-variant-value">
                                 @firstProductVariant.VariantValue
                             </span>
                         </div>
                         <div class="d-flex mt-3" id="product-variants-box-in-show-product-info">
-                            @foreach (var variant in productVariants
-                            .GroupBy(x => x.VariantValue))
+                            @{
+                                var groupedVariants = productVariants
+                                    .GroupBy(x => x.VariantValue);
+                            }
+                            @if (isVariantColor)
                             {
-                                var currentVariant = variant.First();
-                                <div data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                 title="@currentVariant.VariantValue"
-                                 class="pointer-cursor rounded-circle d-flex justify-content-center align-items-center">
-                                    <span class="rounded-circle d-flex justify-content-center align-items-center" style="background-color: @currentVariant.VariantColorCode">
-                                        <i class="bi bi-check2 rem21px text-white d-none"></i>
-                                    </span>
-                                </div>
+                                @foreach (var variant in groupedVariants)
+                                {
+                                    var currentVariant = variant.First();
+                                    <div data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                         title="@currentVariant.VariantValue"
+                                         class="pointer-cursor rounded-circle d-flex justify-content-center align-items-center">
+                                        <span class="rounded-circle d-flex justify-content-center align-items-center" style="background-color: @currentVariant.VariantColorCode">
+                                            <i class="bi bi-check2 rem21px text-white d-none"></i>
+                                        </span>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <select class="form-select w-auto">
+                                    @foreach (var variant in groupedVariants)
+                                    {
+                                        var currentVariant = variant.First();
+                                        <option value="@currentVariant.VariantValue">
+                                            @currentVariant.VariantValue
+                                        </option>
+                                    }
+                                </select>
                             }
                         </div>
                     </div>
@@ -305,7 +331,7 @@
                     @{
                         var showFreeDeliveryBox = firstProductVariant.Price < 500000 ? " d-none" : string.Empty;
                     }
-                    <div class="d-flex border rounded-3 mt-4 justify-content-between p-3@(showFreeDeliveryBox)">
+                    <div id="free-delivery-box" class="d-flex border rounded-3 mt-4 justify-content-between p-3@(showFreeDeliveryBox)">
                         <div class="d-flex flex-column justify-content-between">
                             <span class="fw-bold">ارسال رایگان</span>
                             <span class="rem13px text-secondary">
@@ -323,13 +349,10 @@
 
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="fw-bold">فروشنده</div>
-                            @if (productVariants.Count(x => x.VariantValue == firstProductVariant.VariantValue) > 1)
-                            {
-                                <div class="text-info rem13px">
-                                    @(productVariants.Count(x => x.VariantValue == firstProductVariant.VariantValue) - 1)
-                                    فروشنده دیگر
-                                </div>
-                            }
+                            <div class="text-info rem13px" id="other-sellers-count-box">
+                                @(productVariants.Count(x => x.VariantValue == firstProductVariant.VariantValue) - 1)
+                                فروشنده دیگر
+                            </div>
                         </div>
 
                         <!-- End 1 -->
@@ -338,9 +361,14 @@
                         <div class="d-flex align-items-center mt-3" id="shop-details-in-single-page-of-product">
                             @{
                                 var hasSellerLogo = !string.IsNullOrWhiteSpace(firstProductVariant.SellerLogo);
+                                var sellerLogoUrl = "/images/application/eshop.png";
+                                if (hasSellerLogo)
+                                {
+                                    sellerLogoUrl = $"/images/seller-logos/{firstProductVariant.SellerLogo}";
+                                }
                             }
                             <img class="me-3@(hasSellerLogo ? string.Empty : " d-none")" width="50"
-                                 src="~/images/seller-logos/@firstProductVariant.SellerLogo"
+                                 src="@sellerLogoUrl"
                                  alt="@firstProductVariant.SellerShopName" />
                             <i class="bi bi-shop me-2 rem21px@(hasSellerLogo ? " d-none" : string.Empty)"></i>
                             <div>
@@ -369,8 +397,10 @@
 
                         <div class="d-flex align-items-center mt-3">
                             <i class="bi bi-trophy me-2 rem21px"></i>
-                            <div class="rem14px">
-                                @firstProductVariant.Score
+                            <div class="rem14px" id="product-score-in-single-page-of-product">
+                                <span>
+                                    @firstProductVariant.Score
+                                </span>
                                 امتیاز پروشاپ
                                 <i class="bi bi-info-circle" data-bs-toggle="tooltip" data-bs-placement="bottom"
                                    title="بعد از پایان مهلت مرجوعی، برای دریافت امتیاز به صفحه ماموریت های پروشاپی سر بزنید."></i>

@@ -27,7 +27,7 @@
                     <tbody>
                         @foreach (var variant in variants)
                         {
-                            <tr>
+                            <tr free-delivery="@(variant.Price >= 500000 ? "true" : "false")">
                                 <td>
                                     @if (!string.IsNullOrWhiteSpace(variant.SellerLogo))
                                     {
@@ -46,7 +46,9 @@
                                     تومان
                                 </td>
                                 <td>
-                                    @variant.Score
+                                    <span>
+                                        @variant.Score
+                                    </span>
                                     امتیاز پروشاپ
                                     <i class="bi bi-info-circle" data-bs-toggle="tooltip" data-bs-placement="top"
                                title="بعد از پایان مهلت مرجوعی، برای دریافت امتیاز به صفحه ماموریت های پروشاپی سر بزنید."></i>
