@@ -1,11 +1,11 @@
 ﻿$(function () {
-	
-	// Hide other sellers box if it has just one item
+
+    // Hide other sellers box if it has just one item
     if ($('.other-sellers-table:first tbody tr').length === 1) {
         $('#other-sellers-box, #other-sellers-count-box').addClass('d-none');
     }
 
-    $('#show-all-product-features').click(function() {
+    $('#show-all-product-features').click(function () {
         $(this).addClass('d-none');
         $('#features-next-to-product-box li').removeClass('d-none');
     });
@@ -17,7 +17,7 @@
     $('#product-variants-box-in-show-product-info i:first').removeClass('d-none');
 
     // Change variants (color)
-    $('#product-variants-box-in-show-product-info div').click(function() {
+    $('#product-variants-box-in-show-product-info div').click(function () {
         $('#product-variants-box-in-show-product-info div').removeClass('selected-variant-in-show-product-info');
         $('#product-variants-box-in-show-product-info i').addClass('d-none');
 
@@ -149,3 +149,28 @@
         }
     });
 });
+
+// این فانکشن بعد از عملیات سمت سرور اجرا میشود
+// True = Add from favorites table
+// False = Remove from favorites table
+function addFavoriteFunction() {
+    var addFavoriteButton = $('#addFavoriteButton').parent().find('input[name="addFavorite"]');
+    if (addFavoriteButton.val() === 'true') {
+        // این محصول به علاقه مندی کاربر اضافه شده
+        // پس باید آیکون قلب قرمز رو نشون بدیم
+        // و مقدار اینپوت رو فالس کنیم که اگه دوباره روش کلیک کرد
+        // اینبار عملیات حذف اون رکورد از بخش علاقه مندی انجام بدیم
+        addFavoriteButton.val('false');
+        $('#addFavoriteButton i:first').addClass('d-none');
+        $('#addFavoriteButton i:last').removeClass('d-none');
+    }
+    else {
+        // این محصول از علاقه مندی کاربر حذف شده
+        // پس باید آیکون قلب قرمز رو مخفی کنیم
+        // و مقدار اینپوت رو ترو کنیم که اگه دوباره روش کلیک کرد
+        // اینبار عملیات افزودن اون رکورد به بخش علاقه مندی رو انجام بدیم
+        addFavoriteButton.val('true');
+        $('#addFavoriteButton i:first').removeClass('d-none');
+        $('#addFavoriteButton i:last').addClass('d-none');
+    }
+}

@@ -147,7 +147,7 @@ public class MappingProfile : Profile
                 options =>
                     options.MapFrom(src => src.DeliveryDate.ToLongPersianDate()));
 
-        var consignmentId = 0;
+        long consignmentId = 0;
         this.CreateMap<Entities.Consignment, ShowConsignmentDetailsViewModel>()
             .ForMember(dest => dest.DeliveryDate,
                 options =>
@@ -160,6 +160,7 @@ public class MappingProfile : Profile
 
         this.CreateMap<AddProductStockByConsignmentViewModel, Entities.ProductStock>();
 
+        long userId = 0;
         this.CreateMap<Entities.Product, ShowProductInfoViewModel>()
             .ForMember(dest => dest.Score,
                 options =>
@@ -190,6 +191,11 @@ public class MappingProfile : Profile
                 options =>
                     options.MapFrom(src =>
                         src.ProductVariants.Where(x => x.Count > 0)
+                    ))
+            .ForMember(dest => dest.IsFavorite,
+                options =>
+                    options.MapFrom(src =>
+                    src.UserProductsFavorites.Any(x => x.UserId == userId)
                     ));
         //.ForMember(dest => dest.ProductCommentsLongCount,
         //        options =>

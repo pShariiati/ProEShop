@@ -49,6 +49,8 @@ public class User : IdentityUser<long>, IAuditableEntity
 
     public Seller Seller { get; set; }
 
+    public ICollection<UserProductFavorite> UserProductsFavorites { get; set; }
+
     #endregion
 }
 

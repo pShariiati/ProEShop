@@ -1,6 +1,7 @@
 ﻿@page "/product/pc-{productCode}/{slug}"
 @model ProEShop.Web.Pages.Product.IndexModel
 @{
+    var productInfo = Model.ProductInfo;
     var productVariants = Model.ProductInfo.ProductVariants
         .OrderBy(x => x.Price)
         .ToList();
@@ -60,10 +61,20 @@
                             فروش ویژه
                         </li>
                         <li>
-                            <button type="button" class="btn" data-bs-toggle="tooltip" data-bs-placement="left"
+                            @{
+                                var isFavorite = productInfo.IsFavorite;
+                            }
+                            <form asp-page-handler="AddOrRemoveFavorite"
+                                functionNameToCallInTheEnd="addFavoriteFunction"
+                                method="post" class="public-ajax-form">
+                                <input type="hidden" name="productId" value="@productInfo.Id" />
+                                <input type="hidden" name="addFavorite" value="@(isFavorite ? "false" : "true")" />
+                                <button id="addFavoriteButton" class="btn" data-bs-toggle="tooltip" data-bs-placement="left"
                                     title="افزودن به علاقه مندی ها">
-                                <i class="bi bi-heart"></i>
+                                <i class="bi bi-heart@(isFavorite ? " d-none" : string.Empty)"></i>
+                                <i class="bi bi-heart-fill text-danger@(isFavorite ? string.Empty : " d-none")"></i>
                             </button>
+                            </form>
                         </li>
                         <li>
                             <button type="button" class="btn" data-bs-toggle="tooltip" data-bs-placement="left"

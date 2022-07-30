@@ -13,6 +13,16 @@ public class CustomGenericService<TEntity> : ICustomGenericService<TEntity> wher
         _entities = uow.Set<TEntity>();
     }
 
+    public async Task AddAsync(TEntity entity)
+    {
+        await _entities.AddAsync(entity);
+    }
+
+    public async Task<TEntity> FindAsync(params object[] ids)
+    {
+        return await _entities.FindAsync(ids);
+    }
+
     public void Remove(TEntity entity)
     {
         _entities.Remove(entity);

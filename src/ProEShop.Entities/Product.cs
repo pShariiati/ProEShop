@@ -75,6 +75,8 @@ public class Product : EntityBase, IAuditableEntity
 
     public ICollection<ProductComment> ProductComments { get; set; }
 
+    public ICollection<UserProductFavorite> UserProductsFavorites { get; set; }
+
     #endregion
 }
 

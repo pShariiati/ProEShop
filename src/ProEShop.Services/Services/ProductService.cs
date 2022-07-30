@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using ProEShop.Common.Helpers;
@@ -267,11 +268,14 @@ public class ProductService : GenericService<Product>, IProductService
 
     public Task<ShowProductInfoViewModel> GetProductInfo(long productCode)
     {
-        return _mapper.ProjectTo<ShowProductInfoViewModel>(
-                _products
-                .AsNoTracking()
-                .AsSplitQuery()
-            )
-            .SingleOrDefaultAsync(x => x.ProductCode == productCode);
+        var userId = _httpContextAccessor.HttpContext.User.Identity.GetLoggedInUserId();
+
+        return _products
+            .AsNoTracking()
+            .AsSplitQuery()
+            .ProjectTo<ShowProductInfoViewModel>(
+                configuration: _mapper.ConfigurationProvider,
+                parameters: new { userId = userId }
+            ).SingleOrDefaultAsync(x => x.ProductCode == productCode);
     }
 }
