@@ -278,4 +278,21 @@ public class ProductService : GenericService<Product>, IProductService
                 parameters: new { userId = userId }
             ).SingleOrDefaultAsync(x => x.ProductCode == productCode);
     }
+
+    public async Task<(int productCode, string slug)> FindByShortLink(string productShortLint)
+    {
+        var productShortLink = await _products
+            .Select(x => new
+            {
+                x.Slug,
+                x.ProductCode,
+                x.ProductShortLink
+            }).SingleOrDefaultAsync(x =>
+                    EF.Functions.Like(x.ProductShortLink.Link, $"%{productShortLint}%")
+                );
+        return (
+            productShortLink?.ProductCode ?? 0,
+            productShortLink?.Slug
+        );
+    }
 }

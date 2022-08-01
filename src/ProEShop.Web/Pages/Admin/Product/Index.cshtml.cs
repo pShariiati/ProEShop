@@ -21,6 +21,7 @@ public class IndexModel : PageBase
     private readonly IProductService _productService;
     private readonly ISellerService _sellerService;
     private readonly ICategoryService _categoryService;
+    private readonly IProductShortLinkService _productShortLinkService;
     private readonly IUploadFileService _uploadFile;
     private readonly IUnitOfWork _uow;
     private readonly IHtmlSanitizer _htmlSanitizer;
@@ -31,7 +32,8 @@ public class IndexModel : PageBase
         ICategoryService categoryService,
         IUploadFileService uploadFile,
         IUnitOfWork uow,
-        IHtmlSanitizer htmlSanitizer)
+        IHtmlSanitizer htmlSanitizer,
+        IProductShortLinkService productShortLinkService)
     {
         _productService = productService;
         _sellerService = sellerService;
@@ -39,6 +41,7 @@ public class IndexModel : PageBase
         _uploadFile = uploadFile;
         _uow = uow;
         _htmlSanitizer = htmlSanitizer;
+        _productShortLinkService = productShortLinkService;
     }
 
     #endregion
@@ -87,7 +90,10 @@ public class IndexModel : PageBase
         {
             return Json(new JsonResultOperation(false, "محصول مورد نظر یافت نشد"));
         }
-        
+
+        var productShortLink = await _productShortLinkService.FindByIdAsync(product.ProductShortLinkId);
+        productShortLink.IsUsed = false;
+
         _productService.Remove(product);
         await _uow.SaveChangesAsync();
         foreach (var media in product.ProductMedia)

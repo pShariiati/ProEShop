@@ -52,6 +52,8 @@ public class Product : EntityBase, IAuditableEntity
 
     public int ProductCode { get; set; }
 
+    public long ProductShortLinkId { get; set; }
+
     #endregion
 
     #region Relations
@@ -76,6 +78,8 @@ public class Product : EntityBase, IAuditableEntity
     public ICollection<ProductComment> ProductComments { get; set; }
 
     public ICollection<UserProductFavorite> UserProductsFavorites { get; set; }
+
+    public ProductShortLink ProductShortLink { get; set; }
 
     #endregion
 }

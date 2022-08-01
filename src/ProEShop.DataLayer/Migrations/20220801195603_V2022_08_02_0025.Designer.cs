@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProEShop.DataLayer.Context;
 
@@ -11,9 +12,10 @@ using ProEShop.DataLayer.Context;
 namespace ProEShop.DataLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220801195603_V2022_08_02_0025")]
+    partial class V2022_08_02_0025
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1145,7 +1147,7 @@ namespace ProEShop.DataLayer.Migrations
                     b.Property<int>("ProductCode")
                         .HasColumnType("int");
 
-                    b.Property<long>("ProductShortLinkId")
+                    b.Property<long?>("ProductShortLinkId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("RejectReason")
@@ -1178,7 +1180,8 @@ namespace ProEShop.DataLayer.Migrations
                         .IsUnique();
 
                     b.HasIndex("ProductShortLinkId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[ProductShortLinkId] IS NOT NULL");
 
                     b.HasIndex("SellerId");
 
@@ -1478,9 +1481,7 @@ namespace ProEShop.DataLayer.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Link")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ModifiedByBrowserName")
                         .HasMaxLength(1000)
@@ -2154,9 +2155,7 @@ namespace ProEShop.DataLayer.Migrations
 
                     b.HasOne("ProEShop.Entities.ProductShortLink", "ProductShortLink")
                         .WithOne("Product")
-                        .HasForeignKey("ProEShop.Entities.Product", "ProductShortLinkId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProEShop.Entities.Product", "ProductShortLinkId");
 
                     b.HasOne("ProEShop.Entities.Seller", "Seller")
                         .WithMany()

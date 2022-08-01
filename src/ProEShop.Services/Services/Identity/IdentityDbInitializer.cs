@@ -24,14 +24,16 @@ public class IdentityDbInitializer : IIdentityDbInitializer
     private readonly IServiceScopeFactory _scopeFactory;
     private readonly IUnitOfWork _uow;
     private readonly IProvinceAndCityService _provinceAndCityService;
-    private readonly ISellerService _sellerService;
+    private readonly IProductShortLinkService _productShortLinkService;
 
     public IdentityDbInitializer(
         IApplicationUserManager applicationUserManager,
         IServiceScopeFactory scopeFactory,
         IApplicationRoleManager roleManager,
         IOptionsSnapshot<SiteSettings> adminUserSeedOptions,
-        ILogger<IdentityDbInitializer> logger, IUnitOfWork uow, IProvinceAndCityService provinceAndCityService, ISellerService sellerService)
+        ILogger<IdentityDbInitializer> logger, IUnitOfWork uow,
+        IProvinceAndCityService provinceAndCityService,
+        IProductShortLinkService productShortLinkService)
     {
         _applicationUserManager = applicationUserManager;
         _applicationUserManager.CheckArgumentIsNull(nameof(_applicationUserManager));
@@ -48,7 +50,7 @@ public class IdentityDbInitializer : IIdentityDbInitializer
         _logger = logger;
         _uow = uow;
         _provinceAndCityService = provinceAndCityService;
-        _sellerService = sellerService;
+        _productShortLinkService = productShortLinkService;
         _logger.CheckArgumentIsNull(nameof(_logger));
     }
 
@@ -91,6 +93,7 @@ public class IdentityDbInitializer : IIdentityDbInitializer
             }
 
             identityDbSeedData.SeedProvincesAndCities().GetAwaiter().GetResult();
+            identityDbSeedData.SeedProductShortLinks().GetAwaiter().GetResult();
         });
     }
 
@@ -208,6 +211,48 @@ public class IdentityDbInitializer : IIdentityDbInitializer
             await _provinceAndCityService.AddAsync(c2);
             await _provinceAndCityService.AddAsync(c3);
             await _provinceAndCityService.AddAsync(c4);
+            await _uow.SaveChangesAsync();
+        }
+    }
+
+    public async Task SeedProductShortLinks()
+    {
+        if (!await _productShortLinkService.AnyAsync())
+        {
+            var links = new List<Entities.ProductShortLink>();
+
+            for (var letter1 = 'A'; letter1 <= 'z'; letter1++)
+            {
+                if (!char.IsLetterOrDigit(letter1))
+                    continue;
+                var link = $"{letter1.ToString()}";
+                links.Add(new ProductShortLink()
+                {
+                    Link = link
+                });
+                //for (var letter2 = '0'; letter2 <= 'z'; letter2++)
+                //{
+                //    if (!char.IsLetterOrDigit(letter2))
+                //        continue;
+                //    //var link = $"{letter1.ToString()}{letter2}";
+                //    //links.Add(new ProductShortLink()
+                //    //{
+                //    //    Link = link
+                //    //});
+                //    for (var letter3 = '0'; letter3 <= 'z'; letter3++)
+                //    {
+                //        if (!char.IsLetterOrDigit(letter3))
+                //            continue;
+                //        var link = $"{letter1.ToString()}{letter2}{letter3}";
+                //        links.Add(new ProductShortLink()
+                //        {
+                //            Link = link
+                //        });
+                //    }
+                //}
+            }
+
+            await _productShortLinkService.AddRangeAsync(links);
             await _uow.SaveChangesAsync();
         }
     }

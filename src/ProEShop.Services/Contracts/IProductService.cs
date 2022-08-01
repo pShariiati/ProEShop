@@ -51,4 +51,10 @@ public interface IProductService : IGenericService<Product>
     /// <param name="productCode"></param>
     /// <returns></returns>
     Task<ShowProductInfoViewModel> GetProductInfo(long productCode);
+
+    /// <summary>
+    /// یافتن محصول بر اساس لینک کوتاه آن
+    /// </summary>
+    /// <returns></returns>
+    Task<(int productCode, string slug)> FindByShortLink(string productShortLint);
 }

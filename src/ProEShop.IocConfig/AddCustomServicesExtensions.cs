@@ -70,6 +70,7 @@ public static class AddCustomServicesExtensions
         services.AddScoped<IConsignmentItemService, ConsignmentItemService>();
         services.AddScoped<IProductStockService, ProductStockService>();
         services.AddScoped<IUserProductFavoriteService, UserProductFavoriteService>();
+        services.AddScoped<IProductShortLinkService, ProductShortLinkService>();
 
         #region Html sanitizer
         IHtmlSanitizer sanitizer = new HtmlSanitizer();

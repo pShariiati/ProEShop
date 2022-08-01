@@ -22,4 +22,6 @@ public interface IIdentityDbInitializer
     Task<IdentityResult> SeedWarehouseRole();
 
     Task SeedProvincesAndCities();
+
+    Task SeedProductShortLinks();
 }

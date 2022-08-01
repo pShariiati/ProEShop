@@ -25,6 +25,11 @@ public abstract class GenericService<TEntity> : IGenericService<TEntity> where T
         return new();
     }
 
+    public async Task AddRangeAsync(IEnumerable<TEntity> entities)
+    {
+        await _entities.AddRangeAsync(entities);
+    }
+
     public virtual Task<DuplicateColumns> Update(TEntity entity)
     {
         _entities.Update(entity);
