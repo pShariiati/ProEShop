@@ -74,8 +74,8 @@
         $('#other-sellers-count-box span').html(otherSellersCount - 1);
 
         // Change product score
-        var selectedPrice = selectedSeller.find('td:eq(3) span').html();
-        $('#product-score-in-single-page-of-product span').html(selectedPrice);
+        var selectedScore = selectedSeller.find('td:eq(3) span').html();
+        $('#product-score-in-single-page-of-product span').html(selectedScore);
 
         // Show or hide free delivery box
         if (selectedSeller.attr('free-delivery') === 'true') {
@@ -138,8 +138,8 @@
         $('#other-sellers-count-box span').html(otherSellersCount - 1);
 
         // Change product score
-        var selectedPrice = selectedSeller.find('td:eq(3) span').html();
-        $('#product-score-in-single-page-of-product span').html(selectedPrice);
+        var selectedScore = selectedSeller.find('td:eq(3) span').html();
+        $('#product-score-in-single-page-of-product span').html(selectedScore);
 
         // Show or hide free delivery box
         if (selectedSeller.attr('free-delivery') === 'true') {

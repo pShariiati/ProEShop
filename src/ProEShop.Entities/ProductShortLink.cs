@@ -6,12 +6,13 @@ using ProEShop.Entities.AuditableEntity;
 namespace ProEShop.Entities;
 
 [Table("ProductShortLinks")]
+[Index(nameof(ProductShortLink.Link), IsUnique = true)]
 public class ProductShortLink : EntityBase, IAuditableEntity
 {
     #region Properties
 
     [Required]
-    [MaxLength(10)]
+    [MaxLength(39)]
     public string Link { get; set; }
 
     public bool IsUsed { get; set; }

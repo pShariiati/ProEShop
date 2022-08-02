@@ -8,6 +8,7 @@ using ProEShop.ViewModels.Consignments;
 using ProEShop.ViewModels.FeatureConstantValues;
 using ProEShop.ViewModels.Guarantees;
 using ProEShop.ViewModels.Products;
+using ProEShop.ViewModels.ProductShortLinks;
 using ProEShop.ViewModels.ProductStocks;
 using ProEShop.ViewModels.ProductVariants;
 using ProEShop.ViewModels.Sellers;
@@ -195,7 +196,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.IsFavorite,
                 options =>
                     options.MapFrom(src =>
-                    src.UserProductsFavorites.Any(x => x.UserId == userId)
+                        userId != 0 && src.UserProductsFavorites.Any(x => x.UserId == userId)
                     ));
         //.ForMember(dest => dest.ProductCommentsLongCount,
         //        options =>
@@ -210,5 +211,7 @@ public class MappingProfile : Profile
         this.CreateMap<Entities.ProductFeature, ProductFeatureForProductInfoViewModel>();
 
         this.CreateMap<Entities.ProductVariant, ProductVariantForProductInfoViewModel>();
+
+        this.CreateMap<Entities.ProductShortLink, ShowProductShortLinkViewModel>();
     }
 }

@@ -471,7 +471,7 @@ function activatingModalForm() {
 
 // فعال ساز مربوط به صحفه بندی
 function activatingPagination() {
-    $('#main-pagianation button').click(function () {
+    $('#main-pagination button').click(function () {
         isMainPaginationClicked = true;
         var currentPageSelected = $(this).val();
         $('.search-form-via-ajax input[name$="Pagination.CurrentPage"]').val(currentPageSelected);
@@ -736,6 +736,10 @@ $(document).on('submit', 'form.search-form-via-ajax', function (e) {
             activatingPageCount();
             enablingTooltips();
         }
+    }).fail(function () {
+        showErrorMessage();
+    }).always(function () {
+        hideLoading();
     });
 });
 

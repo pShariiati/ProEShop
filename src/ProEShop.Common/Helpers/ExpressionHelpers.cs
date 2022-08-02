@@ -19,7 +19,7 @@ public static class ExpressionHelpers
     {
         var containsExpressions = CreateContainsExpressions(query, model);
         var equalExpressions = CreateEqualExpressions(containsExpressions, model);
-        var equalDateTimeExpressions = CreateEqualDateTimeExpressions(containsExpressions, model);
+        var equalDateTimeExpressions = CreateEqualDateTimeExpressions(equalExpressions, model);
         if (callDeletedStatusExpression)
         {
             return CreateDeletedStatusExpression(equalDateTimeExpressions, model);

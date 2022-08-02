@@ -268,7 +268,11 @@ public class ProductService : GenericService<Product>, IProductService
 
     public Task<ShowProductInfoViewModel> GetProductInfo(long productCode)
     {
-        var userId = _httpContextAccessor.HttpContext.User.Identity.GetLoggedInUserId();
+        long userId = 0;
+        if (_httpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+        {
+            userId = _httpContextAccessor.HttpContext.User.Identity.GetLoggedInUserId();
+        }
 
         return _products
             .AsNoTracking()

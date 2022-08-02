@@ -20,6 +20,7 @@ public class AddVariantModel : SellerPanelBase
     private readonly ISellerService _sellerService;
     private readonly IProductVariantService _productVariantService;
     private readonly IUnitOfWork _uow;
+    private readonly IVariantService _variantService;
 
     public AddVariantModel(
         IProductService productService,
@@ -27,7 +28,8 @@ public class AddVariantModel : SellerPanelBase
         ISellerService sellerService,
         IProductVariantService productVariantService,
         IUnitOfWork uow,
-        IGuaranteeService guaranteeService)
+        IGuaranteeService guaranteeService,
+        IVariantService variantService)
     {
         _productService = productService;
         _mapper = mapper;
@@ -35,6 +37,7 @@ public class AddVariantModel : SellerPanelBase
         _productVariantService = productVariantService;
         _uow = uow;
         _guaranteeService = guaranteeService;
+        _variantService = variantService;
     }
 
     #endregion
@@ -62,6 +65,11 @@ public class AddVariantModel : SellerPanelBase
             {
                 Data = ModelState.GetModelStateErrors()
             });
+        }
+
+        if (!await _variantService.CheckProductAndVariantTypeForForAddVariant(Variant.ProductId, Variant.VariantId))
+        {
+            return Json(new JsonResultOperation(false));
         }
 
         var productVariantToAdd = _mapper.Map<Entities.ProductVariant>(Variant);

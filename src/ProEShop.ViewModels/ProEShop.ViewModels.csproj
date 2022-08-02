@@ -18,6 +18,7 @@
 
 	<ItemGroup>
 	  <Folder Include="ConsignmentItems\" />
+	  <Folder Include="ProductShortLinks\" />
 	  <Folder Include="ProductStocks\" />
 	</ItemGroup>
 

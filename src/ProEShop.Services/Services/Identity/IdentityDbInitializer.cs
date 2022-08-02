@@ -225,7 +225,7 @@ public class IdentityDbInitializer : IIdentityDbInitializer
             {
                 if (!char.IsLetterOrDigit(letter1))
                     continue;
-                var link = $"{letter1.ToString()}";
+                var link = $"{(byte)letter1}";
                 links.Add(new ProductShortLink()
                 {
                     Link = link
@@ -234,16 +234,16 @@ public class IdentityDbInitializer : IIdentityDbInitializer
                 //{
                 //    if (!char.IsLetterOrDigit(letter2))
                 //        continue;
-                //    //var link = $"{letter1.ToString()}{letter2}";
-                //    //links.Add(new ProductShortLink()
-                //    //{
-                //    //    Link = link
-                //    //});
+                //    var link = $"{(byte)letter1}.{(byte)letter2}";
+                //    links.Add(new ProductShortLink()
+                //    {
+                //        Link = link
+                //    });
                 //    for (var letter3 = '0'; letter3 <= 'z'; letter3++)
                 //    {
                 //        if (!char.IsLetterOrDigit(letter3))
                 //            continue;
-                //        var link = $"{letter1.ToString()}{letter2}{letter3}";
+                //        var link = $"{(byte)letter1}.{(byte)letter2}.{(byte)letter3}";
                 //        links.Add(new ProductShortLink()
                 //        {
                 //            Link = link

@@ -1,3 +1,4 @@
+using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -27,7 +28,9 @@ public class ProductShortLinkModel : PageModel
             return RedirectToPage(PublicConstantStrings.Error404PageName);
         }
 
-        var product = await _productService.FindByShortLink(productShortLint);
+        var shortLinkInBytes = Encoding.UTF8.GetBytes(productShortLint);
+        var shortLinkToCompare = string.Join(".", shortLinkInBytes);
+        var product = await _productService.FindByShortLink(shortLinkToCompare);
         if (product.slug is null)
         {
             return RedirectToPage(PublicConstantStrings.Error404PageName);

@@ -1,55 +1,37 @@
-﻿@using ProEShop.Common.Helpers
-@using ProEShop.Entities
-@model ProEShop.ViewModels.Products.ShowProductsViewModel
-@if (Model.Products.Count > 0)
+﻿@model ProEShop.ViewModels.ProductShortLinks.ShowProductShortLinksViewModel
+@if (Model.ProductShortLinks.Count > 0)
 {
     <div class="table-responsive data-table-body">
         <table class="table table-bordered table-striped table-hover">
             <thead class="table-light">
                 <tr>
-                    <th>@Html.DisplayNameFor(x => x.Products[0].Id)</th>
-                    <th>@Html.DisplayNameFor(x => x.Products[0].PersianTitle)</th>
-                    <th>@Html.DisplayNameFor(x => x.Products[0].ProductCode)</th>
-                    <th>@Html.DisplayNameFor(x => x.Products[0].CategoryTitle)</th>
-                    <th>@Html.DisplayNameFor(x => x.Products[0].MainPicture)</th>
-                    <th>@Html.DisplayNameFor(x => x.Products[0].SellerShopName)</th>
-                    <th>@Html.DisplayNameFor(x => x.Products[0].BrandFullTitle)</th>
-                    <th>@Html.DisplayNameFor(x => x.Products[0].Status)</th>
+                    <th>@Html.DisplayNameFor(x => x.ProductShortLinks[0].Id)</th>
+                    <th>@Html.DisplayNameFor(x => x.ProductShortLinks[0].Link)</th>
+                    <th>@Html.DisplayNameFor(x => x.ProductShortLinks[0].IsUsed)</th>
                     <th>عملیات</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var product in Model.Products)
+                @foreach (var shortLink in Model.ProductShortLinks)
                 {
                     <tr>
-                        <td>@product.Id</td>
-                        <td>@product.PersianTitle</td>
-                        <td>@product.ProductCode</td>
-                        <td>@product.CategoryTitle</td>
+                        <td>@shortLink.Id</td>
+                        <td>@shortLink.Link</td>
                         <td>
-                            <img src="~/images/products/@product.MainPicture" alt="@product.PersianTitle" width="100" />
-                        </td>
-                        <td>@product.SellerShopName</td>
-                        <td>@product.BrandFullTitle</td>
-                        <td>
-                            @{
-                                string GetButtonClass(ProductStatus status) => status switch
-                                {
-                                    ProductStatus.Confirmed => "success",
-                                    ProductStatus.AwaitingInitialApproval => "warning",
-                                    _ => "danger"
-                                };
+                            @if (shortLink.IsUsed)
+                            {
+                                <button type="button" class="btn btn-warning">استفاده شده</button>
                             }
-                            <div class="d-grid">
-                                <span class="btn btn-@GetButtonClass(product.Status)" type="button">
-                                    @product.Status.GetEnumDisplayName()
-                                </span>
-                            </div>
+                            else
+                            {
+                                <button type="button" class="btn btn-success">استفاده نشده</button>
+                            }
                         </td>
                         <td>
-                            <button product-id="@product.Id" functionNameToCallOnClick="getProductDetails" type="button" class="get-html-with-ajax btn btn-info">
-                                جزییات محصول
-                            </button>
+                            <form asp-page-handler="Delete" class="d-inline-block">
+                                <input type="hidden" name="shortLinkId" value="@shortLink.Id" />
+                                <button type="button" class="btn btn-danger delete-row-button">حذف</button>
+                            </form>
                         </td>
                     </tr>
                 }
