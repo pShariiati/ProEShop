@@ -21,7 +21,7 @@ public class ShowProductShortLinkViewModel
     public long Id { get; set; }
 
     [Display(Name = "آدرس لینک")]
-    public string Link { get; set; }
+    public string DisplayLink { get; set; }
 
     [Display(Name = "وضعیت")]
     public bool IsUsed { get; set; }
@@ -29,9 +29,10 @@ public class ShowProductShortLinkViewModel
 
 public class SearchProductShortLinksViewModel
 {
+    [ContainsSearch]
     [Display(Name = "آدرس لینک")]
     [MaxLength(10, ErrorMessage = AttributesErrorMessages.MaxLengthMessage)]
-    public string Link { get; set; }
+    public string DisplayLink { get; set; }
 
     [EqualSearch]
     [Display(Name = "وضعیت")]
@@ -50,5 +51,5 @@ public enum SortingProductShortLinks
     Id,
 
     [Display(Name = "آدرس لینک")]
-    Link
+    DisplayLink
 }

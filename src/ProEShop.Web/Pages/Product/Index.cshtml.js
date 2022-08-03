@@ -1,4 +1,22 @@
 ﻿$(function () {
+    
+    var zoomPluginOptions = {
+        fillContainer: true,
+        zoomPosition: 'original'
+    };
+
+    new ImageZoom(document.getElementById('zoom-image-place'), zoomPluginOptions);
+
+    $('#add-product-to-favorite-form').submit(function() {
+        if (!isAuthenticated) {
+            showFirstLoginModal();
+            return false;
+        }
+    });
+
+    $('#share-product-button').click(function() {
+        $('#share-product-modal').modal('show');
+    });
 
     // Hide other sellers box if it has just one item
     if ($('.other-sellers-table:first tbody tr').length === 1) {
@@ -71,7 +89,7 @@
         }
 
         // Change other sellers count
-        $('#other-sellers-count-box span').html(otherSellersCount - 1);
+        $('#other-sellers-count-box span').html((otherSellersCount - 1).toString().toPersinaDigit());
 
         // Change product score
         var selectedScore = selectedSeller.find('td:eq(3) span').html();
@@ -135,7 +153,7 @@
         }
 
         // Change other sellers count
-        $('#other-sellers-count-box span').html(otherSellersCount - 1);
+        $('#other-sellers-count-box span').html((otherSellersCount - 1).toString().toPersinaDigit());
 
         // Change product score
         var selectedScore = selectedSeller.find('td:eq(3) span').html();

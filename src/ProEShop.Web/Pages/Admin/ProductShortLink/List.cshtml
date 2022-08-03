@@ -6,7 +6,7 @@
             <thead class="table-light">
                 <tr>
                     <th>@Html.DisplayNameFor(x => x.ProductShortLinks[0].Id)</th>
-                    <th>@Html.DisplayNameFor(x => x.ProductShortLinks[0].Link)</th>
+                    <th>@Html.DisplayNameFor(x => x.ProductShortLinks[0].DisplayLink)</th>
                     <th>@Html.DisplayNameFor(x => x.ProductShortLinks[0].IsUsed)</th>
                     <th>عملیات</th>
                 </tr>
@@ -16,7 +16,7 @@
                 {
                     <tr>
                         <td>@shortLink.Id</td>
-                        <td>@shortLink.Link</td>
+                        <td>@shortLink.DisplayLink</td>
                         <td>
                             @if (shortLink.IsUsed)
                             {

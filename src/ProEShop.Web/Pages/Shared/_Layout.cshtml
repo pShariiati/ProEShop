@@ -20,7 +20,7 @@
     }
 </head>
 
-<body>
+<body is-authenticated="@(User.Identity.IsAuthenticated ? "true" : "false")" login-page-url="@Url.Page("/Identity/RegisterLogin")">
 
     <div class="container-fluid bg-white shadow-sm">
         <div class="row p-3" id="main-header">

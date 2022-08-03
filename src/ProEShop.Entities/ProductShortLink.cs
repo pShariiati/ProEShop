@@ -15,6 +15,10 @@ public class ProductShortLink : EntityBase, IAuditableEntity
     [MaxLength(39)]
     public string Link { get; set; }
 
+    [Required]
+    [MaxLength(10)]
+    public string DisplayLink { get; set; }
+
     public bool IsUsed { get; set; }
 
     #endregion

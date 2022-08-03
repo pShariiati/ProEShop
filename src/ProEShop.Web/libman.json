@@ -55,6 +55,11 @@
       "provider": "jsdelivr",
       "library": "md.bootstrappersiandatetimepicker@4.1.1",
       "destination": "wwwroot\\lib\\md.bootstrappersiandatetimepicker"
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "js-image-zoom@0.7.0",
+      "destination": "wwwroot\\lib\\js-image-zoom"
     }
   ]
 }

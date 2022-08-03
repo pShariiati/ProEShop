@@ -114,9 +114,23 @@ function showToastr(status, message) {
 
 // Enabling tooltips
 function enablingTooltips() {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('.data-table-place [data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl,
+            {
+                trigger: 'hover'
+            });
+    });
+}
+
+// Enabling tooltips
+function enablingNormalTooltips() {
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
+        return new bootstrap.Tooltip(tooltipTriggerEl,
+            {
+                trigger: 'hover'
+            });
     });
 }
 
@@ -471,7 +485,7 @@ function activatingModalForm() {
 
 // فعال ساز مربوط به صحفه بندی
 function activatingPagination() {
-    $('#main-pagination button').click(function () {
+    $('#main-pagination button').not('.active').click(function () {
         isMainPaginationClicked = true;
         var currentPageSelected = $(this).val();
         $('.search-form-via-ajax input[name$="Pagination.CurrentPage"]').val(currentPageSelected);
@@ -862,11 +876,25 @@ $('.multiple-images-preview-input').change(function () {
     }
 });
 
+// Convert English numbers to Persian numbers
+// https://seifzadeh.blog.ir/post/convert-number-javascript
+String.prototype.toPersinaDigit = function () {
+    var id = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+    return this.replace(/[0-9]/g, function (w) {
+        return id[+w];
+    });
+}
+
 $(function() {
     activatingInputAttributes();
     initializeSelect2WithoutModal();
     initializeTinyMCE();
-    enablingTooltips();
+    enablingNormalTooltips();
+
+    $('.persian-numbers').each(function() {
+        var result = $(this).html().toPersinaDigit();
+        $(this).html(result);
+    });
 
     $('textarea[add-image-plugin="true"]').each(function() {
         var elementId = $(this).attr('id');

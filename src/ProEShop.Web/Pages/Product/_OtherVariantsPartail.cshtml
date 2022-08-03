@@ -40,13 +40,15 @@
                                     }
                                     @variant.SellerShopName
                                 </td>
-                                <td>@variant.GuaranteeFullTitle</td>
+                                <td class="persian-numbers">@variant.GuaranteeFullTitle</td>
                                 <td>
-                                    @variant.Price.ToString("0,#")
+                                    <span class="persian-numbers">
+                                        @variant.Price.ToString("0,#")
+                                    </span>
                                     تومان
                                 </td>
                                 <td>
-                                    <span>
+                                    <span class="persian-numbers">
                                         @variant.Score
                                     </span>
                                     امتیاز پروشاپ
