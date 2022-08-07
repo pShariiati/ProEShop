@@ -38,4 +38,20 @@ public interface IProductVariantService : IGenericService<ProductVariant>
     /// <param name="ids"></param>
     /// <returns></returns>
     Task<List<ProductVariant>> GetProductVariantsToAddCount(List<long> ids);
+
+    /// <summary>
+    /// استفاده شده در صفحه ویرایش تنوع محصول در بخش پنل فروشنده
+    /// این متود دیتای داخل پارشل را پر میکند
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    Task<EditProductVariantViewModel> GetDataForEdit(long id);
+
+    /// <summary>
+    /// استفاده شده در صفحه ویرایش تنوع محصول در بخش پنل فروشنده
+    /// این تنوع باید برای فروشنده ایی باشد که در داخل سیستم لاگین است
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    Task<ProductVariant> GetForEdit(long id);
 }

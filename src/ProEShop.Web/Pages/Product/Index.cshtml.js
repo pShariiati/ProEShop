@@ -1,5 +1,25 @@
-﻿$(function () {
-    
+﻿function copyProductLinkToClipboardFunction() {
+    var copyButtonSelector = $('#copy-product-link-button');
+    var copyButtonHtml = copyButtonSelector.html();
+    copyButtonSelector.html('<i class="bi bi-clipboard-check rem20px"></i> کپی شد');
+    setInterval(function() {
+        copyButtonSelector.html(copyButtonHtml);
+    }, 2000);
+}
+
+$(function () {
+
+    $('#other-sellers-count-box').click(function() {
+        $('html, body').animate({
+            scrollTop: $('#other-sellers-box').offset().top - 20
+        }, 1);
+    });
+
+    $('#copy-product-link-button').click(function () {
+        var productLink = $(this).attr('product-link');
+        copyTextToClipboard(productLink, 'copyProductLinkToClipboardFunction');
+    });
+
     var zoomPluginOptions = {
         fillContainer: true,
         zoomPosition: 'original'

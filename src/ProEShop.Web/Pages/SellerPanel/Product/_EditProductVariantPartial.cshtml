@@ -1,0 +1,58 @@
+﻿@model ProEShop.ViewModels.ProductVariants.EditProductVariantViewModel
+
+<div class="row">
+    <div class="card text-dark bg-white border-0 shadow">
+        <div class="card-body">
+            <div class="alert alert-danger">
+                توجه:
+                <br />
+                لطفاً قبل از درج تنوع، مشخصات فنی کالا (مانند: رنگ، ابعاد، اقلام همراه کالا، جنس کالا، تصویر بسته‌بندی و ...) را در سایت چک کرده و اطمینان حاصل کنید که تنوع شما با مشخصات فنی کالا در سایت مطابقت داشته باشد.
+            </div>
+            <div class="row">
+                <div class="col-md-3 text-center">
+                    <img src="~/images/products/@Model.MainPicture" class="w-50" alt="@Model.ProductTitle" />
+                </div>
+                <div class="col-md-9">
+                    <div class="alert alert-secondary">
+                        <p class="mb-3 text-center text-primary">
+                            <a asp-page="/Product/Index" asp-route-slug="@Model.Slug" asp-route-productCode="@Model.ProductCode" target="_blank">
+                                @Model.ProductTitle
+                            </a>
+                        </p>
+                        <div class="row text-center">
+                            <div class="col-md-3">
+                                دسته بندی:
+                                @Model.CategoryTitle
+                            </div>
+                            <div class="col-md-3">
+                                تنوع مجاز این کالا:
+                                @(Model.CategoryIsVariantColor ? "رنگ" : "سایز")
+                            </div>
+                            <div class="col-md-3">
+                                برند کالا:
+                                @Model.BrandFullTitle
+                            </div>
+                            <div class="col-md-3">
+                                کمیسیون فروش این کالا:
+                                %@Model.CommissionPercentage
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <form functionNameToCallInTheEnd="addProductVariantFunction"
+                  method="post" class="public-ajax-form">
+                <input asp-for="Id" />
+                <div class="my-2">
+                    <label class="d-flex justify-content-between form-label" asp-for="Price">
+                    </label>
+                    <input asp-for="Price" class="form-control" />
+                    <span asp-validation-for="Price" class="span-error-message"></span>
+                </div>
+                <div class="d-grid">
+                    <input type="submit" class="btn btn-primary" value="ویرایش تنوع" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

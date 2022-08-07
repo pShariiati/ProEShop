@@ -25,6 +25,17 @@ public class ProductVariant : EntityBase, IAuditableEntity
 
     public int Price { get; set; }
 
+    public int? OffPrice { get; set; }
+
+    public byte? OffPercentage { get; set; }
+
+    [NotMapped]
+    public int FinalPrice => OffPrice ?? Price;
+
+    public DateTime? StartDatTime { get; set; }
+
+    public DateTime? EndDateTime { get; set; }
+
     public int VariantCode { get; set; }
 
     public int Count { get; set; }

@@ -885,6 +885,48 @@ String.prototype.toPersinaDigit = function () {
     });
 }
 
+function fallbackCopyTextToClipboard(text, functionNameToCallInTheEnd) {
+    var textArea = document.createElement('textarea');
+    textArea.value = text;
+
+    // Avoid scrolling to bottom
+    textArea.style.top = '0';
+    textArea.style.left = '0';
+    textArea.style.position = 'fixed';
+
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+
+    try {
+        var successful = document.execCommand('copy');
+        if (!successful)
+            showErrorMessage('مرورگر شما قابلیت کپی کردن متن را ندارد');
+        else {
+            if (typeof window[functionNameToCallInTheEnd] === 'function') {
+                window[functionNameToCallInTheEnd]();
+            }
+        }
+    } catch (err) {
+        showErrorMessage('مرورگر شما قابلیت کپی کردن متن را ندارد');
+    }
+
+    document.body.removeChild(textArea);
+}
+function copyTextToClipboard(text, functionNameToCallInTheEnd) {
+    if (!navigator.clipboard) {
+        fallbackCopyTextToClipboard(text, functionNameToCallInTheEnd);
+        return;
+    }
+    navigator.clipboard.writeText(text).then(function () {
+        if (typeof window[functionNameToCallInTheEnd] === 'function') {
+            window[functionNameToCallInTheEnd]();
+        }
+    }, function (err) {
+        showErrorMessage('مرورگر شما قابلیت کپی کردن متن را ندارد');
+    });
+}
+
 $(function() {
     activatingInputAttributes();
     initializeSelect2WithoutModal();

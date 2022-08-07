@@ -21,14 +21,14 @@ public class ProductShortLinkModel : PageModel
 
     #endregion
 
-    public async Task<IActionResult> OnGet(string productShortLint)
+    public async Task<IActionResult> OnGet(string productShortLink)
     {
-        if (!Regex.IsMatch(productShortLint, @"^[a-zA-Z0-9]{1,10}$"))
+        if (!Regex.IsMatch(productShortLink, @"^[a-zA-Z0-9]{1,10}$"))
         {
             return RedirectToPage(PublicConstantStrings.Error404PageName);
         }
 
-        var shortLinkInBytes = Encoding.UTF8.GetBytes(productShortLint);
+        var shortLinkInBytes = Encoding.UTF8.GetBytes(productShortLink);
         var shortLinkToCompare = string.Join(".", shortLinkInBytes);
         var product = await _productService.FindByShortLink(shortLinkToCompare);
         if (product.slug is null)

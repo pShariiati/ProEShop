@@ -215,5 +215,25 @@ public class MappingProfile : Profile
         this.CreateMap<Entities.ProductVariant, ProductVariantForProductInfoViewModel>();
 
         this.CreateMap<Entities.ProductShortLink, ShowProductShortLinkViewModel>();
+
+        this.CreateMap<Entities.ProductVariant, EditProductVariantViewModel>()
+            .ForMember(dest => dest.MainPicture,
+                options =>
+                    options.MapFrom(src => src.Product.ProductMedia.First().FileName))
+            .ForMember(dest => dest.ProductTitle,
+                options =>
+                    options.MapFrom(src => src.Product.PersianTitle))
+            .ForMember(dest => dest.CommissionPercentage,
+                options =>
+                    options.MapFrom(
+                        src => src.Product.Category.CategoryBrands
+                            .Select(x => new
+                            {
+                                x.BrandId,
+                                x.CommissionPercentage
+                            })
+                            .Single(x => x.BrandId == src.Product.BrandId)
+                            .CommissionPercentage
+                    ));
     }
 }
