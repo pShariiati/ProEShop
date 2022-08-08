@@ -11,6 +11,10 @@
                             <th>@Html.DisplayNameFor(x=>x[0].GuaranteeTitle)</th>
                             <th>@Html.DisplayNameFor(x=>x[0].VariantCode)</th>
                             <th>@Html.DisplayNameFor(x=>x[0].Price)</th>
+                            <th>@Html.DisplayNameFor(x=>x[0].OffPrice)</th>
+                            <th>@Html.DisplayNameFor(x=>x[0].OffPercentage)</th>
+                            <th>@Html.DisplayNameFor(x=>x[0].StartDateTime)</th>
+                            <th>@Html.DisplayNameFor(x=>x[0].EndDateTime)</th>
                             <th>عملیات</th>
                         </tr>
                     </thead>
@@ -32,11 +36,65 @@
                                 <td>@productVariant.GuaranteeTitle</td>
                                 <td>@productVariant.VariantCode</td>
                                 <td>
-                                    @productVariant.Price
+                                    <span class="persian-numbers">
+                                        @productVariant.Price.ToString("#,0")
+                                    </span>
                                     تومان
                                 </td>
                                 <td>
-                                    <button class="btn btn-warning">
+                                    @if (productVariant.OffPrice != null)
+                                    {
+                                        <span class="persian-numbers">
+                                            @productVariant.OffPrice.Value.ToString("#,0")
+                                        </span>
+                                        <text>تومان</text>
+                                    }
+                                    else
+                                    {
+                                        @:بدون تخفیف
+                                    }
+                                </td>
+                                <td>
+                                    @if (productVariant.OffPercentage != null)
+                                    {
+                                        <span class="persian-numbers">
+                                            @productVariant.OffPercentage.Value
+                                        </span>
+                                        <text>درصد</text>
+                                    }
+                                    else
+                                    {
+                                        @:بدون تخفیف
+                                    }
+                                </td>
+                                <td>
+                                    @if (productVariant.StartDateTime != null)
+                                    {
+                                        <span class="persian-numbers">
+                                            @productVariant.StartDateTime
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        @:بدون تخفیف
+                                    }
+                                </td>
+                                <td>
+                                    @if (productVariant.EndDateTime != null)
+                                    {
+                                        <span class="persian-numbers">
+                                            @productVariant.EndDateTime
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        @:بدون تخفیف
+                                    }
+                                </td>
+                                <td>
+                                    <button functionNameToCallOnClick="editProductVariant"
+                                            product-variant-id="@productVariant.Id"
+                                    class="btn btn-warning get-html-with-ajax">
                                         ویرایش
                                     </button>
                                 </td>

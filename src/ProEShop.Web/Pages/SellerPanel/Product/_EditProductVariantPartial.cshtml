@@ -22,7 +22,7 @@
                         <div class="row text-center">
                             <div class="col-md-3">
                                 دسته بندی:
-                                @Model.CategoryTitle
+                                @Model.ProductCategoryTitle
                             </div>
                             <div class="col-md-3">
                                 تنوع مجاز این کالا:
@@ -30,7 +30,7 @@
                             </div>
                             <div class="col-md-3">
                                 برند کالا:
-                                @Model.BrandFullTitle
+                                @Model.ProductBrandFullTitle
                             </div>
                             <div class="col-md-3">
                                 کمیسیون فروش این کالا:
@@ -40,14 +40,40 @@
                     </div>
                 </div>
             </div>
-            <form functionNameToCallInTheEnd="addProductVariantFunction"
-                  method="post" class="public-ajax-form">
+            <form functionNameToCallInTheEnd="editProductVariantFunction"
+                  method="post" class="public-ajax-form" asp-page-handler="EditProductVariant">
                 <input asp-for="Id" />
-                <div class="my-2">
-                    <label class="d-flex justify-content-between form-label" asp-for="Price">
-                    </label>
-                    <input asp-for="Price" class="form-control" />
-                    <span asp-validation-for="Price" class="span-error-message"></span>
+                <div class="row">
+                    <div class="col-md-4 my-2">
+                        <label class="d-flex justify-content-between form-label" asp-for="Price">
+                        </label>
+                        <input asp-for="Price" class="form-control" />
+                        <span asp-validation-for="Price" class="span-error-message"></span>
+                    </div>
+                    <div class="col-md-4 my-2">
+                        <label class="d-flex justify-content-between form-label" asp-for="OffPrice">
+                        </label>
+                        <input asp-for="OffPrice" class="form-control" />
+                        <span asp-validation-for="OffPrice" class="span-error-message"></span>
+                    </div>
+                    <div class="col-md-4 my-2">
+                        <label class="d-flex justify-content-between form-label" asp-for="OffPercentage">
+                        </label>
+                        <input asp-for="OffPercentage" class="form-control" />
+                        <span asp-validation-for="OffPercentage" class="span-error-message"></span>
+                    </div>
+                    <div class="col-md-4 my-2">
+                        <label class="d-flex justify-content-between form-label" asp-for="StartDateTime">
+                        </label>
+                        <input asp-for="StartDateTime" class="form-control" />
+                        <span asp-validation-for="StartDateTime" class="span-error-message"></span>
+                    </div>
+                    <div class="col-md-4 my-2">
+                        <label class="d-flex justify-content-between form-label" asp-for="EndDateTime">
+                        </label>
+                        <input asp-for="EndDateTime" class="form-control" />
+                        <span asp-validation-for="EndDateTime" class="span-error-message"></span>
+                    </div>
                 </div>
                 <div class="d-grid">
                     <input type="submit" class="btn btn-primary" value="ویرایش تنوع" />

@@ -17,7 +17,7 @@ using ProEShop.ViewModels.Sellers;
 namespace ProEShop.Web.Pages.SellerPanel.Product;
 
 [CheckModelStateInRazorPages]
-public class IndexModel : PageBase
+public class IndexModel : SellerPanelBase
 {
     #region Constructor
 
@@ -26,6 +26,7 @@ public class IndexModel : PageBase
     private readonly ICategoryService _categoryService;
     private readonly IUploadFileService _uploadFile;
     private readonly IUnitOfWork _uow;
+    private readonly IMapper _mapper;
     private readonly IHtmlSanitizer _htmlSanitizer;
     private readonly IProductVariantService _productVariantService;
 
@@ -36,7 +37,8 @@ public class IndexModel : PageBase
         IUploadFileService uploadFile,
         IUnitOfWork uow,
         IHtmlSanitizer htmlSanitizer,
-        IProductVariantService productVariantService)
+        IProductVariantService productVariantService,
+        IMapper mapper)
     {
         _productService = productService;
         _sellerService = sellerService;
@@ -45,6 +47,7 @@ public class IndexModel : PageBase
         _uow = uow;
         _htmlSanitizer = htmlSanitizer;
         _productVariantService = productVariantService;
+        _mapper = mapper;
     }
 
     #endregion
@@ -112,6 +115,7 @@ public class IndexModel : PageBase
             return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
         }
 
+        _mapper.Map(model, productVariant);
         await _uow.SaveChangesAsync();
         return Json(new JsonResultOperation(true, "تنوع محصول مورد نظر با موفقیت ویرایش شد"));
     }

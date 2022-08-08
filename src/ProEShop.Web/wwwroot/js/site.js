@@ -16,9 +16,30 @@ var htmlModalPlace = `<div class="modal fade" id="html-modal-place" data-bs-back
     </div>
 </div>`;
 
+var secondHtmlModalPlace = `<div class="modal fade" id="second-html-modal-place" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="btn-close" data-bs-target="#html-modal-place" data-bs-toggle="modal" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer d-flex justify-content-start">
+                <button type="button" class="btn btn-danger" data-bs-target="#html-modal-place" data-bs-toggle="modal" data-bs-dismiss="modal">بستن</button>
+            </div>
+        </div>
+    </div>
+</div>`;
+
 function appendHtmlModalPlaceToBody() {
     if ($('#html-modal-place').length === 0) {
         $('body').append(htmlModalPlace);
+    }
+}
+
+function appendSecondHtmlModalPlaceToBody() {
+    if ($('#second-html-modal-place').length === 0) {
+        $('body').append(secondHtmlModalPlace);
     }
 }
 
@@ -165,7 +186,7 @@ function sendTinyMceImagesToServer(blobInfo, success, failure, progress, url) {
 };
 
 function initializeTinyMCE() {
-    $('textarea.custom-tinymce').each(function() {
+    $('textarea.custom-tinymce').each(function () {
         var textareaId = `#${$(this).attr('id')}`;
         tinymce.remove(textareaId);
         tinymce.init({
@@ -428,7 +449,7 @@ function activatingDeleteButtons(isModalMode) {
 }
 
 function initializingAutocomplete() {
-    $('.autocomplete').each(function() {
+    $('.autocomplete').each(function () {
         var currentSearchUrl = $(this).attr('autocomplete-search-url');
         var currentId = $(this).attr('id');
         $(`#${currentId}`).autocomplete({
@@ -533,7 +554,7 @@ function fillDataTable() {
 
 $(document).on('click',
     '.get-html-with-ajax',
-    function() {
+    function () {
         var funcToCall = $(this).attr('functionNameToCallOnClick');
         window[funcToCall](this);
     });
@@ -628,6 +649,7 @@ $(document).on('submit', 'form.public-ajax-form', function (e) {
         contentType: false,
         beforeSend: function () {
             $('#html-modal-place').modal('hide');
+            $('#second-html-modal-place').modal('hide');
             showLoading();
         },
         success: function (data) {
@@ -927,18 +949,21 @@ function copyTextToClipboard(text, functionNameToCallInTheEnd) {
     });
 }
 
-$(function() {
+function convertEnglishNumbersToPersianNumber() {
+    $('.persian-numbers').each(function () {
+        var result = $(this).html().toPersinaDigit();
+        $(this).html(result);
+    });
+}
+
+$(function () {
     activatingInputAttributes();
     initializeSelect2WithoutModal();
     initializeTinyMCE();
     enablingNormalTooltips();
+    convertEnglishNumbersToPersianNumber();
 
-    $('.persian-numbers').each(function() {
-        var result = $(this).html().toPersinaDigit();
-        $(this).html(result);
-    });
-
-    $('textarea[add-image-plugin="true"]').each(function() {
+    $('textarea[add-image-plugin="true"]').each(function () {
         var elementId = $(this).attr('id');
         var currentTinyMce = tinymce.get(elementId);
         currentTinyMce.settings.plugins += ' image';

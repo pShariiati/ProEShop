@@ -139,7 +139,19 @@ public class MappingProfile : Profile
 
         this.CreateMap<AddVariantViewModel, Entities.ProductVariant>();
 
-        this.CreateMap<Entities.ProductVariant, ShowProductVariantViewModel>();
+        this.CreateMap<Entities.ProductVariant, ShowProductVariantViewModel>()
+            .ForMember(dest => dest.StartDateTime,
+                options =>
+                    options.MapFrom(src => 
+                        src.StartDateTime != null
+                        ? src.StartDateTime.Value.ToLongPersianDate()
+                        : null))
+            .ForMember(dest => dest.EndDateTime,
+                options =>
+                    options.MapFrom(src =>
+                        src.EndDateTime != null
+                            ? src.EndDateTime.Value.ToLongPersianDate()
+                            : null));
 
         this.CreateMap<Entities.ProductVariant, ShowProductVariantInCreateConsignmentViewModel>();
 
@@ -235,5 +247,7 @@ public class MappingProfile : Profile
                             .Single(x => x.BrandId == src.Product.BrandId)
                             .CommissionPercentage
                     ));
+
+        this.CreateMap<EditProductVariantViewModel, Entities.ProductVariant>();
     }
 }

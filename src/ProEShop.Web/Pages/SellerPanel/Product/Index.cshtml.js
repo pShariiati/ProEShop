@@ -30,11 +30,33 @@ function getProductVariants(e) {
 
 function showProductVariantsInModal(result, clickedButton) {
     appendHtmlModalPlaceToBody();
-    var currnetModal = $('#html-modal-place');
-    currnetModal.find('.modal-body').html(result);
-    currnetModal.modal('show');
+    var currentModal = $('#html-modal-place');
+    currentModal.find('.modal-body').html(result);
+    convertEnglishNumbersToPersianNumber();
+    currentModal.modal('show');
     $('#html-modal-place .modal-header h5').html(
         'تنوع های من برای محصول: ' +
         $(clickedButton).parents('tr').find('td:eq(1)').html()
     );
+}
+
+function editProductVariant(e) {
+    var productVariantId = $(e).attr('product-variant-id');
+    $('#html-modal-place').modal('hide');
+    getHtmlWithAJAX('?handler=EditProductVariant', { productVariantId: productVariantId }, 'editProductVariantInModal', e);
+}
+
+function editProductVariantInModal(result, clickedButton) {
+    appendSecondHtmlModalPlaceToBody();
+    var currentModal = $('#second-html-modal-place');
+    currentModal.find('.modal-body').html(result);
+    $.validator.unobtrusive.parse(currentModal.find('form'));
+    currentModal.modal('show');
+    $('#second-html-modal-place .modal-header h5').html(
+        'ویرایش تنوع محصول'
+    );
+}
+
+function editProductVariantFunction(message) {
+    showToastr('success', message);
 }

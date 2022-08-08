@@ -32,7 +32,7 @@ public class ProductVariant : EntityBase, IAuditableEntity
     [NotMapped]
     public int FinalPrice => OffPrice ?? Price;
 
-    public DateTime? StartDatTime { get; set; }
+    public DateTime? StartDateTime { get; set; }
 
     public DateTime? EndDateTime { get; set; }
 
