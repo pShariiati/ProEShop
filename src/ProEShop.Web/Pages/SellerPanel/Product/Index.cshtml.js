@@ -1,4 +1,38 @@
 ﻿$(function () {
+
+    $(document).on('change', '#OffPercentage', function() {
+        var price = $('#Price').val();
+        var offPercentage = $('#OffPercentage').val();
+        var discountPrice = price / 100 * offPercentage;
+        var priceWithDiscount = price - discountPrice;
+        $('#OffPrice').val(priceWithDiscount);
+    });
+
+    $(document).on('change', '#OffPrice', function() {
+        var offPrice = $('#OffPrice').val();
+        var price = $('#Price').val();
+        var offPercentage = $('#OffPercentage').val();
+        var discountPrice = price / 100 * offPercentage;
+        var priceWithDiscount = price - discountPrice;
+        var discountPriceSubtract1Percentage = price / 100 * (offPercentage - 1);
+        var priceWithDiscountSubtract1Percentage = price - discountPriceSubtract1Percentage;
+
+        // برای مثال قیمت کالا هزارتومان است
+        // درصد تخفیف 7 درصد
+        // یعنی میزان تخفیف 70 تومان است و مبلغ نهایی 930 تومان است
+        // اگر قیمتی که در اینپوت تخفیف وارد میشود کمتر از 930 تومان باشد وارد
+        // شاخه 8 درصد تخفیف میشود، پس باید به کاربر خطا نمایش دهیم
+        // ما مخواهیم میزان تخفیف بین 6 تا 7 درصد باشد
+        // بزرگتر از 6 و کوچکتر و مساوی 7 درصد
+        // یعنی
+        // OffPrice >= 930 && OffPrice < 940
+        // شش درصد تخفیف روی هزارتومان میشود 940 تومان
+        // اگر قرار است که مبلغ 940 تومان باشد پس باید شش درصد تخفیف وارد شود نه 7 درصد
+        if (offPrice < priceWithDiscount || offPrice >= priceWithDiscountSubtract1Percentage) {
+            showErrorMessage('error');
+        }
+    });
+
     fillDataTable();
     initializingAutocomplete();
 });
@@ -59,4 +93,38 @@ function editProductVariantInModal(result, clickedButton) {
 
 function editProductVariantFunction(message) {
     showToastr('success', message);
+}
+
+function addEditDiscount(e) {
+    var productVariantId = $(e).attr('product-variant-id');
+    $('#html-modal-place').modal('hide');
+    getHtmlWithAJAX('?handler=AddEditDiscount', { productVariantId: productVariantId }, 'addEditDiscountInModal', e);
+}
+
+function addEditDiscountInModal(result, clickedButton) {
+    appendSecondHtmlModalPlaceToBody();
+    var currentModal = $('#second-html-modal-place');
+    currentModal.find('.modal-body').html(result);
+    $.validator.unobtrusive.parse(currentModal.find('form'));
+    currentModal.modal('show');
+    $('#second-html-modal-place .modal-header h5').html(
+        'ایجاد / ویرایش تخفیف'
+    );
+}
+
+function addEditDiscountFunction(message) {
+    showToastr('success', message);
+}
+
+// Validation
+if (jQuery.validator) {
+    
+    // divisibleBy10
+    jQuery.validator.addMethod('divisibleBy10', function (value, element, param) {
+        var price = $(element).val();
+        if (!price)
+            return true;
+        return price % 10 === 0;
+    });
+    jQuery.validator.unobtrusive.adapters.addBool('divisibleBy10');
 }

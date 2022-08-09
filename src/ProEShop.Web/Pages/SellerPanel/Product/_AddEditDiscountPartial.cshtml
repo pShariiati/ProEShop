@@ -1,13 +1,8 @@
-﻿@model ProEShop.ViewModels.ProductVariants.EditProductVariantViewModel
+﻿@model ProEShop.ViewModels.ProductVariants.AddEditDiscountViewModel
 
 <div class="row">
     <div class="card text-dark bg-white border-0 shadow">
         <div class="card-body">
-            <div class="alert alert-danger">
-                توجه:
-                <br />
-                لطفاً قبل از درج تنوع، مشخصات فنی کالا (مانند: رنگ، ابعاد، اقلام همراه کالا، جنس کالا، تصویر بسته‌بندی و ...) را در سایت چک کرده و اطمینان حاصل کنید که تنوع شما با مشخصات فنی کالا در سایت مطابقت داشته باشد.
-            </div>
             <div class="row">
                 <div class="col-md-3 text-center">
                     <img src="~/images/products/@Model.MainPicture" class="w-50" alt="@Model.ProductTitle" />
@@ -40,19 +35,43 @@
                     </div>
                 </div>
             </div>
-            <form functionNameToCallInTheEnd="editProductVariantFunction"
-                  method="post" class="public-ajax-form" asp-page-handler="EditProductVariant">
+            <form functionNameToCallInTheEnd="addEditDiscountFunction"
+                  method="post" class="public-ajax-form" asp-page-handler="AddEditDiscount">
                 <input asp-for="Id" />
                 <div class="row">
-                    <div class="my-2">
+                    <div class="col-md-4 my-2">
                         <label class="d-flex justify-content-between form-label" asp-for="Price">
                         </label>
-                        <input asp-for="Price" class="form-control" />
+                        <input disabled="disabled" asp-for="Price" class="form-control" />
                         <span asp-validation-for="Price" class="span-error-message"></span>
+                    </div>
+                    <div class="col-md-4 my-2">
+                        <label class="d-flex justify-content-between form-label" asp-for="OffPercentage">
+                        </label>
+                        <input asp-for="OffPercentage" class="form-control" />
+                        <span asp-validation-for="OffPercentage" class="span-error-message"></span>
+                    </div>
+                    <div class="col-md-4 my-2">
+                        <label class="d-flex justify-content-between form-label" asp-for="OffPrice">
+                        </label>
+                        <input asp-for="OffPrice" class="form-control" />
+                        <span asp-validation-for="OffPrice" class="span-error-message"></span>
+                    </div>
+                    <div class="col-md-4 my-2">
+                        <label class="d-flex justify-content-between form-label" asp-for="StartDateTime">
+                        </label>
+                        <input asp-for="StartDateTime" class="form-control" />
+                        <span asp-validation-for="StartDateTime" class="span-error-message"></span>
+                    </div>
+                    <div class="col-md-4 my-2">
+                        <label class="d-flex justify-content-between form-label" asp-for="EndDateTime">
+                        </label>
+                        <input asp-for="EndDateTime" class="form-control" />
+                        <span asp-validation-for="EndDateTime" class="span-error-message"></span>
                     </div>
                 </div>
                 <div class="d-grid">
-                    <input type="submit" class="btn btn-primary" value="ویرایش تنوع" />
+                    <input type="submit" class="btn btn-primary" value="ایجاد / ویرایش تخفیف" />
                 </div>
             </form>
         </div>

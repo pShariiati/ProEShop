@@ -48,6 +48,14 @@ public interface IProductVariantService : IGenericService<ProductVariant>
     Task<EditProductVariantViewModel> GetDataForEdit(long id);
 
     /// <summary>
+    /// استفاده شده در صفحه ایجاد / ویرایش تخفیف برای تنوع محصول در بخش پنل فروشنده
+    /// این متود دیتای داخل پارشل را پر میکند
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    Task<AddEditDiscountViewModel> GetDataForAddEditDiscount(long id);
+
+    /// <summary>
     /// استفاده شده در صفحه ویرایش تنوع محصول در بخش پنل فروشنده
     /// این تنوع باید برای فروشنده ایی باشد که در داخل سیستم لاگین است
     /// </summary>

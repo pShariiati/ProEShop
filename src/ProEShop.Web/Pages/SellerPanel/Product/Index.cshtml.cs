@@ -115,6 +115,36 @@ public class IndexModel : SellerPanelBase
             return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
         }
 
+        //_mapper.Map(model, productVariant);
+        productVariant.Price = model.Price;
+        await _uow.SaveChangesAsync();
+        return Json(new JsonResultOperation(true, "تنوع محصول مورد نظر با موفقیت ویرایش شد"));
+    }
+
+    public async Task<IActionResult> OnGetAddEditDiscount(long productVariantId)
+    {
+        if (productVariantId < 1)
+        {
+            return Json(new JsonResultOperation(false));
+        }
+
+        var productVariant = await _productVariantService.GetDataForAddEditDiscount(productVariantId);
+        if (productVariant is null)
+        {
+            return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
+        }
+
+        return Partial("_AddEditDiscountPartial", productVariant);
+    }
+
+    public async Task<IActionResult> OnPostAddEditDiscount(AddEditDiscountViewModel model)
+    {
+        var productVariant = await _productVariantService.GetForEdit(model.Id);
+        if (productVariant is null)
+        {
+            return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
+        }
+
         _mapper.Map(model, productVariant);
         await _uow.SaveChangesAsync();
         return Json(new JsonResultOperation(true, "تنوع محصول مورد نظر با موفقیت ویرایش شد"));

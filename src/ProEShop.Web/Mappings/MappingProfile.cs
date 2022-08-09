@@ -247,7 +247,28 @@ public class MappingProfile : Profile
                             .Single(x => x.BrandId == src.Product.BrandId)
                             .CommissionPercentage
                     ));
+        this.CreateMap<Entities.ProductVariant, AddEditDiscountViewModel>()
+            .ForMember(dest => dest.MainPicture,
+                options =>
+                    options.MapFrom(src => src.Product.ProductMedia.First().FileName))
+            .ForMember(dest => dest.ProductTitle,
+                options =>
+                    options.MapFrom(src => src.Product.PersianTitle))
+            .ForMember(dest => dest.CommissionPercentage,
+                options =>
+                    options.MapFrom(
+                        src => src.Product.Category.CategoryBrands
+                            .Select(x => new
+                            {
+                                x.BrandId,
+                                x.CommissionPercentage
+                            })
+                            .Single(x => x.BrandId == src.Product.BrandId)
+                            .CommissionPercentage
+                    ));
 
-        this.CreateMap<EditProductVariantViewModel, Entities.ProductVariant>();
+        this.CreateMap<AddEditDiscountViewModel, Entities.ProductVariant>()
+            .ForMember(x => x.Price,
+                opt => opt.Ignore());
     }
 }
