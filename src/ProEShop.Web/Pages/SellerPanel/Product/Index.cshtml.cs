@@ -145,8 +145,45 @@ public class IndexModel : SellerPanelBase
             return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
         }
 
+        var parsedDateTimes = DateTimeHelper.ConvertDateTimeForAddEditDiscount(model.StartDateTime, model.EndDateTime);
+        if (!parsedDateTimes.IsSuccessful)
+        {
+            return Json(new JsonResultOperation(false, "لطفا تاریخ ها را به درستی وارد نمایید"));
+        }
+
+        if (parsedDateTimes.IsStartDateTimeGreatherOrEqualEndDateTime)
+        {
+            return Json(new JsonResultOperation(false, "تاریخ پایان تخفیف باید بزرگتر از تاریخ شروع تخفیف باشد"));
+        }
+
+        if (parsedDateTimes.IsTimeSpanLowerThan3Hour)
+        {
+            return Json(new JsonResultOperation(false, "تاریخ پایان تخفیف باید حداقل 3 ساعت بزرگتر از تاریخ شروع تخفیف باشد"));
+        }
+
+        productVariant.StartDateTime = parsedDateTimes.StartDate;
+        productVariant.EndDateTime = parsedDateTimes.EndDate;
         _mapper.Map(model, productVariant);
         await _uow.SaveChangesAsync();
         return Json(new JsonResultOperation(true, "تنوع محصول مورد نظر با موفقیت ویرایش شد"));
+    }
+
+    public async Task<IActionResult> OnPostDisableDiscount(long productVariantId)
+    {
+        var productVariant = await _productVariantService.GetForEdit(productVariantId);
+        if (productVariant is null)
+        {
+            return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
+        }
+
+        if (productVariant.OffPercentage == null)
+        {
+            return Json(new JsonResultOperation(false));
+        }
+
+        productVariant.StartDateTime = productVariant.EndDateTime = null;
+        productVariant.OffPrice = productVariant.OffPercentage = null;
+        await _uow.SaveChangesAsync();
+        return Json(new JsonResultOperation(true, "تخفیف برای تنوع محصول مورد نظر غیر فعال شد"));
     }
 }

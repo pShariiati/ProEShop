@@ -105,11 +105,23 @@ function addEditDiscountInModal(result, clickedButton) {
     appendSecondHtmlModalPlaceToBody();
     var currentModal = $('#second-html-modal-place');
     currentModal.find('.modal-body').html(result);
+    activatingDateTimePicker('start-datetime-add-edit-discount', 'StartDateTime');
+    activatingDateTimePicker('end-datetime-add-edit-discount', 'EndDateTime');
     $.validator.unobtrusive.parse(currentModal.find('form'));
     currentModal.modal('show');
     $('#second-html-modal-place .modal-header h5').html(
         'ایجاد / ویرایش تخفیف'
     );
+}
+
+function activatingDateTimePicker(spanId, inputId) {
+    new mds.MdsPersianDateTimePicker(document.getElementById(spanId), {
+        targetTextSelector: `#${inputId}`,
+        persianNumber: true,
+        enableTimePicker: true,
+        selectedDate: new Date($(`#${inputId}`).attr('date-en') || new Date()),
+        selectedDateToShow: new Date($(`#${inputId}`).attr('date-en') || new Date())
+    });
 }
 
 function addEditDiscountFunction(message) {

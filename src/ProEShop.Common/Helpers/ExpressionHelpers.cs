@@ -104,7 +104,7 @@ public static class ExpressionHelpers
                     if (propertyValue is string)
                     {
                         //.Where(x => x.DeliveryDate.Date == gregorianDeliveryDate.Result.Date);
-                        var (isSuccessful, dateTimeResult) = propertyValue.ToString().ToGregorianDateTime();
+                        var (isSuccessful, dateTimeResult) = propertyValue.ToString().ToGregorianDate();
                         if (isSuccessful)
                         {
                             var constantValue = Expression.Constant(dateTimeResult.Date);

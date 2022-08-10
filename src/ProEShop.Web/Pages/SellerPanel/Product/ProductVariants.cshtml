@@ -21,6 +21,7 @@
                     <tbody>
                         @foreach (var productVariant in Model)
                         {
+                            var hasDiscount = productVariant.OffPercentage != null;
                             <tr>
                                 <td>
                                     @productVariant.VariantValue
@@ -42,7 +43,7 @@
                                     تومان
                                 </td>
                                 <td>
-                                    @if (productVariant.OffPrice != null)
+                                    @if (hasDiscount)
                                     {
                                         <span class="persian-numbers">
                                             @productVariant.OffPrice.Value.ToString("#,0")
@@ -55,7 +56,7 @@
                                     }
                                 </td>
                                 <td>
-                                    @if (productVariant.OffPercentage != null)
+                                    @if (hasDiscount)
                                     {
                                         <span class="persian-numbers">
                                             @productVariant.OffPercentage.Value
@@ -68,7 +69,7 @@
                                     }
                                 </td>
                                 <td>
-                                    @if (productVariant.StartDateTime != null)
+                                    @if (hasDiscount)
                                     {
                                         <span class="persian-numbers">
                                             @productVariant.StartDateTime
@@ -80,7 +81,7 @@
                                     }
                                 </td>
                                 <td>
-                                    @if (productVariant.EndDateTime != null)
+                                    @if (hasDiscount)
                                     {
                                         <span class="persian-numbers">
                                             @productVariant.EndDateTime

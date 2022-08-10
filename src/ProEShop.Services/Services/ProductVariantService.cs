@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using AutoMapper;
+using DNTPersianUtils.Core;
 using Microsoft.EntityFrameworkCore;
 using ProEShop.Common.Helpers;
 using ProEShop.DataLayer.Context;
@@ -82,9 +83,21 @@ public class ProductVariantService : GenericService<ProductVariant>, IProductVar
     public async Task<AddEditDiscountViewModel> GetDataForAddEditDiscount(long id)
     {
         var sellerId = await _sellerService.GetSellerId();
-        return await _mapper.ProjectTo<AddEditDiscountViewModel>(
+        var result = await _mapper.ProjectTo<AddEditDiscountViewModel>(
             _productVariants.Where(x => x.SellerId == sellerId)
         ).SingleOrDefaultAsync(x => x.Id == id);
+        if (result?.OffPercentage != null)
+        {
+            var parsedDateTime = DateTime.Parse(result.StartDateTime);
+            result.StartDateTimeEn = parsedDateTime.ToString("yyyy/MM/dd HH:mm");
+            result.StartDateTime = parsedDateTime.ToShortPersianDateTime().ToPersianNumbers();
+
+            var parsedDateTime2 = DateTime.Parse(result.EndDateTime);
+            result.EndDateTimeEn = parsedDateTime2.ToString("yyyy/MM/dd HH:mm");
+            result.EndDateTime = parsedDateTime2.ToShortPersianDateTime().ToPersianNumbers();
+        }
+
+        return result;
     }
 
     public async Task<ProductVariant> GetForEdit(long id)

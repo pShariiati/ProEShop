@@ -39,34 +39,50 @@
                   method="post" class="public-ajax-form" asp-page-handler="AddEditDiscount">
                 <input asp-for="Id" />
                 <div class="row">
+                    <div class="alert alert-info">
+                        زمانیکه درصد تخفیف را وارد میکنید، اگر قیمت تخفیف رند نبود و قصد تغییر آن را داشتید، میتوانید مبلغ را بین آن درصد تخفیف، منهای یک، تا همان درصد تخفیف قرار دهید
+                        برای مثال اگر 20 درصد تخیفیف وارد میکنید، میتوانید مبلغ تخفیف را بزرگتر مساوی 20 درصد و کوچکتر از 19 درصد قرار دهید.
+                    </div>
                     <div class="col-md-4 my-2">
                         <label class="d-flex justify-content-between form-label" asp-for="Price">
                         </label>
-                        <input disabled="disabled" asp-for="Price" class="form-control" />
+                        <input disabled="disabled" asp-for="Price" class="form-control"/>
                         <span asp-validation-for="Price" class="span-error-message"></span>
                     </div>
                     <div class="col-md-4 my-2">
                         <label class="d-flex justify-content-between form-label" asp-for="OffPercentage">
                         </label>
-                        <input asp-for="OffPercentage" class="form-control" />
+                        <input asp-for="OffPercentage" class="form-control"/>
                         <span asp-validation-for="OffPercentage" class="span-error-message"></span>
                     </div>
                     <div class="col-md-4 my-2">
                         <label class="d-flex justify-content-between form-label" asp-for="OffPrice">
                         </label>
-                        <input asp-for="OffPrice" class="form-control" />
+                        <input asp-for="OffPrice" class="form-control"/>
                         <span asp-validation-for="OffPrice" class="span-error-message"></span>
                     </div>
                     <div class="col-md-4 my-2">
                         <label class="d-flex justify-content-between form-label" asp-for="StartDateTime">
                         </label>
-                        <input asp-for="StartDateTime" class="form-control" />
+                        <div class="input-group">
+                            <input date-en="@Model.StartDateTimeEn" readonly="readonly"
+                                   class="custom-md-persian-datepicker form-control" asp-for="StartDateTime" />
+                            <span class="input-group-text">
+                                <i id="start-datetime-add-edit-discount" class="pointer-cursor bi bi-calendar2-date"></i>
+                            </span>
+                        </div>
                         <span asp-validation-for="StartDateTime" class="span-error-message"></span>
                     </div>
                     <div class="col-md-4 my-2">
                         <label class="d-flex justify-content-between form-label" asp-for="EndDateTime">
                         </label>
-                        <input asp-for="EndDateTime" class="form-control" />
+                        <div class="input-group">
+                            <input date-en="@Model.EndDateTimeEn" readonly="readonly"
+                                   class="custom-md-persian-datepicker form-control" asp-for="EndDateTime" />
+                            <span class="input-group-text">
+                                <i id="end-datetime-add-edit-discount" class="pointer-cursor bi bi-calendar2-date"></i>
+                            </span>
+                        </div>
                         <span asp-validation-for="EndDateTime" class="span-error-message"></span>
                     </div>
                 </div>

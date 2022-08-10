@@ -269,6 +269,10 @@ public class MappingProfile : Profile
 
         this.CreateMap<AddEditDiscountViewModel, Entities.ProductVariant>()
             .ForMember(x => x.Price,
+                opt => opt.Ignore())
+            .ForMember(x => x.StartDateTime,
+                opt => opt.Ignore())
+            .ForMember(x => x.EndDateTime,
                 opt => opt.Ignore());
     }
 }
