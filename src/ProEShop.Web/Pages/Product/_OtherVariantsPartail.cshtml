@@ -42,10 +42,29 @@
                                 </td>
                                 <td class="persian-numbers">@variant.GuaranteeFullTitle</td>
                                 <td>
-                                    <span class="persian-numbers">
-                                        @variant.Price.ToString("0,#")
-                                    </span>
-                                    تومان
+                                    @if (variant.OffPercentage is null)
+                                    {
+                                        <span class="persian-numbers">
+                                            @variant.Price.ToString("0,#")
+                                        </span>
+                                        @:تومان
+                                    }
+                                    else
+                                    {
+                                        <div>
+                                            <span class="rem14px text-decoration-line-through me-1 persian-numbers">
+                                                @variant.Price
+                                            </span>
+                                            <span class="badge rounded-pill bg-danger rem12px persian-numbers">@variant.OffPercentage%</span>
+                                        </div>
+                                        <div class="rem18px mt-2">
+                                            <span class="persian-numbers">
+                                                @variant.FinalPrice
+                                            </span>
+                                            تومان
+                                        </div>
+                                    }
+
                                 </td>
                                 <td>
                                     <span class="persian-numbers">

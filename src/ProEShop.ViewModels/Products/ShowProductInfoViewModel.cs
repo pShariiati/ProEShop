@@ -89,6 +89,10 @@ public class ProductVariantForProductInfoViewModel
 
     public int Price { get; set; }
 
+    public int FinalPrice { get; set; }
+
+    public byte? OffPercentage { get; set; }
+
     public string SellerShopName { get; set; }
 
     public string SellerLogo { get; set; }

@@ -21,12 +21,12 @@ public class AddEditDiscountViewModel
     [Display(Name = "قیمت با تخفیف")]
     [Range(1, 2000000000, ErrorMessage = AttributesErrorMessages.RangeMessage)]
     [DivisibleBy10]
-    public int? OffPrice { get; set; }
+    public int OffPrice { get; set; }
 
     [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
     [Display(Name = "درصد تخفیف")]
     [Range(1, 99, ErrorMessage = AttributesErrorMessages.RangeMessage)]
-    public byte? OffPercentage { get; set; }
+    public byte OffPercentage { get; set; }
 
     [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
     [Display(Name = "تاریخ شروع تخفیف")]

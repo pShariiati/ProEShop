@@ -29,7 +29,7 @@
         // شش درصد تخفیف روی هزارتومان میشود 940 تومان
         // اگر قرار است که مبلغ 940 تومان باشد پس باید شش درصد تخفیف وارد شود نه 7 درصد
         if (offPrice < priceWithDiscount || offPrice >= priceWithDiscountSubtract1Percentage) {
-            showErrorMessage('error');
+            showErrorMessage(`قیمت تخفیف باید بزرگتر مساوی ${priceWithDiscount.toString().addCommaToDigits().toPersinaDigit()} تومان و کوچکتر از ${priceWithDiscountSubtract1Percentage.toString().addCommaToDigits().toPersinaDigit()} تومان باشد`);
         }
     });
 

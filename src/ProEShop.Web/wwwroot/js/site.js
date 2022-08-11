@@ -907,6 +907,11 @@ String.prototype.toPersinaDigit = function () {
     });
 }
 
+// Add comma after 3 digits
+String.prototype.addCommaToDigits = function() {
+    return this.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
 function fallbackCopyTextToClipboard(text, functionNameToCallInTheEnd) {
     var textArea = document.createElement('textarea');
     textArea.value = text;
