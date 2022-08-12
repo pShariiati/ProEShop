@@ -51,11 +51,14 @@
                                     }
                                     else
                                     {
-                                        <div>
+                                        <div class="d-flex align-items-center">
                                             <span class="rem14px text-decoration-line-through me-1 persian-numbers">
                                                 @variant.Price
                                             </span>
-                                            <span class="badge rounded-pill bg-danger rem12px persian-numbers">@variant.OffPercentage%</span>
+                                            <span class="badge rounded-pill bg-danger rem12px persian-numbers me-1">@variant.OffPercentage%</span>
+                                            <span class="badge rounded-pill bg-primary rem12px count-down-timer">
+                                                @variant.EndDateTime
+                                            </span>
                                         </div>
                                         <div class="rem18px mt-2">
                                             <span class="persian-numbers">

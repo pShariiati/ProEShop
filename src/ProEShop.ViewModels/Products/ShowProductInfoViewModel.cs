@@ -99,11 +99,13 @@ public class ProductVariantForProductInfoViewModel
 
     public string GuaranteeFullTitle { get; set; }
 
+    public string EndDateTime { get; set; }
+
     public byte Score
     {
         get
         {
-            var result = Price / 10000;
+            var result = Math.Ceiling((double)FinalPrice / 10000);
             if (result <= 1)
                 return 1;
             if (result >= 150)

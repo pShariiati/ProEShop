@@ -163,7 +163,7 @@ public class IndexModel : SellerPanelBase
         }
 
         var offPrice = model.OffPrice;
-        var price = model.Price;
+        var price = productVariant.Price;
         var offPercentage = model.OffPercentage;
         var discountPrice = price / 100 * offPercentage;
         var priceWithDiscount = price - discountPrice;

@@ -224,7 +224,12 @@ public class MappingProfile : Profile
 
         this.CreateMap<Entities.ProductFeature, ProductFeatureForProductInfoViewModel>();
 
-        this.CreateMap<Entities.ProductVariant, ProductVariantForProductInfoViewModel>();
+        this.CreateMap<Entities.ProductVariant, ProductVariantForProductInfoViewModel>()
+            .ForMember(dest => dest.EndDateTime,
+                options =>
+                    options.MapFrom(src => 
+                            src.EndDateTime != null ? src.EndDateTime.Value.ToString("yyyy/MM/dd HH:mm:ss") : null
+                        ));
 
         this.CreateMap<Entities.ProductShortLink, ShowProductShortLinkViewModel>();
 
