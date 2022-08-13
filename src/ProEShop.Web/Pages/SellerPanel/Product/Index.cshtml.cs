@@ -118,6 +118,8 @@ public class IndexModel : SellerPanelBase
 
         //_mapper.Map(model, productVariant);
         productVariant.Price = model.Price;
+        productVariant.StartDateTime = productVariant.EndDateTime = null;
+        productVariant.OffPrice = productVariant.OffPercentage = null;
         await _uow.SaveChangesAsync();
         return Json(new JsonResultOperation(true, "تنوع محصول مورد نظر با موفقیت ویرایش شد"));
     }

@@ -101,6 +101,8 @@ public class ProductVariantForProductInfoViewModel
 
     public string EndDateTime { get; set; }
 
+    public bool IsDiscountActive { get; set; }
+
     public byte Score
     {
         get

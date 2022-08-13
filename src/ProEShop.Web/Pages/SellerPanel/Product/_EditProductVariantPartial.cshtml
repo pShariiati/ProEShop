@@ -3,11 +3,6 @@
 <div class="row">
     <div class="card text-dark bg-white border-0 shadow">
         <div class="card-body">
-            <div class="alert alert-danger">
-                توجه:
-                <br />
-                لطفاً قبل از درج تنوع، مشخصات فنی کالا (مانند: رنگ، ابعاد، اقلام همراه کالا، جنس کالا، تصویر بسته‌بندی و ...) را در سایت چک کرده و اطمینان حاصل کنید که تنوع شما با مشخصات فنی کالا در سایت مطابقت داشته باشد.
-            </div>
             <div class="row">
                 <div class="col-md-3 text-center">
                     <img src="~/images/products/@Model.MainPicture" class="w-50" alt="@Model.ProductTitle" />
@@ -44,10 +39,18 @@
                   method="post" class="public-ajax-form" asp-page-handler="EditProductVariant">
                 <input asp-for="Id" />
                 <div class="row">
+                    @if (Model.IsDiscountActive)
+                    {
+                        <div class="alert alert-danger">
+                            <i class="bi bi-exclamation-triangle-fill rem21px"></i>
+                            این محصول دارای تخفیف فعال است، در صورتیکه قیمت را تغییر دهید،
+                            تخفیف این تنوع حذف خواهد شد.
+                        </div>
+                    }
                     <div class="my-2">
                         <label class="d-flex justify-content-between form-label" asp-for="Price">
                         </label>
-                        <input asp-for="Price" class="form-control" />
+                        <input asp-for="Price" class="form-control"/>
                         <span asp-validation-for="Price" class="span-error-message"></span>
                     </div>
                 </div>

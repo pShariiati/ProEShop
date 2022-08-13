@@ -9,56 +9,69 @@
 
 $(function () {
 
-    $('.count-down-timer').each(function () {
+    $('.count-down-timer-in-other-variants').each(function () {
         var currentEl = $(this);
-        var selectorToRemove = currentEl.attr('selector-to-remove');
-        if (selectorToRemove) {
-            countDownTimer($(this), $(selectorToRemove));
-        } else {
-            countDownTimer($(this));
-        }
+        var selectorToShow = currentEl.parents('td').find('div:first');
+        var selectorToHide = currentEl.parents('td').find('div:eq(1)');
+        countDownTimer(currentEl, selectorToShow, selectorToHide);
     });
 
-    function countDownTimer(selector, selectorToRemove) {
+    $('.count-down-timer').each(function () {
+        var currentEl = $(this);
+        var selectorToShow = $('#product-price-in-single-page-of-product');
+        var selectorToHide = $('#product-count-down-timer-box');
+        var selectorToHide2 = $('#product-final-price-in-single-page-of-product');
+        countDownTimer(currentEl, selectorToShow, selectorToHide, selectorToHide2);
+    });
+
+    function countDownTimerFunction(selector, selectorToShow, selectorToHide, selectorToHide2, countDownDate) {
+        // Get today's date and time
+        var now = new Date().getTime();
+
+        // Find the distance between now and the count down date
+        var distance = countDownDate - now;
+
+        // Time calculations for days, hours, minutes and seconds
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        var daysText = `${days} روز و<br />`;
+        if (days === 0) {
+            daysText = '';
+        }
+
+        var result =
+            `${daysText}${seconds < 10 ? '0' + seconds : seconds} : ${minutes < 10 ? '0' + minutes : minutes} : ${hours < 10 ? '0' + hours : hours}`;
+
+        selector.html(result.toPersinaDigit());
+
+        // If the count down is finished, write some text
+        if (distance < 0) {
+            selectorToShow.removeClass('d-none');
+            selectorToHide.addClass('d-none');
+            if (selectorToHide2) {
+                selectorToHide2.addClass('d-none');
+            }
+        }
+        return distance;
+    }
+
+    function countDownTimer(selector, selectorToShow, selectorToHide, selectorToHide2) {
 
         var endDateTime = selector.html().trim();
 
         // Set the date we're counting down to
         var countDownDate = new Date(endDateTime).getTime();
 
+        countDownTimerFunction(selector, selectorToShow, selectorToHide, selectorToHide2, countDownDate);
+
         // Update the count down every 1 second
         var x = setInterval(function() {
-
-            // Get today's date and time
-            var now = new Date().getTime();
-
-            // Find the distance between now and the count down date
-            var distance = countDownDate - now;
-            
-            // Time calculations for days, hours, minutes and seconds
-            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            var daysText = `${days} روز و<br />`;
-            if (days === 0) {
-                daysText = '';
-            }
-
-            var result =
-                `${daysText}${seconds < 10 ? '0' + seconds : seconds} : ${minutes < 10 ? '0' + minutes : minutes} : ${
-                    hours < 10 ? '0' + hours : hours}`;
-
-            selector.html(result.toPersinaDigit());
-
-            // If the count down is finished, write some text
-            if (distance < 0) {
+            var result = countDownTimerFunction(selector, selectorToShow, selectorToHide, selectorToHide2, countDownDate);
+            if (result < 0) {
                 clearInterval(x);
-                if (selectorToRemove) {
-                    selectorToRemove.addClass('d-none');
-                }
-                $(selector).remove();
             }
         }, 1000);
     }

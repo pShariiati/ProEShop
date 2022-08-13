@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using DNTPersianUtils.Core;
 using Microsoft.EntityFrameworkCore;
 using ProEShop.Common.Helpers;
@@ -75,9 +76,14 @@ public class ProductVariantService : GenericService<ProductVariant>, IProductVar
     public async Task<EditProductVariantViewModel> GetDataForEdit(long id)
     {
         var sellerId = await _sellerService.GetSellerId();
-        return await _mapper.ProjectTo<EditProductVariantViewModel>(
-            _productVariants.Where(x => x.SellerId == sellerId)
-        ).SingleOrDefaultAsync(x => x.Id == id);
+
+        return await _productVariants.AsNoTracking()
+            .Where(x => x.SellerId == sellerId)
+            .ProjectTo<EditProductVariantViewModel>(
+                _mapper.ConfigurationProvider,
+                parameters: new { now = DateTime.Now }
+                )
+            .SingleOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<AddEditDiscountViewModel> GetDataForAddEditDiscount(long id)
@@ -86,7 +92,7 @@ public class ProductVariantService : GenericService<ProductVariant>, IProductVar
         var result = await _mapper.ProjectTo<AddEditDiscountViewModel>(
             _productVariants.Where(x => x.SellerId == sellerId)
         ).SingleOrDefaultAsync(x => x.Id == id);
-        if (result?.OffPercentage != null)
+        if (result?.OffPercentage > 0)
         {
             var parsedDateTime = DateTime.Parse(result.StartDateTime);
             result.StartDateTimeEn = parsedDateTime.ToString("yyyy/MM/dd HH:mm");

@@ -20,6 +20,8 @@ public class EditProductVariantViewModel
     [DivisibleBy10]
     public int Price { get; set; }
 
+    public bool IsDiscountActive { get; set; }
+
     public string ProductTitle { get; set; }
 
     public string ProductCategoryTitle { get; set; }

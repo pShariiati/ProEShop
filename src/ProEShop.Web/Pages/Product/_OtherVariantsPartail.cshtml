@@ -42,21 +42,19 @@
                                 </td>
                                 <td class="persian-numbers">@variant.GuaranteeFullTitle</td>
                                 <td>
-                                    @if (variant.OffPercentage is null)
-                                    {
+                                    <div class="@(variant.IsDiscountActive ? "d-none" : string.Empty)">
                                         <span class="persian-numbers">
                                             @variant.Price.ToString("0,#")
                                         </span>
-                                        @:تومان
-                                    }
-                                    else
-                                    {
+                                        تومان
+                                    </div>
+                                    <div class="@(variant.IsDiscountActive ? string.Empty : "d-none")">
                                         <div class="d-flex align-items-center">
                                             <span class="rem14px text-decoration-line-through me-1 persian-numbers">
                                                 @variant.Price
                                             </span>
                                             <span class="badge rounded-pill bg-danger rem12px persian-numbers me-1">@variant.OffPercentage%</span>
-                                            <span class="badge rounded-pill bg-primary rem12px count-down-timer">
+                                            <span class="badge rounded-pill bg-primary rem12px count-down-timer-in-other-variants">
                                                 @variant.EndDateTime
                                             </span>
                                         </div>
@@ -66,8 +64,7 @@
                                             </span>
                                             تومان
                                         </div>
-                                    }
-
+                                    </div>
                                 </td>
                                 <td>
                                     <span class="persian-numbers">

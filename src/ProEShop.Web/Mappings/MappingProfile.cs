@@ -224,12 +224,18 @@ public class MappingProfile : Profile
 
         this.CreateMap<Entities.ProductFeature, ProductFeatureForProductInfoViewModel>();
 
+        DateTime now = default;
         this.CreateMap<Entities.ProductVariant, ProductVariantForProductInfoViewModel>()
             .ForMember(dest => dest.EndDateTime,
                 options =>
-                    options.MapFrom(src => 
-                            src.EndDateTime != null ? src.EndDateTime.Value.ToString("yyyy/MM/dd HH:mm:ss") : null
-                        ));
+                    options.MapFrom(src =>
+                        src.EndDateTime != null ? src.EndDateTime.Value.ToString("yyyy/MM/dd HH:mm:ss") : null
+                    ))
+            .ForMember(dest => dest.IsDiscountActive,
+                options =>
+                    options.MapFrom(src =>
+                        src.OffPercentage != null && (src.StartDateTime <= now && src.EndDateTime >= now)
+                    ));
 
         this.CreateMap<Entities.ProductShortLink, ShowProductShortLinkViewModel>();
 
@@ -240,6 +246,11 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.ProductTitle,
                 options =>
                     options.MapFrom(src => src.Product.PersianTitle))
+            .ForMember(dest => dest.IsDiscountActive,
+                options =>
+                    options.MapFrom(src => 
+                            src.OffPercentage != null && (src.StartDateTime <= now && src.EndDateTime >= now)
+                        ))
             .ForMember(dest => dest.CommissionPercentage,
                 options =>
                     options.MapFrom(

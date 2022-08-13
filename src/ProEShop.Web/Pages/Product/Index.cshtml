@@ -432,38 +432,31 @@
                                 <i class="bi bi-info-circle ms-2" data-bs-toggle="tooltip" data-bs-placement="bottom"
                                    title="این کالا توسط فروشنده آن، فروشگاه تست، قیمت گذاری شده است."></i>
                             </div>
-                            @if (firstProductVariant.OffPercentage is null)
-                            {
-                                <span class="rem21px" id="product-price-in-single-page-of-product">
-                                    <span class="persian-numbers">
+                            <span class="rem21px@(firstProductVariant.IsDiscountActive ? " d-none" : string.Empty)" id="product-price-in-single-page-of-product">
+                                <span class="persian-numbers">
+                                    @firstProductVariant.Price.ToString("0,#")
+                                </span>
+                                تومان
+                            </span>
+                            <div class="d-flex flex-column align-items-center@(firstProductVariant.IsDiscountActive ? string.Empty : " d-none")"  id="product-final-price-in-single-page-of-product">
+                                <div>
+                                    <span class="text-decoration-line-through text-custom-grey rem14px me-2 persian-numbers">
                                         @firstProductVariant.Price.ToString("0,#")
                                     </span>
+                                    <span class="badge rounded-pill bg-danger persian-numbers">@firstProductVariant.OffPercentage%</span>
+                                </div>
+                                <span class="rem21px mt-2 persian-numbers">
+                                    @firstProductVariant.FinalPrice.ToString("0,#")
                                     تومان
                                 </span>
-                            }
-                            else
-                            {
-                                <div class="d-flex flex-column align-items-center">
-                                    <div>
-                                        <span class="text-decoration-line-through text-custom-grey rem14px me-2 persian-numbers">
-                                            @firstProductVariant.Price.ToString("0,#")
-                                        </span>
-                                        <span class="badge rounded-pill bg-danger persian-numbers">@firstProductVariant.OffPercentage%</span>
-                                    </div>
-                                    <span class="rem21px mt-2 persian-numbers">
-                                        @firstProductVariant.FinalPrice.ToString("0,#")
-                                        تومان
-                                    </span>
-                                </div>
-
-                            }
+                            </div>
                         </div>
 
                         <!-- End 5 -->
                         
                         <!-- 6 -->
 
-                        <div class="d-flex flex-column align-items-center mt-3 text-danger fw-bold" id="product-count-down-timer-box">
+                        <div class="@(firstProductVariant.IsDiscountActive ? string.Empty : "d-none ")d-flex flex-column align-items-center mt-3 text-danger fw-bold" id="product-count-down-timer-box">
                             <div>
                                 پیشنهاد شگفت انگیز
                             </div>
