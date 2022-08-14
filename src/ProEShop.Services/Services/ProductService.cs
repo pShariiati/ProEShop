@@ -292,7 +292,7 @@ public class ProductService : GenericService<Product>, IProductService
                 x.ProductCode,
                 x.ProductShortLink
             }).SingleOrDefaultAsync(x =>
-                    EF.Functions.Like(x.ProductShortLink.Link, $"%{productShortLint}%")
+                    x.ProductShortLink.Link == productShortLint
                 );
         return (
             productShortLink?.ProductCode ?? 0,

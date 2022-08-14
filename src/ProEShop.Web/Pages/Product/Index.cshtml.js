@@ -18,9 +18,11 @@ $(function () {
 
     $('.count-down-timer').each(function () {
         var currentEl = $(this);
-        var selectorToShow = $('#product-price-in-single-page-of-product');
-        var selectorToHide = $('#product-count-down-timer-box');
-        var selectorToHide2 = $('#product-final-price-in-single-page-of-product');
+        var variantValue = currentEl.parent().attr('variant-value');
+
+        var selectorToShow = $('.product-price-in-single-page-of-product[variant-value="' + variantValue + '"]');
+        var selectorToHide = currentEl.parent();
+        var selectorToHide2 = $('.product-final-price-in-single-page-of-product[variant-value="' + variantValue + '"]');
         countDownTimer(currentEl, selectorToShow, selectorToHide, selectorToHide2);
     });
 
@@ -49,6 +51,7 @@ $(function () {
 
         // If the count down is finished, write some text
         if (distance < 0) {
+            selector.parents('tr').attr('is-discount-active', 'false');
             selectorToShow.removeClass('d-none');
             selectorToHide.addClass('d-none');
             if (selectorToHide2) {
@@ -129,73 +132,24 @@ $(function () {
         $(this).find('i').removeClass('d-none');
         $(this).addClass('selected-variant-in-show-product-info');
 
-        var selectedVariantValue = $(this).attr('data-bs-original-title');
+        var selectedVariantValue = $(this).attr('aria-label');
 
-        $('.other-sellers-table').addClass('d-none');
-
-        $('.other-sellers-table[variant-value="' + selectedVariantValue + '"]').removeClass('d-none');
-
-        // Change variant value
-        $('#product-variant-value').html(selectedVariantValue);
-
-        // Change product info in left side box
-        var selectedSeller = $('.other-sellers-table[variant-value="' + selectedVariantValue + '"] tbody tr:first');
-
-        // Change shop name
-        var selectedShopName = selectedSeller.find('td:first').text();
-        $('#shop-details-in-single-page-of-product div').html(selectedShopName);
-
-        // Change shop logo
-        var selectedShopLogo = selectedSeller.find('td:first i').length === 0 ? 'img' : 'i';
-        if (selectedShopLogo === 'img') {
-            selectedShopLogo = selectedSeller.find('td:first img').attr('src');
-            $('#shop-details-in-single-page-of-product i').addClass('d-none');
-            $('#shop-details-in-single-page-of-product img').removeClass('d-none');
-            $('#shop-details-in-single-page-of-product img').attr('src', selectedShopLogo);
-        }
-        else {
-            $('#shop-details-in-single-page-of-product i').removeClass('d-none');
-            $('#shop-details-in-single-page-of-product img').addClass('d-none');
-        }
-
-        // Change product guarantee
-        // eq(equal) starts from 0
-        var selectedGuarantee = selectedSeller.find('td:eq(1)').html();
-        $('#product-guarantee-in-single-page-of-product').html(selectedGuarantee);
-
-        // Change product price
-        var selectedPrice = selectedSeller.find('td:eq(2)').html();
-        $('#product-price-in-single-page-of-product').html(selectedPrice);
-
-        // Hide other sellers box if it has just one item
-        var otherSellersCount = $('.other-sellers-table[variant-value="' + selectedVariantValue + '"] tbody tr').length;
-        if (otherSellersCount === 1) {
-            $('#other-sellers-box, #other-sellers-count-box').addClass('d-none');
-        } else {
-            $('#other-sellers-box, #other-sellers-count-box').removeClass('d-none');
-        }
-
-        // Change other sellers count
-        $('#other-sellers-count-box span').html((otherSellersCount - 1).toString().toPersinaDigit());
-
-        // Change product score
-        var selectedScore = selectedSeller.find('td:eq(3) span').html();
-        $('#product-score-in-single-page-of-product span').html(selectedScore);
-
-        // Show or hide free delivery box
-        if (selectedSeller.attr('free-delivery') === 'true') {
-            $('#free-delivery-box').removeClass('d-none');
-        } else {
-            $('#free-delivery-box').addClass('d-none');
-        }
+        changeVariant(selectedVariantValue);
     });
 
     // Change variants (size)
     $('#product-variants-box-in-show-product-info select').change(function () {
-
         var selectedVariantValue = this.value;
+        changeVariant(selectedVariantValue);
+    });
 
+    function changeVariant(selectedVariantValue) {
         $('.other-sellers-table').addClass('d-none');
+
+        // Hidden all main final prices, prices and count down boxes
+        $('.product-final-price-in-single-page-of-product').addClass('d-none');
+        $('.product-price-in-single-page-of-product').addClass('d-none');
+        $('.discount-count-down-box').addClass('d-none');
 
         $('.other-sellers-table[variant-value="' + selectedVariantValue + '"]').removeClass('d-none');
 
@@ -204,6 +158,16 @@ $(function () {
 
         // Change product info in left side box
         var selectedSeller = $('.other-sellers-table[variant-value="' + selectedVariantValue + '"] tbody tr:first');
+
+        // If selected variant had discount
+        if (selectedSeller.attr('is-discount-active') === 'true') {
+            $('.product-final-price-in-single-page-of-product[variant-value="' + selectedVariantValue + '"]')
+                .removeClass('d-none');
+            $('.discount-count-down-box[variant-value="' + selectedVariantValue + '"]').removeClass('d-none');
+        } else {
+            $('.product-price-in-single-page-of-product[variant-value="' + selectedVariantValue + '"]')
+                .removeClass('d-none');
+        }
 
         // Change shop name
         var selectedShopName = selectedSeller.find('td:first').text();
@@ -227,10 +191,6 @@ $(function () {
         var selectedGuarantee = selectedSeller.find('td:eq(1)').html();
         $('#product-guarantee-in-single-page-of-product').html(selectedGuarantee);
 
-        // Change product price
-        var selectedPrice = selectedSeller.find('td:eq(2)').html();
-        $('#product-price-in-single-page-of-product').html(selectedPrice);
-
         // Hide other sellers box if it has just one item
         var otherSellersCount = $('.other-sellers-table[variant-value="' + selectedVariantValue + '"] tbody tr').length;
         if (otherSellersCount === 1) {
@@ -252,7 +212,7 @@ $(function () {
         } else {
             $('#free-delivery-box').addClass('d-none');
         }
-    });
+    }
 });
 
 // این فانکشن بعد از عملیات سمت سرور اجرا میشود

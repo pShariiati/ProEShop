@@ -27,7 +27,7 @@
                     <tbody>
                         @foreach (var variant in variants)
                         {
-                            <tr free-delivery="@(variant.Price >= 500000 ? "true" : "false")">
+                            <tr free-delivery="@(variant.Price >= 500000 ? "true" : "false")" is-discount-active="@(variant.IsDiscountActive ? "true" : "false")">
                                 <td>
                                     @if (!string.IsNullOrWhiteSpace(variant.SellerLogo))
                                     {

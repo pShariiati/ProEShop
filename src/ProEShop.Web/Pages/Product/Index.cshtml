@@ -432,38 +432,48 @@
                                 <i class="bi bi-info-circle ms-2" data-bs-toggle="tooltip" data-bs-placement="bottom"
                                    title="این کالا توسط فروشنده آن، فروشگاه تست، قیمت گذاری شده است."></i>
                             </div>
-                            <span class="rem21px@(firstProductVariant.IsDiscountActive ? " d-none" : string.Empty)" id="product-price-in-single-page-of-product">
-                                <span class="persian-numbers">
-                                    @firstProductVariant.Price.ToString("0,#")
-                                </span>
-                                تومان
-                            </span>
-                            <div class="d-flex flex-column align-items-center@(firstProductVariant.IsDiscountActive ? string.Empty : " d-none")"  id="product-final-price-in-single-page-of-product">
-                                <div>
-                                    <span class="text-decoration-line-through text-custom-grey rem14px me-2 persian-numbers">
-                                        @firstProductVariant.Price.ToString("0,#")
+                            @foreach (var variants in groupedVariants)
+                            {
+                                var currentVariant = variants.First();
+                                <div variant-value="@currentVariant.VariantValue" class="d-flex flex-column align-items-center product-final-price-in-single-page-of-product@(firstProductVariant.VariantValue == currentVariant.VariantValue ? (currentVariant.IsDiscountActive ? string.Empty : " d-none") : " d-none")">
+                                    <div>
+                                        <span class="text-decoration-line-through text-custom-grey rem14px me-2 persian-numbers">
+                                            @currentVariant.Price.ToString("0,#")
+                                        </span>
+                                        <span class="badge rounded-pill bg-danger persian-numbers">@currentVariant.OffPercentage%</span>
+                                    </div>
+                                    <span class="rem21px mt-2 persian-numbers">
+                                        @currentVariant.FinalPrice.ToString("0,#")
+                                        تومان
                                     </span>
-                                    <span class="badge rounded-pill bg-danger persian-numbers">@firstProductVariant.OffPercentage%</span>
                                 </div>
-                                <span class="rem21px mt-2 persian-numbers">
-                                    @firstProductVariant.FinalPrice.ToString("0,#")
+                                <span variant-value="@currentVariant.VariantValue" class="rem21px product-price-in-single-page-of-product@(firstProductVariant.VariantValue == currentVariant.VariantValue ? (currentVariant.IsDiscountActive ? " d-none" : string.Empty) : " d-none")">
+                                    <span class="persian-numbers">
+                                        @currentVariant.Price.ToString("0,#")
+                                    </span>
                                     تومان
                                 </span>
-                            </div>
+                            }
                         </div>
 
                         <!-- End 5 -->
-                        
                         <!-- 6 -->
-
-                        <div class="@(firstProductVariant.IsDiscountActive ? string.Empty : "d-none ")d-flex flex-column align-items-center mt-3 text-danger fw-bold" id="product-count-down-timer-box">
-                            <div>
-                                پیشنهاد شگفت انگیز
-                            </div>
-                            <div class="text-center count-down-timer" selector-to-remove="#product-count-down-timer-box">
-                                @firstProductVariant.EndDateTime
-                            </div>
-                        </div>
+                        
+                        @foreach (var variants in groupedVariants)
+                        {
+                            var currentVariant = variants.First();
+                            if (currentVariant.IsDiscountActive)
+                            {
+                                <div variant-value="@currentVariant.VariantValue" class="discount-count-down-box d-flex flex-column align-items-center mt-3 text-danger fw-bold@(firstProductVariant.VariantValue == currentVariant.VariantValue ? string.Empty : " d-none")">
+                                    <div>
+                                        پیشنهاد شگفت انگیز
+                                    </div>
+                                    <div class="text-center count-down-timer">
+                                        @currentVariant.EndDateTime
+                                    </div>
+                                </div>
+                            }
+                        }
 
                         <!-- End 6 -->
 
@@ -531,11 +541,11 @@
 
 <!-- End other variants -->
 @section CustomScripts
-{
-<script src="~/Pages/Product/Index.cshtml.js"></script>
+    {
+    <script src="~/Pages/Product/Index.cshtml.js"></script>
 }
 
-@section Scripts
-{
-<script src="~/lib/js-image-zoom/js-image-zoom.min.js"></script>
+    @section Scripts
+    {
+    <script src="~/lib/js-image-zoom/js-image-zoom.min.js"></script>
 }

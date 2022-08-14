@@ -74,6 +74,8 @@ public class CreateModel : SellerPanelBase
 
     public async Task<IActionResult> OnPost(AddProductViewModel product)
     {
+        Product = product;
+
         if (!ModelState.IsValid)
         {
             return Json(new JsonResultOperation(false, PublicConstantStrings.ModelStateErrorMessage)
