@@ -1,0 +1,4 @@
+﻿#all-variant-box, #selected-variants-box {
+    max-height: 158px;
+    overflow-y: auto;
+}

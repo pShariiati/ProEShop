@@ -20,4 +20,12 @@ public interface IVariantService : IGenericService<Variant>
     /// <param name="variantId"></param>
     /// <returns></returns>
     Task<bool> CheckProductAndVariantTypeForForAddVariant(long productId, long variantId);
+
+    /// <summary>
+    /// گرفتن لیست تمامی تنوع ها
+    /// استفاده شده در صفحه ویرایش تنوع دسته بندی بخش ادمین
+    /// </summary>
+    /// <param name="isColor"></param>
+    /// <returns></returns>
+    Task<List<ShowVariantInEditCategoryVariantViewModel>> GetVariantsForEditCategoryVariants(bool isColor);
 }

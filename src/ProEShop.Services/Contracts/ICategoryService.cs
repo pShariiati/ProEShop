@@ -28,4 +28,21 @@ public interface ICategoryService : IGenericService<Category>
     /// </summary>
     /// <returns></returns>
     Task<Dictionary<long, string>> GetSellerCategories();
+
+    /// <summary>
+    /// آیا تنوع این دسته بندی رنگ است یا اندازه
+    /// استفاده شده در صفحه ویرایش تنوع دسته بندی
+    /// </summary>
+    /// <param name="categoryId"></param>
+    /// <returns></returns>
+    Task<bool> IsVariantTypeColor(long categoryId);
+
+    /// <summary>
+    /// خواندن یک دسته بندی
+    /// تمامی رکورد های تنوع این دسته رو اینکلود میکنیم
+    /// استفاده شده در صفحه ویرایش تنوع دسته بندی بخش ادمین
+    /// </summary>
+    /// <param name="categoryId"></param>
+    /// <returns></returns>
+    Task<Entities.Category> GetCategoryForEditVariant(long categoryId);
 }

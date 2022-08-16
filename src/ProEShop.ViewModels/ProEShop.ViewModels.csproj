@@ -17,6 +17,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="CategoryVariants\" />
 	  <Folder Include="ConsignmentItems\" />
 	  <Folder Include="ProductShortLinks\" />
 	  <Folder Include="ProductStocks\" />

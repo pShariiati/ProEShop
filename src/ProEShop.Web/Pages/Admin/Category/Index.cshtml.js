@@ -1,4 +1,42 @@
 ﻿$(function () {
+
+    // زمانی که روی دکمه حذف کردن تنوع دسته بندی کلیک شد
+    // استفاده شده در مودال ویرایش تنوع دسته بندی
+    $(document).on('click', '.remove-selected-variant-button', function() {
+        var variantId = $(this).parent().attr('variant-id');
+
+        // حذف اینپوت با تایپ
+        // Hidden
+        $(this).parents('form').find('input[name="SelectedVariants"][value="' + variantId + '"]').remove();
+
+        // حذف خود دکمه از بخبش تنوع های این دسته بندی
+        $(this).parent().remove();
+    });
+
+    // زمانیکه روی هر کدام از تنوع های بخش تمامی تنوع ها کلیک شد
+    // باید اون تنوع رو به بخش تنوع های این دسته بندی اضافه کنیم
+    $(document).on('click', '.variant-item-button', function() {
+        var variantId = $(this).attr('variant-id');
+
+        // اگه از قبل این تنوع اضافه شده بود
+        if ($(this).parents('form').find('input[name="SelectedVariants"][value="' + variantId + '"]').length > 0) {
+            showToastr('warning', 'این تنوع از قبل برای این دسته بندی اضافه شده است');
+            return;
+        }
+
+        // اینپوت مخفی رو به فرم اضافه میکنیم که بعدا بتونیم اینو به سمت سرور بفرستیم
+        $(this).parents('form').prepend('<input type="hidden" name="SelectedVariants" value="' + variantId + '" />');
+        var variantToAppend =
+            '<button variant-id="'+variantId+'" type="button" class="mx-1 p-2 badge rounded-pill bg-primary border-0">' +
+                $(this).html() +
+            '</button>';
+
+        // باتن مربوطه رو به بخش تنوع های این دسته بندی اضافه میکنیم
+        $('#selected-variants-box').append(variantToAppend);
+        // اضافه کردن دکمه حذف کردن به تنوعی که الان اضافه کردیم
+        $('#selected-variants-box button:last').append('<i class="bi bi-x-circle remove-selected-variant-button"></i>');
+    });
+
     fillDataTable();
 });
 

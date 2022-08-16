@@ -81,6 +81,9 @@
                             <a custom-title="افزودن برند برای دسته &quot; @category.Title &quot;" asp-page-handler="AddBrand" asp-route-selectedCategoryId="@category.Id" class="btn btn-primary show-modal-form-button">
                                 افزودن برند
                             </a>
+                            <a custom-title="ویرایش تنوع برای دسته &quot; @category.Title &quot;" asp-page-handler="EditCategoryVariant" asp-route-categoryId="@category.Id" class="btn btn-warning show-modal-form-button">
+                                ویرایش تنوع
+                            </a>
                         </td>
                     </tr>
                 }

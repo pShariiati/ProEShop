@@ -11,6 +11,7 @@ using ProEShop.DataLayer.Context;
 using ProEShop.Entities;
 using ProEShop.Services.Contracts;
 using ProEShop.ViewModels.Categories;
+using ProEShop.ViewModels.CategoryVariants;
 
 namespace ProEShop.Web.Pages.Admin.Category;
 
@@ -23,6 +24,8 @@ public class IndexModel : PageBase
     private readonly IUploadFileService _uploadFile;
     private readonly IBrandService _brandService;
     private readonly IMapper _mapper;
+    private readonly ICategoryVariantService _categoryVariantService;
+    private readonly IVariantService _variantService;
     private readonly IHtmlSanitizer _htmlSanitizer;
 
     public IndexModel(
@@ -31,7 +34,9 @@ public class IndexModel : PageBase
         IUploadFileService uploadFile,
         IBrandService brandService,
         IMapper mapper,
-        IHtmlSanitizer htmlSanitizer)
+        IHtmlSanitizer htmlSanitizer,
+        IVariantService variantService,
+        ICategoryVariantService categoryVariantService)
     {
         _categoryService = categoryService;
         _uow = uow;
@@ -39,6 +44,8 @@ public class IndexModel : PageBase
         _brandService = brandService;
         _mapper = mapper;
         _htmlSanitizer = htmlSanitizer;
+        _variantService = variantService;
+        _categoryVariantService = categoryVariantService;
     }
 
     #endregion
@@ -302,5 +309,71 @@ public class IndexModel : PageBase
     public async Task<IActionResult> OnGetAutocompleteSearch(string term)
     {
         return Json(await _brandService.AutocompleteSearch(term));
+    }
+
+    /// <summary>
+    /// ویرایش تنوع دسته بندی بخش ادمین
+    /// </summary>
+    /// <param name="categoryId"></param>
+    /// <returns></returns>
+    public async Task<IActionResult> OnGetEditCategoryVariant(long categoryId)
+    {
+        if (!await _categoryService.IsExistsBy(nameof(Entities.Category.Id), categoryId))
+        {
+            return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
+        }
+        // اگر تنوع این دسته بندی رنگ است
+        // باید لیست تمامی رنگ ها را برگشت بزنیم
+        // تا از میان رنگ ها،ادمین، هر کدام رو که خواست به این دسته بندی
+        // اضافه کنه
+        var isVariantTypeColor = await _categoryService.IsVariantTypeColor(categoryId);
+
+        // گرفتن لیست کامل تنوع ها که ادمین هر کدوم رو خواست انتخاب کنه و به این دسته بندی اضافه کنه
+        var variants = await _variantService
+            .GetVariantsForEditCategoryVariants(isVariantTypeColor);
+
+        // چه تنوع هایی از قبل برای این دسته بندی در نظر گرفته شده است ؟
+        // که ادمین بدونه از قبل چه تنوع هایی برای این دسته بندی اضافه شده
+        var selectedVariants = await _categoryVariantService.GetCategoryVariants(categoryId);
+
+        var model = new EditCategoryVariantViewModel()
+        {
+            // چونکه اسم پراپرتی و پارامتر ورودی یکی است
+            // به صورت خودکار این رو به هم بایند میشن و نیازی به نوشتن نیست
+            //CategoryId = categoryId
+            Variants = variants,
+            SelectedVariants = selectedVariants
+        };
+        return Partial("_EditCategoryVariantPartial", model);
+    }
+
+    /// <summary>
+    /// ویرایش تنوع دسته بندی بخش ادمین
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    public async Task<IActionResult> OnPostEditCategoryVariant(EditCategoryVariantViewModel model)
+    {
+        // جدول تنوع رو هم اینکلود میکنیم که تمامی رکورد هاشو برگشت بزنه
+        // که بتونیم همه شونو حذف کنیم و از نو برای این دسته بندی تنوع اضافه کنیم
+        var category = await _categoryService.GetCategoryForEditVariant(model.CategoryId);
+        if (category is null)
+        {
+            return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
+        }
+
+        // تمامی تنوع های دسته بندی رو پاک میکنیم و از نو اضافه شون میکنیم
+        category.CategoryVariants.Clear();
+
+        foreach (var variantId in model.SelectedVariants)
+        {
+            category.CategoryVariants.Add(new CategoryVariant()
+            {
+                VariantId = variantId
+            });
+        }
+
+        await _uow.SaveChangesAsync();
+        return Json(new JsonResultOperation(true, "تنوع های دسته بندی مورد نظر با موفقیت ویرایش شد"));
     }
 }

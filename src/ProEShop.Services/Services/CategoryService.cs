@@ -213,6 +213,19 @@ public class CategoryService : GenericService<Category>, ICategoryService
             }).ToDictionaryAsync(x => x.Key, x => x.Title);
     }
 
+    public Task<bool> IsVariantTypeColor(long categoryId)
+    {
+        return _categories.Where(x => x.Id == categoryId)
+            .Select(x => x.IsVariantColor)
+            .SingleOrDefaultAsync();
+    }
+
+    public Task<Category> GetCategoryForEditVariant(long categoryId)
+    {
+        return _categories.Include(x => x.CategoryVariants)
+            .SingleOrDefaultAsync(x => x.Id == categoryId);
+    }
+
     public override async Task<DuplicateColumns> AddAsync(Category entity)
     {
         var result = new List<string>();

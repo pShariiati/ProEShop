@@ -290,5 +290,7 @@ public class MappingProfile : Profile
                 opt => opt.Ignore())
             .ForMember(x => x.EndDateTime,
                 opt => opt.Ignore());
+
+        this.CreateMap<Entities.Variant, ShowVariantInEditCategoryVariantViewModel>();
     }
 }
