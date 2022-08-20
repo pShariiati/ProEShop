@@ -145,7 +145,7 @@ namespace ProEShop.DataLayer.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsVariantColor")
+                    b.Property<bool?>("IsVariantColor")
                         .HasColumnType("bit");
 
                     b.Property<string>("ModifiedByBrowserName")
@@ -1636,7 +1636,7 @@ namespace ProEShop.DataLayer.Migrations
                     b.Property<int>("VariantCode")
                         .HasColumnType("int");
 
-                    b.Property<long>("VariantId")
+                    b.Property<long?>("VariantId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
@@ -1651,7 +1651,8 @@ namespace ProEShop.DataLayer.Migrations
                     b.HasIndex("VariantId");
 
                     b.HasIndex("SellerId", "ProductId", "VariantId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[VariantId] IS NOT NULL");
 
                     b.ToTable("ProductVariants");
                 });
@@ -2316,9 +2317,7 @@ namespace ProEShop.DataLayer.Migrations
 
                     b.HasOne("ProEShop.Entities.Variant", "Variant")
                         .WithMany()
-                        .HasForeignKey("VariantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("VariantId");
 
                     b.Navigation("Guarantee");
 

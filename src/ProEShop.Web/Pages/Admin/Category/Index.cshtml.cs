@@ -155,13 +155,24 @@ public class IndexModel : PageBase
         if (model.Picture.IsFileUploaded())
             pictureFileName = model.Picture.GenerateFileName();
 
-        var category = await _categoryService.FindByIdAsync(model.Id);
+        var category = await _categoryService.FindByIdWithIncludesAsync(model.Id, nameof(Entities.Category.CategoryVariants));
         if (category == null)
         {
             return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
         }
 
         var oldFileName = category.Picture;
+
+        // اگر این دسته بندی تنوع داشته باشد
+        // نباید اجازه دهیم که نوع تنوع این دسته بندی تغییر یابد
+        // بنابراین به خاطر اینکه هنگام مپ کردن ویوو مدل دچار
+        // مشکل نشویم، اگر این دسته بندی براش تنوع ست شده بود
+        // به صورت دستی، نوع تنوع دسته بندی داخل ویوو مدل رو به
+        // مقداری که داخل پایگاه داده وجود داره تغییر میدیم
+        if (category.CategoryVariants.Any())
+        {
+            model.IsVariantColor = category.IsVariantColor;
+        }
 
         category = _mapper.Map(model, category);
         if (model.ParentId is 0)
@@ -328,9 +339,16 @@ public class IndexModel : PageBase
         // اضافه کنه
         var isVariantTypeColor = await _categoryService.IsVariantTypeColor(categoryId);
 
+        // دسته بندی هایی که نوع تنوعشون نال هست
+        // نباید بشه بهشون رنگ و سایز اضافه کرد
+        if (isVariantTypeColor is null)
+        {
+            return Json(new JsonResultOperation(false));
+        }
+
         // گرفتن لیست کامل تنوع ها که ادمین هر کدوم رو خواست انتخاب کنه و به این دسته بندی اضافه کنه
         var variants = await _variantService
-            .GetVariantsForEditCategoryVariants(isVariantTypeColor);
+            .GetVariantsForEditCategoryVariants(isVariantTypeColor.Value);
 
         // چه تنوع هایی از قبل برای این دسته بندی در نظر گرفته شده است ؟
         // که ادمین بدونه از قبل چه تنوع هایی برای این دسته بندی اضافه شده

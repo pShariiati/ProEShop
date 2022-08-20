@@ -30,12 +30,12 @@ public interface ICategoryService : IGenericService<Category>
     Task<Dictionary<long, string>> GetSellerCategories();
 
     /// <summary>
-    /// آیا تنوع این دسته بندی رنگ است یا اندازه
+    /// آیا تنوع این دسته بندی رنگ است یا اندازه یا کلا تنوع ندارد
     /// استفاده شده در صفحه ویرایش تنوع دسته بندی
     /// </summary>
     /// <param name="categoryId"></param>
     /// <returns></returns>
-    Task<bool> IsVariantTypeColor(long categoryId);
+    Task<bool?> IsVariantTypeColor(long categoryId);
 
     /// <summary>
     /// خواندن یک دسته بندی

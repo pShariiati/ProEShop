@@ -83,7 +83,8 @@ public class CategoryService : GenericService<Category>, ICategoryService
                 Parent = x.ParentId != null ? x.Parent.Title : "دسته اصلی",
                 Slug = x.Slug,
                 Picture = x.Picture ?? "بدون عکس",
-                IsDeleted = x.IsDeleted
+                IsDeleted = x.IsDeleted,
+                ShowEditVariantButton = x.IsVariantColor != null
             })
             .ToListAsync(),
             Pagination = paginationResult.Pagination
@@ -213,7 +214,7 @@ public class CategoryService : GenericService<Category>, ICategoryService
             }).ToDictionaryAsync(x => x.Key, x => x.Title);
     }
 
-    public Task<bool> IsVariantTypeColor(long categoryId)
+    public Task<bool?> IsVariantTypeColor(long categoryId)
     {
         return _categories.Where(x => x.Id == categoryId)
             .Select(x => x.IsVariantColor)

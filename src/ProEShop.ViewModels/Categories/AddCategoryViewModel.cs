@@ -45,4 +45,7 @@ public class AddCategoryViewModel
 
     [Display(Name = "آیا میتوان کالای غیر اصل اضافه کرد ؟")]
     public bool CanAddFakeProduct { get; set; }
+
+    [Display(Name = "نوع تنوع")]
+    public bool? IsVariantColor { get; set; }
 }

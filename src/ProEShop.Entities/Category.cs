@@ -32,7 +32,12 @@ public class Category : EntityBase, IAuditableEntity
 
     public bool CanAddFakeProduct { get; set; }
 
-    public bool IsVariantColor { get; set; }
+    /// <summary>
+    /// اگر ترو باشد یعنی رنگ است
+    /// فالس سایز
+    /// نال یعنی بدون تنوع است
+    /// </summary>
+    public bool? IsVariantColor { get; set; }
 
     [MaxLength(1000)]
     public string ProductPageGuide { get; set; }

@@ -4,6 +4,12 @@
     <input asp-for="Id" />
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="row">
+        @if (!Model.CanVariantTypeChange)
+        {
+            <div class="alert alert-danger">
+                برای این دسته بندی تنوع اضافه شده است، بنابر این امکان تغییر نوع تنوع وجود ندارد
+            </div>
+        }
         <div class="col-12 col-sm-6 col-lg-3 my-2">
             <label class="form-label" asp-for="Title"></label>
             <input class="form-control" asp-for="Title"/>
@@ -24,12 +30,31 @@
             <select class="form-select custom-select2" asp-for="ParentId" asp-items="Model.MainCategories">
             </select>
         </div>
+        <div class="col-12 col-sm-6 col-lg-3 my-2">
+            <label class="form-label" asp-for="IsVariantColor"></label>
+            @if (Model.CanVariantTypeChange)
+            {
+                <select class="form-select" asp-for="IsVariantColor">
+                    <option value="">بدون تنوع</option>
+                    <option value="true">رنگ</option>
+                    <option value="false">اندازه</option>
+                </select>
+            }
+            else
+            {
+                <select class="form-select" asp-for="IsVariantColor" disabled="disabled">
+                    <option value="">بدون تنوع</option>
+                    <option value="true">رنگ</option>
+                    <option value="false">اندازه</option>
+                </select>
+            }
+        </div>
         <div class="col-12 col-sm-6 col-lg-3 my-2 form-check form-switch px-3">
             <label class="form-check-label" asp-for="SelectedPicture"></label>
             @if (Model.SelectedPicture != null)
             {
                 <p>
-                    <img src="~/images/categories/@Model.SelectedPicture" class="rounded w-100" />
+                    <img src="~/images/categories/@Model.SelectedPicture" class="rounded w-100"/>
                 </p>
             }
             else
@@ -40,13 +65,13 @@
         <div class="col-12 col-sm-6 col-lg-3 my-2 form-check form-switch px-3">
             <label class="form-check-label" asp-for="ShowInMenus"></label>
             <div>
-                <input class="form-check-input m-0" asp-for="ShowInMenus" />
+                <input class="form-check-input m-0" asp-for="ShowInMenus"/>
             </div>
         </div>
         <div class="col-12 col-sm-6 col-lg-3 my-2 form-check form-switch px-3">
             <label class="form-check-label" asp-for="CanAddFakeProduct"></label>
             <div>
-                <input class="form-check-input m-0" asp-for="CanAddFakeProduct" />
+                <input class="form-check-input m-0" asp-for="CanAddFakeProduct"/>
             </div>
         </div>
         <div class="col-12 my-2">

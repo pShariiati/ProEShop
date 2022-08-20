@@ -52,6 +52,18 @@ public abstract class GenericService<TEntity> : IGenericService<TEntity> where T
     public async Task<TEntity> FindByIdAsync(long id)
         => await _entities.FindAsync(id);
 
+    public Task<TEntity> FindByIdWithIncludesAsync(long id, params string[] includes)
+    {
+        var query = _entities.AsQueryable();
+
+        foreach (var include in includes)
+        {
+            query = query.Include(include);
+        }
+
+        return query.SingleOrDefaultAsync(x => x.Id == id);
+    }
+
     public async Task<bool> IsExistsBy(string propertyToFilter, object propertyValue, long? id = null)
     {
         var exp = ExpressionHelpers.CreateExpression<TEntity>(propertyToFilter, propertyValue);

@@ -17,7 +17,12 @@ public class ProductVariant : EntityBase, IAuditableEntity
 
     public long ProductId { get; set; }
 
-    public long VariantId { get; set; }
+    /// <summary>
+    /// بعضی از کالا مثل ماسک تنوع ندارن
+    /// پس باید این پراپرتی نال باشه
+    /// چون با هیج رکوردی از جدول تنوع در ارتباط نیست
+    /// </summary>
+    public long? VariantId { get; set; }
 
     public long GuaranteeId { get; set; }
 

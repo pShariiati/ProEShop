@@ -35,6 +35,16 @@ public class ShowCategoryViewModel
     public string Picture { get; set; }
 
     public bool IsDeleted { get; set; }
+
+    /// <summary>
+    /// اگر تنوع این دسته بندی رنگ یا سایز باشد
+    /// این پراپرتی میشه ترو
+    /// در غیر اینصورت اگر نوع تنوع این دسته بندی نال باشد
+    /// این پراپرتی میشه فالس و نباید دکمه ویرایش تنوع رو در گرید
+    /// دسته بندی ها نشون بدیم، چون قرار نیست که برای دسته بندی بدون تنوع
+    /// رنگ و سایز اضافه کنیم
+    /// </summary>
+    public bool ShowEditVariantButton { get; set; }
 }
 
 public class SearchCategoriesViewModel
