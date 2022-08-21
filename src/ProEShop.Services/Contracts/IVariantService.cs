@@ -28,4 +28,10 @@ public interface IVariantService : IGenericService<Variant>
     /// <param name="isColor"></param>
     /// <returns></returns>
     Task<List<ShowVariantInEditCategoryVariantViewModel>> GetVariantsForEditCategoryVariants(bool isColor);
+
+    // آیا تنوع هایی که قراره برای این دسته بندی اضافه شه
+    // آیدیشون به درستی وارد شده
+    // و اگر تنوع این دسته بندی رنگ باشد
+    // باید توسط ادمین فقط رنگ به سمت سرور اومده باشد
+    Task<bool> CheckVariantsCountAndConfirmStatusForEditCategoryVariants(List<long> variantsIds, bool isColor);
 }

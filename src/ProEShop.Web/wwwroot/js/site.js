@@ -584,7 +584,10 @@ $(document).on('submit', 'form.custom-ajax-form', function (e) {
         },
         success: function (data) {
             if (data.isSuccessful === false) {
-                fillValidationForm(data.data, currentForm);
+                // نمایش دادن خطاهایی که از سمت سرور اومدن در بخش 
+                // Validation summary
+                var finalData = data.data || [data.message];
+                fillValidationForm(finalData, currentForm);
                 showToastr('warning', data.message);
             }
             else {
@@ -654,7 +657,6 @@ $(document).on('submit', 'form.public-ajax-form', function (e) {
         },
         success: function (data) {
             if (data.isSuccessful === false) {
-                //var finalData = data.data != null ? data.data : [data.message];
                 var finalData = data.data || [data.message];
                 fillValidationForm(finalData, currentForm);
                 showToastr('warning', data.message);

@@ -107,7 +107,7 @@ public class ProductVariantForProductInfoViewModel
     {
         get
         {
-            var result = Math.Ceiling((double)FinalPrice / 10000);
+            var result = Math.Ceiling((double)Price / 10000);
             if (result <= 1)
                 return 1;
             if (result >= 150)

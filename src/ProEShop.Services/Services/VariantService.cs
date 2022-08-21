@@ -85,4 +85,13 @@ public class VariantService : GenericService<Variant>, IVariantService
                     .Where(x => x.IsColor == isColor)
         ).ToListAsync();
     }
+
+    public async Task<bool> CheckVariantsCountAndConfirmStatusForEditCategoryVariants(List<long> variantsIds, bool isColor)
+    {
+        var result = await _variants
+            .Where(x => variantsIds.Contains(x.Id))
+            .Where(x => x.IsColor == isColor)
+            .CountAsync(x => x.IsConfirmed);
+        return variantsIds.Count == result;
+    }
 }

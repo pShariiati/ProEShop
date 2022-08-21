@@ -29,4 +29,13 @@ public class EditCategoryVariantViewModel
     /// </summary>
     public List<long> SelectedVariants { get; set; }
         = new();
+
+    /// <summary>
+    /// برای مثال این دسته بندی 3 رنگ دارد
+    /// از کدام یک از این رنگ ها در بخش تنوع محصولات استفاده شده
+    /// آیدی اون تنوع ها رو برگشت میزنیم
+    /// که به ادمین اجازه ندیم که اون تنوع هارو از این دسته بندی حذف کنه
+    /// </summary>
+    public List<long> AddedVariantsToProductVariants { get; set; }
+        = new();
 }

@@ -33,6 +33,7 @@
 
         // باتن مربوطه رو به بخش تنوع های این دسته بندی اضافه میکنیم
         $('#selected-variants-box').append(variantToAppend);
+        $('#selected-variants-box span:last').addClass('me-1');
         // اضافه کردن دکمه حذف کردن به تنوعی که الان اضافه کردیم
         $('#selected-variants-box button:last').append('<i class="bi bi-x-circle remove-selected-variant-button"></i>');
     });

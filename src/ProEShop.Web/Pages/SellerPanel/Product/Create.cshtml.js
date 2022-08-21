@@ -43,10 +43,19 @@ function showCommissionPercentage(message, data) {
 
 var selectedCategoriesIds = [];
 
+// لیست آیدی های دسته بندی هایی که انتخاب شده است
+var finalSelectedCategoriesIds = [];
+
+// آیا روی دکمه خیر در آلرت کلیک شده است
+var isUndoClicked = false;
+
 function showCategories(data) {
     $('#product-category div.row.card-body').html(data);
     $('#selected-categories-for-add-product').html('');
-    selectedCategoriesIds.forEach(element => {
+    
+    var arrayToEach = isUndoClicked ? finalSelectedCategoriesIds : selectedCategoriesIds;
+
+    arrayToEach.forEach(element => {
         var currentCategory = $('#product-category button[category-id=' + element + ']');
         currentCategory.addClass('active');
         var currentCategoryText = currentCategory.text().trim();
@@ -54,6 +63,13 @@ function showCategories(data) {
             `<span> ${currentCategoryText} <i class="bi bi-chevron-left"></i></span>`
         );
     });
+
+    if (isUndoClicked) {
+        $('#selected-categories-for-add-product span:last i').remove();
+    }
+
+    isUndoClicked = false;
+
     $('#product-category div.row.card-body button[has-child=true]').click(function () {
 
         $('#select-product-category-button').attr('disabled', 'disabled');
@@ -127,14 +143,19 @@ $('#select-product-category-button').click(function () {
 
 function emptyAllInputsAndShowOtherTabs() {
     selectedCategoryId = $('#product-category div.list-group.col-4:last button.active').attr('category-id');
+    finalSelectedCategoriesIds = [];
+    $('#product-category button.active').each(function() {
+        finalSelectedCategoriesIds.push($(this).attr('category-id'));
+    });
     $('#Product_MainCategoryId').val(selectedCategoryId);
     getDataWithAJAX('?handler=GetCategoryInfo', { categoryId: selectedCategoryId }, 'categoryInfo');
     $('#request-new-brand-url').attr('href', requestNewBrandUrl + '&categoryId=' + selectedCategoryId);
 }
 
 function undoSelectedCategoryButton() {
-    $(`#product-category button`).removeClass('active');
-    $(`#product-category button[category-id="${selectedCategoryId}"]`).addClass('active');
+    $('#product-category button').removeClass('active');
+    isUndoClicked = true;
+    getHtmlWithAJAX(`${location.pathname}?handler=GetCategories`, { selectedCategoriesIds: finalSelectedCategoriesIds }, 'showCategories', null);
 }
 
 function categoryInfo(message, data) {

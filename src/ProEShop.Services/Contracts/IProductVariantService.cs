@@ -62,4 +62,14 @@ public interface IProductVariantService : IGenericService<ProductVariant>
     /// <param name="id"></param>
     /// <returns></returns>
     Task<ProductVariant> GetForEdit(long id);
+
+    /// <summary>
+    /// برای مثال این دسته بندی 3 رنگ دارد
+    /// از کدام یک از این رنگ ها در بخش تنوع محصولات استفاده شده
+    /// آیدی اون تنوع ها رو برگشت میزنیم
+    /// که به ادمین اجازه ندیم که اون تنوع هارو از این دسته بندی حذف کنه
+    /// </summary>
+    /// <param name="variantsIds"></param>
+    /// <returns></returns>
+    Task<List<long>> GetAddedVariantsToProductVariants(List<long> variantsIds);
 }

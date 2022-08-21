@@ -4,7 +4,7 @@
         var price = $('#Price').val();
         var offPercentage = $('#OffPercentage').val();
         var discountPrice = price / 100 * offPercentage;
-        var priceWithDiscount = price - discountPrice;
+        var priceWithDiscount = Math.ceil(price - discountPrice);
         $('#OffPrice').val(priceWithDiscount);
     });
 
@@ -13,9 +13,9 @@
         var price = $('#Price').val();
         var offPercentage = $('#OffPercentage').val();
         var discountPrice = price / 100 * offPercentage;
-        var priceWithDiscount = price - discountPrice;
+        var priceWithDiscount = Math.ceil(price - discountPrice);
         var discountPriceSubtract1Percentage = price / 100 * (offPercentage - 1);
-        var priceWithDiscountSubtract1Percentage = price - discountPriceSubtract1Percentage;
+        var priceWithDiscountSubtract1Percentage = Math.floor(price - discountPriceSubtract1Percentage);
 
         // برای مثال قیمت کالا هزارتومان است
         // درصد تخفیف 7 درصد

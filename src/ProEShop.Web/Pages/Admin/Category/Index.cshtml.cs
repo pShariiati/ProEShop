@@ -24,6 +24,7 @@ public class IndexModel : PageBase
     private readonly IUploadFileService _uploadFile;
     private readonly IBrandService _brandService;
     private readonly IMapper _mapper;
+    private readonly IProductVariantService _productVariantService;
     private readonly ICategoryVariantService _categoryVariantService;
     private readonly IVariantService _variantService;
     private readonly IHtmlSanitizer _htmlSanitizer;
@@ -36,7 +37,8 @@ public class IndexModel : PageBase
         IMapper mapper,
         IHtmlSanitizer htmlSanitizer,
         IVariantService variantService,
-        ICategoryVariantService categoryVariantService)
+        ICategoryVariantService categoryVariantService,
+        IProductVariantService productVariantService)
     {
         _categoryService = categoryService;
         _uow = uow;
@@ -46,6 +48,7 @@ public class IndexModel : PageBase
         _htmlSanitizer = htmlSanitizer;
         _variantService = variantService;
         _categoryVariantService = categoryVariantService;
+        _productVariantService = productVariantService;
     }
 
     #endregion
@@ -360,7 +363,13 @@ public class IndexModel : PageBase
             // به صورت خودکار این رو به هم بایند میشن و نیازی به نوشتن نیست
             //CategoryId = categoryId
             Variants = variants,
-            SelectedVariants = selectedVariants
+            SelectedVariants = selectedVariants,
+            // برای مثال این دسته بندی 3 رنگ دارد
+            // از کدام یک از این رنگ ها در بخش تنوع محصولات استفاده شده
+            // آیدی اون تنوع ها رو برگشت میزنیم
+            // که به ادمین اجازه ندیم که اون تنوع هارو از این دسته بندی حذف کنه
+            AddedVariantsToProductVariants = await _productVariantService
+                .GetAddedVariantsToProductVariants(selectedVariants)
         };
         return Partial("_EditCategoryVariantPartial", model);
     }
@@ -380,11 +389,53 @@ public class IndexModel : PageBase
             return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
         }
 
-        // تمامی تنوع های دسته بندی رو پاک میکنیم و از نو اضافه شون میکنیم
-        category.CategoryVariants.Clear();
+        // دسته ایی که تنوع ندارد
+        // کلا نباید هیچ تنوعی براش اضافه شه
+        if (category.IsVariantColor is null)
+            return Json(new JsonResultOperation(false));
 
+        // لیست آیدی های تنوع های این دسته بندی
+        var categoryVariantsIds = category.CategoryVariants.Select(x => x.VariantId).ToList();
+
+        // آیا تنوع هایی که قراره برای این دسته بندی اضافه شه
+        // آیدیشون به درستی وارد شده
+        // و اگر تنوع این دسته بندی رنگ باشد
+        // باید توسط ادمین فقط رنگ به سمت سرور اومده باشد
+        if (!await _variantService.CheckVariantsCountAndConfirmStatusForEditCategoryVariants(categoryVariantsIds,
+                category.IsVariantColor.Value))
+        {
+            return Json(new JsonResultOperation(false));
+        }
+
+        // برای مثال این دسته بندی سه رنگ دارد
+        // از کدام یک از این سه رنگ در بخش تنوع محصولات استفاده شده
+        // آیدی اون تنوع ها رو که در بخش تنوع محصولات استفاده شده برگشت میزنیم
+        var addedVariantsForProductVariants =
+            await _productVariantService.GetAddedVariantsToProductVariants(categoryVariantsIds);
+
+        // Category variants 10, 11, 13
+        // Product variants 10, 11
+
+        foreach (var variant in category.CategoryVariants)
+        {
+            // برای مثال این دسته بندی رنگ آبی دارد
+            // حالا در بخش تنوع محصولات از این رنگ آبی استفاده شده است
+            // پس نباید اجازه دهیم که رنگ آبی دیگر حذف شود
+            // چون از رنگ آبی در بخش تنوع محصولات استفاده شده است
+            if (addedVariantsForProductVariants.Contains(variant.VariantId))
+                continue;
+            category.CategoryVariants.Remove(variant);
+        }
+
+        // تنوع ها رو اضافه میکنیم
         foreach (var variantId in model.SelectedVariants)
         {
+            // برای مثال این دسته بندی رنگ آبی و قرمز دارد
+            // و در بخش تنوع محصولات از این دو رنگ استفاده شده است
+            // چون در فور ایچ بالایی رنگ آبی و قرمز حذف نشده است
+            // در نتیجه این دو رنگ نیازی به افزودن مجدد ندارند
+            if (category.CategoryVariants.Any(x=>x.VariantId == variantId))
+                continue;
             category.CategoryVariants.Add(new CategoryVariant()
             {
                 VariantId = variantId

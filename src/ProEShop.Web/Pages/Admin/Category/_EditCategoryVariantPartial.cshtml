@@ -20,13 +20,16 @@
                         @variant.Value
                         @if (variant.IsColor)
                         {
-                            <span class="rounded" style="background: @variant.ColorCode">
+                            <span class="rounded me-1" style="background: @variant.ColorCode">
                                 &nbsp;
                                 &nbsp;
                                 &nbsp;
                             </span>
                         }
-                        <i class="bi bi-x-circle remove-selected-variant-button"></i>
+                        @if (!Model.AddedVariantsToProductVariants.Contains(variant.Id))
+                        {
+                            <i class="bi bi-x-circle remove-selected-variant-button"></i>
+                        }
                     </button>
                 }
             </div>
