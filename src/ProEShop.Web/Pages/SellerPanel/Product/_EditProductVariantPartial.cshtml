@@ -21,7 +21,14 @@
                             </div>
                             <div class="col-md-3">
                                 تنوع مجاز این کالا:
-                                @(Model.CategoryIsVariantColor ? "رنگ" : "سایز")
+                                @{
+                                    var variantType = "بدون تنوع";
+                                    if (Model.CategoryIsVariantColor != null)
+                                    {
+                                        variantType = Model.CategoryIsVariantColor.Value ? "رنگ" : "سایز";
+                                    }
+                                }
+                                @variantType
                             </div>
                             <div class="col-md-3">
                                 برند کالا:

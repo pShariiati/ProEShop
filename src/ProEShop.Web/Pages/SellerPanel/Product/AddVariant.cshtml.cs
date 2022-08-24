@@ -67,12 +67,19 @@ public class AddVariantModel : SellerPanelBase
             });
         }
 
-        if (!await _variantService.CheckProductAndVariantTypeForForAddVariant(Variant.ProductId, Variant.VariantId))
+        var checkInputs =
+            await _variantService.CheckProductAndVariantTypeForForAddVariant(Variant.ProductId, Variant.VariantId);
+
+        if (!checkInputs.IsSuccessful)
         {
             return Json(new JsonResultOperation(false));
         }
 
         var productVariantToAdd = _mapper.Map<Entities.ProductVariant>(Variant);
+        if (checkInputs.IsVariantNull)
+        {
+            productVariantToAdd.VariantId = null;
+        }
         productVariantToAdd.VariantCode = await _productVariantService.GetVariantCodeForCreateProductVariant();
 
         // Get seller id for entity

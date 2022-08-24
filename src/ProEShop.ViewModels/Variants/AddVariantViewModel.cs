@@ -31,7 +31,7 @@ public class AddVariantViewModel
 
     public string CategoryTitle { get; set; }
 
-    public bool CategoryIsVariantColor { get; set; }
+    public bool? CategoryIsVariantColor { get; set; }
 
     public string BrandFullTitle { get; set; }
 

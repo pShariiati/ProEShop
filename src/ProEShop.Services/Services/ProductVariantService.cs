@@ -114,10 +114,11 @@ public class ProductVariantService : GenericService<ProductVariant>, IProductVar
             .SingleOrDefaultAsync(x => x.Id == id);
     }
 
-    public Task<List<long>> GetAddedVariantsToProductVariants(List<long> variantsIds)
+    public Task<List<long>> GetAddedVariantsToProductVariants(List<long> variantsIds, long categoryId)
     {
         return _productVariants
             .Where(x => x.VariantId != null && variantsIds.Contains(x.VariantId.Value))
+            .Where(x => x.Product.MainCategoryId == categoryId)
             .GroupBy(x => x.VariantId)
             .Select(x => x.First().VariantId.Value)
             .ToListAsync();

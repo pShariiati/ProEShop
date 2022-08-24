@@ -638,10 +638,26 @@ $(document).on('change', 'form input.custom-md-persian-datepicker, form select, 
 // ارسال میکند
 $(document).on('submit', 'form.public-ajax-form', function (e) {
     e.preventDefault();
-    var currentForm = $(this);
+    var currentForm = this;
+
+    $('#html-modal-place').modal('hide');
+    $('#second-html-modal-place').modal('hide');
+    showLoading();
+
+    if ($(this).parents('.modal').length === 0) {
+        publicAjaxFormFunction(currentForm);
+    } else {
+        $(this).parents('.modal').off('hidden.bs.modal').on('hidden.bs.modal', function () {
+            publicAjaxFormFunction(currentForm);
+        });
+    }
+});
+
+function publicAjaxFormFunction(form) {
+    var currentForm = $(form);
     var formAction = currentForm.attr('action');
     var functionName = currentForm.attr('functionNameToCallInTheEnd');
-    var formData = new FormData(this);
+    var formData = new FormData(form);
     $.ajax({
         url: formAction,
         data: formData,
@@ -650,16 +666,17 @@ $(document).on('submit', 'form.public-ajax-form', function (e) {
         dataType: 'json',
         processData: false,
         contentType: false,
-        beforeSend: function () {
-            $('#html-modal-place').modal('hide');
-            $('#second-html-modal-place').modal('hide');
-            showLoading();
-        },
         success: function (data) {
             if (data.isSuccessful === false) {
                 var finalData = data.data || [data.message];
                 fillValidationForm(finalData, currentForm);
                 showToastr('warning', data.message);
+                var modalId = currentForm.parents('.modal').attr('id');
+                if (modalId === 'second-html-modal-place') {
+                    $('#second-html-modal-place').modal('show');
+                } else if (modalId == 'html-modal-place') {
+                    $('#html-modal-place').modal('show');
+                }
             }
             else {
                 window[functionName](data.message, data.data);
@@ -672,7 +689,7 @@ $(document).on('submit', 'form.public-ajax-form', function (e) {
             showErrorMessage();
         }
     });
-});
+}
 
 // این فانکشن هر فرمی را به صورت پست به سمت سرور با استفاده از ایجکس
 // ارسال میکند و یک صفحه اچ تی ام ال برگشت میزند

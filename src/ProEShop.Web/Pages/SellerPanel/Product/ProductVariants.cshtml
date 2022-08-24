@@ -24,14 +24,17 @@
                             var hasDiscount = productVariant.OffPercentage != null;
                             <tr>
                                 <td>
-                                    @productVariant.VariantValue
-                                    @if (productVariant.VariantIsColor)
+                                    @(productVariant.VariantValue ?? "بدون تنوع")
+                                    @if (productVariant.VariantIsColor != null)
                                     {
-                                        <span class="rounded" style="background: @productVariant.VariantColorCode">
-                                            &nbsp;
-                                            &nbsp;
-                                            &nbsp;
-                                        </span>
+                                        @if (productVariant.VariantIsColor.Value)
+                                        {
+                                            <span class="rounded" style="background: @productVariant.VariantColorCode">
+                                                &nbsp;
+                                                &nbsp;
+                                                &nbsp;
+                                            </span>
+                                        }
                                     }
                                 </td>
                                 <td>@productVariant.GuaranteeTitle</td>

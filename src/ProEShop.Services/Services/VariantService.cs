@@ -54,7 +54,7 @@ public class VariantService : GenericService<Variant>, IVariantService
         };
     }
 
-    public async Task<bool> CheckProductAndVariantTypeForForAddVariant(long productId, long variantId)
+    public async Task<(bool IsSuccessful, bool IsVariantNull)> CheckProductAndVariantTypeForForAddVariant(long productId, long variantId)
     {
         var product = await _products
             .Select(x => new
@@ -63,7 +63,10 @@ public class VariantService : GenericService<Variant>, IVariantService
                 x.Category.IsVariantColor
             }).SingleOrDefaultAsync(x => x.Id == productId);
         if (product is null)
-            return false;
+            return (false, default);
+
+        if (product.IsVariantColor is null)
+            return (true, true);
 
         var variant = await _variants
             .Where(x => x.IsConfirmed)
@@ -73,9 +76,9 @@ public class VariantService : GenericService<Variant>, IVariantService
                 x.IsColor
             }).SingleOrDefaultAsync(x => x.Id == variantId);
         if (variant is null)
-            return false;
+            return (false, false);
 
-        return product.IsVariantColor == variant.IsColor;
+        return (product.IsVariantColor == variant.IsColor, false);
     }
 
     public Task<List<ShowVariantInEditCategoryVariantViewModel>> GetVariantsForEditCategoryVariants(bool isColor)

@@ -21,7 +21,14 @@
                             </div>
                             <div class="col-md-3">
                                 تنوع مجاز این کالا:
-                                @(Model.CategoryIsVariantColor ? "رنگ" : "سایز")
+                                @{
+                                    var variantType = "بدون تنوع";
+                                    if (Model.CategoryIsVariantColor != null)
+                                    {
+                                        variantType = Model.CategoryIsVariantColor.Value ? "رنگ" : "سایز";
+                                    }
+                                }
+                                @variantType
                             </div>
                             <div class="col-md-3">
                                 برند کالا:
@@ -43,6 +50,7 @@
                         زمانیکه درصد تخفیف را وارد میکنید، اگر قیمت تخفیف رند نبود و قصد تغییر آن را داشتید، میتوانید مبلغ را بین آن درصد تخفیف، منهای یک، تا همان درصد تخفیف قرار دهید
                         برای مثال اگر 20 درصد تخیفیف وارد میکنید، میتوانید مبلغ تخفیف را بزرگتر مساوی 20 درصد و کوچکتر از 19 درصد قرار دهید.
                     </div>
+                    <div class="text-danger" asp-validation-summary="All"></div>
                     <div class="col-md-4 my-2">
                         <label class="d-flex justify-content-between form-label" asp-for="Price">
                         </label>

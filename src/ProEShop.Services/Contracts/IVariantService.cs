@@ -19,7 +19,7 @@ public interface IVariantService : IGenericService<Variant>
     /// <param name="productId"></param>
     /// <param name="variantId"></param>
     /// <returns></returns>
-    Task<bool> CheckProductAndVariantTypeForForAddVariant(long productId, long variantId);
+    Task<(bool IsSuccessful, bool IsVariantNull)> CheckProductAndVariantTypeForForAddVariant(long productId, long variantId);
 
     /// <summary>
     /// گرفتن لیست تمامی تنوع ها

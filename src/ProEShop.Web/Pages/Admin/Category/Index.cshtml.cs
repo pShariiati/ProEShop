@@ -369,7 +369,7 @@ public class IndexModel : PageBase
             // آیدی اون تنوع ها رو برگشت میزنیم
             // که به ادمین اجازه ندیم که اون تنوع هارو از این دسته بندی حذف کنه
             AddedVariantsToProductVariants = await _productVariantService
-                .GetAddedVariantsToProductVariants(selectedVariants)
+                .GetAddedVariantsToProductVariants(selectedVariants, categoryId)
         };
         return Partial("_EditCategoryVariantPartial", model);
     }
@@ -411,7 +411,7 @@ public class IndexModel : PageBase
         // از کدام یک از این سه رنگ در بخش تنوع محصولات استفاده شده
         // آیدی اون تنوع ها رو که در بخش تنوع محصولات استفاده شده برگشت میزنیم
         var addedVariantsForProductVariants =
-            await _productVariantService.GetAddedVariantsToProductVariants(categoryVariantsIds);
+            await _productVariantService.GetAddedVariantsToProductVariants(categoryVariantsIds, model.CategoryId);
 
         // Category variants 10, 11, 13
         // Product variants 10, 11

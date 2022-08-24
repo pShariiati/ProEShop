@@ -70,6 +70,7 @@ public interface IProductVariantService : IGenericService<ProductVariant>
     /// که به ادمین اجازه ندیم که اون تنوع هارو از این دسته بندی حذف کنه
     /// </summary>
     /// <param name="variantsIds"></param>
+    /// <param name="categoryId"></param>
     /// <returns></returns>
-    Task<List<long>> GetAddedVariantsToProductVariants(List<long> variantsIds);
+    Task<List<long>> GetAddedVariantsToProductVariants(List<long> variantsIds, long categoryId);
 }
