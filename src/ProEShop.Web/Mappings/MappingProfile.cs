@@ -16,7 +16,7 @@ using ProEShop.ViewModels.Variants;
 
 namespace ProEShop.Web.Mappings;
 
-public class MappingProfile : Profile
+public class MappingProfile : BaseMappingProfile
 {
     public MappingProfile()
     {
@@ -103,7 +103,6 @@ public class MappingProfile : Profile
                     options.MapFrom(src => src.ProductMedia.First().FileName));
 
         this.CreateMap<Entities.Product, ProductDetailsViewModel>();
-        this.CreateMap<Entities.ProductMedia, ProductMediaForProductDetailsViewModel>();
         this.CreateMap<Entities.ProductFeature, ProductFeatureForProductDetailsViewModel>();
 
         this.CreateMap<Entities.Variant, ShowVariantViewModel>();
@@ -165,20 +164,18 @@ public class MappingProfile : Profile
                 options =>
                     options.MapFrom(src => src.DeliveryDate.ToLongPersianDate()));
 
-        long consignmentId = 0;
         this.CreateMap<Entities.Consignment, ShowConsignmentDetailsViewModel>()
             .ForMember(dest => dest.DeliveryDate,
                 options =>
                     options.MapFrom(src => src.DeliveryDate.ToLongPersianDate()))
             .ForMember(dest => dest.Items,
             options =>
-                options.MapFrom(src => src.ConsignmentItems.Where(x => x.ConsignmentId == consignmentId)));
+                options.MapFrom(src => src.ConsignmentItems.Where(x => x.ConsignmentId == ConsignmentId)));
 
         this.CreateMap<Entities.ConsignmentItem, ShowConsignmentItemViewModel>();
 
         this.CreateMap<AddProductStockByConsignmentViewModel, Entities.ProductStock>();
-
-        long userId = 0;
+        
         this.CreateMap<Entities.Product, ShowProductInfoViewModel>()
             .ForMember(dest => dest.Score,
                 options =>
@@ -213,7 +210,12 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.IsFavorite,
                 options =>
                     options.MapFrom(src =>
-                        userId != 0 && src.UserProductsFavorites.Any(x => x.UserId == userId)
+                        UserId != 0 && src.UserProductsFavorites.Any(x => x.UserId == UserId)
+                    ))
+            .ForMember(dest => dest.IsVariantTypeNull,
+                options =>
+                    options.MapFrom(src =>
+                        src.Category.IsVariantColor == null
                     ));
         //.ForMember(dest => dest.ProductCommentsLongCount,
         //        options =>
@@ -221,13 +223,10 @@ public class MappingProfile : Profile
         //                src.ProductComments.LongCount()
         //            ));
 
-        this.CreateMap<Entities.ProductMedia, ProductMediaForProductInfoViewModel>();
-
         this.CreateMap<Entities.ProductCategory, ProductCategoryForProductInfoViewModel>();
 
         this.CreateMap<Entities.ProductFeature, ProductFeatureForProductInfoViewModel>();
-
-        DateTime now = default;
+        
         this.CreateMap<Entities.ProductVariant, ProductVariantForProductInfoViewModel>()
             .ForMember(dest => dest.EndDateTime,
                 options =>
@@ -237,7 +236,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.IsDiscountActive,
                 options =>
                     options.MapFrom(src =>
-                        src.OffPercentage != null && (src.StartDateTime <= now && src.EndDateTime >= now)
+                        src.OffPercentage != null && (src.StartDateTime <= Now && src.EndDateTime >= Now)
                     ));
 
         this.CreateMap<Entities.ProductShortLink, ShowProductShortLinkViewModel>();
@@ -252,7 +251,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.IsDiscountActive,
                 options =>
                     options.MapFrom(src => 
-                            src.OffPercentage != null && (src.StartDateTime <= now && src.EndDateTime >= now)
+                            src.OffPercentage != null && (src.StartDateTime <= Now && src.EndDateTime >= Now)
                         ))
             .ForMember(dest => dest.CommissionPercentage,
                 options =>

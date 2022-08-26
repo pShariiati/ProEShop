@@ -62,14 +62,17 @@
                     <td>@consignmentItem.ProductVariantProductId</td>
                     <td>@consignmentItem.ProductVariantProductPersianTitle</td>
                     <td>
-                        @consignmentItem.ProductVariantVariantValue
-                        @if (consignmentItem.ProductVariantVariantIsColor)
+                        @(consignmentItem.ProductVariantVariantValue ?? "بدون تنوع")
+                        @if (consignmentItem.ProductVariantVariantIsColor != null)
                         {
-                            <span class="rounded" style="background: @consignmentItem.ProductVariantVariantColorCode">
-                                &nbsp;
-                                &nbsp;
-                                &nbsp;
-                            </span>
+                            @if (consignmentItem.ProductVariantVariantIsColor.Value)
+                            {
+                                <span class="rounded" style="background: @consignmentItem.ProductVariantVariantColorCode">
+                                    &nbsp;
+                                    &nbsp;
+                                    &nbsp;
+                                </span>
+                            }
                         }
                     </td>
                     <td>

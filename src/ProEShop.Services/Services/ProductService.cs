@@ -279,7 +279,7 @@ public class ProductService : GenericService<Product>, IProductService
             .AsSplitQuery()
             .ProjectTo<ShowProductInfoViewModel>(
                 configuration: _mapper.ConfigurationProvider,
-                parameters: new { userId = userId, now = DateTime.Now }
+                parameters: new { UserId = userId, Now = DateTime.Now }
             ).SingleOrDefaultAsync(x => x.ProductCode == productCode);
     }
 

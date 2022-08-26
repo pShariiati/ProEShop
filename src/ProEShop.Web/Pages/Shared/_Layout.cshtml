@@ -36,7 +36,7 @@
                 </div>
             </div>
             <div class="col-md-3 col-lg-4 ms-auto text-end d-flex justify-content-center justify-content-md-end align-items-center">
-                <a asp-page="/Identity/RegisterLogin" class="btn btn-light">
+                <a condition="!User.Identity.IsAuthenticated" asp-page="/Identity/RegisterLogin" class="btn btn-light me-1">
                     <i class="bi bi-box-arrow-in-left rem1and3"></i>
                     &nbsp;
                     <span>
@@ -44,9 +44,9 @@
                         <span class="d-none d-lg-inline-block">به حساب کاربری</span>
                     </span>
                 </a>
-                <!-- <div class="dropdown">
-                    <button class="btn btn-light dropdown-toggle dropstart" type="button" id="profile-dropdown-menu"
-                        data-bs-toggle="dropdown" aria-expanded="false">
+                <div condition="User.Identity.IsAuthenticated" class="dropdown">
+                    <button class="btn btn-light dropdown-toggle dropstart me-1" type="button" id="profile-dropdown-menu"
+                            data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-person rem1and3"></i>
                     </button>
                     <ul class="dropdown-menu shadow-sm" aria-labelledby="profile-dropdown-menu"
@@ -61,7 +61,7 @@
                                         <span>
                                             پیام شریعتی
                                         </span>
-                                        <br />
+                                        <br/>
                                         <span class="text-info rem0and75">
                                             مشاهده حساب کاربری
                                             <i class="bi bi-chevron-left"></i>
@@ -110,13 +110,15 @@
                             <hr class="dropdown-divider">
                         </li>
                         <li>
-                            <a class="dropdown-item" href="#">
-                                <i class="bi bi-box-arrow-right"></i>
-                                خروج از حساب کاربری
-                            </a>
+                            <form method="post" asp-page="/Identity/RegisterLogin" asp-page-handler="LogOut">
+                                <button class="dropdown-item">
+                                    <i class="bi bi-box-arrow-right"></i>
+                                    خروج از حساب کاربری
+                                </button>
+                            </form>
                         </li>
                     </ul>
-                </div> -->
+                </div>
 
                 <span style="height: 26px; border-right: 1px solid #dad4d4;"></span>
                 <div class="dropdown">

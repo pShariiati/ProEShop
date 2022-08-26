@@ -83,7 +83,7 @@ public class ConsignmentService : GenericService<Consignment>, IConsignmentServi
     public Task<ShowConsignmentDetailsViewModel> GetConsignmentDetails(long consignmentId)
     {
         return _consignments.ProjectTo<ShowConsignmentDetailsViewModel>(
-                configuration: _mapper.ConfigurationProvider, parameters: new { consignmentId = consignmentId })
+                configuration: _mapper.ConfigurationProvider, parameters: new { ConsignmentId = consignmentId })
             .SingleOrDefaultAsync(x => x.Id == consignmentId);
     }
 

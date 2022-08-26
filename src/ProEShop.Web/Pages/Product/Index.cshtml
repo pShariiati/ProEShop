@@ -5,6 +5,8 @@
     var productVariants = Model.ProductInfo.ProductVariants
         .OrderBy(x => x.FinalPrice)
         .ToList();
+    var groupedVariants = productVariants
+        .GroupBy(x => x.VariantValue);
     var firstProductVariant = productVariants.First();
     var productFeatures = Model.ProductInfo.ProductFeatures
         .Where(x => x.FeatureShowNextToProduct).ToList();
@@ -241,53 +243,52 @@
                             </span>
                         </div>
                     }
-                    <div class="mt-3">
-                        <div class="fw-bold rem17px">
-                            @if (isVariantColor)
-                            {
-                                @:رنگ:
-                            }
-                            else
-                            {
-                                <text>اندازه:</text>
-                            }
-                            <span id="product-variant-value">
-                                @firstProductVariant.VariantValue
-                            </span>
-                        </div>
-                        <div class="d-flex mt-3" id="product-variants-box-in-show-product-info">
-                            @{
-                                var groupedVariants = productVariants
-                                .GroupBy(x => x.VariantValue);
-                            }
-                            @if (isVariantColor)
-                            {
-                                @foreach (var variant in groupedVariants)
+                    @if (!productInfo.IsVariantTypeNull)
+                    {
+                        <div class="mt-3">
+                            <div class="fw-bold rem17px">
+                                @if (isVariantColor)
                                 {
-                                    var currentVariant = variant.First();
-                                    <div data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                 title="@currentVariant.VariantValue"
-                                 class="pointer-cursor rounded-circle d-flex justify-content-center align-items-center">
-                                        <span class="rounded-circle d-flex justify-content-center align-items-center" style="background-color: @currentVariant.VariantColorCode">
-                                            <i class="bi bi-check2 rem21px text-white d-none"></i>
-                                        </span>
-                                    </div>
+                                    @:رنگ:
                                 }
-                            }
-                            else
-                            {
-                                <select class="form-select w-auto">
+                                else
+                                {
+                                    <text>اندازه:</text>
+                                }
+                                <span id="product-variant-value">
+                                    @firstProductVariant.VariantValue
+                                </span>
+                            </div>
+                            <div class="d-flex mt-3" id="product-variants-box-in-show-product-info">
+                                @if (isVariantColor)
+                                {
                                     @foreach (var variant in groupedVariants)
                                     {
                                         var currentVariant = variant.First();
-                                        <option value="@currentVariant.VariantValue">
-                                            @currentVariant.VariantValue
-                                        </option>
+                                        <div data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                 title="@currentVariant.VariantValue"
+                                 class="pointer-cursor rounded-circle d-flex justify-content-center align-items-center">
+                                            <span class="rounded-circle d-flex justify-content-center align-items-center" style="background-color: @currentVariant.VariantColorCode">
+                                                <i class="bi bi-check2 rem21px text-white d-none"></i>
+                                            </span>
+                                        </div>
                                     }
-                                </select>
-                            }
+                                }
+                                else
+                                {
+                                    <select class="form-select w-auto">
+                                        @foreach (var variant in groupedVariants)
+                                        {
+                                            var currentVariant = variant.First();
+                                            <option value="@currentVariant.VariantValue">
+                                                @currentVariant.VariantValue
+                                            </option>
+                                        }
+                                    </select>
+                                }
+                            </div>
                         </div>
-                    </div>
+                    }
                     @if (productFeatures.Count > 0)
                     {
                         <div class="mt-4" id="features-next-to-product-box">

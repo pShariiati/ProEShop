@@ -1,3 +1,4 @@
+using System.Reflection;
 using DNTCommon.Web.Core;
 using Microsoft.Extensions.WebEncoders;
 using ProEShop.IocConfig;
@@ -22,7 +23,7 @@ builder.Services.Configure<WebEncoderOptions>(options =>
 
 var mapperConfig = new MapperConfiguration(mc =>
 {
-    mc.AddProfile(new MappingProfile());
+    mc.AddMaps(Assembly.GetExecutingAssembly());
 });
 var mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);

@@ -23,6 +23,7 @@ public class IndexModel : InventoryPanelBase
     private readonly IHtmlSanitizer _htmlSanitizer;
     private readonly IProductStockService _productStockService;
     private readonly IProductVariantService _productVariantService;
+    private readonly IProductService _productService;
 
     public IndexModel(
         IConsignmentService consignmentService,
@@ -30,7 +31,8 @@ public class IndexModel : InventoryPanelBase
         ISellerService sellerService,
         IHtmlSanitizer htmlSanitizer,
         IProductStockService productStockService,
-        IProductVariantService productVariantService)
+        IProductVariantService productVariantService,
+        IProductService productService)
     {
         _consignmentService = consignmentService;
         _uow = uow;
@@ -38,6 +40,7 @@ public class IndexModel : InventoryPanelBase
         _htmlSanitizer = htmlSanitizer;
         _productStockService = productStockService;
         _productVariantService = productVariantService;
+        _productService = productService;
     }
 
     #endregion
@@ -168,6 +171,19 @@ public class IndexModel : InventoryPanelBase
         }
 
         #endregion
+
+        // وضعیت محصول هایی که در حالت ناموجود هستند
+        // اونارو در حالت موجود قرار میدیم
+        // چون موجودی اون محصولات
+        // افزایش پیدا کرده
+
+        // کد پایین مشکل داره
+        // در جلسه آینده این مشکل رو حل میکنیم
+        var product = await _productService.FindByIdAsync(productVariants.First().ProductId);
+        if (product.ProductStockStatus == ProductStockStatus.Unavailable)
+        {
+            product.ProductStockStatus = ProductStockStatus.Available;
+        }
 
         await _uow.SaveChangesAsync();
         return Json(new JsonResultOperation(true,

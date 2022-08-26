@@ -110,7 +110,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Mappings\" />
 	  <Folder Include="wwwroot\images\brandregistrationpictures\" />
 	  <Folder Include="wwwroot\images\products\short-description-images\" />
 	  <Folder Include="wwwroot\images\products\specialty-check-images\" />

@@ -4,6 +4,8 @@ public class ShowProductInfoViewModel
 {
     public long Id { get; set; }
 
+    public bool IsVariantTypeNull { get; set; }
+
     public bool IsFavorite { get; set; }
 
     public int ProductCode { get; set; }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
 using ProEShop.Common.Constants;
@@ -21,18 +22,21 @@ public class RegisterLoginModel : PageBase
     private readonly SiteSettings _siteSettings;
     private readonly ISmsSender _smsSender;
     private readonly IUnitOfWork _uow;
+    private readonly IApplicationSignInManager _signInManager;
 
     public RegisterLoginModel(
         IApplicationUserManager userManager,
         ILogger<RegisterLoginModel> logger,
         IOptionsMonitor<SiteSettings> siteSettings,
-        ISmsSender smsSender, IUnitOfWork uow)
+        ISmsSender smsSender, IUnitOfWork uow,
+        IApplicationSignInManager signInManager)
     {
         _logger = logger;
         _userManager = userManager;
         _siteSettings = siteSettings.CurrentValue;
         _smsSender = smsSender;
         _uow = uow;
+        _signInManager = signInManager;
     }
 
     #endregion
@@ -92,5 +96,21 @@ public class RegisterLoginModel : PageBase
             }
         }
         return RedirectToPage("./LoginWithPhoneNumber", new { phoneNumber = registerLogin.PhoneNumberOrEmail });
+    }
+
+    public async Task<IActionResult> OnPostLogOut()
+    {
+        var user = User.Identity is { IsAuthenticated: true }
+            ? await _userManager.FindByNameAsync(User.Identity.Name)
+            : null;
+
+        if (user != null)
+        {
+            await _userManager.UpdateSecurityStampAsync(user);
+        }
+
+        await _signInManager.SignOutAsync();
+
+        return RedirectToPage("../Index");
     }
 }

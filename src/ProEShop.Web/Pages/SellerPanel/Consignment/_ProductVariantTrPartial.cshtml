@@ -4,19 +4,22 @@
     <td>@Model.ProductId</td>
     <td>@Model.ProductPersianTitle</td>
     <td>
-        @Model.VariantValue
-        @if (Model.VariantIsColor)
+        @(Model.VariantValue ?? "بدون تنوع")
+        @if (Model.VariantIsColor != null)
         {
-            <span class="rounded" style="background: @Model.VariantColorCode">
-                &nbsp;
-                &nbsp;
-                &nbsp;
-            </span>
+            @if (Model.VariantIsColor.Value)
+            {
+                <span class="rounded" style="background: @Model.VariantColorCode">
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                </span>
+            }
         }
     </td>
     <td>@Model.GuaranteeFullTitle</td>
     <td>
-        @Model.Price
+        @Model.Price.ToString("#,0")
         تومان
     </td>
     <td class="text-center">

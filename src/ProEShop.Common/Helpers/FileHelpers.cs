@@ -13,7 +13,7 @@ public static class FileHelpers
         return file is { Length: > 0 };
     }
 
-    public static string GenerateConsignmentItemBarcode(string barcode, string productTitle, bool isVariantColor, string variantValue)
+    public static string GenerateConsignmentItemBarcode(string barcode, string productTitle, bool? isVariantColor, string variantValue)
     {
         // barcode 50
         // margin top 5
@@ -24,6 +24,10 @@ public static class FileHelpers
 
         var resultWidth = 250;
         var resultHeight = productTitle.Length > 70 ? 131 : 113;
+        if (isVariantColor is null)
+        {
+            resultHeight -= 19;
+        }
         var barcodeHeight = 50;
         var productTitleHeight = resultHeight == 131 ? 52 : 34;
         var productTitleY = barcodeHeight + 5;
@@ -80,6 +84,10 @@ public static class FileHelpers
                 sf.Trimming = StringTrimming.EllipsisCharacter;
                 sf.FormatFlags = StringFormatFlags.DirectionRightToLeft;
                 sf.LineAlignment = StringAlignment.Center;
+                if (isVariantColor is null)
+                {
+                    productTitle += $" ({barcode.Split("--")[0]})";
+                }
                 graphics.DrawString(productTitle, font, Brushes.Black, rect, sf);
                 //graphics.DrawRectangle(Pens.Green, rect);
             }
@@ -94,34 +102,39 @@ public static class FileHelpers
 
         #region WriteVariant
 
-        var variantText = isVariantColor ? "رنگ" : "اندازه";
-        variantText += $": {variantValue}";
-        // 1--4
-        variantText += $" ({barcode.Split("--")[0]})";
-
-        var barcodeWithProductTitleBitmap = (Bitmap)Image.FromStream(productTitleStream);
-        using var graphics2 = Graphics.FromImage(barcodeWithProductTitleBitmap);
+        if (isVariantColor != null)
         {
-            using var font = new Font("Tahoma", 10);
+            var variantText = isVariantColor.Value ? "رنگ" : "اندازه";
+            variantText += $": {variantValue}";
+            // 1--4
+            variantText += $" ({barcode.Split("--")[0]})";
+
+            var barcodeWithProductTitleBitmap = (Bitmap)Image.FromStream(productTitleStream);
+            using var graphics2 = Graphics.FromImage(barcodeWithProductTitleBitmap);
             {
-                var rect = new Rectangle(0, variantY, resultWidth, 19);
-                var sf = new StringFormat();
-                sf.Alignment = StringAlignment.Center;
-                sf.Trimming = StringTrimming.EllipsisCharacter;
-                sf.FormatFlags = StringFormatFlags.DirectionRightToLeft;
-                graphics2.DrawString(variantText, font, Brushes.Black, rect, sf);
-                //graphics2.DrawRectangle(Pens.Green, rect);
+                using var font = new Font("Tahoma", 10);
+                {
+                    var rect = new Rectangle(0, variantY, resultWidth, 19);
+                    var sf = new StringFormat();
+                    sf.Alignment = StringAlignment.Center;
+                    sf.Trimming = StringTrimming.EllipsisCharacter;
+                    sf.FormatFlags = StringFormatFlags.DirectionRightToLeft;
+                    graphics2.DrawString(variantText, font, Brushes.Black, rect, sf);
+                    //graphics2.DrawRectangle(Pens.Green, rect);
+                }
             }
-        }
 
-        using var finalStream = new MemoryStream();
-        {
-            barcodeWithProductTitleBitmap.Save(finalStream, ImageFormat.Png);
-        }
+            using var finalStream = new MemoryStream();
+            {
+                barcodeWithProductTitleBitmap.Save(finalStream, ImageFormat.Png);
+            }
 
-        return Convert.ToBase64String(finalStream.ToArray());
+            return Convert.ToBase64String(finalStream.ToArray());
+        }
 
         #endregion
+
+        return Convert.ToBase64String(productTitleStream.ToArray());
     }
 
     public static string GenerateConsignmentBarcode(string barcode, string shopName, string deliveryDate)

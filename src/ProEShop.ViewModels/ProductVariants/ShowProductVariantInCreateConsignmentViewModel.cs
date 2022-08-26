@@ -14,7 +14,7 @@ public class ShowProductVariantInCreateConsignmentViewModel
 
     public string VariantColorCode { get; set; }
 
-    public bool VariantIsColor { get; set; }
+    public bool? VariantIsColor { get; set; }
 
     public string GuaranteeFullTitle { get; set; }
 }

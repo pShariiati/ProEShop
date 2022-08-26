@@ -5,6 +5,7 @@ using ProEShop.Common.Constants;
 using ProEShop.Common.Helpers;
 using ProEShop.Common.IdentityToolkit;
 using ProEShop.DataLayer.Context;
+using ProEShop.Entities;
 using ProEShop.Services.Contracts;
 using ProEShop.ViewModels.Variants;
 
@@ -88,6 +89,16 @@ public class AddVariantModel : SellerPanelBase
         productVariantToAdd.SellerId = sellerId;
 
         await _productVariantService.AddAsync(productVariantToAdd);
+
+        // وضعیت محصول اگر جدید باشه
+        // یعنی به تازگی ایجاد شده باشه و تنوعی نداشته باشه
+        // اگر تنوعی براش اضافه بشه باید وضعیت محصول رو در حالت ناموجود قرار بدیم
+        var product = await _productService.FindByIdAsync(Variant.ProductId);
+        if (product.ProductStockStatus == ProductStockStatus.New)
+        {
+            product.ProductStockStatus = ProductStockStatus.Unavailable;
+        }
+
         await _uow.SaveChangesAsync();
 
         return Json(new JsonResultOperation(true, "تنوع محصول با موفقیت اضافه شد")
