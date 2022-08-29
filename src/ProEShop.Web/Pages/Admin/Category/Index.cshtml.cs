@@ -172,7 +172,7 @@ public class IndexModel : PageBase
         // مشکل نشویم، اگر این دسته بندی براش تنوع ست شده بود
         // به صورت دستی، نوع تنوع دسته بندی داخل ویوو مدل رو به
         // مقداری که داخل پایگاه داده وجود داره تغییر میدیم
-        if (category.CategoryVariants.Any())
+        if (category.CategoryVariants.Any() || category.HasVariant)
         {
             model.IsVariantColor = category.IsVariantColor;
         }

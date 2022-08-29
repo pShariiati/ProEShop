@@ -105,6 +105,8 @@ public class ProductVariantForProductInfoViewModel
 
     public bool IsDiscountActive { get; set; }
 
+    public byte Count { get; set; }
+
     public byte Score
     {
         get

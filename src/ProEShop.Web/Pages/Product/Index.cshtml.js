@@ -173,6 +173,12 @@ $(function () {
                 .removeClass('d-none');
         }
 
+        // نمایش تعداد باقیمانده تنوع در انبار
+        // اگر کوچکتر مساوی سه باشد
+        // این بخش رو نشون میدیم
+        $('.latest-product-stock-in-inventory').addClass('d-none');
+        $('.latest-product-stock-in-inventory[variant-value="' + selectedVariantValue + '"]').removeClass('d-none');
+
         // Change shop name
         var selectedShopName = selectedSeller.find('td:first').text();
         $('#shop-details-in-single-page-of-product div').html(selectedShopName);

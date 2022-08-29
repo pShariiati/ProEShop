@@ -16,10 +16,18 @@ using ProEShop.ViewModels.Variants;
 
 namespace ProEShop.Web.Mappings;
 
-public class MappingProfile : BaseMappingProfile
+public class MappingProfile : Profile
 {
     public MappingProfile()
     {
+        #region Parameters
+
+        long userId = 0;
+        long consignmentId = 0;
+        DateTime now = default;
+
+        #endregion
+
         //this.CreateMap<string, string>()
         //    .ConvertUsing(str => str != null ? str.Trim() : null);
         this.CreateMap<User, CreateSellerViewModel>();
@@ -59,7 +67,7 @@ public class MappingProfile : BaseMappingProfile
                     options.MapFrom(src => src.Picture))
             .ForMember(dest => dest.CanVariantTypeChange,
                 options =>
-                    options.MapFrom(src => src.CategoryVariants.Any() ? false : true));
+                    options.MapFrom(src => src.CategoryVariants.Any() ? false : (!src.HasVariant)));
 
         this.CreateMap<EditCategoryViewModel, Entities.Category>()
             .AddTransform<string>(str => str != null ? str.Trim() : null);
@@ -170,7 +178,7 @@ public class MappingProfile : BaseMappingProfile
                     options.MapFrom(src => src.DeliveryDate.ToLongPersianDate()))
             .ForMember(dest => dest.Items,
             options =>
-                options.MapFrom(src => src.ConsignmentItems.Where(x => x.ConsignmentId == ConsignmentId)));
+                options.MapFrom(src => src.ConsignmentItems.Where(x => x.ConsignmentId == consignmentId)));
 
         this.CreateMap<Entities.ConsignmentItem, ShowConsignmentItemViewModel>();
 
@@ -210,7 +218,7 @@ public class MappingProfile : BaseMappingProfile
             .ForMember(dest => dest.IsFavorite,
                 options =>
                     options.MapFrom(src =>
-                        UserId != 0 && src.UserProductsFavorites.Any(x => x.UserId == UserId)
+                        userId != 0 && src.UserProductsFavorites.Any(x => x.UserId == userId)
                     ))
             .ForMember(dest => dest.IsVariantTypeNull,
                 options =>
@@ -236,7 +244,12 @@ public class MappingProfile : BaseMappingProfile
             .ForMember(dest => dest.IsDiscountActive,
                 options =>
                     options.MapFrom(src =>
-                        src.OffPercentage != null && (src.StartDateTime <= Now && src.EndDateTime >= Now)
+                        src.OffPercentage != null && (src.StartDateTime <= now && src.EndDateTime >= now)
+                    ))
+            .ForMember(dest => dest.Count,
+                options =>
+                    options.MapFrom(src =>
+                        src.Count > 3 ? (byte)0 : (byte)src.Count
                     ));
 
         this.CreateMap<Entities.ProductShortLink, ShowProductShortLinkViewModel>();
@@ -251,7 +264,7 @@ public class MappingProfile : BaseMappingProfile
             .ForMember(dest => dest.IsDiscountActive,
                 options =>
                     options.MapFrom(src => 
-                            src.OffPercentage != null && (src.StartDateTime <= Now && src.EndDateTime >= Now)
+                            src.OffPercentage != null && (src.StartDateTime <= now && src.EndDateTime >= now)
                         ))
             .ForMember(dest => dest.CommissionPercentage,
                 options =>

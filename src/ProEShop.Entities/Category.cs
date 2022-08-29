@@ -42,6 +42,11 @@ public class Category : EntityBase, IAuditableEntity
     [MaxLength(1000)]
     public string ProductPageGuide { get; set; }
 
+    /// <summary>
+    /// اگر این دسته بندی براش تنوع اضافه شده باشه این پراپرتی ترو میشه
+    /// </summary>
+    public bool HasVariant { get; set; }
+
     #endregion
 
     #region Relations

@@ -455,8 +455,25 @@
                         </div>
 
                         <!-- End 5 -->
+
                         <!-- 6 -->
-                        
+                        @foreach (var variants in groupedVariants)
+                        {
+                            var currentVariant = variants.First();
+                            if (currentVariant.Count == 0)
+                                continue;
+                            <div variant-value="@currentVariant.VariantValue" class="latest-product-stock-in-inventory text-danger mt-3 fw-bold rem13px@(firstProductVariant.VariantValue == currentVariant.VariantValue ? string.Empty : " d-none")">
+                                تنها
+                                <span class="persian-numbers">
+                                    @currentVariant.Count
+                                </span>
+                                عدد در انبار پروشاپ باقی مانده
+                            </div>
+                        }
+
+                        <!-- End 6 -->
+
+                        <!-- 7 -->
                         @foreach (var variants in groupedVariants)
                         {
                             var currentVariant = variants.First();
@@ -473,7 +490,7 @@
                             }
                         }
 
-                        <!-- End 6 -->
+                        <!-- End 7 -->
 
                         <div class="d-grid mt-3">
                             <button class="btn btn-danger rounded-3">

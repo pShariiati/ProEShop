@@ -849,7 +849,6 @@ function getHtmlWithAJAX(url, formData, functionNameToCallInTheEnd, clickedButto
         url: url,
         data: formData,
         type: 'GET',
-        dataType: 'html',
         traditional: true,
         beforeSend: function () {
             showLoading();

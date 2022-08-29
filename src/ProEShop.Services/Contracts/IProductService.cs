@@ -57,4 +57,13 @@ public interface IProductService : IGenericService<Product>
     /// </summary>
     /// <returns></returns>
     Task<(int productCode, string slug)> FindByShortLink(string productShortLint);
+
+    /// <summary>
+    /// استفاده شده در بخش افزایش موجودی محصولات در بخش انبارداری
+    /// لیست تمامی محصولاتی که در داخل محموله وجود داره رو میگیریم تا بتونیم که
+    /// وضعیت اونارو به "موجود" تغییر بدیم
+    /// </summary>
+    /// <param name="ids"></param>
+    /// <returns></returns>
+    Task<List<Product>> GetProductsForChangeStatus(List<long> ids);
 }

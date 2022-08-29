@@ -279,7 +279,7 @@ public class ProductService : GenericService<Product>, IProductService
             .AsSplitQuery()
             .ProjectTo<ShowProductInfoViewModel>(
                 configuration: _mapper.ConfigurationProvider,
-                parameters: new { UserId = userId, Now = DateTime.Now }
+                parameters: new { userId = userId, now = DateTime.Now }
             ).SingleOrDefaultAsync(x => x.ProductCode == productCode);
     }
 
@@ -298,5 +298,10 @@ public class ProductService : GenericService<Product>, IProductService
             productShortLink?.ProductCode ?? 0,
             productShortLink?.Slug
         );
+    }
+
+    public Task<List<Product>> GetProductsForChangeStatus(List<long> ids)
+    {
+        return _products.Where(x => ids.Contains(x.Id)).ToListAsync();
     }
 }

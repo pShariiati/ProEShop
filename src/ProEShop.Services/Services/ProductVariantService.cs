@@ -81,7 +81,7 @@ public class ProductVariantService : GenericService<ProductVariant>, IProductVar
             .Where(x => x.SellerId == sellerId)
             .ProjectTo<EditProductVariantViewModel>(
                 _mapper.ConfigurationProvider,
-                parameters: new { Now = DateTime.Now }
+                parameters: new { now = DateTime.Now }
                 )
             .SingleOrDefaultAsync(x => x.Id == id);
     }

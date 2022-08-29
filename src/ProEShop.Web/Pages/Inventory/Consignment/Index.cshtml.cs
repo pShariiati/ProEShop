@@ -177,12 +177,20 @@ public class IndexModel : InventoryPanelBase
         // چون موجودی اون محصولات
         // افزایش پیدا کرده
 
-        // کد پایین مشکل داره
-        // در جلسه آینده این مشکل رو حل میکنیم
-        var product = await _productService.FindByIdAsync(productVariants.First().ProductId);
-        if (product.ProductStockStatus == ProductStockStatus.Unavailable)
+        // چرل رکورد های تکراری رو با متد
+        // Distinct
+        // حذف میکنیم ؟
+        // چون امکان داره که در یک محموله از یک محصول دو تا وجود داشته باشه
+        // رنگ آبی برای گوشی ایکس
+        // رنگ قرمز برای گوشی ایکس
+        var productIds = productVariants.Select(x => x.ProductId).Distinct().ToList();
+        var productsToChangeTheirStatus = await _productService.GetProductsForChangeStatus(productIds);
+        foreach (var product in productsToChangeTheirStatus)
         {
-            product.ProductStockStatus = ProductStockStatus.Available;
+            if (product.ProductStockStatus == ProductStockStatus.Unavailable)
+            {
+                product.ProductStockStatus = ProductStockStatus.Available;
+            }
         }
 
         await _uow.SaveChangesAsync();
