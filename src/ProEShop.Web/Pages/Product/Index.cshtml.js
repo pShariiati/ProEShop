@@ -1,4 +1,10 @@
-﻿function copyProductLinkToClipboardFunction() {
+﻿function addProductVariantToCart(message, data) {
+    $('.add-product-variant-to-cart[variant-id="' + data.productVariantId + '"]').addClass('d-none');
+    $('.product-variant-in-cart-section[variant-id="' + data.productVariantId + '"]').removeClass('d-none');
+    $('.product-variant-in-cart-section[variant-id="' + data.productVariantId + '"] .product-variant-count-in-cart').html(data.count);
+}
+
+function copyProductLinkToClipboardFunction() {
     var copyButtonSelector = $('#copy-product-link-button');
     var copyButtonHtml = copyButtonSelector.html();
     copyButtonSelector.html('<i class="bi bi-clipboard-check rem20px"></i> کپی شد');
@@ -8,6 +14,10 @@
 }
 
 $(function () {
+
+    $('.increaseProductVariantInCartButton').click(function() {
+        $(this).parent().submit();
+    });
 
     $('.count-down-timer-in-other-variants').each(function () {
         var currentEl = $(this);

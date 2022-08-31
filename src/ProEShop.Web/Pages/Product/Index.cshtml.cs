@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ProEShop.Common.Constants;
 using ProEShop.Common.Helpers;
@@ -16,15 +16,21 @@ public class IndexModel : PageBase
     private readonly IProductService _productService;
     private readonly IUserProductFavoriteService _userProductFavoriteService;
     private readonly IUnitOfWork _uow;
+    private readonly IProductVariantService _productVariantService;
+    private readonly ICartService _cartService;
 
     public IndexModel(
         IProductService productService,
         IUserProductFavoriteService userProductFavoriteService,
-        IUnitOfWork uow)
+        IUnitOfWork uow,
+        IProductVariantService productVariantService,
+        ICartService cartService)
     {
         _productService = productService;
         _userProductFavoriteService = userProductFavoriteService;
         _uow = uow;
+        _productVariantService = productVariantService;
+        _cartService = cartService;
     }
 
     #endregion
@@ -82,5 +88,45 @@ public class IndexModel : PageBase
         await _uow.SaveChangesAsync();
 
         return Json(new JsonResultOperation(true, string.Empty));
+    }
+
+    public async Task<IActionResult> OnPostAddProductVariantToCart(long productVariantId, bool isIncrease)
+    {
+        if (!await _productVariantService.IsExistsBy(nameof(Entities.ProductVariant.Id), productVariantId))
+        {
+            return Json(new JsonResultOperation(false));
+        }
+
+        var userId = User.Identity.GetLoggedInUserId();
+
+        var cart = await _cartService.FindAsync(userId, productVariantId);
+        if (cart is null)
+        {
+            var cartToAdd = new Entities.Cart()
+            {
+                ProductVariantId = productVariantId,
+                UserId = userId,
+                Count = 1
+            };
+            await _cartService.AddAsync(cartToAdd);
+        }
+        else
+        {
+            if (isIncrease)
+                cart.Count++;
+            else
+                cart.Count--;
+        }
+
+        await _uow.SaveChangesAsync();
+
+        return Json(new JsonResultOperation(true, "اوکیه")
+        {
+            Data = new
+            {
+                Count = cart?.Count ?? 1,
+                ProductVariantId = productVariantId
+            }
+        });
     }
 }

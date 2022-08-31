@@ -455,7 +455,6 @@
                         </div>
 
                         <!-- End 5 -->
-
                         <!-- 6 -->
                         @foreach (var variants in groupedVariants)
                         {
@@ -472,7 +471,6 @@
                         }
 
                         <!-- End 6 -->
-
                         <!-- 7 -->
                         @foreach (var variants in groupedVariants)
                         {
@@ -491,12 +489,52 @@
                         }
 
                         <!-- End 7 -->
+                        <!-- 8 -->
+                        @foreach (var variants in groupedVariants)
+                        {
+                            var currentVariant = variants.First();
 
-                        <div class="d-grid mt-3">
-                            <button class="btn btn-danger rounded-3">
-                                افزودن به سبد خرید
-                            </button>
-                        </div>
+                            <form method="post" functionNameToCallInTheEnd="addProductVariantToCart"
+                              asp-page-handler="AddProductVariantToCart" varaint-id="@currentVariant.Id"
+                              class="add-product-variant-to-cart public-ajax-form@(firstProductVariant.VariantValue == currentVariant.VariantValue ? string.Empty : " d-none")">
+                                <input type="hidden" name="productVariantId" value="@currentVariant.Id" />
+                                <div class="d-grid mt-3">
+                                    <button class="btn btn-danger rounded-3">
+                                        افزودن به سبد خرید
+                                    </button>
+                                </div>
+                            </form>
+                        }
+                        <!-- End 8 -->
+                        <!-- 9 -->
+                        @foreach (var variants in groupedVariants)
+                        {
+                            var currentVariant = variants.First();
+                            <div class="d-flex mt-3 d-none product-variant-in-cart-section" variant-id="@currentVariant.Id">
+                                <div class="d-flex align-items-center text-danger shadow rounded p-2">
+                                    <span class="px-2 disable-selecting pointer-cursor">
+                                        <form method="post" functionNameToCallInTheEnd="addProductVariantToCart"
+                                              class="public-ajax-form" asp-page-handler="AddProductVariantToCart">
+                                            <input type="hidden" name="productVariantId" value="@currentVariant.Id" />
+                                            <input type="hidden" name="isIncrease" value="true" />
+                                            <span class="rem20px increaseProductVariantInCartButton">+</span>
+                                        </form>
+                                    </span>
+                                    <span class="px-2 fw-bold disable-selecting product-variant-count-in-cart"></span>
+                                    <span class="px-2 disable-selecting pointer-cursor">
+                                        <i class="bi bi-trash"></i>
+                                    </span>
+                                </div>
+                                <div class="ms-3 rem13px d-flex justify-content-between flex-column">
+                                    <div>در سبد شما</div>
+                                    <div>
+                                        مشاهده
+                                        <a href="#">سبد خرید</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <!-- End 9 -->
                     </div>
                 </div>
             </div>

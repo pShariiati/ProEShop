@@ -85,6 +85,8 @@ public class ProductFeatureForProductInfoViewModel
 
 public class ProductVariantForProductInfoViewModel
 {
+    public long Id { get; set; }
+
     public string VariantValue { get; set; }
 
     public string VariantColorCode { get; set; }
