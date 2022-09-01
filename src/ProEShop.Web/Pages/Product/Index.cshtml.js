@@ -1,7 +1,35 @@
 ﻿function addProductVariantToCart(message, data) {
-    $('.add-product-variant-to-cart[variant-id="' + data.productVariantId + '"]').addClass('d-none');
-    $('.product-variant-in-cart-section[variant-id="' + data.productVariantId + '"]').removeClass('d-none');
-    $('.product-variant-in-cart-section[variant-id="' + data.productVariantId + '"] .product-variant-count-in-cart').html(data.count);
+    // المنت افزودن به سبد خرید
+    var addProductVariantToCartEl = $('.add-product-variant-to-cart[variant-id="' + data.productVariantId + '"]');
+    // المنت بخش سبد خرید
+    var cartSectionEl = $('.product-variant-in-cart-section[variant-id="' + data.productVariantId + '"]');
+
+    // بخش افزودن به سبد خرید رو مخفی میکنیم
+    // و بخش سبد خرید رو نشون میدیم
+    addProductVariantToCartEl.addClass('d-none');
+    cartSectionEl.removeClass('d-none');
+
+    // تعدادی که از سمت سرور اومده رو به کاربر نشون میدیم
+    cartSectionEl.find('.product-variant-count-in-cart').html(data.count.toString().toPersinaDigit());
+
+    // اگر تعداد یک بود باید آیکون
+    // Trash
+    // رو نشون بدیم و علامت منفی رو مخفی کنیم
+    if (data.count === 1) {
+        cartSectionEl.find('.decreaseProductVariantInCartButton').parents('span').addClass('d-none');
+        cartSectionEl.find('.empty-variants-in-cart').parents('span').removeClass('d-none');
+    } else if (data.count === 0) {
+        // اگر تعدا صفر بود بخش افزودن به سبد خرید رو دوباره نشون میدیم
+        // و بخش سبد خرید رو مخفی میکنیم
+        cartSectionEl.addClass('d-none');
+        addProductVariantToCartEl.removeClass('d-none');
+    } else {
+        // اگر تعداد بیشتر از یک بود در اون صورت علامت آیکون
+        // Trash
+        // رو مخفی میکنیم و علامت منفی رو نشون میدیم
+        cartSectionEl.find('.decreaseProductVariantInCartButton').parents('span').removeClass('d-none');
+        cartSectionEl.find('.empty-variants-in-cart').parents('span').addClass('d-none');
+    }
 }
 
 function copyProductLinkToClipboardFunction() {
@@ -15,7 +43,7 @@ function copyProductLinkToClipboardFunction() {
 
 $(function () {
 
-    $('.increaseProductVariantInCartButton').click(function() {
+    $('.increaseProductVariantInCartButton, .decreaseProductVariantInCartButton, .empty-variants-in-cart').click(function() {
         $(this).parent().submit();
     });
 
@@ -147,17 +175,19 @@ $(function () {
         $(this).addClass('selected-variant-in-show-product-info');
 
         var selectedVariantValue = $(this).attr('aria-label');
+        var selectedProductVariantId = $(this).attr('product-variant-id');
 
-        changeVariant(selectedVariantValue);
+        changeVariant(selectedVariantValue, selectedProductVariantId);
     });
 
     // Change variants (size)
     $('#product-variants-box-in-show-product-info select').change(function () {
         var selectedVariantValue = this.value;
-        changeVariant(selectedVariantValue);
+        var selectedProductVariantId = $(this).find(':selected').attr('product-variant-id');
+        changeVariant(selectedVariantValue, selectedProductVariantId);
     });
 
-    function changeVariant(selectedVariantValue) {
+    function changeVariant(selectedVariantValue, selectedProductVariantId) {
         $('.other-sellers-table').addClass('d-none');
 
         // Hidden all main final prices, prices and count down boxes
@@ -236,6 +266,29 @@ $(function () {
             $('#free-delivery-box').removeClass('d-none');
         } else {
             $('#free-delivery-box').addClass('d-none');
+        }
+
+        // Change cart section
+        // کل سکشن های سبد خرید ها رو مخفی میکنیم
+        // و اونیکه مطابق تنوع انتخاب شده است رو نشون میدیم
+        // به شرطی که تعدادش داخل سبد خرید بیشتر از صفر باشه
+        // یعنی از این تنوع به سبد خرید اضافه شده باشه
+        $('.product-variant-in-cart-section').addClass('d-none');
+        var cartSectionEl = $('.product-variant-in-cart-section[variant-id="' + selectedProductVariantId + '"]');
+        if (cartSectionEl.find('.product-variant-count-in-cart').text() !== '۰') {
+            cartSectionEl.removeClass('d-none');
+        }
+
+        // Change add product to cart button
+        // کل دکمه های افزودن به سبد خرید رو مخفی میکنیم
+        // و دکمه مورد نظر که مطابق تنوع ما است رو نشون میدیم
+        $('.add-product-variant-to-cart').addClass('d-none');
+        // اگر در داخل سبد خرید این تنوع وجود نداشت
+        // در اون صورت باید دکمه افزودن به سبد خرید رو نشون بدیم
+        // چون امکان داره که داخل سبد خرید این تنوع وجود داشته باشه
+        // اگر وجود داشت نباید دکمه افزودن به سبد خرید رو نشون بدیم
+        if (cartSectionEl.find('.product-variant-count-in-cart').text() === '۰') {
+            $('.add-product-variant-to-cart[variant-id="' + selectedProductVariantId + '"]').removeClass('d-none');
         }
     }
 });

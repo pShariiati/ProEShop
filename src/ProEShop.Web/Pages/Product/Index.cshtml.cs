@@ -54,6 +54,11 @@ public class IndexModel : PageBase
             });
         }
 
+        // آیدی های تنوع های این محصول
+        var productVariantsIds = ProductInfo.ProductVariants.Select(x => x.Id).ToList();
+        var userId = User.Identity.GetLoggedInUserId();
+        // توضیحات در خود متد
+        ProductInfo.ProductVariantsInCart = await _cartService.GetProductVariantsInCart(productVariantsIds, userId);
         return Page();
     }
 
@@ -110,12 +115,15 @@ public class IndexModel : PageBase
             };
             await _cartService.AddAsync(cartToAdd);
         }
+        else if (isIncrease)
+            cart.Count++;
         else
         {
-            if (isIncrease)
-                cart.Count++;
-            else
-                cart.Count--;
+            cart.Count--;
+            if (cart.Count == 0)
+            {
+                _cartService.Remove(cart);
+            }
         }
 
         await _uow.SaveChangesAsync();

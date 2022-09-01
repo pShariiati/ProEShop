@@ -265,7 +265,7 @@
                                     @foreach (var variant in groupedVariants)
                                     {
                                         var currentVariant = variant.First();
-                                        <div data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                        <div data-bs-toggle="tooltip" data-bs-placement="bottom" product-variant-id="@currentVariant.Id"
                                  title="@currentVariant.VariantValue"
                                  class="pointer-cursor rounded-circle d-flex justify-content-center align-items-center">
                                             <span class="rounded-circle d-flex justify-content-center align-items-center" style="background-color: @currentVariant.VariantColorCode">
@@ -280,7 +280,7 @@
                                         @foreach (var variant in groupedVariants)
                                         {
                                             var currentVariant = variant.First();
-                                            <option value="@currentVariant.VariantValue">
+                                            <option product-variant-id="@currentVariant.Id" value="@currentVariant.VariantValue">
                                                 @currentVariant.VariantValue
                                             </option>
                                         }
@@ -492,11 +492,17 @@
                         <!-- 8 -->
                         @foreach (var variants in groupedVariants)
                         {
+                            // all product variants ids = 1, 2, 3
+                            // cart = 1, 2
+                            // first time = 1
+                            // برای مثال بار اول تنوعی با آیدی 1 خونده میشه
+                            // حالا باید بررسی کنیم که اگر در داخل کل رکورد های سبد خرید همچین تنوعی وجود نداشت
+                            // میتوانیم دکمه افزودن به سبد خرید رو نشون بدیم
                             var currentVariant = variants.First();
-
+                            var showButton = productInfo.ProductVariantsInCart.All(x => x.ProductVariantId != currentVariant.Id);
                             <form method="post" functionNameToCallInTheEnd="addProductVariantToCart"
-                              asp-page-handler="AddProductVariantToCart" varaint-id="@currentVariant.Id"
-                              class="add-product-variant-to-cart public-ajax-form@(firstProductVariant.VariantValue == currentVariant.VariantValue ? string.Empty : " d-none")">
+                              asp-page-handler="AddProductVariantToCart" variant-id="@currentVariant.Id"
+                              class="@(showButton ? string.Empty: "d-none ")add-product-variant-to-cart public-ajax-form@(firstProductVariant.VariantValue == currentVariant.VariantValue ? string.Empty : " d-none")">
                                 <input type="hidden" name="productVariantId" value="@currentVariant.Id" />
                                 <div class="d-grid mt-3">
                                     <button class="btn btn-danger rounded-3">
@@ -509,8 +515,23 @@
                         <!-- 9 -->
                         @foreach (var variants in groupedVariants)
                         {
+                            // all product variants ids = 1, 2, 3
+                            // cart = 1, 2
+                            // first time = 1
+                            // برای مثال بار اول رکورد یک خونده میشه
+                            // همین یک رو داخل رکورد های سبد خرید جستجو میکنیم
+                            // و اگه وجود داشته باشه
+                            // باید بخش سب خرید رو نشون بدیم
+                            // در ضمن اگه رکوردی برای این تنوع وجود نداشته باشه متغیر
+                            // productVariantInCart
+                            // نال میشه، پس برای نشون دادن
+                            // Count
+                            // از کد پایین استفاده کردم که اگه این تنوع در داخل سبد خرید نبود، اکسپشن ایجاد نشه
+                            // @(productVariantInCart?.Count ?? 0)
                             var currentVariant = variants.First();
-                            <div class="d-flex mt-3 d-none product-variant-in-cart-section" variant-id="@currentVariant.Id">
+                            var productVariantInCart = productInfo.ProductVariantsInCart.SingleOrDefault(x => x.ProductVariantId == currentVariant.Id);
+                            var showButton = productVariantInCart != null;
+                            <div class="@(showButton ? string.Empty : "d-none ")d-flex mt-3 product-variant-in-cart-section@(firstProductVariant.VariantValue == currentVariant.VariantValue ? string.Empty : " d-none")" variant-id="@currentVariant.Id">
                                 <div class="d-flex align-items-center text-danger shadow rounded p-2">
                                     <span class="px-2 disable-selecting pointer-cursor">
                                         <form method="post" functionNameToCallInTheEnd="addProductVariantToCart"
@@ -520,9 +541,22 @@
                                             <span class="rem20px increaseProductVariantInCartButton">+</span>
                                         </form>
                                     </span>
-                                    <span class="px-2 fw-bold disable-selecting product-variant-count-in-cart"></span>
+                                    <span class="px-2 fw-bold disable-selecting product-variant-count-in-cart persian-numbers">@(productVariantInCart?.Count ?? 0)</span>
                                     <span class="px-2 disable-selecting pointer-cursor">
-                                        <i class="bi bi-trash"></i>
+                                        <form method="post" functionNameToCallInTheEnd="addProductVariantToCart"
+                                              class="public-ajax-form" asp-page-handler="AddProductVariantToCart">
+                                            <input type="hidden" name="productVariantId" value="@currentVariant.Id" />
+                                            <span class="empty-variants-in-cart">
+                                                <i class="bi bi-trash"></i>
+                                            </span>
+                                        </form>
+                                    </span>
+                                    <span class="px-2 disable-selecting pointer-cursor">
+                                        <form method="post" functionNameToCallInTheEnd="addProductVariantToCart"
+                                          class="public-ajax-form" asp-page-handler="AddProductVariantToCart">
+                                            <input type="hidden" name="productVariantId" value="@currentVariant.Id" />
+                                            <span class="rem20px decreaseProductVariantInCartButton">-</span>
+                                        </form>
                                     </span>
                                 </div>
                                 <div class="ms-3 rem13px d-flex justify-content-between flex-column">

@@ -58,6 +58,15 @@ public class ShowProductInfoViewModel
     public List<ProductFeatureForProductInfoViewModel> ProductFeatures { get; set; }
 
     public List<ProductVariantForProductInfoViewModel> ProductVariants { get; set; }
+
+    public List<ProductVariantInCartForProductInfoViewModel> ProductVariantsInCart { get; set; }
+}
+
+public class ProductVariantInCartForProductInfoViewModel
+{
+    public long ProductVariantId { get; set; }
+
+    public int Count { get; set; }
 }
 
 public class ProductMediaForProductInfoViewModel
