@@ -57,7 +57,7 @@ public class IndexModel : PageBase
         // آیدی های تنوع های این محصول
         var productVariantsIds = ProductInfo.ProductVariants.Select(x => x.Id).ToList();
         var userId = User.Identity.GetLoggedInUserId();
-        // توضیحات در خود متد
+        // تنوع های این محصول که در سبد خرید این کاربری که، صفحه رو لود میکنه قرار داره
         ProductInfo.ProductVariantsInCart = await _cartService.GetProductVariantsInCart(productVariantsIds, userId);
         return Page();
     }
@@ -97,7 +97,8 @@ public class IndexModel : PageBase
 
     public async Task<IActionResult> OnPostAddProductVariantToCart(long productVariantId, bool isIncrease)
     {
-        if (!await _productVariantService.IsExistsBy(nameof(Entities.ProductVariant.Id), productVariantId))
+        var productVariant = await _productVariantService.FindByIdAsync(productVariantId);
+        if (productVariant is null)
         {
             return Json(new JsonResultOperation(false));
         }
@@ -116,7 +117,11 @@ public class IndexModel : PageBase
             await _cartService.AddAsync(cartToAdd);
         }
         else if (isIncrease)
+        {
             cart.Count++;
+            if (cart.Count > productVariant.MaxCountInCart)
+                cart.Count = productVariant.MaxCountInCart;
+        }
         else
         {
             cart.Count--;
@@ -133,7 +138,8 @@ public class IndexModel : PageBase
             Data = new
             {
                 Count = cart?.Count ?? 1,
-                ProductVariantId = productVariantId
+                ProductVariantId = productVariantId,
+                IsCartFull = productVariant.MaxCountInCart == (cart?.Count ?? 1)
             }
         });
     }

@@ -144,3 +144,7 @@ li {
     -ms-user-select: none;
     user-select: none;
 }
+
+.text-custom-grey {
+    color: #c0c2c5;
+}

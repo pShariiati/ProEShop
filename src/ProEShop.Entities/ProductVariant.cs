@@ -45,6 +45,11 @@ public class ProductVariant : EntityBase, IAuditableEntity
 
     public int Count { get; set; }
 
+    /// <summary>
+    /// فروشنده تعیین میکنه که در هر خرید چند آیتم از این تنوع در داخل سبد خرید اضافه شه
+    /// </summary>
+    public short MaxCountInCart { get; set; }
+
     #endregion
 
     #region Relations

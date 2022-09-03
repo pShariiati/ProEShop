@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
+using ProEShop.Common.Attributes;
 using ProEShop.Common.Constants;
 
 namespace ProEShop.ViewModels.Variants;
@@ -25,7 +26,12 @@ public class AddVariantViewModel
 
     [Display(Name = "قیمت")]
     [Range(1, 2000000000, ErrorMessage = AttributesErrorMessages.RangeMessage)]
+    [DivisibleBy10]
     public int Price { get; set; }
+
+    [Display(Name = "حداکثر تعداد در سبد خرید")]
+    [Range(1, short.MaxValue, ErrorMessage = AttributesErrorMessages.RangeMessage)]
+    public short MaxCountInCart { get; set; }
 
     public string ProductTitle { get; set; }
 

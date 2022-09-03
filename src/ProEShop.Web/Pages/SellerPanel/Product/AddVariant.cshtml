@@ -110,10 +110,16 @@
                         </div>
                     }
                     <div class="my-2">
-                        <label class="d-flex justify-content-between form-label" asp-for="Variant.Price">
+                        <label class="form-label" asp-for="Variant.Price">
                         </label>
                         <input asp-for="Variant.Price" class="form-control" />
                         <span asp-validation-for="Variant.Price" class="span-error-message"></span>
+                    </div>
+                    <div class="my-2">
+                        <label class="form-label" asp-for="Variant.MaxCountInCart">
+                        </label>
+                        <input asp-for="Variant.MaxCountInCart" class="form-control" />
+                        <span asp-validation-for="Variant.MaxCountInCart" class="span-error-message"></span>
                     </div>
                 </div>
                 <div class="d-grid">

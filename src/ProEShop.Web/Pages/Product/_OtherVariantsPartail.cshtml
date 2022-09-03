@@ -1,6 +1,7 @@
-﻿@model List<ProEShop.ViewModels.Products.ProductVariantForProductInfoViewModel>
+﻿@using ProEShop.ViewModels.Products;
+@model (List<ProductVariantForProductInfoViewModel> productVariants, List<ProductVariantInCartForProductInfoViewModel> productVariantsInCart)
 @{
-    var groupedVariants = Model.GroupBy(x => x.VariantValue);
+    var groupedVariants = Model.productVariants.GroupBy(x => x.VariantValue);
     var variantCount = 1;
 }
 <!-- Other variants -->
@@ -74,10 +75,62 @@
                                     <i class="bi bi-info-circle" data-bs-toggle="tooltip" data-bs-placement="top"
                                title="بعد از پایان مهلت مرجوعی، برای دریافت امتیاز به صفحه ماموریت های پروشاپی سر بزنید."></i>
                                 </td>
-                                <td class="text-center">
-                                    <button class="btn btn-danger rounded-3">
-                                        افزودن به سبد
-                                    </button>
+                                <td class="d-flex justify-content-center">
+                                    @{
+                                        var showButton = Model.productVariantsInCart.All(x => x.ProductVariantId != variant.Id);
+                                    }
+                                    <form method="post" functionNameToCallInTheEnd="addProductVariantToCart"
+                                  asp-page-handler="AddProductVariantToCart" variant-id="@variant.Id"
+                                  class="@(showButton ? string.Empty: "d-none ")add-product-variant-to-cart public-ajax-form">
+                                        <input type="hidden" name="productVariantId" value="@variant.Id" />
+                                        <button class="btn btn-danger rounded-3">
+                                            افزودن به سبد
+                                        </button>
+                                    </form>
+                                    @{
+                                        var productVariantInCart = Model.productVariantsInCart.SingleOrDefault(x => x.ProductVariantId == variant.Id);
+                                        var isCartFull = false;
+                                        if (productVariantInCart != null)
+                                        {
+                                            isCartFull = productVariantInCart.Count == variant.MaxCountInCart;
+                                        }
+                                        var showButton2 = productVariantInCart != null;
+                                    }
+                                    <div class="@(showButton2 ? string.Empty : "d-none ")product-variant-in-cart-section d-flex align-items-center text-danger shadow rounded p-2"
+                                 variant-id="@variant.Id">
+                                        <span class="px-2 disable-selecting@(isCartFull ? " text-custom-grey" : " pointer-cursor")">
+                                            <form method="post" functionNameToCallInTheEnd="addProductVariantToCart"
+                                          class="public-ajax-form" asp-page-handler="AddProductVariantToCart">
+                                                <input type="hidden" name="productVariantId" value="@variant.Id" />
+                                                <input type="hidden" name="isIncrease" value="true" />
+                                                <span class="rem20px increaseProductVariantInCartButton">+</span>
+                                            </form>
+                                        </span>
+                                        <span class="d-flex flex-column justify-content-between align-items-center px-2 disable-selecting product-variant-count-in-cart">
+                                            <span class="fw-bold persian-numbers">
+                                                @(productVariantInCart?.Count ?? 0)
+                                            </span>
+                                            <span class="text-custom-grey rem13px@(isCartFull ? string.Empty : " d-none")">
+                                                حداکثر
+                                            </span>
+                                        </span>
+                                        <span class="px-2 disable-selecting pointer-cursor@((productVariantInCart?.Count == 1 ? string.Empty : " d-none") ?? " d-none")">
+                                            <form method="post" functionNameToCallInTheEnd="addProductVariantToCart"
+                                          class="public-ajax-form" asp-page-handler="AddProductVariantToCart">
+                                                <input type="hidden" name="productVariantId" value="@variant.Id" />
+                                                <span class="empty-variants-in-cart">
+                                                    <i class="bi bi-trash"></i>
+                                                </span>
+                                            </form>
+                                        </span>
+                                        <span class="px-2 disable-selecting pointer-cursor@((productVariantInCart?.Count > 1 ? string.Empty : " d-none") ?? " d-none")">
+                                            <form method="post" functionNameToCallInTheEnd="addProductVariantToCart"
+                                          class="public-ajax-form" asp-page-handler="AddProductVariantToCart">
+                                                <input type="hidden" name="productVariantId" value="@variant.Id" />
+                                                <span class="rem20px decreaseProductVariantInCartButton">-</span>
+                                            </form>
+                                        </span>
+                                    </div>
                                 </td>
                             </tr>
                         }

@@ -15,6 +15,7 @@
                             <th>@Html.DisplayNameFor(x=>x[0].OffPercentage)</th>
                             <th>@Html.DisplayNameFor(x=>x[0].StartDateTime)</th>
                             <th>@Html.DisplayNameFor(x=>x[0].EndDateTime)</th>
+                            <th>@Html.DisplayNameFor(x=>x[0].MaxCountInCart)</th>
                             <th>عملیات</th>
                         </tr>
                     </thead>
@@ -95,11 +96,12 @@
                                         @:بدون تخفیف
                                     }
                                 </td>
+                                <td>@productVariant.MaxCountInCart</td>
                                 <td>
                                     <button functionNameToCallOnClick="editProductVariant"
                                             product-variant-id="@productVariant.Id"
                                             class="btn btn-warning get-html-with-ajax">
-                                        ویرایش قیمت
+                                        ویرایش
                                     </button>
                                     <button functionNameToCallOnClick="addEditDiscount"
                                             product-variant-id="@productVariant.Id"

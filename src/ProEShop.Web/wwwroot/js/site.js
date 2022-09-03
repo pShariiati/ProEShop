@@ -396,6 +396,15 @@ if (jQuery.validator) {
         return !result;
     });
     jQuery.validator.unobtrusive.adapters.addBool('makeTinyMceRequired');
+
+    // divisibleBy10
+    jQuery.validator.addMethod('divisibleBy10', function (value, element, param) {
+        var price = $(element).val();
+        if (!price)
+            return true;
+        return price % 10 === 0;
+    });
+    jQuery.validator.unobtrusive.adapters.addBool('divisibleBy10');
 }
 
 // End validation

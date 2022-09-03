@@ -59,6 +59,9 @@ public class ShowProductInfoViewModel
 
     public List<ProductVariantForProductInfoViewModel> ProductVariants { get; set; }
 
+    /// <summary>
+    /// تنوع های این محصول که در سبد خرید این کاربری که، صفحه رو لود میکنه قرار داره
+    /// </summary>
     public List<ProductVariantInCartForProductInfoViewModel> ProductVariantsInCart { get; set; }
 }
 
@@ -117,6 +120,8 @@ public class ProductVariantForProductInfoViewModel
     public bool IsDiscountActive { get; set; }
 
     public byte Count { get; set; }
+
+    public short MaxCountInCart { get; set; }
 
     public byte Score
     {
