@@ -69,7 +69,7 @@ public class ProductVariantInCartForProductInfoViewModel
 {
     public long ProductVariantId { get; set; }
 
-    public int Count { get; set; }
+    public short Count { get; set; }
 }
 
 public class ProductMediaForProductInfoViewModel

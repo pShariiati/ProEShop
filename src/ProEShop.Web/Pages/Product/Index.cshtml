@@ -533,7 +533,9 @@
                             var isCartFull = false;
                             if (productVariantInCart != null)
                             {
-                                isCartFull = productVariantInCart.Count == currentVariant.MaxCountInCart;
+                                isCartFull = productVariantInCart.Count == currentVariant.MaxCountInCart
+                                ||
+                                productVariantInCart.Count == currentVariant.Count;
                             }
                             var showButton = productVariantInCart != null;
                             <div class="@(showButton ? string.Empty : "d-none ")d-flex mt-3 product-variant-in-cart-section@(firstProductVariant.VariantValue == currentVariant.VariantValue ? string.Empty : " d-none")" variant-id="@currentVariant.Id">

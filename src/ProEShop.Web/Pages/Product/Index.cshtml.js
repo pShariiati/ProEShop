@@ -289,8 +289,8 @@ $(function () {
         // و اونیکه مطابق تنوع انتخاب شده است رو نشون میدیم
         // به شرطی که تعدادش داخل سبد خرید بیشتر از صفر باشه
         // یعنی از این تنوع به سبد خرید اضافه شده باشه
-        $('.product-variant-in-cart-section').addClass('d-none');
-        var cartSectionEl = $('.product-variant-in-cart-section[variant-id="' + selectedProductVariantId + '"]');
+        $('#product-info-left-side-box .product-variant-in-cart-section').addClass('d-none');
+        var cartSectionEl = $('#product-info-left-side-box .product-variant-in-cart-section[variant-id="' + selectedProductVariantId + '"]');
 
         // چونکه در داخل المنت اینتر زدیم به خاطر همین یکسری متن اضافه وجود داره
         // و باید از تریم استفاده کنیم
@@ -301,7 +301,7 @@ $(function () {
         // Change add product to cart button
         // کل دکمه های افزودن به سبد خرید رو مخفی میکنیم
         // و دکمه مورد نظر که مطابق تنوع ما است رو نشون میدیم
-        $('.add-product-variant-to-cart').addClass('d-none');
+        $('#product-info-left-side-box .add-product-variant-to-cart').addClass('d-none');
         // اگر در داخل سبد خرید این تنوع وجود نداشت
         // در اون صورت باید دکمه افزودن به سبد خرید رو نشون بدیم
         // چون امکان داره که داخل سبد خرید این تنوع وجود داشته باشه

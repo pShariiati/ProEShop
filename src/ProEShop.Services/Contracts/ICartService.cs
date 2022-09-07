@@ -1,5 +1,6 @@
 ﻿using ProEShop.Entities;
 using ProEShop.ViewModels.Brands;
+using ProEShop.ViewModels.Carts;
 using ProEShop.ViewModels.Products;
 
 namespace ProEShop.Services.Contracts;
@@ -15,4 +16,12 @@ public interface ICartService : ICustomGenericService<Cart>
     /// <param name="userId"></param>
     /// <returns></returns>
     Task<List<ProductVariantInCartForProductInfoViewModel>> GetProductVariantsInCart(List<long> productVariantsIds, long userId);
+
+    /// <summary>
+    /// استفاده شده در لایوت اصلی و دراپ داون سبد خرید
+    /// گرفتن محصولاتی که این کاربر وارد سبد خرید خود کرده است ؟
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    Task<List<ShowCartInDropDownViewModel>> GetCartsForDropDown(long userId);
 }

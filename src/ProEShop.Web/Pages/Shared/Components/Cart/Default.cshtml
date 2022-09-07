@@ -1,0 +1,99 @@
+﻿@model List<ProEShop.ViewModels.Carts.ShowCartInDropDownViewModel>
+@{
+    // تعداد محصولاتی که در داخل سبد خرید قرار دارند
+    var allProductsCountInCart = Model.Sum(x => x.Count);
+
+    // مجموع قیمت محصولاتی که در داخل سبد خرید وجود دارند
+    var totalPriceOfCart = Model
+        .Sum(x => x.IsDiscountActive ? x.ProductVariantOffPrice.Value : x.ProductVariantPrice);
+}
+<div>
+    <div class="d-flex justify-content-between rem14px p-2 pb-3">
+        <div>
+            <span class="persian-numbers">
+                @allProductsCountInCart
+            </span>
+            کالا
+        </div>
+        <a href="#" class="text-info">
+            مشاهده سبد خرید
+            <i class="bi bi-chevron-left"></i>
+        </a>
+    </div>
+    <ul class="p-0 m-0 d-flex flex-column align-items-center">
+        @foreach (var cartItem in Model)
+        {
+            <li class="d-flex justify-content-around py-2">
+                <div>
+                    <img width="100" src="~/images/products/@cartItem.ProductPicture" />
+                    @if (cartItem.IsDiscountActive)
+                    {
+                        <div class="text-danger text-center fw-bold mt-3">
+                            شگفت انگیز
+                        </div>
+                    }
+                    <div>
+                    </div>
+                </div>
+                <div>
+                    <div class="rem15px fw-bold">
+                        @cartItem.ProductVariantProductPersianTitle
+                    </div>
+                    <div class="d-flex align-items-center mt-3">
+                        <div class="color-element-in-cart rounded-circle" style="background-color: @cartItem.ProductVariantVariantColorCode"></div>
+                        <div class="ms-2">
+                            @cartItem.ProductVariantVariantValue
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        @if (cartItem.IsDiscountActive)
+                        {
+                            // این قیمت تخفیف دار نیست
+                            // میزان تخفیف است
+                            // مثلا یک جنس 100 هزاری با 10 درصد تخفیف میشه ده هزار
+                            var calculatedOffPrice = cartItem.ProductVariantPrice -
+                                                     cartItem.ProductVariantOffPrice.Value;
+                            <div class="text-danger rem13px fw-bold">
+                                <span class="persian-numbers">
+                                    @calculatedOffPrice.ToString("#,0")
+                                </span>
+                                تومان تخفیف
+                            </div>
+                            <div class="fw-bold mt-2">
+                                <span class="persian-numbers">
+                                    @cartItem.ProductVariantOffPrice.Value.ToString("#,0")
+                                </span>
+                                تومان
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="fw-bold mt-2">
+                                <span class="persian-numbers">
+                                    @cartItem.ProductVariantPrice.ToString("#,0")
+                                </span>
+                                تومان
+                            </div>
+                        }
+                    </div>
+                </div>
+            </li>
+        }
+    </ul>
+    <div class="d-flex justify-content-between align-items-center p-2 border-top">
+        <div>
+            <div class="text-secondary rem13px mb-3">مبلغ قابل پرداخت</div>
+            <div class="rem18px fw-bold">
+                <span class="persian-numbers">
+                    @totalPriceOfCart.ToString("#,0")
+                </span>
+                تومان
+            </div>
+        </div>
+        <div>
+            <button class="btn btn-danger py-2 px-3">
+                ثبت سفارش
+            </button>
+        </div>
+    </div>
+</div>

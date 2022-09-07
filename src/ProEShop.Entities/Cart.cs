@@ -15,7 +15,7 @@ public class Cart : IAuditableEntity
 
     public long ProductVariantId { get; set; }
 
-    public int Count { get; set; }
+    public short Count { get; set; }
 
     #endregion
 
