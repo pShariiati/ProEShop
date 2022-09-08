@@ -1,4 +1,14 @@
-﻿<!doctype html>
+﻿@using ProEShop.Services.Contracts
+@using ProEShop.Common.IdentityToolkit
+@inject ICartService CartService
+@{
+    var userId = User.Identity.GetLoggedInUserId();
+    var carts = await CartService.GetCartsForDropDown(userId);
+    // تعداد محصولاتی که در داخل سبد خرید قرار دارند
+    var allProductsCountInCart = carts.Sum(x => x.Count);
+}
+
+<!doctype html>
 <html lang="fa" dir="rtl">
 
 <head>
@@ -122,15 +132,15 @@
 
                 <span style="height: 26px; border-right: 1px solid #dad4d4;"></span>
                 <div class="dropdown">
-                    <button class="btn btn-light position-relative dropstart" type="button" id="cart-dropdown"
+                    <button class="btn btn-light position-relative dropstart" type="button" id="cart-dropdown" data-bs-auto-close="outside"
                             data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-cart rem1and3"></i>
-                        <span class="position-absolute top-100 start-50 translate-middle badge rounded-pill bg-danger">
-                            ۱۰
+                        <span class="persian-numbers position-absolute top-100 start-50 translate-middle badge rounded-pill bg-danger" id="cart-count-text">
+                            @allProductsCountInCart
                         </span>
                     </button>
                     <div class="dropdown-menu shadow-sm" aria-labelledby="profile-dropdown-menu" id="cart-dropdown-body">
-                        <vc:cart></vc:cart>
+                        <partial name="_CartPartial" model="carts" />
                     </div>
                 </div>
             </div>

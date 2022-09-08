@@ -7,7 +7,7 @@
     var totalPriceOfCart = Model
         .Sum(x => x.IsDiscountActive ? x.ProductVariantOffPrice.Value : x.ProductVariantPrice);
 }
-<div>
+<div all-products-count-in-cart="@allProductsCountInCart">
     <div class="d-flex justify-content-between rem14px p-2 pb-3">
         <div>
             <span class="persian-numbers">
@@ -33,6 +33,46 @@
                         </div>
                     }
                     <div>
+                        @{
+                            var isCartFull = false;
+                            isCartFull = cartItem.Count == cartItem.ProductVariantCount // موجودی این محصول در انبار
+                            ||
+                            cartItem.Count == cartItem.ProductVariantMaxCountInCart; // حداکثر تعداد آیتم در سبد خرید
+                        }
+                        <div class="product-variant-in-cart-section d-flex align-items-center text-danger shadow rounded p-2" variant-id="@cartItem.ProductVariantId">
+                            <span class="px-2 disable-selecting@(isCartFull ? " text-custom-grey" : " pointer-cursor")">
+                                <form method="post" functionNameToCallInTheEnd="addProductVariantToCart"
+                                  class="public-ajax-form" asp-page-handler="AddProductVariantToCart">
+                                    <input type="hidden" name="productVariantId" value="@cartItem.ProductVariantId" />
+                                    <input type="hidden" name="isIncrease" value="true" />
+                                    <span class="rem20px increaseProductVariantInCartButton">+</span>
+                                </form>
+                            </span>
+                            <span class="d-flex flex-column justify-content-between align-items-center px-2 disable-selecting product-variant-count-in-cart">
+                                <span class="fw-bold persian-numbers">
+                                    @cartItem.Count
+                                </span>
+                                <span class="text-custom-grey rem13px@(isCartFull ? string.Empty : " d-none")">
+                                    حداکثر
+                                </span>
+                            </span>
+                            <span class="px-2 disable-selecting pointer-cursor@(cartItem.Count == 1 ? string.Empty : " d-none")">
+                                <form method="post" functionNameToCallInTheEnd="addProductVariantToCart"
+                                  class="public-ajax-form" asp-page-handler="AddProductVariantToCart">
+                                    <input type="hidden" name="productVariantId" value="@cartItem.ProductVariantId" />
+                                    <span class="empty-variants-in-cart">
+                                        <i class="bi bi-trash"></i>
+                                    </span>
+                                </form>
+                            </span>
+                            <span class="px-2 disable-selecting pointer-cursor@(cartItem.Count > 1 ? string.Empty : " d-none")">
+                                <form method="post" functionNameToCallInTheEnd="addProductVariantToCart"
+                                  class="public-ajax-form" asp-page-handler="AddProductVariantToCart">
+                                    <input type="hidden" name="productVariantId" value="@cartItem.ProductVariantId" />
+                                    <span class="rem20px decreaseProductVariantInCartButton">-</span>
+                                </form>
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <div>
@@ -52,7 +92,7 @@
                             // میزان تخفیف است
                             // مثلا یک جنس 100 هزاری با 10 درصد تخفیف میشه ده هزار
                             var calculatedOffPrice = cartItem.ProductVariantPrice -
-                                                     cartItem.ProductVariantOffPrice.Value;
+                            cartItem.ProductVariantOffPrice.Value;
                             <div class="text-danger rem13px fw-bold">
                                 <span class="persian-numbers">
                                     @calculatedOffPrice.ToString("#,0")

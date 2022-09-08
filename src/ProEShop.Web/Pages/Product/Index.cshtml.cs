@@ -18,19 +18,22 @@ public class IndexModel : PageBase
     private readonly IUnitOfWork _uow;
     private readonly IProductVariantService _productVariantService;
     private readonly ICartService _cartService;
+    private readonly IViewRendererService _viewRendererService;
 
     public IndexModel(
         IProductService productService,
         IUserProductFavoriteService userProductFavoriteService,
         IUnitOfWork uow,
         IProductVariantService productVariantService,
-        ICartService cartService)
+        ICartService cartService,
+        IViewRendererService viewRendererService)
     {
         _productService = productService;
         _userProductFavoriteService = userProductFavoriteService;
         _uow = uow;
         _productVariantService = productVariantService;
         _cartService = cartService;
+        _viewRendererService = viewRendererService;
     }
 
     #endregion
@@ -163,6 +166,7 @@ public class IndexModel : PageBase
                          ||
                          (cart?.Count ?? 1) == productVariant.Count;
 
+        var carts = await _cartService.GetCartsForDropDown(userId);
 
         return Json(new JsonResultOperation(true, "اوکیه")
         {
@@ -170,7 +174,8 @@ public class IndexModel : PageBase
             {
                 Count = cart?.Count ?? 1,
                 ProductVariantId = productVariantId,
-                IsCartFull = isCartFull
+                IsCartFull = isCartFull,
+                CartsDetails = await _viewRendererService.RenderViewToStringAsync("~/Pages/Shared/_CartPartial.cshtml", carts)
             }
         });
     }

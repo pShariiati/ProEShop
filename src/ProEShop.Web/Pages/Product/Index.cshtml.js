@@ -1,13 +1,9 @@
 ﻿function addProductVariantToCart(message, data) {
     // المنت افزودن به سبد خرید
     var addProductVariantToCartEl = $('.add-product-variant-to-cart[variant-id="' + data.productVariantId + '"]');
+
     // المنت بخش سبد خرید
     var cartSectionEl = $('.product-variant-in-cart-section[variant-id="' + data.productVariantId + '"]');
-
-    // بخش افزودن به سبد خرید رو مخفی میکنیم
-    // و بخش سبد خرید رو نشون میدیم
-    addProductVariantToCartEl.addClass('d-none');
-    cartSectionEl.removeClass('d-none');
 
     // تعدادی که از سمت سرور اومده رو به کاربر نشون میدیم
     cartSectionEl.find('.product-variant-count-in-cart span:first').html(data.count.toString().toPersinaDigit());
@@ -25,43 +21,89 @@
         cartSectionEl.find('.increaseProductVariantInCartButton').parents('span').addClass('pointer-cursor');
     }
 
+    // کدام تنوع این محصول انتخاب شده است
+    // آیدی تنوع محصول انتخاب شده رو می گیریم
+    var selectedProductVariantId = parseInt(
+        $('#product-variants-box-in-show-product-info div i').not('[class*="d-none"]')
+        .parents('div').attr('product-variant-id')
+    );
+
+    // چرا از این ایف استفاده کرده ایم ؟
+    // برای مثال من الان در بخش تنوع های محصول در داخل رنگ آبی هستم و رنگ انتخابی آبی است
+    // حالا در بخش سبد خرید هدر سایت، تعداد رنگ قرمز این محصول رو افزایش میدم
+    // اگه این ایف نباشه کارت سکشن رنگ قرمز رو هم کنار کارت سکشن آبی نشون میده
+    // با این ایف بررسی میکنیم که در صورتی، کارت سکشن قرمز رو نشون بده
+    // که رنگ انتخابی این محصول، روی رنگ قرمز باشد نه رنگ دیگری
+    if (selectedProductVariantId === data.productVariantId) {
+
+        // بخش افزودن به سبد خرید و کارت سکشن رو مخفی میکنیم
+        cartSectionEl.addClass('d-none');
+        addProductVariantToCartEl.addClass('d-none');
+
+        // اگه تعداد موجود در سبد خرید بیشتر از یک باشد
+        // باید دکمه کارت سکشن رو نشون بدیم
+        if (data.count > 0) {
+            cartSectionEl.removeClass('d-none');
+        } else {
+            // اگر تعداد داخل سبد خرید صفر باشد باید دکمه افزودن به سبد خرید رو نشون بدیم
+            addProductVariantToCartEl.removeClass('d-none');
+        }
+    }
+
     // اگر تعداد یک بود باید آیکون
     // Trash
     // رو نشون بدیم و علامت منفی رو مخفی کنیم
     if (data.count === 1) {
         cartSectionEl.find('.decreaseProductVariantInCartButton').parents('span').addClass('d-none');
         cartSectionEl.find('.empty-variants-in-cart').parents('span').removeClass('d-none');
-    } else if (data.count === 0) {
-        // اگر تعدا صفر بود بخش افزودن به سبد خرید رو دوباره نشون میدیم
-        // و بخش سبد خرید رو مخفی میکنیم
-        cartSectionEl.addClass('d-none');
-        addProductVariantToCartEl.removeClass('d-none');
-    } else {
+    } else if (data.count > 1) {
         // اگر تعداد بیشتر از یک بود در اون صورت علامت آیکون
         // Trash
         // رو مخفی میکنیم و علامت منفی رو نشون میدیم
         cartSectionEl.find('.decreaseProductVariantInCartButton').parents('span').removeClass('d-none');
         cartSectionEl.find('.empty-variants-in-cart').parents('span').addClass('d-none');
     }
+
+    // اچ تی ام ال برگشتی از سمت سرور که شامل تمامی محصولات داخل
+    // سبد خرید این کاربر هست رو داخل این المنت نشون میدیم
+    $('#cart-dropdown-body').html(data.cartsDetails);
+
+    // چونکه خروجی صحفه سبد خرید رو با بعدا به صفحه اضافه میکنیم، اعداد انگلیسی
+    // هستند، پس با کد پایین اونارو به فارسی تغییر میدم
+    $('#cart-dropdown-body .persian-numbers').each(function () {
+        var text = $(this).html();
+        $(this).html(text.toPersinaDigit());
+    });
+
+    // Show count of products in cart using in bottom of cart dropdown
+    var allProductsCountInCart = $('#cart-dropdown-body div:first').attr('all-products-count-in-cart');
+    $('#cart-count-text').html(allProductsCountInCart.toPersinaDigit());
 }
 
 function copyProductLinkToClipboardFunction() {
     var copyButtonSelector = $('#copy-product-link-button');
     var copyButtonHtml = copyButtonSelector.html();
     copyButtonSelector.html('<i class="bi bi-clipboard-check rem20px"></i> کپی شد');
-    setInterval(function() {
+
+    // این فانکشن فقط یکبار فراخوانی میشود
+    // و بهترین گزینه برای این سناریو می باشد
+    setTimeout(function () {
         copyButtonSelector.html(copyButtonHtml);
     }, 2000);
 }
 
 $(function () {
 
-    $('.increaseProductVariantInCartButton, .decreaseProductVariantInCartButton, .empty-variants-in-cart').click(function () {
-        if ($(this).parents('span').hasClass('text-custom-grey')) {
-            return;
-        }
-        $(this).parent().submit();
-    });
+    // چونکه مقدار داخل دراپ داون سبد خرید هر بار تغییر میکنه و بعد از لود صفحه به صفحه اضافه میشه در نتیجه باید از
+    // $(document).on
+    // استفاده کنیم
+    $(document).on('click', '.increaseProductVariantInCartButton, .decreaseProductVariantInCartButton, .empty-variants-in-cart',
+        function () {
+            if ($(this).parents('span').hasClass('text-custom-grey')) {
+                return;
+            }
+            $(this).parent().submit();
+        });
 
     $('.count-down-timer-in-other-variants').each(function () {
         var currentEl = $(this);
@@ -125,7 +167,7 @@ $(function () {
         countDownTimerFunction(selector, selectorToShow, selectorToHide, selectorToHide2, countDownDate);
 
         // Update the count down every 1 second
-        var x = setInterval(function() {
+        var x = setInterval(function () {
             var result = countDownTimerFunction(selector, selectorToShow, selectorToHide, selectorToHide2, countDownDate);
             if (result < 0) {
                 clearInterval(x);
@@ -133,7 +175,7 @@ $(function () {
         }, 1000);
     }
 
-    $('#other-sellers-count-box').click(function() {
+    $('#other-sellers-count-box').click(function () {
         $('html, body').animate({
             scrollTop: $('#other-sellers-box').offset().top - 20
         }, 1);
@@ -151,14 +193,14 @@ $(function () {
 
     new ImageZoom(document.getElementById('zoom-image-place'), zoomPluginOptions);
 
-    $('#add-product-to-favorite-form').submit(function() {
+    $('#add-product-to-favorite-form').submit(function () {
         if (!isAuthenticated) {
             showFirstLoginModal();
             return false;
         }
     });
 
-    $('#share-product-button').click(function() {
+    $('#share-product-button').click(function () {
         $('#share-product-modal').modal('show');
     });
 
@@ -284,28 +326,40 @@ $(function () {
             $('#free-delivery-box').addClass('d-none');
         }
 
-        // Change cart section
-        // کل سکشن های سبد خرید ها رو مخفی میکنیم
-        // و اونیکه مطابق تنوع انتخاب شده است رو نشون میدیم
-        // به شرطی که تعدادش داخل سبد خرید بیشتر از صفر باشه
-        // یعنی از این تنوع به سبد خرید اضافه شده باشه
+        // Show or hide "cart section"
+        // کل کارت سکشن های بخش
+        // Left side box
+        // رو مخفی میکنیم
         $('#product-info-left-side-box .product-variant-in-cart-section').addClass('d-none');
+        // کارت سکشن بخش سایر فروشندگان رو هم مخفی میکنیم
+        $('.product-variant-in-cart-section[variant-id="' + selectedProductVariantId + '"]').addClass('d-none');
         var cartSectionEl = $('#product-info-left-side-box .product-variant-in-cart-section[variant-id="' + selectedProductVariantId + '"]');
 
-        // چونکه در داخل المنت اینتر زدیم به خاطر همین یکسری متن اضافه وجود داره
-        // و باید از تریم استفاده کنیم
+        // و باید از تریم استفاده کنیم، اگر تعداد داخل سبد خرید صفر نبود، بخش کارت سکشن
+        // Left side box
+        // و بخش سایر فروشندگان رو نشون میدیم
+        // چون که در داخل المنت اینتر زدیم به خاطر همین یکسری متن اضافه وجود داره و باید از
+        // Trim
+        // استفاده کنیم
         if (cartSectionEl.find('.product-variant-count-in-cart span:first').text().trim() !== '۰') {
-            cartSectionEl.removeClass('d-none');
+            $('.product-variant-in-cart-section[variant-id="' + selectedProductVariantId + '"]').removeClass('d-none');
         }
 
-        // Change add product to cart button
-        // کل دکمه های افزودن به سبد خرید رو مخفی میکنیم
-        // و دکمه مورد نظر که مطابق تنوع ما است رو نشون میدیم
+        // Show or hide "add product to cart button"
+        // کل دکمه های افزودن به سبد خرید در بخش
+        // Left side box
+        // رو مخفی میکنیم
         $('#product-info-left-side-box .add-product-variant-to-cart').addClass('d-none');
-        // اگر در داخل سبد خرید این تنوع وجود نداشت
-        // در اون صورت باید دکمه افزودن به سبد خرید رو نشون بدیم
-        // چون امکان داره که داخل سبد خرید این تنوع وجود داشته باشه
-        // اگر وجود داشت نباید دکمه افزودن به سبد خرید رو نشون بدیم
+        // دکمه افزودن به سبد خرید در بخش سایر فروشندگان رو هم مخفی میکنیم
+        $('.add-product-variant-to-cart[variant-id="' + selectedProductVariantId + '"]').addClass('d-none');
+
+        // اگر تعداد داخل سبد خرید برای این تنوع انتخابی صفر بود
+        // دکمه افزودن به سبد خرید رو در بخش
+        // Left side box
+        // و سایر فروشندگان نمایش می دهیم
+        // چون که در داخل المنت اینتر زدیم به خاطر همین یکسری متن اضافه وجود داره و باید از
+        // Trim
+        // استفاده کنیم
         if (cartSectionEl.find('.product-variant-count-in-cart span:first').text().trim() === '۰') {
             $('.add-product-variant-to-cart[variant-id="' + selectedProductVariantId + '"]').removeClass('d-none');
         }

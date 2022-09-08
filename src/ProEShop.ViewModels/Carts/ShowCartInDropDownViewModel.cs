@@ -16,6 +16,12 @@ public class ShowCartInDropDownViewModel
 
     public bool IsDiscountActive { get; set; }
 
+    public long ProductVariantId { get; set; }
+
+    public int ProductVariantCount { get; set; }
+
+    public short ProductVariantMaxCountInCart { get; set; }
+
     public int ProductVariantPrice { get; set; }
 
     public int? ProductVariantOffPrice { get; set; }
