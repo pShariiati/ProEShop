@@ -4,6 +4,8 @@
     var allProductsCountInCart = Model.Sum(x => x.Count);
 
     // مجموع قیمت محصولاتی که در داخل سبد خرید وجود دارند
+    // اگر تخفیف فعال داشته باشه از قیمت آف استفاده میکنیم
+    // اگر تخفیف نداشته باشه از قیمت اصلی استفاده میکنیم
     var totalPriceOfCart = Model
         .Sum(x => x.IsDiscountActive ? x.ProductVariantOffPrice.Value : x.ProductVariantPrice);
 }
@@ -23,7 +25,7 @@
     <ul class="p-0 m-0 d-flex flex-column align-items-center">
         @foreach (var cartItem in Model)
         {
-            <li class="d-flex justify-content-around py-2">
+            <li class="d-flex justify-content-around py-2 align-items-center">
                 <div>
                     <img width="100" src="~/images/products/@cartItem.ProductPicture" />
                     @if (cartItem.IsDiscountActive)
@@ -32,7 +34,7 @@
                             شگفت انگیز
                         </div>
                     }
-                    <div>
+                    <div class="mt-3">
                         @{
                             var isCartFull = false;
                             isCartFull = cartItem.Count == cartItem.ProductVariantCount // موجودی این محصول در انبار
@@ -79,12 +81,25 @@
                     <div class="rem15px fw-bold">
                         @cartItem.ProductVariantProductPersianTitle
                     </div>
-                    <div class="d-flex align-items-center mt-3">
-                        <div class="color-element-in-cart rounded-circle" style="background-color: @cartItem.ProductVariantVariantColorCode"></div>
-                        <div class="ms-2">
-                            @cartItem.ProductVariantVariantValue
-                        </div>
-                    </div>
+                    @if (cartItem.ProductVariantVariantIsColor != null)
+                    {
+                        if (cartItem.ProductVariantVariantIsColor.Value)
+                        {
+                            <div class="d-flex align-items-center mt-3">
+                                <div class="color-element-in-cart rounded-circle" style="background-color: @cartItem.ProductVariantVariantColorCode"></div>
+                                <div class="ms-2">
+                                    @cartItem.ProductVariantVariantValue
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="mt-3">
+                                <i class="bi bi-sort-numeric-up"></i>
+                                @cartItem.ProductVariantVariantValue
+                            </div>
+                        }
+                    }
                     <div class="mt-3">
                         @if (cartItem.IsDiscountActive)
                         {

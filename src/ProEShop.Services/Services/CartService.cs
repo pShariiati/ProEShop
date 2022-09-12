@@ -45,4 +45,13 @@ public class CartService : CustomGenericService<Cart>, ICartService
                 configuration: _mapper.ConfigurationProvider, parameters: new { now = DateTime.Now }
             ).ToListAsync();
     }
+
+    public Task<List<ShowCartInCartPageViewModel>> GetCartsForCartPage(long userId)
+    {
+        return _carts.AsNoTracking()
+            .Where(x => x.UserId == userId)
+            .ProjectTo<ShowCartInCartPageViewModel>(
+                configuration: _mapper.ConfigurationProvider, parameters: new { now = DateTime.Now }
+            ).ToListAsync();
+    }
 }

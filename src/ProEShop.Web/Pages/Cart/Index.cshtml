@@ -1,0 +1,250 @@
+﻿@page
+@model ProEShop.Web.Pages.Cart.IndexModel
+@{
+    ViewData["Title"] = "سبد خرید";
+
+    // تعداد محصولاتی که در داخل سبد خرید قرار دارند
+    var allProductsCountInCart = Model.CartItems.Sum(x => x.Count);
+    
+    // قیمت نهایی بدون محاسبه تخفیف
+    var totalPrice = Model.CartItems
+        .Sum(x => x.ProductVariantPrice);
+
+    // قیمت نهایی با محاسبه تخفیف
+    var totalPriceOfCart = Model.CartItems
+        .Sum(x => x.IsDiscountActive ? x.ProductVariantOffPrice.Value : x.ProductVariantPrice);
+    
+    // قیمت کل بدون تخفیف
+    // منهای قیمت کل با محاسبه تخفیف
+    // میزان قیمت تخفیفی که به کاربر میدهیم
+    var discountPrice = totalPrice - totalPriceOfCart;
+
+    // قیمت کل تقسیم بر 100
+    // چرا به سمت بالا گرد میکنیم ؟
+    // برای مثال قیمت کل سبد خرید 90 تومان است
+    // حالا اگر 90 را بر 100 تقسیم کنیم، جواب
+    // عددی بین صفر و یک است و اگر به بالا گرد نکنیم، به سمت پایین گرد میشود
+    // و جواب صفر به دست می آید
+    // و ما اصلا نمیتوانیم چیزی را بر صفر تقسیم کنیم که بعدا بتوانیم از این
+    // متغیر استفاده کنیم
+    var totalPriceDivideBy100 = Math.Ceiling(totalPrice / (double)100);
+
+    // درصدی که کاربر از قیمت نهایی پرداخت میکند
+    // برای مثال کاربر 98 درصد کل قیمت سبد خرید را پرداخت میکند
+    // و 2 درصد باقیمانده هم به خاطر تخفیف پرداخت نمیشود
+    var percentageOfTotalPriceOfCartThatUserMustPay = Math.Floor(totalPriceOfCart / totalPriceDivideBy100);
+
+    // درصد کل تخیفی که کاربر در این سبد خرید دریافت میکند
+    var discountPercentage = 100 - percentageOfTotalPriceOfCartThatUserMustPay;
+}
+
+@if (Model.CartItems.Count == 0)
+{
+    <partial name="_EmptyCartPartial" />
+}
+else
+{
+    <div class="container mt-4">
+        <div id="cart-page-title" class="d-flex">
+            <div class="d-flex flex-column">
+                <div class="fw-bold text-danger pb-2 px-2">
+                    سبد خرید
+                    <span class="badge rounded-pill bg-danger persian-numbers">@allProductsCountInCart</span>
+                </div>
+                <div class="bg-danger rounded-3" id="cart-page-title-border"></div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-lg-9">
+                <div class="border rounded-3 px-2">
+
+                    <!-- Cart header -->
+
+                    <div class="d-flex justify-content-between align-items-center mt-2 ps-2">
+                        <div class="fw-bold">سبد خرید شما</div>
+                        <div>
+                            <button class="btn text-danger" type="button" data-bs-toggle="tooltip" title="حذف همه">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="rem13px text-black-50 ps-2">
+                        <span class="persian-numbers">
+                            @allProductsCountInCart
+                        </span>
+                        کالا
+                    </div>
+
+                    <!-- End cart header -->
+                    <!-- Cart items -->
+                    @foreach (var cartItem in Model.CartItems)
+                    {
+                        <div class="d-flex pb-4 mt-4 align-items-center cart-items-in-cart-page">
+                            <div>
+                                <div>
+                                    <img src="@WwwRootPaths.ProductImage/@cartItem.ProductPicture" width="140" />
+                                </div>
+                                <div>Cart section</div>
+                            </div>
+                            <div class="ms-3 ms-lg-4 ms-lg-5">
+                                <div class="fw-bold">
+                                    @cartItem.ProductVariantProductPersianTitle
+                                </div>
+                                <div class="mt-3 text-black-50 rem14px">
+                                    @if (cartItem.ProductVariantVariantIsColor != null)
+                                    {
+                                        <div class="my-1 d-flex align-items-center">
+                                            @if (cartItem.ProductVariantVariantIsColor.Value)
+                                            {
+                                                <div class="color-element-in-cart rounded-circle" style="background-color: @cartItem.ProductVariantVariantColorCode"></div>
+                                                <span class="ms-1">
+                                                    @cartItem.ProductVariantVariantValue
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <i class="bi bi-sort-numeric-up"></i>
+                                                <span class="ms-1">
+                                                    @cartItem.ProductVariantVariantValue
+                                                </span>
+                                            }
+                                        </div>
+                                    }
+                                    <div class="my-1">
+                                        <i class="bi bi-shield-check"></i>
+                                        <span class="persian-numbers">
+                                            @cartItem.ProductVariantGuaranteeFullTitle
+                                        </span>
+                                    </div>
+                                    <div class="my-1 mb-4">
+                                        <i class="bi bi-shop"></i>
+                                        <span>
+                                            @cartItem.ProductVariantSellerShopName
+                                        </span>
+                                    </div>
+                                    @if (cartItem.IsDiscountActive)
+                                    {
+                                        // این قیمت تخفیف دار نیست
+                                        // میزان تخفیف است
+                                        // مثلا یک جنس 100 هزاری با 10 درصد تخفیف میشه ده هزار
+                                        var calculatedOffPrice = cartItem.ProductVariantPrice -
+                                                                 cartItem.ProductVariantOffPrice.Value;
+                                        <div class="text-danger rem13px mb-2">
+                                            <span class="persian-numbers">
+                                                @calculatedOffPrice.ToString("#,0")
+                                            </span>
+                                            تخفیف
+                                        </div>
+                                        <div class="rem21px text-dark">
+                                            <span class="persian-numbers">
+                                                @cartItem.ProductVariantOffPrice.Value.ToString("#,0")
+                                            </span>
+                                            تومان
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="rem21px text-dark">
+                                            <span class="persian-numbers">
+                                                @cartItem.ProductVariantPrice.ToString("#,0")
+                                            </span>
+                                            تومان
+                                        </div>
+                                    }
+                                    @if (cartItem.ProductVariantCount > 0)
+                                    {
+                                        <div class="text-danger rem11px mt-2">
+                                            تنها
+                                            <span class="persian-numbers">
+                                                @cartItem.ProductVariantCount
+                                            </span>
+                                            عدد در انبار باقی مانده
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <!-- End cart items -->
+                </div>
+
+            </div>
+            <div class="col-lg-3 px-0">
+                <div class="container-fluid">
+                    <div class="row border rounded-3">
+                        <div class="d-flex justify-content-between rem14px mt-4 text-secondary">
+                            <div>
+                                قیمت کالاها
+                                (<span class="persian-numbers">@allProductsCountInCart</span>)
+                            </div>
+                            <div>
+                                <span class="persian-numbers">
+                                    @totalPrice.ToString("#,0")
+                                </span>
+                                تومان
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between rem14px mt-3">
+                            <div>
+                                جمع سبد خرید
+                            </div>
+                            <div class="rem16px fw-bold">
+                                <span class="persian-numbers">
+                                    @totalPriceOfCart.ToString("#,0")
+                                </span>
+                                تومان
+                            </div>
+                        </div>
+                        <div class="mt-4 rem12px text-secondary">
+                            هزینه ارسال بر اساس آدرس، وزن و حجم مرسوله شما محاسبه میشود
+                        </div>
+                        <div class="d-flex justify-content-between mt-4 text-danger">
+                            <div class="rem14px">
+                                سود شما از خرید
+                            </div>
+                            <div class="fw-bold">
+                                (<span class="persian-numbers">@discountPercentage</span>%)
+                                <span class="persian-numbers">
+                                    @discountPrice.ToString("#,0")
+                                </span>
+                                تومان
+                            </div>
+                        </div>
+                        <div class="d-grid mt-4">
+                            <button class="btn btn-danger rounded-3 fw-bold py-2">
+                                ادامه
+                            </button>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center bg-custom-grey mt-3 p-3 rounded-bottom">
+                            <div class="rem14px">
+                                پروکلاب
+                                <i class="bi bi-info-circle" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                               title="بعد از پایان مهلت مرجوعی، برای دریافت امتیاز به صفحه ماموریت های پروشاپی سر بزنید."></i>
+                            </div>
+                            <div>
+                                <span class="fw-bold">150</span>
+                                <span class="rem12px">
+                                    امتیاز
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="d-flex border rounded-3 mt-4 justify-content-between p-3">
+                            <div class="d-flex flex-column justify-content-between">
+                                <span class="fw-bold">ارسال رایگان</span>
+                                <span class="rem13px text-secondary">
+                                    برای سفارش بالای
+                                    ۵۰۰
+                                    هزار تومان
+                                </span>
+                            </div>
+                            <img width="100" src="images/application/free-delivery.png">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

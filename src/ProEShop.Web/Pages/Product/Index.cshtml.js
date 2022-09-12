@@ -23,10 +23,29 @@
 
     // کدام تنوع این محصول انتخاب شده است
     // آیدی تنوع محصول انتخاب شده رو می گیریم
-    var selectedProductVariantId = parseInt(
-        $('#product-variants-box-in-show-product-info div i').not('[class*="d-none"]')
-        .parents('div').attr('product-variant-id')
-    );
+
+    // No variant
+    var selectedProductVariantId = 0;
+    // Product variant id: Color
+    var selectedColor = $('#product-variants-box-in-show-product-info div i').not('[class*="d-none"]')
+        .parents('div').attr('product-variant-id');
+    // Product variant id: Size
+    var selectedSize = $('#product-variants-box-in-show-product-info select').find(':selected')
+        .attr('product-variant-id');
+    // اگر این محصول تنوعش سایز یا رنگ بود وارد ایف میشه
+    if (selectedColor || selectedSize) {
+        selectedProductVariantId = parseInt(
+            selectedColor || selectedSize
+        );
+    } else {
+        // اگر این محصول تنوع نداشته باشه مثل ماسک، وارد الس میشه
+        // البته که میشه این الس رو کلا ننوشت و متغیر
+        // selectedProductVariantId
+        // در چند لاین بالاتر رو مساوی
+        // data.productVariantId
+        // قرار داد، چون داخل این الس هم دقیقا همین کار انجام میشه
+        selectedProductVariantId = data.productVariantId;
+    }
 
     // چرا از این ایف استفاده کرده ایم ؟
     // برای مثال من الان در بخش تنوع های محصول در داخل رنگ آبی هستم و رنگ انتخابی آبی است

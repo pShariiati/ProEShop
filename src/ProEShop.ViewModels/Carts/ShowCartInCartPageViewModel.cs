@@ -7,18 +7,26 @@ using System.Threading.Tasks;
 namespace ProEShop.ViewModels.Carts;
 
 /// <summary>
-/// استفاده شده در لایوت اصلی و دراپ داون سبد خرید
-/// ویوو مدل نمایش محصولاتی که کاربر جاری وارد سبد خرید خود کرده است
+/// استفاده شده در صفحه تکی سبد خرید
+/// ویو مدل نمایش محصولات داخل سبد خریدِ کاربری که صفحه سبد خرید را باز میکند
 /// </summary>
-public class ShowCartInDropDownViewModel
+public class ShowCartInCartPageViewModel
 {
     public string ProductVariantProductPersianTitle { get; set; }
+
+    public string ProductVariantGuaranteeFullTitle { get; set; }
+
+    public string ProductVariantSellerShopName { get; set; }
 
     public bool IsDiscountActive { get; set; }
 
     public long ProductVariantId { get; set; }
 
-    public int ProductVariantCount { get; set; }
+    /// <summary>
+    /// موجودی انبار برای این محصول
+    /// اگه بیشتر از سه بود نیازی به مقدار دهی این پراپرتی نیست
+    /// </summary>
+    public byte ProductVariantCount { get; set; }
 
     public short ProductVariantMaxCountInCart { get; set; }
 
@@ -32,6 +40,9 @@ public class ShowCartInDropDownViewModel
 
     public string ProductVariantVariantValue { get; set; }
 
+    /// <summary>
+    /// تعداد محصولی که داخل سبد خرید است
+    /// </summary>
     public short Count { get; set; }
 
     public string ProductPicture { get; set; }

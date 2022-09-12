@@ -24,4 +24,12 @@ public interface ICartService : ICustomGenericService<Cart>
     /// <param name="userId"></param>
     /// <returns></returns>
     Task<List<ShowCartInDropDownViewModel>> GetCartsForDropDown(long userId);
+
+    /// <summary>
+    /// گرفتن محصولات داخل سبد خرید این کاربر
+    /// برای نمایش دادن در صفحه تکی سبد خرید
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    Task<List<ShowCartInCartPageViewModel>> GetCartsForCartPage(long userId);
 }
