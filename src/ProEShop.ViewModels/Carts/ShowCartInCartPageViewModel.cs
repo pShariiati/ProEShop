@@ -46,4 +46,17 @@ public class ShowCartInCartPageViewModel
     public short Count { get; set; }
 
     public string ProductPicture { get; set; }
+
+    public byte Score
+    {
+        get
+        {
+            var result = Math.Ceiling((double)ProductVariantPrice / 10000);
+            if (result <= 1)
+                return 1;
+            if (result >= 150)
+                return 150;
+            return (byte)result;
+        }
+    }
 }

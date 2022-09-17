@@ -1,4 +1,4 @@
-﻿namespace ProEShop.Common.Helpers;
+﻿namespace ProEShop.Common.Constants;
 
 /// <summary>
 /// آدرس پوشه های پوشه

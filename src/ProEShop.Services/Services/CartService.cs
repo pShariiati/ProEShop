@@ -54,4 +54,9 @@ public class CartService : CustomGenericService<Cart>, ICartService
                 configuration: _mapper.ConfigurationProvider, parameters: new { now = DateTime.Now }
             ).ToListAsync();
     }
+
+    public Task<List<Cart>> GetAllCartItems(long userId)
+    {
+        return _carts.Where(x => x.UserId == userId).ToListAsync();
+    }
 }

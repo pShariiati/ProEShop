@@ -168,7 +168,7 @@ public class IndexModel : PageBase
 
         var carts = await _cartService.GetCartsForDropDown(userId);
 
-        return Json(new JsonResultOperation(true, "اوکیه")
+        return Json(new JsonResultOperation(true, string.Empty)
         {
             Data = new
             {

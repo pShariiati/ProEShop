@@ -1,4 +1,5 @@
-﻿using ProEShop.Entities;
+﻿using Microsoft.VisualBasic.CompilerServices;
+using ProEShop.Entities;
 using ProEShop.ViewModels.Brands;
 using ProEShop.ViewModels.Carts;
 using ProEShop.ViewModels.Products;
@@ -32,4 +33,12 @@ public interface ICartService : ICustomGenericService<Cart>
     /// <param name="userId"></param>
     /// <returns></returns>
     Task<List<ShowCartInCartPageViewModel>> GetCartsForCartPage(long userId);
+
+    /// <summary>
+    /// استفاده شده در صفحه تکی سبد خرید جهت حذف تمامی آیتم های داخل سبد خرید
+    /// گرفتن تمامی آیتم های داخل سبد خرید کاربر
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    Task<List<Entities.Cart>> GetAllCartItems(long userId);
 }

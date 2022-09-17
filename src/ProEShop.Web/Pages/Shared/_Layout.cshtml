@@ -35,7 +35,9 @@
     <div class="container-fluid bg-white shadow-sm">
         <div class="row p-3" id="main-header">
             <div class="col-12 col-lg-2 text-center text-lg-start mb-3 mb-lg-0 ps-2">
-                <img src="~/images/application/eshop.png" class="logo" />
+                <a asp-page="/Index">
+                    <img src="~/images/application/eshop.png" class="logo" />
+                </a>
             </div>
             <div class="col-lg-6 col-xl-5 col-md-9">
                 <div class="input-group" id="main-search-box">
@@ -131,18 +133,35 @@
                 </div>
 
                 <span style="height: 26px; border-right: 1px solid #dad4d4;"></span>
-                <div class="dropdown">
-                    <button class="btn btn-light position-relative dropstart" type="button" id="cart-dropdown" data-bs-auto-close="outside"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-cart rem1and3"></i>
-                        <span class="persian-numbers position-absolute top-100 start-50 translate-middle badge rounded-pill bg-danger" id="cart-count-text">
-                            @allProductsCountInCart
-                        </span>
-                    </button>
-                    <div class="dropdown-menu shadow-sm" aria-labelledby="profile-dropdown-menu" id="cart-dropdown-body">
-                        <partial name="_CartPartial" model="carts" />
+                @{
+                    // در صفحه سبد خرید نباید بخش بادی دراپ داون نمایش داده شود
+                }
+                @if (ViewData["HideMainCartDropdown"] != null)
+                {
+                    <div class="dropdown">
+                        <button class="btn btn-light position-relative dropstart" type="button" id="cart-dropdown">
+                            <i class="bi bi-cart rem1and3"></i>
+                            <span class="persian-numbers position-absolute top-100 start-50 translate-middle badge rounded-pill bg-danger" id="cart-count-text">
+                                @allProductsCountInCart
+                            </span>
+                        </button>
                     </div>
-                </div>
+                }
+                else
+                {
+                    <div class="dropdown">
+                        <button class="btn btn-light position-relative dropstart" type="button" id="cart-dropdown" data-bs-auto-close="outside"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-cart rem1and3"></i>
+                            <span class="persian-numbers position-absolute top-100 start-50 translate-middle badge rounded-pill bg-danger" id="cart-count-text">
+                                @allProductsCountInCart
+                            </span>
+                        </button>
+                        <div class="dropdown-menu shadow-sm" aria-labelledby="profile-dropdown-menu" id="cart-dropdown-body">
+                            <partial name="_CartPartial" model="carts" />
+                        </div>
+                    </div>
+                }
             </div>
         </div>
     </div>
