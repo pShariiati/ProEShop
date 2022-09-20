@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ProEShop.Common.Attributes;
 using ProEShop.Entities;
+using ProEShop.Entities.Enums;
 
 namespace ProEShop.ViewModels.Products;
 
@@ -9,6 +10,9 @@ public class ProductDetailsViewModel
 {
     [HiddenInput]
     public long Id { get; set; }
+
+    [Display(Name = "ابعاد")]
+    public ProductDimensions Dimensions { get; set; }
 
     [Display(Name = "دلیل رد شدن محصول")]
     [MakeTinyMceRequired]

@@ -10,13 +10,30 @@ public class ProvinceAndCityConfiguration : IEntityTypeConfiguration<ProvinceAnd
 {
     public void Configure(EntityTypeBuilder<ProvinceAndCity> builder)
     {
-        builder.HasMany(x => x.Provinces)
+        #region Seller
+
+        builder.HasMany(x => x.SellerProvinces)
             .WithOne(x => x.Province)
             .HasForeignKey(x => x.ProvinceId);
 
-        builder.HasMany(x => x.Cities)
+        builder.HasMany(x => x.SellerCities)
             .WithOne(x => x.City)
             .HasForeignKey(x => x.CityId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        #endregion
+
+        #region Address
+
+        builder.HasMany(x => x.AddressProvinces)
+            .WithOne(x => x.Province)
+            .HasForeignKey(x => x.ProvinceId);
+
+        builder.HasMany(x => x.AddressCities)
+            .WithOne(x => x.City)
+            .HasForeignKey(x => x.CityId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        #endregion
     }
 }

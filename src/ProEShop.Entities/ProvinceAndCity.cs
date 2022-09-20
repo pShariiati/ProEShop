@@ -26,9 +26,13 @@ public class ProvinceAndCity : EntityBase, IAuditableEntity
 
     public ProvinceAndCity Parent { get; set; }
 
-    public ICollection<Seller> Provinces { get; set; }
+    public ICollection<Seller> SellerProvinces { get; set; }
 
-    public ICollection<Seller> Cities { get; set; }
+    public ICollection<Seller> SellerCities { get; set; }
+
+    public ICollection<Address> AddressProvinces { get; set; }
+
+    public ICollection<Address> AddressCities { get; set; }
 
     #endregion
 }

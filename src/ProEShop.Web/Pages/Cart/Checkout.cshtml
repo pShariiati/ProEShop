@@ -1,0 +1,262 @@
+﻿@page
+@model ProEShop.Web.Pages.Cart.CheckoutModel
+@{
+    ViewData["Title"] = "ثبت سفارش";
+    Layout = "_CheckoutLayout";
+
+    // مجموع امتیاز هایی که کاربر بعد از پایان مهلت مرجوعی به دست میاورد
+    var sumScore = Model.CartItems.Sum(x => x.Score);
+    if (sumScore > 150)
+        sumScore = 150;
+
+    // تعداد محصولاتی که در داخل سبد خرید قرار دارند
+    var allProductsCountInCart = Model.CartItems.Sum(x => x.Count);
+
+    // قیمت نهایی بدون محاسبه تخفیف
+    var totalPrice = Model.CartItems
+        .Sum(x => x.ProductVariantPrice);
+
+    // قیمت نهایی با محاسبه تخفیف
+    var totalPriceWithDiscount = Model.CartItems
+        .Sum(x => x.IsDiscountActive ? x.ProductVariantOffPrice.Value : x.ProductVariantPrice);
+
+    // قیمت کل بدون تخفیف
+    // منهای قیمت کل با محاسبه تخفیف
+    // میزان قیمت تخفیفی که به کاربر میدهیم
+    var discountPrice = totalPrice - totalPriceWithDiscount;
+
+    // درصد تخفیف
+    byte discountPercentage = 0;
+
+    // اگر این سبد خرید تخفیف داشت
+    if (totalPrice != totalPriceWithDiscount)
+    {
+        // قیمت کل تقسیم بر 100
+        // چرا به سمت بالا گرد میکنیم ؟
+        // برای مثال قیمت کل سبد خرید 90 تومان است
+        // حالا اگر 90 را بر 100 تقسیم کنیم، جواب
+        // عددی بین صفر و یک است و اگر به بالا گرد نکنیم، به سمت پایین گرد میشود
+        // و جواب صفر به دست می آید
+        // و ما اصلا نمیتوانیم چیزی را بر صفر تقسیم کنیم که بعدا بتوانیم از این
+        // متغیر استفاده کنیم
+        var totalPriceDivideBy100 = Math.Ceiling(totalPrice / (double)100);
+
+        // درصدی که کاربر از قیمت نهایی پرداخت میکند
+        // برای مثال کاربر 98 درصد کل قیمت سبد خرید را پرداخت میکند
+        // و 2 درصد باقیمانده هم به خاطر تخفیف پرداخت نمیشود
+        var percentageOfTotalPriceOfCartThatUserMustPay = Math.Floor(totalPriceWithDiscount / totalPriceDivideBy100);
+
+        // درصد کل تخیفی که کاربر در این سبد خرید دریافت میکند
+        discountPercentage = (byte)(100 - percentageOfTotalPriceOfCartThatUserMustPay);
+    }
+}
+
+<div class="container mt-4">
+
+    <div class="d-flex flex-column align-items-center border rounded-3 p-4">
+        <a asp-page="../Index">
+            <img width="200" src="~/images/application/eshop.png" />
+        </a>
+        <div class="d-flex align-items-center mt-5 text-danger">
+            <div class="d-flex me-3" id="cart-section-in-checkout">
+                <i class="bi bi-cart me-2"></i>
+                <div class="fw-bold">سبد خرید</div>
+            </div>
+            <div class="checkout-line-in-header bg-danger me-3"></div>
+            <div class="d-flex me-3 rem21px">
+                <i class="bi bi-truck me-2"></i>
+                <div class="fw-bold">زمان و نحوه ارسال</div>
+            </div>
+            <div class="checkout-line-in-header bg-custom-grey me-3"></div>
+            <div class="d-flex text-black-50">
+                <i class="bi bi-credit-card me-2"></i>
+                <div class="fw-bold">پرداخت</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-lg-9">
+            <div class="border rounded-3 p-4 d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        <i class="bi bi-geo-alt rem21px"></i>
+                    </div>
+                    <div>
+                        <div class="text-black-50 rem13px mb-2">آدرس تحویل سفارش</div>
+                        <div class="fw-bold rem15px mb-2">
+                            تهران، گاندی، نبش بلوار تست
+                        </div>
+                        <div class="rem15px text-black-50">رضا احمدی</div>
+                    </div>
+                </div>
+                <div class="text-info pointer-cursor rem14px">
+                    <span>تغییر</span>
+                    |
+                    <span>ویرایش</span>
+                    <i class="bi bi-chevron-left rem11px"></i>
+                </div>
+            </div>
+
+            <div class="text-black-50 rem15px py-4 d-flex align-items-center">
+                <i class="bi bi-info-circle me-2 rem19px"></i>
+                این سفارش در چند نوبت (مرسوله) ارسال می شود چون شامل کالای سنگین یا فوق سنگین است
+            </div>
+
+            <div class="border rounded-3 px-2">
+
+                <!-- Shipping -->
+
+                <div class="py-4 px-2">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-truck rem21px text-danger"></i>
+                        <span class="fw-bold rem18px mx-2">ارسال عادی</span>
+                        <span class="badge rounded-pill bg-secondary">
+                            3
+                            کالا
+                        </span>
+                    </div>
+
+                    <!-- Shipping items -->
+                    <div class="mt-5 d-flex flex-wrap">
+
+                        <div class="px-2 pb-4 shipping-item-in-checkout">
+                            <div class="position-relative">
+                                <img src="~/images/products/00e2b2c15d974d268ea4e1fc5c0baf75.jpg" width="100" />
+                                <span class="position-absolute badge rounded-pill bg-secondary">3</span>
+                            </div>
+                            <div class="d-flex align-items-center mt-2">
+                                <div class="color-element-in-checkout rounded-circle me-1" style="background-color: red;"></div>
+                                <div class="rem14px text-secondary">قرمز</div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- End shipping items -->
+                </div>
+
+
+
+                <div class="py-4 px-2 border-top">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-truck rem21px text-danger"></i>
+                        <span class="fw-bold rem18px mx-2">فوق سنگین</span>
+                        <span class="badge rounded-pill bg-secondary">
+                            3
+                            کالا
+                        </span>
+                    </div>
+
+                    <!-- Shipping items -->
+                    <div class="mt-5 d-flex flex-wrap">
+
+                        <div class="px-2 pb-4 shipping-item-in-checkout">
+                            <div class="position-relative">
+                                <img src="~/images/products/00e2b2c15d974d268ea4e1fc5c0baf75.jpg" width="100" />
+                                <span class="position-absolute badge rounded-pill bg-secondary">3</span>
+                            </div>
+                            <div class="d-flex align-items-center mt-2">
+                                <div class="color-element-in-checkout rounded-circle me-1" style="background-color: red;"></div>
+                                <div class="rem14px text-secondary">قرمز</div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- End shipping items -->
+                </div>
+
+                <!-- End shipping -->
+            </div>
+        </div>
+
+        <div class="col-lg-3 ps-0">
+            <div class="container-fluid">
+                <div class="row border rounded-3">
+                    <div>
+                        <div class="d-flex justify-content-between rem14px mt-4 text-secondary">
+                            <div>
+                                قیمت کالاها
+                                (<span class="persian-numbers">@allProductsCountInCart</span>)
+                            </div>
+                            <div>
+                                <span class="persian-numbers">
+                                    @totalPrice.ToString("#,0")
+                                </span>
+                                تومان
+                            </div>
+                        </div>
+                        <hr />
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center rem14px">
+                        <div class="d-flex align-items-center">
+                            <span class="me-1">هزینه ارسال</span>
+                            <span class="d-flex align-items-center badge rounded-pill bg-info">
+                                <span class="me-1">2 مرسوله</span>
+                                <i class="bi bi-chevron-down"></i>
+                            </span>
+                        </div>
+                        <div class="fw-bold rem16px">
+                            رایگان
+                        </div>
+                    </div>
+                    <div class="mt-3 rem12px text-secondary">
+                        هزینه ارسال بر اساس آدرس، وزن و حجم مرسوله شما محاسبه میشود
+                        <hr />
+                    </div>
+                    <div class="d-flex justify-content-between text-danger">
+                        <div class="rem14px">
+                            سود شما از خرید
+                        </div>
+                        <div class="fw-bold">
+                            (<span class="persian-numbers">@discountPercentage</span>%)
+                            <span class="persian-numbers">@discountPrice.ToString("#,0")</span>
+                            تومان
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between rem14px mt-4">
+                        <div>
+                            قابل پرداخت
+                        </div>
+                        <div class="rem16px fw-bold">
+                            <span class="persian-numbers">
+                                @totalPriceWithDiscount.ToString("#,0")
+                            </span>
+                            تومان
+                        </div>
+                    </div>
+                    <div class="d-grid mt-4">
+                        <button class="btn btn-danger rounded-3 fw-bold py-2">
+                            ادامه
+                        </button>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center bg-custom-grey mt-3 p-3 rounded-bottom">
+                        <div class="rem14px">
+                            پروکلاب
+                            <i class="bi bi-info-circle" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                               title="بعد از پایان مهلت مرجوعی، برای دریافت امتیاز به صفحه ماموریت های پروشاپی سر بزنید."></i>
+                        </div>
+                        <div>
+                            <span class="fw-bold persian-numbers">@sumScore</span>
+                            <span class="rem12px">
+                                امتیاز
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="d-flex border rounded-3 mt-4 justify-content-between p-3">
+                        <div class="d-flex flex-column justify-content-between">
+                            <span class="fw-bold">ارسال رایگان</span>
+                            <span class="rem13px text-secondary">
+                                برای سفارش بالای
+                                ۵۰۰
+                                هزار تومان
+                            </span>
+                        </div>
+                        <img width="100" src="~/images/application/free-delivery.png">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

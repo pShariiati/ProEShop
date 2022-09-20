@@ -8,6 +8,7 @@ using ProEShop.Common.Helpers;
 using ProEShop.Common.IdentityToolkit;
 using ProEShop.DataLayer.Context;
 using ProEShop.Entities;
+using ProEShop.Entities.Enums;
 using ProEShop.Services.Contracts;
 using ProEShop.ViewModels.Products;
 using ProEShop.ViewModels.Sellers;
@@ -123,7 +124,7 @@ public class IndexModel : PageBase
         return Json(new JsonResultOperation(true, "محصول مورد نظر با موفقیت رد شد"));
     }
 
-    public async Task<IActionResult> OnPostConfirmProduct(long id)
+    public async Task<IActionResult> OnPostConfirmProduct(long id, ProductDimensions dimensions)
     {
         if (id < 1)
         {
@@ -137,6 +138,7 @@ public class IndexModel : PageBase
         }
 
         product.Status = ProductStatus.Confirmed;
+        product.Dimensions = dimensions;
         product.RejectReason = null;
         await _uow.SaveChangesAsync();
         return Json(new JsonResultOperation(true, "محصول مورد نظر با موفقیت تایید شد"));

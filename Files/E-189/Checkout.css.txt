@@ -1,0 +1,19 @@
+.checkout-line-in-header {
+    width: 100px;
+    height: 1px;
+}
+
+#cart-section-in-checkout {
+    color: #f3a3a3;
+}
+
+.color-element-in-checkout {
+    width: 14px;
+    height: 14px;
+}
+
+.shipping-item-in-checkout span {
+    top: 85%;
+    right: 83%;
+    z-index: 1;
+}

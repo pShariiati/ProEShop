@@ -34,6 +34,8 @@ public interface ICartService : ICustomGenericService<Cart>
     /// <returns></returns>
     Task<List<ShowCartInCartPageViewModel>> GetCartsForCartPage(long userId);
 
+    Task<List<ShowCartInCheckoutPageViewModel>> GetCartsForCheckoutPage(long userId);
+
     /// <summary>
     /// استفاده شده در صفحه تکی سبد خرید جهت حذف تمامی آیتم های داخل سبد خرید
     /// گرفتن تمامی آیتم های داخل سبد خرید کاربر

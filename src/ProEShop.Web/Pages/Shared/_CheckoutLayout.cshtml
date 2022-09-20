@@ -1,0 +1,32 @@
+﻿<!doctype html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.rtl.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="~/lib/toastr.js/toastr.min.css" />
+    <link rel="stylesheet" href="~/css/site.css">
+    <link rel="stylesheet" href="~/css/main-styles.css">
+    <link rel="stylesheet" href="~/ProEShop.Web.styles.css">
+    <title>@ViewData["Title"] | پروشاپ</title>
+</head>
+
+<body is-authenticated="@(User.Identity.IsAuthenticated ? "true" : "false")" login-page-url="@Url.Page("/Identity/RegisterLogin")">
+    
+    @RenderBody()
+
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/toastr.js/toastr.min.js"></script>
+    @await RenderSectionAsync("Scripts", false)
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/main-scripts.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("CustomScripts", false)
+</body>
+
+</html>

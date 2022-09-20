@@ -41,5 +41,21 @@ public class CartMappingProfile : Profile
                     options.MapFrom(src =>
                         src.ProductVariant.Count > 3 ? (byte)0 : (byte)src.ProductVariant.Count
                     ));
+
+        this.CreateMap<Entities.Cart, ShowCartInCheckoutPageViewModel>()
+            .ForMember(dest => dest.IsDiscountActive,
+                options =>
+                    options.MapFrom(src =>
+                        src.ProductVariant.OffPercentage != null &&
+                        (src.ProductVariant.StartDateTime <= now && src.ProductVariant.EndDateTime >= now)
+                    ))
+            .ForMember(dest => dest.ProductPicture,
+                options =>
+                    options.MapFrom(src => src.ProductVariant.Product.ProductMedia.First().FileName))
+            .ForMember(dest => dest.ProductVariantCount,
+                options =>
+                    options.MapFrom(src =>
+                        src.ProductVariant.Count > 3 ? (byte)0 : (byte)src.ProductVariant.Count
+                    ));
     }
 }

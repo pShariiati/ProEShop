@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using ProEShop.Entities.Enums;
 
 namespace ProEShop.Entities;
 
@@ -55,6 +56,11 @@ public class Product : EntityBase, IAuditableEntity
     public int ProductCode { get; set; }
 
     public long ProductShortLinkId { get; set; }
+
+    /// <summary>
+    /// ابعاد
+    /// </summary>
+    public ProductDimensions Dimensions { get; set; }
 
     #endregion
 

@@ -1,6 +1,11 @@
 ﻿function addProductVariantToCart(message, data) {
     $('#cart-body').html(data.cartBody);
 
+    // چون محتویات صفحه دوباره لود میشن
+    // تول تیپ ها از کار میافتن، به خاطر همین باید متد فعال سازی
+    // اونارو یکبار دیگه کال کنیم
+    enablingNormalTooltips();
+
     $('#cart-body .persian-numbers').each(function () {
         var text = $(this).html();
         $(this).html(text.toPersinaDigit());
