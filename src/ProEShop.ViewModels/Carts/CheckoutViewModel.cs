@@ -1,10 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ProEShop.Entities.Enums;
 
 namespace ProEShop.ViewModels.Carts;
+
+/// <summary>
+/// ویوو مدل صفحه
+/// Checkout
+/// </summary>
+public class CheckoutViewModel
+{
+    /// <summary>
+    /// آدرس کاربر
+    /// </summary>
+    public AddressInCheckoutPageViewModel UserAddress { get; set; }
+
+    /// <summary>
+    /// آیتم های داخل سبد خرید کاربر
+    /// </summary>
+    public List<ShowCartInCheckoutPageViewModel> CartItems { get; set; }
+}
+
+public class AddressInCheckoutPageViewModel
+{
+    public string FullName { get; set; }
+
+    public string AddressLine { get; set; }
+
+    public string ProvinceTitle { get; set; }
+
+    public string CityTitle { get; set; }
+}
 
 public class ShowCartInCheckoutPageViewModel
 {
@@ -42,6 +66,8 @@ public class ShowCartInCheckoutPageViewModel
     public short Count { get; set; }
 
     public string ProductPicture { get; set; }
+
+    public ProductDimensions ProductVariantProductDimensions { get; set; }
 
     public byte Score
     {

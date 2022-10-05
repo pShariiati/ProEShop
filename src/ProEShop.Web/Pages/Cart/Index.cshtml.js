@@ -6,12 +6,17 @@
     // اونارو یکبار دیگه کال کنیم
     enablingNormalTooltips();
 
+    // متن المنت هایی که کلاس
+    // persian-numbers
+    // دارن رو به عدد فارسی تغییر میدیم
     $('#cart-body .persian-numbers').each(function () {
         var text = $(this).html();
         $(this).html(text.toPersinaDigit());
     });
 
+    // تعداد آیتم های داخل سبد خرید
     var allProductsCountInCart = $('#cart-page-title span').html();
+
     // اگر پارشل سبدِ خریدِ خالی، نمایش داده شود
     // باید در بخش سبد خریدِ هدر، عدد صفر نمایش بدیم
     if (allProductsCountInCart) {

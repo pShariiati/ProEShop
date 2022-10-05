@@ -17,6 +17,9 @@ public class Address : EntityBase, IAuditableEntity
 
     public long CityId { get; set; }
 
+    /// <summary>
+    /// آدرس کامل
+    /// </summary>
     [MaxLength(1000)]
     public string AddressLine { get; set; }
 

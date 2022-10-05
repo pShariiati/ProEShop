@@ -1,0 +1,37 @@
+#shipping-dropdown .dropdown-menu {
+    width: 300px !important;
+}
+
+#shipping-dropdown
+<div class="dropdown-menu px-2 rem13px rounded-1">
+	<div class="d-flex justify-content-between align-items-center">
+		<div>
+			<i class="bi bi-truck rem21px text-danger me-1"></i>
+			ارسال عادی
+		</div>
+		<div>
+			رایگان
+		</div>
+	</div>
+	<div class="d-flex justify-content-between align-items-center">
+		<div>
+			<i class="bi bi-truck rem21px text-danger me-1"></i>
+			ارسال کالاهای بزرگ و سنگین
+		</div>
+		<div>
+			<span class="persian-numbers fw-bold">
+				45,000
+			</span>
+			تومان
+		</div>
+	</div>
+	<div class="d-flex justify-content-between align-items-center">
+		<div>
+			<i class="bi bi-truck rem21px text-warning me-1"></i>
+			ارسال کالاهای فوق سنگین
+		</div>
+		<div>
+			باربری (هزینه ارسال به صورت پس کرایه - حداقل ۱۲۰ هزار تومان)
+		</div>
+	</div>
+</div>
