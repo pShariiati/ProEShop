@@ -4,8 +4,8 @@
     // دراپ دان منو رو نشون بده
     // موقعی که بلر شد مخفیش کن
     $('#shipping-dropdown').hover(function () {
-        $(this).dropdown('show');
-    },
+            $(this).dropdown('show');
+        },
         function () {
             $(this).dropdown('hide');
         });

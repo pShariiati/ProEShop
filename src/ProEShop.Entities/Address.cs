@@ -48,6 +48,13 @@ public class Address : EntityBase, IAuditableEntity
     [MaxLength(11)]
     public string PhoneNumber { get; set; }
 
+    /// <summary>
+    /// برای مثال کاربر 5 تا آدرس داره
+    /// از این 5 آدرس ایز دیفالت همه به جز یک مورد باید فالس باشه
+    /// از اون موردی که ایز دیفالتش ترو هست برای ثبت سفارش استفاده میکنیم
+    /// </summary>
+    public bool IsDefault { get; set; }
+
     #endregion
 
     #region Relations

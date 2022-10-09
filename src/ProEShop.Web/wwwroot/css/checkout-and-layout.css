@@ -1,18 +1,18 @@
-﻿.checkout-line-in-header {
+.checkout-and-payment-line-in-header {
     width: 100px;
     height: 1px;
 }
 
-#cart-section-in-checkout {
+.cart-section-in-checkout-and-payment {
     color: #f3a3a3;
 }
 
-.color-element-in-checkout {
+.color-element-in-checkout-and-payment {
     width: 14px;
     height: 14px;
 }
 
-.shipping-item-in-checkout span {
+.shipping-item-in-checkout-and-payment span {
     top: 85%;
     right: 83%;
     z-index: 1;

@@ -31,7 +31,6 @@
 	  <None Remove="Pages\Admin\Seller\Index.cshtml.js" />
 	  <None Remove="Pages\Admin\Guarantee\Index.cshtml.js" />
 	  <None Remove="Pages\Admin\Variant\Index.cshtml.js" />
-	  <None Remove="Pages\Cart\Checkout.cshtml.css" />
 	  <None Remove="Pages\Cart\Checkout.cshtml.js" />
 	  <None Remove="Pages\Cart\Index.cshtml.js" />
 	  <None Remove="Pages\Cart\_CartBodyPartial.cshtml.css" />
@@ -76,7 +75,6 @@
 	  <Content Include="Pages\Admin\Guarantee\Index.cshtml.js" />
 	  <Content Include="Pages\Admin\Variant\Index.cshtml.js" />
 	  <Content Include="Pages\Cart\Checkout.cshtml.js" />
-	  <Content Include="Pages\Cart\Checkout.cshtml.css" />
 	  <Content Include="Pages\Cart\Index.cshtml.js" />
 	  <Content Include="Pages\Cart\_CartBodyPartial.cshtml.css" />
 	  <Content Include="Pages\Cart\_EmptyCartPartial.cshtml.css" />

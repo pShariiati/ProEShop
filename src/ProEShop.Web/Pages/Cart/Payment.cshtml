@@ -1,12 +1,11 @@
 ﻿@page
 @using ProEShop.Entities.Enums
-@model ProEShop.Web.Pages.Cart.CheckoutModel
+@model ProEShop.Web.Pages.Cart.PaymentModel
 @{
-    ViewData["Title"] = "ثبت سفارش";
+    ViewData["Title"] = "ایجاد سفارش و پرداخت";
     Layout = "_CheckoutAndLayoutLayout";
 
-    var cartItems = Model.CheckoutPage.CartItems;
-    var userAddress = Model.CheckoutPage.UserAddress;
+    var cartItems = Model.PaymentPage.CartItems;
 
     // ارسال عادی
     var normalProducts = cartItems
@@ -112,12 +111,12 @@
                 <div class="fw-bold">سبد خرید</div>
             </div>
             <div class="checkout-and-payment-line-in-header bg-danger me-3"></div>
-            <div class="d-flex me-3 rem21px">
+            <div class="d-flex me-3 cart-section-in-checkout-and-payment">
                 <i class="bi bi-truck me-2"></i>
                 <div class="fw-bold">زمان و نحوه ارسال</div>
             </div>
             <div class="checkout-and-payment-line-in-header bg-custom-grey me-3"></div>
-            <div class="d-flex text-black-50">
+            <div class="d-flex text-danger rem21px">
                 <i class="bi bi-credit-card me-2"></i>
                 <div class="fw-bold">پرداخت</div>
             </div>
@@ -126,225 +125,243 @@
 
     <div class="row mt-3">
         <div class="col-lg-9">
-            <div class="border rounded-3 p-4 d-flex justify-content-between align-items-center">
-                <div class="d-flex align-items-center">
-                    <div class="me-3">
-                        <i class="bi bi-geo-alt rem21px"></i>
-                    </div>
-                    <div>
-                        <div class="text-black-50 rem13px mb-2">آدرس تحویل سفارش</div>
-                        <div class="fw-bold rem15px mb-2">
-                            @userAddress.ProvinceTitle -
-                            @userAddress.CityTitle -
-                            @userAddress.AddressLine
+
+            <div class="border rounded-3 p-4">
+                <div class="fw-bold mb-5">انتخاب روش پرداخت</div>
+                <div>
+                    <div class="d-flex align-items-center">
+                        <div class="me-3">
+                            <div class="rounded-circle border border-2 border-secondary circle-in-payment"></div>
                         </div>
-                        <div class="rem15px text-black-50">
-                            @userAddress.FullName
+                        <div class="me-3">
+                            <i class="bi bi-wallet2 rem21px text-secondary"></i>
+                        </div>
+                        <div>
+                            <div class="mb-2">کیف پول</div>
+                            <div>
+                                <span class="text-black-50">
+                                    موجودی
+                                </span>
+                                <span>
+                                    ۰
+                                </span>
+                                تومان
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="text-info pointer-cursor rem14px">
-                    <span>تغییر</span>
-                    |
-                    <span>ویرایش</span>
-                    <i class="bi bi-chevron-left rem11px"></i>
+                    <div class="border-top my-4"></div>
+                    <div class="d-flex align-items-center">
+                        <div class="me-3">
+                            <div class="rounded-circle border border-5 circle-in-payment border-info"></div>
+                        </div>
+                        <div class="me-3">
+                            <i class="bi bi-credit-card rem21px text-info"></i>
+                        </div>
+                        <div>پرداخت اینترنتی</div>
+                    </div>
                 </div>
             </div>
 
-            @if (shippingCount > 1)
-            {
-                <div class="text-black-50 rem15px mt-4 d-flex align-items-center">
-                    <i class="bi bi-info-circle me-2 rem19px"></i>
-                    این سفارش در چند نوبت (مرسوله) ارسال می شود چون شامل کالای سنگین یا فوق سنگین است
+            <div class="border rounded-3 p-4 mt-3">
+                <div class="d-flex justify-content-between">
+                    <div>کد تخفیف</div>
+                    <div class="text-info pointer-cursor">
+                        افزودن کد تخفیف +
+                    </div>
                 </div>
-            }
-
-            <div class="border rounded-3 px-2 mt-4">
-
-                <!-- Shipping -->
-                @if (normalProducts.Count > 0)
-                {
-                    <div class="py-4 px-2">
-                        <div class="d-flex align-items-center">
-                            <i class="bi bi-truck rem21px text-danger"></i>
-                            <span class="fw-bold rem18px mx-2">ارسال عادی</span>
-                            <span class="badge rounded-pill bg-secondary">
-                                <span class="persian-numbers">@normalProducts.Count</span>
-                                کالا
-                            </span>
-                        </div>
-
-                        <!-- Shipping items -->
-                        <div class="mt-5 d-flex flex-wrap">
-
-                            @foreach (var normalProduct in normalProducts)
-                            {
-                                <div class="px-2 pb-4 shipping-item-in-checkout-and-payment">
-                                    <div class="position-relative">
-                                        <img src="@WwwRootPaths.ProductImage/@normalProduct.ProductPicture" width="100" height="100" />
-                                        <span class="position-absolute badge rounded-pill bg-secondary persian-numbers">
-                                            @normalProduct.Count
-                                        </span>
-                                    </div>
-                                    @if (normalProduct.ProductVariantVariantValue != null)
-                                    {
-                                        <div class="d-flex align-items-center mt-2">
-                                            @if (normalProduct.ProductVariantVariantIsColor.Value)
-                                            {
-                                                <div class="color-element-in-checkout-and-payment rounded-circle me-1" style="background-color: @normalProduct.ProductVariantVariantColorCode;"></div>
-                                            }
-                                            else
-                                            {
-                                                <i class="bi bi-sort-numeric-up me-1"></i>
-                                            }
-                                            <div class="rem14px text-secondary">@normalProduct.ProductVariantVariantValue</div>
-                                        </div>
-                                    }
-                                </div>
-                            }
-
-                        </div>
-                        <!-- End shipping items -->
-                        <div>
-                            هزینه ارسال:
-                            <span class="fw-bold">
-                                @if (sumPriceOfNormalProducts >= 500000)
-                                {
-                                    @:رایگان
-                                }
-                                else
-                                {
-                                    <span>
-                                        ۳۰,۰۰۰
-                                        تومان
-                                    </span>
-                                }
-                            </span>
-                        </div>
-                    </div>
-                }
-
-                @if (heavyProducts.Count > 0)
-                {
-                    <div class="py-4 px-2">
-                        <div class="d-flex align-items-center">
-                            <i class="bi bi-truck rem21px text-danger"></i>
-                            <span class="fw-bold rem18px mx-2">
-                                ارسال کالاهای بزرگ و سنگین
-                            </span>
-                            <span class="badge rounded-pill bg-secondary">
-                                <span class="persian-numbers">@heavyProducts.Count</span>
-                                کالا
-                            </span>
-                        </div>
-
-                        <!-- Shipping items -->
-                        <div class="mt-5 d-flex flex-wrap">
-
-                            @foreach (var heavyProduct in heavyProducts)
-                            {
-                                <div class="px-2 pb-4 shipping-item-in-checkout-and-payment">
-                                    <div class="position-relative">
-                                        <img src="@WwwRootPaths.ProductImage/@heavyProduct.ProductPicture" width="100" height="100" />
-                                        <span class="position-absolute badge rounded-pill bg-secondary persian-numbers">
-                                            @heavyProduct.Count
-                                        </span>
-                                    </div>
-                                    @if (heavyProduct.ProductVariantVariantValue != null)
-                                    {
-                                        <div class="d-flex align-items-center mt-2">
-                                            @if (heavyProduct.ProductVariantVariantIsColor.Value)
-                                            {
-                                                <div class="color-element-in-checkout-and-payment rounded-circle me-1" style="background-color: @heavyProduct.ProductVariantVariantColorCode;"></div>
-                                            }
-                                            else
-                                            {
-                                                <i class="bi bi-sort-numeric-up me-1"></i>
-                                            }
-                                            <div class="rem14px text-secondary">@heavyProduct.ProductVariantVariantValue</div>
-                                        </div>
-                                    }
-                                </div>
-                            }
-
-                        </div>
-                        <!-- End shipping items -->
-                        <div>
-                            هزینه ارسال:
-                            <span class="fw-bold">
-                                @if (sumPriceOfHeavyProducts >= 500000)
-                                {
-                                    @:رایگان
-                                }
-                                else
-                                {
-                                    <span>
-                                        ۴۵,۰۰۰
-                                        تومان
-                                    </span>
-                                }
-                            </span>
-                        </div>
-                    </div>
-                }
-
-                @if (ultraHeavyProducts.Count > 0)
-                {
-                    <div class="py-4 px-2">
-                        <div class="d-flex align-items-center">
-                            <i class="bi bi-truck rem21px text-warning"></i>
-                            <span class="fw-bold rem18px mx-2">
-                                ارسال کالاهای فوق سنگین
-                            </span>
-                            <span class="badge rounded-pill bg-secondary">
-                                <span class="persian-numbers">@ultraHeavyProducts.Count</span>
-                                کالا
-                            </span>
-                        </div>
-
-                        <!-- Shipping items -->
-                        <div class="mt-5 d-flex flex-wrap">
-
-                            @foreach (var ultraHeavyProduct in ultraHeavyProducts)
-                            {
-                                <div class="px-2 pb-4 shipping-item-in-checkout-and-payment">
-                                    <div class="position-relative">
-                                        <img src="@WwwRootPaths.ProductImage/@ultraHeavyProduct.ProductPicture" width="100" height="100" />
-                                        <span class="position-absolute badge rounded-pill bg-secondary persian-numbers">
-                                            @ultraHeavyProduct.Count
-                                        </span>
-                                    </div>
-                                    @if (ultraHeavyProduct.ProductVariantVariantValue != null)
-                                    {
-                                        <div class="d-flex align-items-center mt-2">
-                                            @if (ultraHeavyProduct.ProductVariantVariantIsColor.Value)
-                                            {
-                                                <div class="color-element-in-checkout-and-payment rounded-circle me-1" style="background-color: @ultraHeavyProduct.ProductVariantVariantColorCode;"></div>
-                                            }
-                                            else
-                                            {
-                                                <i class="bi bi-sort-numeric-up me-1"></i>
-                                            }
-                                            <div class="rem14px text-secondary">@ultraHeavyProduct.ProductVariantVariantValue</div>
-                                        </div>
-                                    }
-                                </div>
-                            }
-
-                        </div>
-                        <!-- End shipping items -->
-                        <div>
-                            هزینه ارسال:
-                            <span class="persian-numbers fw-bold">
-                                باربری
-                                (هزینه ارسال به صورت پس کرایه - حداقل ۱۲۰ هزار تومان)
-                            </span>
-                        </div>
-                    </div>
-                }
-
-                <!-- End shipping -->
             </div>
+
+            <div class="border rounded-3 p-4 mt-3">
+                کارت هدیه
+            </div>
+
+            <div class="border rounded-3 p-4 mt-3">
+                <div>
+                    خلاصه سفارش
+                </div>
+
+                <div>
+                    @if (normalProducts.Count > 0)
+                    {
+                        <div class="mt-4">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-truck text-danger rem21px me-2"></i>
+                                <span class="rounded-pill bg-custom-grey rem12px px-2 text-black-50">
+                                    <span class="persian-numbers">@normalProducts.Count</span>
+                                    کالا
+                                </span>
+                            </div>
+                            <div class="rem14px mt-2 d-flex justify-content-between text-secondary">
+                                <div>
+                                    ارسال عادی
+                                    &nbsp;
+                                    -
+                                    &nbsp;
+                                    هزینه ارسال:
+                                    @if (sumPriceOfNormalProducts >= 500000)
+                                    {
+                                        @:رایگان
+                                    }
+                                    else
+                                    {
+                                        @:۳۰,۰۰۰ تومان
+                                    }
+                                </div>
+                                <div>
+                                    جزئیات مرسوله
+                                    <span class="bi bi-chevron-down"></span>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-wrap mt-4">
+                                @foreach (var normalProduct in normalProducts)
+                                {
+                                    <div class="shipping-item-in-checkout-and-payment px-2 pb-4">
+                                        <div class="position-relative">
+                                            <img src="@WwwRootPaths.ProductImage/@normalProduct.ProductPicture" width="100" height="100">
+                                            <span class="position-absolute badge rounded-pill bg-secondary persian-numbers">
+                                                @normalProduct.Count
+                                            </span>
+                                        </div>
+                                        @if (normalProduct.ProductVariantVariantValue != null)
+                                        {
+                                            <div class="d-flex align-items-center mt-2">
+                                                @if (normalProduct.ProductVariantVariantIsColor.Value)
+                                                {
+                                                    <div class="color-element-in-checkout-and-payment rounded-circle me-1" style="background-color: @normalProduct.ProductVariantVariantColorCode;"></div>
+                                                }
+                                                else
+                                                {
+                                                    <i class="bi bi-sort-numeric-up me-1"></i>
+                                                }
+                                                <div class="rem14px text-secondary">@normalProduct.ProductVariantVariantValue</div>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                    @if (heavyProducts.Count > 0)
+                    {
+                        <div class="mt-4">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-truck text-danger rem21px me-2"></i>
+                                <span class="rounded-pill bg-custom-grey rem12px px-2 text-black-50">
+                                    <span class="persian-numbers">@heavyProducts.Count</span>
+                                    کالا
+                                </span>
+                            </div>
+                            <div class="rem14px mt-2 d-flex justify-content-between text-secondary">
+                                <div>
+                                    ارسال کالاهای بزرگ و سنگین
+                                    &nbsp;
+                                    -
+                                    &nbsp;
+                                    هزینه ارسال:
+                                    @if (sumPriceOfHeavyProducts >= 500000)
+                                    {
+                                        @:رایگان
+                                    }
+                                    else
+                                    {
+                                        @:۴۵,۰۰۰ تومان
+                                    }
+                                </div>
+                                <div>
+                                    جزئیات مرسوله
+                                    <span class="bi bi-chevron-down"></span>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-wrap mt-4">
+                                @foreach (var heavyProduct in heavyProducts)
+                                {
+                                    <div class="shipping-item-in-checkout-and-payment px-2 pb-4">
+                                        <div class="position-relative">
+                                            <img src="@WwwRootPaths.ProductImage/@heavyProduct.ProductPicture" width="100" height="100">
+                                            <span class="position-absolute badge rounded-pill bg-secondary persian-numbers">
+                                                @heavyProduct.Count
+                                            </span>
+                                        </div>
+                                        @if (heavyProduct.ProductVariantVariantValue != null)
+                                        {
+                                            <div class="d-flex align-items-center mt-2">
+                                                @if (heavyProduct.ProductVariantVariantIsColor.Value)
+                                                {
+                                                    <div class="color-element-in-checkout-and-payment rounded-circle me-1" style="background-color: @heavyProduct.ProductVariantVariantColorCode;"></div>
+                                                }
+                                                else
+                                                {
+                                                    <i class="bi bi-sort-numeric-up me-1"></i>
+                                                }
+                                                <div class="rem14px text-secondary">@heavyProduct.ProductVariantVariantValue</div>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                    @if (ultraHeavyProducts.Count > 0)
+                    {
+                        <div class="mt-4">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-truck text-warning rem21px me-2"></i>
+                                <span class="rounded-pill bg-custom-grey rem12px px-2 text-black-50">
+                                    <span class="persian-numbers">@ultraHeavyProducts.Count</span>
+                                    کالا
+                                </span>
+                            </div>
+                            <div class="rem14px mt-2 d-flex justify-content-between text-secondary">
+                                <div>
+                                    ارسال کالاهای فوق سنگین
+                                    &nbsp;
+                                    -
+                                    &nbsp;
+                                    هزینه ارسال:
+                                    باربری (هزینه ارسال به صورت پس کرایه - حداقل ۱۲۰ هزار تومان)
+                                </div>
+                                <div>
+                                    جزئیات مرسوله
+                                    <span class="bi bi-chevron-down"></span>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-wrap mt-4">
+                                @foreach (var ultraHeavyProduct in ultraHeavyProducts)
+                                {
+                                    <div class="shipping-item-in-checkout-and-payment px-2 pb-4">
+                                        <div class="position-relative">
+                                            <img src="@WwwRootPaths.ProductImage/@ultraHeavyProduct.ProductPicture" width="100" height="100">
+                                            <span class="position-absolute badge rounded-pill bg-secondary persian-numbers">
+                                                @ultraHeavyProduct.Count
+                                            </span>
+                                        </div>
+                                        @if (ultraHeavyProduct.ProductVariantVariantValue != null)
+                                        {
+                                            <div class="d-flex align-items-center mt-2">
+                                                @if (ultraHeavyProduct.ProductVariantVariantIsColor.Value)
+                                                {
+                                                    <div class="color-element-in-checkout-and-payment rounded-circle me-1" style="background-color: @ultraHeavyProduct.ProductVariantVariantColorCode;"></div>
+                                                }
+                                                else
+                                                {
+                                                    <i class="bi bi-sort-numeric-up me-1"></i>
+                                                }
+                                                <div class="rem14px text-secondary">@ultraHeavyProduct.ProductVariantVariantValue</div>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="border rounded-3 p-4 my-3 rem14px text-secondary d-flex align-items-center">
+                <i class="bi bi-info-circle rem19px me-2"></i>
+                برای دریافت فاکتور، بعد از دریافت سفارش به حساب کاربری و صفحه جزئیات سفارش سر بزنید
+            </div>
+
         </div>
 
         <div class="col-lg-3 ps-0">
@@ -486,9 +503,9 @@
                         </div>
                     </div>
                     <div class="d-grid mt-4">
-                        <a asp-page="Payment" class="btn btn-danger rounded-3 fw-bold py-2">
+                        <button class="btn btn-danger rounded-3 fw-bold py-2">
                             ادامه
-                        </a>
+                        </button>
                     </div>
                     <div class="d-flex justify-content-between align-items-center bg-custom-grey mt-3 p-3 rounded-bottom">
                         <div class="rem14px">
@@ -524,5 +541,5 @@
 
 @section CustomScripts
     {
-    <script src="~/Pages/Cart/Checkout.cshtml.js"></script>
+    <script src="~/Pages/Cart/Payment.cshtml.js"></script>
 }
