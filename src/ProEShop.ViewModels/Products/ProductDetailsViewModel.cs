@@ -12,7 +12,7 @@ public class ProductDetailsViewModel
     public long Id { get; set; }
 
     [Display(Name = "ابعاد")]
-    public ProductDimensions Dimensions { get; set; }
+    public Dimension Dimension { get; set; }
 
     [Display(Name = "دلیل رد شدن محصول")]
     [MakeTinyMceRequired]

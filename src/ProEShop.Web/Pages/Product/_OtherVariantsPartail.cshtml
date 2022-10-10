@@ -41,7 +41,19 @@
                                     }
                                     @variant.SellerShopName
                                 </td>
-                                <td class="persian-numbers">@variant.GuaranteeFullTitle</td>
+                                <td class="persian-numbers">
+                                    @{
+                                        var guaranteeTitle = variant.GuaranteeFullTitle;
+                                        if (guaranteeTitle.Contains("0 ماهه"))
+                                        {
+                                            @:گارانتی اصالت و سلامت فیزیکی کالا
+                                        }
+                                        else
+                                        {
+                                            @guaranteeTitle
+                                        }
+                                    }
+                                </td>
                                 <td>
                                     <div class="@(variant.IsDiscountActive ? "d-none" : string.Empty)">
                                         <span class="persian-numbers">

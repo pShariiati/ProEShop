@@ -66,5 +66,7 @@ public class ProductVariant : EntityBase, IAuditableEntity
 
     public ICollection<ProductStock> ProductStocks { get; set; }
 
+    public ICollection<ParcelPostItem> ParcelPostItems { get; set; }
+
     #endregion
 }

@@ -124,7 +124,7 @@ public class IndexModel : PageBase
         return Json(new JsonResultOperation(true, "محصول مورد نظر با موفقیت رد شد"));
     }
 
-    public async Task<IActionResult> OnPostConfirmProduct(long id, ProductDimensions dimensions)
+    public async Task<IActionResult> OnPostConfirmProduct(long id, Dimension dimension)
     {
         if (id < 1)
         {
@@ -138,7 +138,7 @@ public class IndexModel : PageBase
         }
 
         product.Status = ProductStatus.Confirmed;
-        product.Dimensions = dimensions;
+        product.Dimension = dimension;
         product.RejectReason = null;
         await _uow.SaveChangesAsync();
         return Json(new JsonResultOperation(true, "محصول مورد نظر با موفقیت تایید شد"));

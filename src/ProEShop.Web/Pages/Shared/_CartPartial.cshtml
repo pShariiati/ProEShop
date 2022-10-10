@@ -7,7 +7,11 @@
     // اگر تخفیف فعال داشته باشه از قیمت آف استفاده میکنیم
     // اگر تخفیف نداشته باشه از قیمت اصلی استفاده میکنیم
     var totalPriceOfCart = Model
-        .Sum(x => x.IsDiscountActive ? x.ProductVariantOffPrice.Value : x.ProductVariantPrice);
+        .Sum(x => 
+                (x.IsDiscountActive ? x.ProductVariantOffPrice.Value : x.ProductVariantPrice)
+                *
+                x.Count
+            );
 }
 <div all-products-count-in-cart="@allProductsCountInCart">
     <div class="d-flex justify-content-between rem14px p-2 pb-3">

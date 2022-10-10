@@ -33,7 +33,6 @@ public class Brand : EntityBase, IAuditableEntity
     public bool IsIranianBrand { get; set; }
 
     [Display(Name = "لوگوی برند")]
-    [Required]
     [MaxLength(50)]
     public string LogoPicture { get; set; }
 

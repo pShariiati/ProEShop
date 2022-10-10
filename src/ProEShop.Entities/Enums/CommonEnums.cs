@@ -6,7 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ProEShop.Entities.Enums;
-public enum ProductDimensions : byte
+
+public enum Dimension : byte
 {
     [Display(Name = "عادی")]
     Normal,

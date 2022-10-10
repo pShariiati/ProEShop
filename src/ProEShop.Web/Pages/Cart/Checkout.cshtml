@@ -10,17 +10,17 @@
 
     // ارسال عادی
     var normalProducts = cartItems
-        .Where(x => x.ProductVariantProductDimensions == ProductDimensions.Normal)
+        .Where(x => x.ProductVariantProductDimension == Dimension.Normal)
         .ToList();
 
     // ارسال کالاهای سنگین
     var heavyProducts = cartItems
-        .Where(x => x.ProductVariantProductDimensions == ProductDimensions.Heavy)
+        .Where(x => x.ProductVariantProductDimension == Dimension.Heavy)
         .ToList();
 
     // ارسال کالاهای فوق سنگین
     var ultraHeavyProducts = cartItems
-        .Where(x => x.ProductVariantProductDimensions == ProductDimensions.UltraHeavy)
+        .Where(x => x.ProductVariantProductDimension == Dimension.UltraHeavy)
         .ToList();
 
     // قیمت کل کالاهایی که ابعادشان عادی است
@@ -51,11 +51,15 @@
 
     // قیمت نهایی بدون محاسبه تخفیف
     var totalPrice = cartItems
-        .Sum(x => x.ProductVariantPrice);
+        .Sum(x => x.ProductVariantPrice * x.Count);
 
     // قیمت نهایی با محاسبه تخفیف
     var totalPriceWithDiscount = cartItems
-        .Sum(x => x.IsDiscountActive ? x.ProductVariantOffPrice.Value : x.ProductVariantPrice);
+        .Sum(x =>
+            (x.IsDiscountActive ? x.ProductVariantOffPrice.Value : x.ProductVariantPrice)
+            *
+            x.Count
+        );
 
     // قیمت کل بدون تخفیف
     // منهای قیمت کل با محاسبه تخفیف
@@ -480,7 +484,7 @@
                         </div>
                         <div class="rem16px fw-bold">
                             <span class="persian-numbers">
-                                @totalPriceWithDiscount.ToString("#,0")
+                                @((totalPriceWithDiscount + sumPriceOfShipping).ToString("#,0"))
                             </span>
                             تومان
                         </div>

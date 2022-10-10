@@ -60,7 +60,7 @@ public class Product : EntityBase, IAuditableEntity
     /// <summary>
     /// ابعاد
     /// </summary>
-    public ProductDimensions Dimensions { get; set; }
+    public Dimension Dimension { get; set; }
 
     #endregion
 

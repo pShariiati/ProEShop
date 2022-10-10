@@ -47,11 +47,15 @@ public class ShowCartInCartPageViewModel
 
     public string ProductPicture { get; set; }
 
+    public int ProductVariantProductProductCode { get; set; }
+
+    public string ProductVariantProductSlug { get; set; }
+
     public byte Score
     {
         get
         {
-            var result = Math.Ceiling((double)ProductVariantPrice / 10000);
+            var result = Math.Ceiling((ProductVariantPrice * Count) / (double)10000);
             if (result <= 1)
                 return 1;
             if (result >= 150)

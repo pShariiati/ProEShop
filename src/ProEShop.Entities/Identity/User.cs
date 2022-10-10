@@ -53,6 +53,8 @@ public class User : IdentityUser<long>, IAuditableEntity
 
     public ICollection<Cart> Carts { get; set; }
 
+    public ICollection<Order> Orders { get; set; }
+
     #endregion
 }
 

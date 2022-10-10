@@ -53,8 +53,8 @@
                     @if (Model.Status == ProductStatus.Confirmed)
                     {
                         <span class="btn btn-primary">
-                            @Html.DisplayNameFor(x=> x.Dimensions):
-                            @Model.Dimensions.GetEnumDisplayName()
+                            @Html.DisplayNameFor(x=> x.Dimension):
+                            @Model.Dimension.GetEnumDisplayName()
                         </span>
                     }
                 </p>
@@ -200,8 +200,8 @@
                         <input asp-for="Id" />
                         
                         <div class="mb-3">
-                            <label asp-for="Dimensions" class="form-label"></label>
-                            <select class="form-select" asp-for="Dimensions" asp-items="Html.GetEnumSelectList<Entities.Enums.ProductDimensions>()">
+                            <label asp-for="Dimension" class="form-label"></label>
+                            <select class="form-select" asp-for="Dimension" asp-items="Html.GetEnumSelectList<Entities.Enums.Dimension>()">
                             </select>
                         </div>
 

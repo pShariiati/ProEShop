@@ -57,6 +57,7 @@ public class GuaranteeService : GenericService<Guarantee>, IGuaranteeService
     {
         return _guarantees
             .Where(x => x.Title.Contains(input))
+            .Where(x => x.IsConfirmed)
             .Select(x => new ShowSelect2DataByAjaxViewModel()
             {
                 Id = x.Id,

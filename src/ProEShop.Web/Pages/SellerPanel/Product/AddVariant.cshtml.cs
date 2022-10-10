@@ -7,6 +7,7 @@ using ProEShop.Common.IdentityToolkit;
 using ProEShop.DataLayer.Context;
 using ProEShop.Entities;
 using ProEShop.Services.Contracts;
+using ProEShop.ViewModels;
 using ProEShop.ViewModels.Variants;
 
 namespace ProEShop.Web.Pages.SellerPanel.Product;
@@ -113,6 +114,18 @@ public class AddVariantModel : SellerPanelBase
     {
         var result = await _guaranteeService
             .SearchOnGuaranteesForSelect2(input);
+
+        var specificGuarantee = result.Select((value, index) => new { value, index })
+            .SingleOrDefault(p => p.value.Text.Contains("0 ماهه"));
+
+        if (specificGuarantee != null)
+        {
+            result[specificGuarantee.index] = new ShowSelect2DataByAjaxViewModel
+            {
+                Text = "گارانتی اصالت و سلامت فیزیکی کالا",
+                Id = specificGuarantee.value.Id
+            };
+        }
 
         return Json(new
         {

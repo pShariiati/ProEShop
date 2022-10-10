@@ -32,23 +32,13 @@ public class AddressInCheckoutPageViewModel
 
 public class ShowCartInCheckoutPageViewModel
 {
-    public string ProductVariantProductPersianTitle { get; set; }
-
-    public string ProductVariantGuaranteeFullTitle { get; set; }
-
-    public string ProductVariantSellerShopName { get; set; }
-
     public bool IsDiscountActive { get; set; }
-
-    public long ProductVariantId { get; set; }
 
     /// <summary>
     /// موجودی انبار برای این محصول
     /// اگه بیشتر از سه بود نیازی به مقدار دهی این پراپرتی نیست
     /// </summary>
     public byte ProductVariantCount { get; set; }
-
-    public short ProductVariantMaxCountInCart { get; set; }
 
     public int ProductVariantPrice { get; set; }
 
@@ -67,13 +57,13 @@ public class ShowCartInCheckoutPageViewModel
 
     public string ProductPicture { get; set; }
 
-    public ProductDimensions ProductVariantProductDimensions { get; set; }
+    public Dimension ProductVariantProductDimension { get; set; }
 
     public byte Score
     {
         get
         {
-            var result = Math.Ceiling((double)ProductVariantPrice / 10000);
+            var result = Math.Ceiling((ProductVariantPrice * Count) / (double)10000);
             if (result <= 1)
                 return 1;
             if (result >= 150)
