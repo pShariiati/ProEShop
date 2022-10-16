@@ -34,12 +34,6 @@ public class ShowCartInCheckoutPageViewModel
 {
     public bool IsDiscountActive { get; set; }
 
-    /// <summary>
-    /// موجودی انبار برای این محصول
-    /// اگه بیشتر از سه بود نیازی به مقدار دهی این پراپرتی نیست
-    /// </summary>
-    public byte ProductVariantCount { get; set; }
-
     public int ProductVariantPrice { get; set; }
 
     public int? ProductVariantOffPrice { get; set; }

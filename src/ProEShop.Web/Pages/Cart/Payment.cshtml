@@ -9,26 +9,34 @@
 
     // ارسال عادی
     var normalProducts = cartItems
-        .Where(x => x.ProductVariantProductDimensions == Dimension.Normal)
+        .Where(x => x.ProductVariantProductDimension == Dimension.Normal)
         .ToList();
 
     // ارسال کالاهای سنگین
     var heavyProducts = cartItems
-        .Where(x => x.ProductVariantProductDimensions == Dimension.Heavy)
+        .Where(x => x.ProductVariantProductDimension == Dimension.Heavy)
         .ToList();
 
     // ارسال کالاهای فوق سنگین
     var ultraHeavyProducts = cartItems
-        .Where(x => x.ProductVariantProductDimensions == Dimension.UltraHeavy)
+        .Where(x => x.ProductVariantProductDimension == Dimension.UltraHeavy)
         .ToList();
 
     // قیمت کل کالاهایی که ابعادشان عادی است
     var sumPriceOfNormalProducts = normalProducts
-        .Sum(x => x.IsDiscountActive ? x.ProductVariantOffPrice.Value : x.ProductVariantPrice);
+        .Sum(x =>
+            (x.IsDiscountActive ? x.ProductVariantOffPrice.Value : x.ProductVariantPrice)
+            *
+            x.Count
+        );
 
     // قیمت کل کالاهایی که ابعادشان سنگین است
     var sumPriceOfHeavyProducts = heavyProducts
-        .Sum(x => x.IsDiscountActive ? x.ProductVariantOffPrice.Value : x.ProductVariantPrice);
+        .Sum(x =>
+            (x.IsDiscountActive ? x.ProductVariantOffPrice.Value : x.ProductVariantPrice)
+            *
+            x.Count
+        );
 
     // این سفارش در چند مرسوله ارسال میشود ؟
     var shippingCount = 0;
@@ -507,9 +515,14 @@
                         </div>
                     </div>
                     <div class="d-grid mt-4">
-                        <button class="btn btn-danger rounded-3 fw-bold py-2">
-                            ادامه
-                        </button>
+                        <form method="post" asp-page-handler="CreateOrderAndPay" class="public-ajax-form"
+                              functionNameToCallInTheEnd="createOrderAndPayFunction">
+                            <div class="d-grid">
+                                <button class="btn btn-danger rounded-3 fw-bold py-2">
+                                    پرداخت
+                                </button>
+                            </div>
+                        </form>
                     </div>
                     <div class="d-flex justify-content-between align-items-center bg-custom-grey mt-3 p-3 rounded-bottom">
                         <div class="rem14px">

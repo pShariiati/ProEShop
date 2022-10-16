@@ -1,39 +1,32 @@
-﻿using ProEShop.Entities.Enums;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using ProEShop.Entities.Enums;
 
 namespace ProEShop.ViewModels.Carts;
 
 /// <summary>
-/// ویوو مدل صفحه
-/// Payment
+/// ویوو مدل برای بخش ساخت سفارش
+/// محصولات داخل سبد خرید کاربر رو میخونیم
 /// </summary>
-public class PaymentViewModel
+public class ShowCartForCreateOrderAndPayViewModel
 {
-    /// <summary>
-    /// آیتم های داخل سبد خرید کاربر
-    /// </summary>
-    public List<ShowCartInPaymentPageViewModel> CartItems { get; set; }
-}
+    public long ProductVariantGuaranteeId { get; set; }
 
-public class ShowCartInPaymentPageViewModel
-{
     public bool IsDiscountActive { get; set; }
+
+    public long ProductVariantId { get; set; }
 
     public int ProductVariantPrice { get; set; }
 
     public int? ProductVariantOffPrice { get; set; }
 
-    public string ProductVariantVariantColorCode { get; set; }
-
-    public bool? ProductVariantVariantIsColor { get; set; }
-
-    public string ProductVariantVariantValue { get; set; }
-
     /// <summary>
     /// تعداد محصولی که داخل سبد خرید است
     /// </summary>
     public short Count { get; set; }
-
-    public string ProductPicture { get; set; }
 
     public Dimension ProductVariantProductDimension { get; set; }
 

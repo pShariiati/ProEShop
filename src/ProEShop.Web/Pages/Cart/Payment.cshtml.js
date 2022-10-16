@@ -10,3 +10,8 @@
             $(this).dropdown('hide');
         });
 });
+
+function createOrderAndPayFunction(message, data) {
+    console.log(message);
+    console.log(data);
+}

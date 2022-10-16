@@ -25,11 +25,19 @@
 
     // قیمت کل کالاهایی که ابعادشان عادی است
     var sumPriceOfNormalProducts = normalProducts
-        .Sum(x => x.IsDiscountActive ? x.ProductVariantOffPrice.Value : x.ProductVariantPrice);
+        .Sum(x => 
+                (x.IsDiscountActive ? x.ProductVariantOffPrice.Value : x.ProductVariantPrice)
+                *
+                x.Count
+            );
 
     // قیمت کل کالاهایی که ابعادشان سنگین است
     var sumPriceOfHeavyProducts = heavyProducts
-        .Sum(x => x.IsDiscountActive ? x.ProductVariantOffPrice.Value : x.ProductVariantPrice);
+        .Sum(x => 
+            (x.IsDiscountActive ? x.ProductVariantOffPrice.Value : x.ProductVariantPrice)
+            *
+            x.Count
+        );
 
     // این سفارش در چند مرسوله ارسال میشود ؟
     var shippingCount = 0;

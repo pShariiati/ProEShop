@@ -13,4 +13,11 @@ public interface IAddressService : IGenericService<Address>
     /// <param name="userId"></param>
     /// <returns></returns>
     Task<AddressInCheckoutPageViewModel> GetAddressForCheckoutPage(long userId);
+
+    /// <summary>
+    /// گرفتن آدرس کاربر برای بخش ایجاد سفارش
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    Task<(bool HasUserAddress, long AddressId)> GetAddressForCreateOrderAndPay(long userId);
 }

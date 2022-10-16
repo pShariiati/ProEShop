@@ -43,7 +43,8 @@ public class ParcelPost : EntityBase, IAuditableEntity
 
     public Order Order { get; set; }
 
-    public ICollection<ParcelPostItem> ParcelPostItem { get; set; }
+    public ICollection<ParcelPostItem> ParcelPostItems { get; set; }
+        = new List<ParcelPostItem>();
 
     #endregion
 }

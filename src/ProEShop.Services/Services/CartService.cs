@@ -73,6 +73,15 @@ public class CartService : CustomGenericService<Cart>, ICartService
             ).ToListAsync();
     }
 
+    public Task<List<ShowCartForCreateOrderAndPayViewModel>> GetCartsForCreateOrderAndPay(long userId)
+    {
+        return _carts.AsNoTracking()
+            .Where(x => x.UserId == userId)
+            .ProjectTo<ShowCartForCreateOrderAndPayViewModel>(
+                configuration: _mapper.ConfigurationProvider, parameters: new { now = DateTime.Now }
+            ).ToListAsync();
+    }
+
     public Task<List<Cart>> GetAllCartItems(long userId)
     {
         return _carts.Where(x => x.UserId == userId).ToListAsync();

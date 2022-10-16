@@ -39,5 +39,8 @@ public class Order : EntityBase, IAuditableEntity
 
     public Address Address { get; set; }
 
+    public ICollection<ParcelPost> ParcelPosts { get; set; }
+        = new List<ParcelPost>();
+
     #endregion
 }
