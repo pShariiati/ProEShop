@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Parbad;
+using Parbad.Gateway.ZarinPal;
 using ProEShop.Common.Helpers;
 using ProEShop.Common.IdentityToolkit;
 using ProEShop.DataLayer.Context;
@@ -19,17 +21,20 @@ public class PaymentModel : PageBase
     private readonly IAddressService _addressService;
     private readonly IOrderService _orderService;
     private readonly IUnitOfWork _uow;
+    private readonly IOnlinePayment _onlinePayment;
 
     public PaymentModel(
         ICartService cartService,
         IAddressService addressService,
         IOrderService orderService,
-        IUnitOfWork uow)
+        IUnitOfWork uow,
+        IOnlinePayment onlinePayment)
     {
         _cartService = cartService;
         _addressService = addressService;
         _orderService = orderService;
         _uow = uow;
+        _onlinePayment = onlinePayment;
     }
 
     #endregion
@@ -53,6 +58,7 @@ public class PaymentModel : PageBase
 
     public async Task<IActionResult> OnPostCreateOrderAndPay(CreateOrderAndPayViewModel model)
     {
+        // پرداخت هزینه سفارش از کیف پول کاربر
         if (model.PayFormWallet)
         {
             //todo: pay order price form wallet
@@ -76,6 +82,11 @@ public class PaymentModel : PageBase
 
         // محصولات داخل سبد خرید کاربر
         var cartItems = await _cartService.GetCartsForCreateOrderAndPay(userId);
+
+        if (cartItems.Count < 1)
+        {
+            return Json(new JsonResultOperation(false));
+        }
 
         // ارسال عادی
         var normalProducts = cartItems
@@ -195,12 +206,76 @@ public class PaymentModel : PageBase
             orderToAdd.ParcelPosts.Add(parcelPostToAdd);
         }
 
+        #region Empty user cart items
+
+        // باید سبد خرید کاربر را خالی کنیم
+        var cartItemsToRemove = new List<Entities.Cart>();
+
+        foreach (var cartItem in cartItems)
+        {
+            cartItemsToRemove.Add(new Entities.Cart()
+            {
+                ProductVariantId = cartItem.ProductVariantId,
+                UserId = userId
+            });
+        }
+
+        //_cartService.RemoveRange(cartItemsToRemove);
+
+        #endregion
+
         await _orderService.AddAsync(orderToAdd);
         await _uow.SaveChangesAsync();
 
-        return Json(new JsonResultOperation(true, "اوکی")
+        // قیمت نهایی محصولات داخل سبد خرید کاربر با محاسبه تخفیف آنها
+        var totalPriceWithDiscount = cartItems
+            .Sum(x =>
+                (x.IsDiscountActive ? x.ProductVariantOffPrice.Value : x.ProductVariantPrice)
+                *
+                x.Count
+            );
+
+        // مجموع قیمت حمل و نقل مرسوله ها
+        var sumPriceOfShipping = 0;
+
+        if (sumPriceOfNormalProducts < 500000 && normalProducts.Count > 0)
         {
-            Data = "test data"
+            sumPriceOfShipping += 30000;
+        }
+
+        if (sumPriceOfHeavyProducts < 500000 && heavyProducts.Count > 0)
+        {
+            sumPriceOfShipping += 45000;
+        }
+
+        // قیمت محصولات داخل سبد خرید کاربر به علاوه هزینه حمل و نقل مرسوله ها
+        var finalPrice = totalPriceWithDiscount + sumPriceOfShipping;
+
+        // کاربر بعد از درگاه به چه آدرسی هدایت شود
+        var callbackUrl = Url.Page("Index", "Test", null, Request.Scheme);
+
+        var result = await _onlinePayment.RequestAsync(invoice =>
+        {
+            invoice
+                .SetAmount(finalPrice)
+                .SetCallbackUrl(callbackUrl)
+                .UseZarinPal()
+                .SetZarinPalData(new ZarinPalInvoice("No description"));
+            invoice.UseAutoIncrementTrackingNumber();
         });
+
+        if (result.IsSucceed)
+        {
+            return Json(new JsonResultOperation(true, "اوکی")
+            {
+                // آدرسی که کاربر باید به آن هدایت شود را به سمت کلاینت برگشت میزنیم که کاربر
+                // را با استفاده از جاوا اسکریپت به آن آدرس هدایت کنیم
+                Data = result.GatewayTransporter.Descriptor.Url
+            });
+        }
+        else
+        {
+            return Json(new JsonResultOperation(false));
+        }
     }
 }

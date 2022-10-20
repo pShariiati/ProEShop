@@ -12,6 +12,6 @@
 });
 
 function createOrderAndPayFunction(message, data) {
-    console.log(message);
-    console.log(data);
+    // هدایت کاربر به آدرس درگاه
+    location.href = data;
 }

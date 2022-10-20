@@ -107,6 +107,8 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.0" />
+		<PackageReference Include="Parbad.AspNetCore" Version="1.2.0" />
+		<PackageReference Include="Parbad.Gateway.ZarinPal" Version="1.2.0" />
 	</ItemGroup>
 
 	<ItemGroup>
