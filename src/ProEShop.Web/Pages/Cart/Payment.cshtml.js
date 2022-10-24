@@ -11,7 +11,6 @@
         });
 });
 
-function createOrderAndPayFunction(message, data) {
-    // هدایت کاربر به آدرس درگاه
-    location.href = data;
-}
+$('form').submit(function() {
+    $('#create-order-and-pay-button').attr('disabled', 'disabled');
+});

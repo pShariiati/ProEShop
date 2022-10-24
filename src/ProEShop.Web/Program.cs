@@ -8,10 +8,12 @@ using System.Text.Unicode;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Parbad.Builder;
+using Parbad.Gateway.Mellat;
 using Parbad.Storage.EntityFrameworkCore.Builder;
 using ProEShop.DataLayer.Context;
-using ProEShop.Web.Mappings;
 using Parbad.Gateway.ZarinPal;
+using Parbad.Gateway.ParbadVirtual;
+using ProEShop.Web.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 var parbadConnectionString = builder.Configuration.GetConnectionString("ParbadDataContextConnection");
@@ -45,15 +47,33 @@ builder.Services.AddParbad()
     .ConfigureGateways(gateways =>
     {
         gateways
-            .AddZarinPal()
-            .WithAccounts(accounts =>
-            {
-                accounts.AddInMemory(account =>
-                {
-                    account.MerchantId = "test";
-                    account.IsSandbox = true;
-                });
-            });
+        .AddZarinPal()
+            .WithAccounts(source => source.Add<ParbadGatewaysAccounts>(ServiceLifetime.Transient));
+        //.WithAccounts(accounts =>
+        //{
+        //    accounts.AddInMemory(account =>
+        //    {
+        //        account.MerchantId = "test";
+        //        account.IsSandbox = true;
+        //    });
+        //});
+
+        gateways
+            .AddMellat()
+            .WithAccounts(source => source.Add<ParbadGatewaysAccounts>(ServiceLifetime.Transient));
+        //.WithAccounts(accounts =>
+        //{
+        //    accounts.AddInMemory(account =>
+        //    {
+        //        account.TerminalId = 123;
+        //        account.UserName = "MyId";
+        //        account.UserPassword = "MyPassword";
+        //    });
+        //});
+
+        gateways
+            .AddParbadVirtual()
+            .WithOptions(options => options.GatewayPath = "/Cart/Payment/VirtualGateway");
     })
     .ConfigureHttpContext(builder => builder.UseDefaultAspNetCore());
 
@@ -91,5 +111,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
+app.UseParbadVirtualGateway();
 
 app.Run();

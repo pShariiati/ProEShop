@@ -637,10 +637,13 @@ $(document).on('blur', 'form input', function () {
         currentForm.find('div[class*="validation-summary"] ul').html('');
     }
 });
-
-$(document).on('change', 'form input.custom-md-persian-datepicker, form select, form input[type="checkbox"], form input[type="file"]', function () {
-    $(this).parents('form').valid();
-});
+if (jQuery.validator) {
+    $(document).on('change',
+        'form input.custom-md-persian-datepicker, form select, form input[type="checkbox"], form input[type="file"]',
+        function () {
+            $(this).parents('form').valid();
+        });
+}
 
 
 // این فانکشن هر فرمی را به صورت پست به سمت سرور با استفاده از ایجکس
@@ -936,7 +939,7 @@ String.prototype.toPersinaDigit = function () {
 }
 
 // Add comma after 3 digits
-String.prototype.addCommaToDigits = function() {
+String.prototype.addCommaToDigits = function () {
     return this.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 

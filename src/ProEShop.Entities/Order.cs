@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using ProEShop.Entities.AuditableEntity;
+using ProEShop.Entities.Enums;
 using ProEShop.Entities.Identity;
 
 namespace ProEShop.Entities;
@@ -17,12 +18,24 @@ public class Order : EntityBase, IAuditableEntity
     /// <summary>
     /// شماره سفارش
     /// باید یونیک باشد
+    /// این عدد از طریق
+    /// TrackingNumber
+    /// پرباد مقدار دهی میشود
     /// </summary>
-    public int OrderNumber { get; set; }
+    public long OrderNumber { get; set; }
 
     public DateTime CreatedDateTime { get; set; }
 
     public long AddressId { get; set; }
+
+    /// <summary>
+    /// کد پیگیری بانک
+    /// بعد از پرداخت وجه سفارش
+    /// چرا از عدد استفاده نکرده ایم و نوع این پراپرتی از جنس رشته است ؟
+    /// چون امکان دارد که در داخل کد پیگیری یکی از بانک ها حروف هم وجود داشته باشد
+    /// </summary>
+    [MaxLength(100)]
+    public string BankTransactionCode { get; set; }
 
     /// <summary>
     /// آیا این سفارش توسط مقدار داخل کیف پول کاربر پرداخت شده است ؟
@@ -30,6 +43,11 @@ public class Order : EntityBase, IAuditableEntity
     /// اگر هم ترو باشد، یعنی توسط کیف پول پرداخت شده است
     /// </summary>
     public bool PayFromWallet { get; set; }
+
+    /// <summary>
+    /// از کدام درگاه، پرداختی انجام شده است
+    /// </summary>
+    public PaymentGateway PaymentGateway { get; set; }
 
     #endregion
 

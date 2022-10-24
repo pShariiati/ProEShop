@@ -24,3 +24,15 @@ public enum OrderStatus : byte
     [Display(Name = "تحویل شده")]
     DeliveredToClient
 }
+
+public enum PaymentGateway : byte
+{
+    [Display(Name = "زرین پال")]
+    Zarinpal,
+
+    [Display(Name = "به پرداخت ملت")]
+    Mellat,
+
+    [Display(Name = "درگاه مجازی تست")]
+    ParbadVirtual,
+}

@@ -1,2 +1,2 @@
-dotnet ef database update -s ../ProEShop.Web
+dotnet ef database update -s ../ProEShop.Web -c ApplicationDbContext
 pause

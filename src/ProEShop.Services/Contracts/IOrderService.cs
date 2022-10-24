@@ -7,9 +7,10 @@ namespace ProEShop.Services.Contracts;
 public interface IOrderService : IGenericService<Order>
 {
     /// <summary>
-    /// استفاده شده در بخش ایجاد سفارش
-    /// گرفتن آخرین شماره سفارش
+    /// گرفتن سفارش به همراه مرسوله های آن
     /// </summary>
+    /// <param name="orderNumber"></param>
+    /// <param name="userId"></param>
     /// <returns></returns>
-    Task<int> GetOrderNumberForCreateOrderAndPay();
+    Task<Order> FindByOrderNumberAndIncludeParcelPosts(long orderNumber, long userId);
 }

@@ -2,8 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Parbad;
+using Parbad.AspNetCore;
 using Parbad.Gateway.ZarinPal;
-using ProEShop.Common.Helpers;
+using ProEShop.Common.Constants;
 using ProEShop.Common.IdentityToolkit;
 using ProEShop.DataLayer.Context;
 using ProEShop.Entities.Enums;
@@ -42,6 +43,9 @@ public class PaymentModel : PageBase
     public PaymentViewModel PaymentPage { get; set; }
         = new();
 
+    [BindProperty]
+    public CreateOrderAndPayViewModel CreateOrderAndPayModel { get; set; }
+
     public async Task<IActionResult> OnGet()
     {
         var userId = User.Identity.GetLoggedInUserId();
@@ -56,10 +60,15 @@ public class PaymentModel : PageBase
         return Page();
     }
 
-    public async Task<IActionResult> OnPostCreateOrderAndPay(CreateOrderAndPayViewModel model)
+    /// <summary>
+    /// ایجاد سفارش و انتقال کاربر به درگاه بانکی
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    public async Task<IActionResult> OnPost()
     {
         // پرداخت هزینه سفارش از کیف پول کاربر
-        if (model.PayFormWallet)
+        if (CreateOrderAndPayModel.PayFormWallet)
         {
             //todo: pay order price form wallet
         }
@@ -69,15 +78,14 @@ public class PaymentModel : PageBase
         // آیا کاربر آدرس داره ؟
         if (!address.HasUserAddress)
         {
-            return Json(new JsonResultOperation(false));
+            return RedirectToPage("Checkout");
         }
 
         var orderToAdd = new Entities.Order()
         {
             UserId = userId,
             AddressId = address.AddressId,
-            PayFromWallet = false,
-            OrderNumber = await _orderService.GetOrderNumberForCreateOrderAndPay()
+            PayFromWallet = false
         };
 
         // محصولات داخل سبد خرید کاربر
@@ -85,7 +93,7 @@ public class PaymentModel : PageBase
 
         if (cartItems.Count < 1)
         {
-            return Json(new JsonResultOperation(false));
+            return RedirectToPage("Index");
         }
 
         // ارسال عادی
@@ -224,9 +232,6 @@ public class PaymentModel : PageBase
 
         #endregion
 
-        await _orderService.AddAsync(orderToAdd);
-        await _uow.SaveChangesAsync();
-
         // قیمت نهایی محصولات داخل سبد خرید کاربر با محاسبه تخفیف آنها
         var totalPriceWithDiscount = cartItems
             .Sum(x =>
@@ -252,30 +257,34 @@ public class PaymentModel : PageBase
         var finalPrice = totalPriceWithDiscount + sumPriceOfShipping;
 
         // کاربر بعد از درگاه به چه آدرسی هدایت شود
-        var callbackUrl = Url.Page("Index", "Test", null, Request.Scheme);
+        var callbackUrl = Url.PageLink("VerifyPayment", null, null, Request.Scheme);
 
         var result = await _onlinePayment.RequestAsync(invoice =>
         {
             invoice
                 .SetAmount(finalPrice)
                 .SetCallbackUrl(callbackUrl)
-                .UseZarinPal()
-                .SetZarinPalData(new ZarinPalInvoice("No description"));
-            invoice.UseAutoIncrementTrackingNumber();
+                .SetGateway(CreateOrderAndPayModel.PaymentGateway.ToString())
+                .UseAutoIncrementTrackingNumber();
+            if (CreateOrderAndPayModel.PaymentGateway == PaymentGateway.Zarinpal)
+            {
+                invoice.SetZarinPalData(new ZarinPalInvoice("No description"));
+            }
         });
+
+        orderToAdd.OrderNumber = result.TrackingNumber;
+        orderToAdd.PaymentGateway = CreateOrderAndPayModel.PaymentGateway;
 
         if (result.IsSucceed)
         {
-            return Json(new JsonResultOperation(true, "اوکی")
-            {
-                // آدرسی که کاربر باید به آن هدایت شود را به سمت کلاینت برگشت میزنیم که کاربر
-                // را با استفاده از جاوا اسکریپت به آن آدرس هدایت کنیم
-                Data = result.GatewayTransporter.Descriptor.Url
-            });
+            await _orderService.AddAsync(orderToAdd);
+            await _uow.SaveChangesAsync();
+
+            return result.GatewayTransporter.TransportToGateway();
         }
         else
         {
-            return Json(new JsonResultOperation(false));
+            return RedirectToPage(PublicConstantStrings.Error500PageName);
         }
     }
 }

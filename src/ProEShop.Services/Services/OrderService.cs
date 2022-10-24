@@ -23,12 +23,10 @@ public class OrderService : GenericService<Order>, IOrderService
         _orders = uow.Set<Order>();
     }
 
-    public async Task<int> GetOrderNumberForCreateOrderAndPay()
+    public Task<Order> FindByOrderNumberAndIncludeParcelPosts(long orderNumber, long userId)
     {
-        var lastOrderNumber = await _orders.OrderByDescending(x => x.Id)
-            .Select(x => x.OrderNumber)
-            .FirstOrDefaultAsync();
-
-        return lastOrderNumber + 1;
+        return _orders.Include(x => x.ParcelPosts)
+            .Where(x => x.OrderNumber == orderNumber)
+            .SingleOrDefaultAsync(x => x.UserId == userId);
     }
 }
