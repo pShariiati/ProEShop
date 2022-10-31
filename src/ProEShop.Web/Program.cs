@@ -13,7 +13,7 @@ using Parbad.Storage.EntityFrameworkCore.Builder;
 using ProEShop.DataLayer.Context;
 using Parbad.Gateway.ZarinPal;
 using Parbad.Gateway.ParbadVirtual;
-using ProEShop.Web.Helpers;
+using ProEShop.Common.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 var parbadConnectionString = builder.Configuration.GetConnectionString("ParbadDataContextConnection");

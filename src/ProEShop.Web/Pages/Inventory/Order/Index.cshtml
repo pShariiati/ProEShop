@@ -1,0 +1,101 @@
+﻿@page
+@model ProEShop.Web.Pages.Inventory.Order.IndexModel
+@{
+    ViewData["Title"] = "سفارشات";
+}
+
+<div class="card text-dark bg-white border-0 shadow">
+    <div class="card-body">
+        <h5 class="card-title">
+            @ViewData["Title"]
+        </h5>
+        <form class="alert alert-secondary search-form-via-ajax">
+            <input asp-for="Orders.Pagination.CurrentPage" />
+            <input asp-for="Orders.Pagination.PageCount" />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <h5>
+                جستجو در
+                @ViewData["Title"]
+            </h5>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-lg-3 my-2">
+                    <label class="form-label" asp-for="Orders.SearchOrders.OrderNumber"></label>
+                    <input class="form-control" asp-for="Orders.SearchOrders.OrderNumber" />
+                    <span class="span-error-message" asp-validation-for="Orders.SearchOrders.OrderNumber"></span>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3 my-2">
+                    <label class="form-label" asp-for="Orders.SearchOrders.FullName"></label>
+                    <input class="form-control" asp-for="Orders.SearchOrders.FullName" />
+                    <span class="span-error-message" asp-validation-for="Orders.SearchOrders.FullName"></span>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3 my-2">
+                    <label class="form-label" asp-for="Orders.SearchOrders.CreatedDateTime"></label>
+                    <div class="input-group">
+                        <input class="form-control custom-md-persian-datepicker" asp-for="Orders.SearchOrders.CreatedDateTime" />
+                        <span class="input-group-text">
+                            <i id="created-date-time-in-orders" class="pointer-cursor bi bi-calendar2-date"></i>
+                        </span>
+                    </div>
+                    <span class="span-error-message" asp-validation-for="Orders.SearchOrders.CreatedDateTime"></span>
+                </div>
+                <div class="mb-3 col-md-6 col-lg-3 my-2">
+                    <label class="form-label" asp-for="Orders.SearchOrders.ProvinceId"></label>
+                    <select class="form-select custom-select2" asp-for="Orders.SearchOrders.ProvinceId" asp-items="Model.Orders.Provinces">
+                    </select>
+                    <span asp-validation-for="Orders.SearchOrders.ProvinceId" class="span-error-message"></span>
+                </div>
+                <div class="mb-3 col-md-6 col-lg-3 my-2">
+                    <label class="form-label" asp-for="Orders.SearchOrders.CityId"></label>
+                    <select class="form-select custom-select2" asp-for="Orders.SearchOrders.CityId">
+                    </select>
+                    <span asp-validation-for="Orders.SearchOrders.CityId" class="span-error-message"></span>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3 my-2">
+                    <label class="form-label" asp-for="Orders.SearchOrders.PaymentGateway"></label>
+                    <select class="form-select" asp-for="Orders.SearchOrders.PaymentGateway" asp-items="Html.GetEnumSelectList<ProEShop.Entities.Enums.PaymentGateway>()">
+                        <option value="">همه</option>
+                    </select>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3 my-2">
+                    <label class="form-label" asp-for="Orders.SearchOrders.Sorting"></label>
+                    <select class="form-select" asp-for="Orders.SearchOrders.Sorting" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.Orders.SortingOrders>()"></select>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3 my-2">
+                    <label class="form-label" asp-for="Orders.SearchOrders.SortingOrder"></label>
+                    <select class="form-select" asp-for="Orders.SearchOrders.SortingOrder" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.SortingOrder>()"></select>
+                </div>
+                <div class="col-12 my-2">
+                    <div class="d-grid d-lg-block">
+                        <button type="submit" class="btn btn-primary d-inline-flex align-items-center search-form-submit-button" disabled>
+                            جستجو ...
+                            <span class="spinner-border spinner-border-sm d-none ms-2"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="data-table-place">
+                <div class="text-center data-table-loading">
+                    <img src="~/images/application/loading.gif" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/md.bootstrappersiandatetimepicker/dist/mds.bs.datetimepicker.min.js"></script>
+    <script src="~/lib/select2/js/select2.min.js"></script>
+    <script src="~/lib/select2/js/i18n/fa.min.js"></script>
+}
+
+@section CustomScripts{
+    <script src="~/Pages/Inventory/Order/Index.cshtml.js"></script>
+}
+
+@section Styles
+{
+    <link rel="stylesheet" href="~/lib/md.bootstrappersiandatetimepicker/dist/mds.bs.datetimepicker.style.min.css" />
+    <link rel="stylesheet" href="~/lib/select2/css/select2.min.css" />
+    <link rel="stylesheet" href="~/lib/select2-bootstrap-5-theme/select2-bootstrap-5-theme.rtl.min.css" />
+}

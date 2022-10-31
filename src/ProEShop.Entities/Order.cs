@@ -47,7 +47,7 @@ public class Order : EntityBase, IAuditableEntity
     /// <summary>
     /// از کدام درگاه، پرداختی انجام شده است
     /// </summary>
-    public PaymentGateway PaymentGateway { get; set; }
+    public PaymentGateway? PaymentGateway { get; set; }
 
     #endregion
 

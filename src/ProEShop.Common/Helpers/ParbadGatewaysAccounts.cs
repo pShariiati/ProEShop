@@ -1,9 +1,8 @@
-﻿using NuGet.Configuration;
-using Parbad.Gateway.Mellat;
+﻿using Parbad.Gateway.Mellat;
 using Parbad.Gateway.ZarinPal;
 using Parbad.GatewayBuilders;
 
-namespace ProEShop.Web.Helpers;
+namespace ProEShop.Common.Helpers;
 
 /// <summary>
 /// اکانت درگاه های بانکی برای پرباد
@@ -24,7 +23,7 @@ public class ParbadGatewaysAccounts :
             IsSandbox = true,
             MerchantId = "test"
         });
-        return Task.CompletedTask; ;
+        return Task.CompletedTask;
     }
 
     /// <summary>
