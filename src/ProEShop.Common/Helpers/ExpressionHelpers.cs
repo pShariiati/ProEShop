@@ -19,7 +19,8 @@ public static class ExpressionHelpers
     {
         var containsExpressions = CreateContainsExpressions(query, model);
         var equalExpressions = CreateEqualExpressions(containsExpressions, model);
-        var equalDateTimeExpressions = CreateEqualDateTimeExpressions(equalExpressions, model);
+        var enumEqualExpressions = CreateEnumEqualExpressions(equalExpressions, model);
+        var equalDateTimeExpressions = CreateEqualDateTimeExpressions(enumEqualExpressions, model);
         if (callDeletedStatusExpression)
         {
             return CreateDeletedStatusExpression(equalDateTimeExpressions, model);
@@ -45,11 +46,28 @@ public static class ExpressionHelpers
                     var property = Expression.Property(parameter, propertyInfo.Name);
                     if (propertyValue is string)
                         propertyValue = propertyValue.ToString()?.Trim();
-                    var constantValue = Expression.Constant(propertyValue);
-                    var method = typeof(string).GetMethod("Contains", new[] { typeof(string) });
-                    var containsMethodExp = Expression.Call(property, method, constantValue);
-                    var exp = Expression.Lambda<Func<T, bool>>(containsMethodExp, parameter);
-                    result = result.Where(exp);
+
+                    // property: OrderNumber
+                    // OrderNumber.ToString().Contains()
+
+                    if (propertyValue.IsNumericType())
+                    {
+                        var toStringMethodExp = Expression.Call(property, "ToString", null);
+
+                        var constantValue = Expression.Constant(Convert.ChangeType(propertyValue, typeof(string)));
+                        var containsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) });
+                        var containsMethodExp = Expression.Call(toStringMethodExp, containsMethod, constantValue);
+                        var exp = Expression.Lambda<Func<T, bool>>(containsMethodExp, parameter);
+                        result = result.Where(exp);
+                    }
+                    else
+                    {
+                        var constantValue = Expression.Constant(Convert.ChangeType(propertyValue, typeof(string)));
+                        var containsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) });
+                        var containsMethodExp = Expression.Call(property, containsMethod, constantValue);
+                        var exp = Expression.Lambda<Func<T, bool>>(containsMethodExp, parameter);
+                        result = result.Where(exp);
+                    }
                 }
             }
         }
@@ -76,6 +94,33 @@ public static class ExpressionHelpers
                         propertyValue = propertyValue.ToString()?.Trim();
                     var constantValue = Expression.Constant(propertyValue);
                     var equal = Expression.Equal(property, constantValue);
+                    var exp = Expression.Lambda<Func<T, bool>>(equal, parameter);
+                    result = result.Where(exp);
+                }
+            }
+        }
+
+        return result;
+    }
+
+    public static IQueryable<T> CreateEnumEqualExpressions<T>(IQueryable<T> query, object model)
+    {
+        var result = query;
+        var propertiesToSearch = model.GetType().GetProperties()
+            .Where(x => Attribute.IsDefined(x, typeof(EnumEqualSearchAttribute)))
+            .ToList();
+        if (propertiesToSearch.Count > 0)
+        {
+            foreach (var propertyInfo in propertiesToSearch)
+            {
+                var propertyValue = propertyInfo.GetValue(model);
+                if (!string.IsNullOrWhiteSpace(propertyValue?.ToString()))
+                {
+                    var parameter = Expression.Parameter(typeof(T));
+                    var property = Expression.Property(parameter, propertyInfo.Name);
+                    var constantValue = Expression.Constant((byte)propertyValue);
+                    var convertedProperty = Expression.Convert(property, typeof(byte));
+                    var equal = Expression.Equal(convertedProperty, constantValue);
                     var exp = Expression.Lambda<Func<T, bool>>(equal, parameter);
                     result = result.Where(exp);
                 }

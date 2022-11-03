@@ -1,4 +1,5 @@
 ﻿@using ProEShop.Entities.Enums
+@using ProEShop.Common.Helpers
 @model ProEShop.ViewModels.Orders.ShowOrdersViewModel
 @if (Model.Orders.Count > 0)
 {
@@ -11,6 +12,7 @@
                     <th>@Html.DisplayNameFor(x => x.Orders[0].CreatedDateTime)</th>
                     <th>@Html.DisplayNameFor(x => x.Orders[0].Destination)</th>
                     <th>@Html.DisplayNameFor(x => x.Orders[0].PaymentGateway)</th>
+                    <th>@Html.DisplayNameFor(x => x.Orders[0].Status)</th>
                     <th>عملیات</th>
                 </tr>
             </thead>
@@ -43,6 +45,43 @@
                                     </div>
                                 }
                             </div>
+                        </td>
+                        <td>
+                            @{
+                                var orderStatusColor = string.Empty;
+                                var orderStatusIcon = string.Empty;
+                                switch (order.Status)
+                                {
+                                    case OrderStatus.WaitingForPaying:
+                                        orderStatusColor = "danger";
+                                        orderStatusIcon = "coin";
+                                        break;
+                                    case OrderStatus.Processing:
+                                        orderStatusColor = "primary";
+                                        orderStatusIcon = "cpu";
+                                        break;
+                                    case OrderStatus.InventoryProcessing:
+                                        orderStatusColor = "primary";
+                                        orderStatusIcon = "box-fill";
+                                        break;
+                                    case OrderStatus.SomeParcelsDeliveredToPost:
+                                        orderStatusColor = "warning";
+                                        orderStatusIcon = "mailbox";
+                                        break;
+                                    case OrderStatus.CompletelyParcelsDeliveredToPost:
+                                        orderStatusColor = "success";
+                                        orderStatusIcon = "mailbox";
+                                        break;
+                                    case OrderStatus.DeliveredToClient:
+                                        orderStatusColor = "success";
+                                        orderStatusIcon = "check2-square";
+                                        break;
+                                }
+                            }
+                            <button type="button" class="btn btn-@orderStatusColor">
+                                <i class="bi bi-@orderStatusIcon"></i>
+                                @order.Status.GetEnumDisplayName()
+                            </button>
                         </td>
                         <td></td>
                     </tr>

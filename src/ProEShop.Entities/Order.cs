@@ -49,6 +49,8 @@ public class Order : EntityBase, IAuditableEntity
     /// </summary>
     public PaymentGateway? PaymentGateway { get; set; }
 
+    public OrderStatus Status { get; set; }
+
     #endregion
 
     #region Relations

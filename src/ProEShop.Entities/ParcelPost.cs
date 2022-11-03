@@ -21,7 +21,7 @@ public class ParcelPost : EntityBase, IAuditableEntity
 
     public Dimension Dimension { get; set; }
 
-    public OrderStatus Status { get; set; }
+    public ParcelPostStatus Status { get; set; }
 
     /// <summary>
     /// کد رهگیری اداره پست

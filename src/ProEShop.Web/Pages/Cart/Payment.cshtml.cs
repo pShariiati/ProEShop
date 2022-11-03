@@ -85,7 +85,8 @@ public class PaymentModel : PageBase
         {
             UserId = userId,
             AddressId = address.AddressId,
-            PayFromWallet = false
+            PayFromWallet = false,
+            Status = OrderStatus.WaitingForPaying
         };
 
         // محصولات داخل سبد خرید کاربر
@@ -133,7 +134,7 @@ public class PaymentModel : PageBase
             var parcelPostToAdd = new Entities.ParcelPost()
             {
                 Dimension = Dimension.Normal,
-                Status = OrderStatus.WaitingForPaying,
+                Status = ParcelPostStatus.WaitingForPaying,
                 ShippingPrice = sumPriceOfNormalProducts < 500000 ? 30000 : 0
             };
 
@@ -162,7 +163,7 @@ public class PaymentModel : PageBase
             var parcelPostToAdd = new Entities.ParcelPost()
             {
                 Dimension = Dimension.Normal,
-                Status = OrderStatus.WaitingForPaying,
+                Status = ParcelPostStatus.WaitingForPaying,
                 ShippingPrice = sumPriceOfNormalProducts < 500000 ? 45000 : 0
             };
 
@@ -191,7 +192,7 @@ public class PaymentModel : PageBase
             var parcelPostToAdd = new Entities.ParcelPost()
             {
                 Dimension = Dimension.UltraHeavy,
-                Status = OrderStatus.WaitingForPaying,
+                Status = ParcelPostStatus.WaitingForPaying,
                 ShippingPrice = 0
             };
 

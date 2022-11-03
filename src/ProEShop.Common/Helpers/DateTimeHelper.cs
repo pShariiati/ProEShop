@@ -41,6 +41,16 @@ public static class DateTimeHelper
         return $"{day} {month} {year}".ToPersianNumbers();
     }
 
+    public static string ToLongPersianDateTime(this DateTime dateTime)
+    {
+        var date = ToLongPersianDate(dateTime);
+        var pc = new PersianCalendar();
+        var hour = pc.GetHour(dateTime);
+        var minute = pc.GetMinute(dateTime);
+        var second = pc.GetSecond(dateTime);
+        return $"{date}، ساعت {hour}:{minute}:{second}".ToPersianNumbers();
+    }
+
     public static string ToShortPersianDate(this DateTime dateTime)
     {
         var pc = new PersianCalendar();

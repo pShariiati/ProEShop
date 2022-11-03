@@ -11,7 +11,7 @@ public class OrderMappingProfile : Profile
         this.CreateMap<Entities.Order, ShowOrderViewModel>()
             .ForMember(dest => dest.CreatedDateTime,
                 options =>
-                    options.MapFrom(src => src.CreatedDateTime.ToLongPersianDate()))
+                    options.MapFrom(src => src.CreatedDateTime.ToLongPersianDateTime()))
             .ForMember(dest => dest.Destination,
                 options =>
                     options.MapFrom(src => src.Address.Province.Title + " - " + src.Address.City.Title));

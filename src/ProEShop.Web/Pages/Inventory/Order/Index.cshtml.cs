@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ProEShop.Common;
 using ProEShop.Common.Constants;
@@ -43,5 +43,32 @@ public class IndexModel : InventoryPanelBase
             });
         }
         return Partial("List", await _orderService.GetOrders(Orders));
+    }
+
+    public async Task<IActionResult> OnGetGetCities(long provinceId)
+    {
+        if (provinceId == 0)
+        {
+            return Json(new JsonResultOperation(true, string.Empty)
+            {
+                Data = new Dictionary<long, string>()
+            });
+        }
+
+        if (provinceId < 1)
+        {
+            return Json(new JsonResultOperation(false, "استان مورد نظر را به درستی وارد نمایید"));
+        }
+
+        if (!await _provinceAndCityService.IsExistsBy(nameof(Entities.ProvinceAndCity.Id), provinceId))
+        {
+            return Json(new JsonResultOperation(false, "استان مورد نظر یافت نشد"));
+        }
+
+        var cities = await _provinceAndCityService.GetCitiesByProvinceIdInSelectBoxAsync(provinceId);
+        return Json(new JsonResultOperation(true, string.Empty)
+        {
+            Data = cities
+        });
     }
 }

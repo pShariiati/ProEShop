@@ -47,8 +47,15 @@
                 <div class="mb-3 col-md-6 col-lg-3 my-2">
                     <label class="form-label" asp-for="Orders.SearchOrders.CityId"></label>
                     <select class="form-select custom-select2" asp-for="Orders.SearchOrders.CityId">
+                        <option value="">لطفا ابتدا استان را انتخاب نمایید</option>
                     </select>
                     <span asp-validation-for="Orders.SearchOrders.CityId" class="span-error-message"></span>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3 my-2">
+                    <label class="form-label" asp-for="Orders.SearchOrders.Status"></label>
+                    <select class="form-select" asp-for="Orders.SearchOrders.Status" asp-items="Html.GetEnumSelectList<ProEShop.Entities.Enums.OrderStatus>()">
+                        <option value="">همه</option>
+                    </select>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
                     <label class="form-label" asp-for="Orders.SearchOrders.PaymentGateway"></label>

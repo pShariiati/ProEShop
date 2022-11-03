@@ -39,12 +39,15 @@ public class ShowOrderViewModel
 
     [Display(Name = "درگاه")]
     public PaymentGateway? PaymentGateway { get; set; }
+
+    [Display(Name = "وضعیت")]
+    public OrderStatus Status { get; set; }
 }
 
 public class SearchOrdersViewModel
 {
     [Display(Name = "شماره سفارش")]
-    [EqualSearch]
+    [ContainsSearch]
     [Range(1, long.MaxValue, ErrorMessage = AttributesErrorMessages.RangeMessage)]
     public long? OrderNumber { get; set; }
 
@@ -74,7 +77,12 @@ public class SearchOrdersViewModel
     public long? CityId { get; set; }
 
     [Display(Name = "درگاه")]
+    [EnumEqualSearch]
     public PaymentGateway? PaymentGateway { get; set; }
+
+    [Display(Name = "وضعیت")]
+    [EnumEqualSearch]
+    public OrderStatus? Status { get; set; }
 }
 
 public enum SortingOrders
