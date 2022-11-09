@@ -41,6 +41,7 @@
 	  <None Remove="Pages\Identity\RegisterLogin.cshtml.css" />
 	  <None Remove="Pages\Inventory\Consignment\Index.cshtml.js" />
 	  <None Remove="Pages\Inventory\Order\Index.cshtml.js" />
+	  <None Remove="Pages\Inventory\Order\_OrderDetailsPartial.cshtml.css" />
 	  <None Remove="Pages\Inventory\ProductStock\AddProductStockByConsignmentModel.cshtml.js" />
 	  <None Remove="Pages\Product\Index - Copy.cshtml.css" />
 	  <None Remove="Pages\Product\Index - Copy.cshtml.js" />
@@ -84,6 +85,7 @@
 	  <Content Include="Pages\Identity\RegisterLogin.cshtml.css" />
 	  <Content Include="Pages\Inventory\Consignment\Index.cshtml.js" />
 	  <Content Include="Pages\Inventory\Order\Index.cshtml.js" />
+	  <Content Include="Pages\Inventory\Order\_OrderDetailsPartial.cshtml.css" />
 	  <Content Include="Pages\Inventory\ProductStock\AddProductStockByConsignment.cshtml.js" />
 	  <Content Include="Pages\Product\Index.cshtml.js" />
 	  <Content Include="Pages\Product\Index.cshtml.css" />

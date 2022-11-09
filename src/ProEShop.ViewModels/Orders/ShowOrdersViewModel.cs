@@ -25,6 +25,8 @@ public class ShowOrdersViewModel
 
 public class ShowOrderViewModel
 {
+    public long Id { get; set; }
+
     [Display(Name = "شماره سفارش")]
     public long OrderNumber { get; set; }
 
@@ -65,7 +67,7 @@ public class SearchOrdersViewModel
 
     [Display(Name = "تاریخ ایجاد")]
     [EqualDateTimeSearch]
-    [RegularExpression(@"^[۰-۹]{4}\/(۰[۱-۹]|۱[۰-۲])\/(۰[۱-۹]|[۱۲][۰-۹]|۳[۰۱])$", ErrorMessage = "سن باید بین ۱۸ و ۱۰۰ سال باشد")]
+    [RegularExpression(@"^[۰-۹]{4}\/(۰[۱-۹]|۱[۰-۲])\/(۰[۱-۹]|[۱۲][۰-۹]|۳[۰۱])$", ErrorMessage = AttributesErrorMessages.RegularExpressionMessage)]
     public string CreatedDateTime { get; set; }
 
     [Display(Name = "استان")]
@@ -83,6 +85,9 @@ public class SearchOrdersViewModel
     [Display(Name = "وضعیت")]
     [EnumEqualSearch]
     public OrderStatus? Status { get; set; }
+
+    [Display(Name = "فقط پرداخت شده ها")]
+    public bool OnlyPayedOrders { get; set; } = true;
 }
 
 public enum SortingOrders

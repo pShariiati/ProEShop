@@ -36,7 +36,7 @@ public class ProductShortLinkModel : PageModel
             return RedirectToPage(PublicConstantStrings.Error404PageName);
         }
 
-        return RedirectToPage("/Product/Index", new
+        return RedirectToPagePermanent("/Product/Index", new
         {
             product.slug,
             product.productCode

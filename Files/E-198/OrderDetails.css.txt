@@ -1,0 +1,22 @@
+.circle-fill-dot-in-order-details {
+    width: 5px;
+    height: 5px;
+}
+
+.order-details-progress {
+    height: 8px;
+}
+
+.parcel-post-item-in-order-details .position-relative span {
+    top: 85%;
+    right: 83%;
+    z-index: 1;
+}
+
+.parcel-post-item-in-order-details:not(:last-child) {
+    margin-bottom: 2rem;
+}
+
+.parcel-post-item-in-order-details:last-child hr {
+    display: none;
+}

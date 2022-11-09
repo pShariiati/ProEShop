@@ -12,15 +12,14 @@
 
 function getConsignmentDetails(e) {
     var consignmentId = $(e).attr('consignment-id');
-    getHtmlWithAJAX('?handler=GetConsignmentDetails', { consignmentId: consignmentId }, 'showCosignmentDetailsInModal', e);
+    getHtmlWithAJAX('?handler=GetConsignmentDetails', { consignmentId: consignmentId }, 'showConsignmentDetailsInModal', e);
 }
 
-
-function showCosignmentDetailsInModal(result, clickedButton) {
+function showConsignmentDetailsInModal(result, clickedButton) {
     appendHtmlModalPlaceToBody();
-    var currnetModal = $('#html-modal-place');
-    currnetModal.find('.modal-body').html(result);
-    currnetModal.modal('show');
+    var currentModal = $('#html-modal-place');
+    currentModal.find('.modal-body').html(result);
+    currentModal.modal('show');
     $('#html-modal-place .modal-header h5').html($(clickedButton).text().trim());
 }
 
@@ -29,16 +28,16 @@ function confirmationConsignment(message) {
     fillDataTable();
 }
 
-function changeConsginmentStatus(e) {
+function changeConsignmentStatus(e) {
     var consignmentId = $(e).attr('consignment-id');
-    getHtmlWithAJAX('?handler=ChangeConsignmentStatus', { consignmentId: consignmentId }, 'showChangeConsginmentStatusInModal', e);
+    getHtmlWithAJAX('?handler=ChangeConsignmentStatus', { consignmentId: consignmentId }, 'showChangeConsignmentStatusInModal', e);
 }
 
-function showChangeConsginmentStatusInModal(result, clickedButton) {
+function showChangeConsignmentStatusInModal(result, clickedButton) {
     appendHtmlModalPlaceToBody();
-    var currnetModal = $('#html-modal-place');
-    currnetModal.find('.modal-body').html(result);
-    currnetModal.modal('show');
+    var currentModal = $('#html-modal-place');
+    currentModal.find('.modal-body').html(result);
+    currentModal.modal('show');
     $('#html-modal-place .modal-header h5').html($(clickedButton).text().trim());
     initializeTinyMCE();
     $.validator.unobtrusive.parse($('#html-modal-place form'));

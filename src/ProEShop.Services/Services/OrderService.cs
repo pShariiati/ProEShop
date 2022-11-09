@@ -57,6 +57,11 @@ public class OrderService : GenericService<Order>, IOrderService
             orders = orders.Where(x => x.Address.CityId == searchedCityId);
         }
 
+        if (model.SearchOrders.OnlyPayedOrders)
+        {
+            orders = orders.Where(x => x.BankTransactionCode != null);
+        }
+
         orders = ExpressionHelpers.CreateSearchExpressions(orders, model.SearchOrders, false);
 
         #endregion
@@ -77,5 +82,14 @@ public class OrderService : GenericService<Order>, IOrderService
             ).ToListAsync(),
             Pagination = paginationResult.Pagination
         };
+    }
+
+    public Task<OrderDetailsViewModel> GetOrderDetails(long orderId)
+    {
+        return _mapper.ProjectTo<OrderDetailsViewModel>(
+            _orders
+                .AsSplitQuery()
+                .AsNoTracking())
+            .SingleOrDefaultAsync(x => x.Id == orderId);
     }
 }

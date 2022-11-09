@@ -15,5 +15,17 @@ public class OrderMappingProfile : Profile
             .ForMember(dest => dest.Destination,
                 options =>
                     options.MapFrom(src => src.Address.Province.Title + " - " + src.Address.City.Title));
+
+        this.CreateMap<Entities.Order, OrderDetailsViewModel>()
+            .ForMember(dest => dest.CreatedDateTime,
+                options =>
+                    options.MapFrom(src => src.CreatedDateTime.ToLongPersianDateTime()));
+
+        this.CreateMap<Entities.ParcelPost, ParcelPostForOrderDetailsViewModel>();
+
+        this.CreateMap<Entities.ParcelPostItem, ParcelPostItemForOrderDetailsViewModel>()
+            .ForMember(dest => dest.ProductPicture,
+                options =>
+                    options.MapFrom(src => src.ProductVariant.Product.ProductMedia.First().FileName));
     }
 }

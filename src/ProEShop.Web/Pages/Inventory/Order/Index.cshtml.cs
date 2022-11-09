@@ -4,7 +4,10 @@ using ProEShop.Common;
 using ProEShop.Common.Constants;
 using ProEShop.Common.Helpers;
 using ProEShop.Common.IdentityToolkit;
+using ProEShop.DataLayer.Context;
+using ProEShop.Entities.Enums;
 using ProEShop.Services.Contracts;
+using ProEShop.Services.Services;
 using ProEShop.ViewModels.Orders;
 
 namespace ProEShop.Web.Pages.Inventory.Order;
@@ -13,13 +16,16 @@ public class IndexModel : InventoryPanelBase
 {
     private readonly IOrderService _orderService;
     private readonly IProvinceAndCityService _provinceAndCityService;
+    private readonly IUnitOfWork _uow;
 
     public IndexModel(
         IOrderService orderService,
-        IProvinceAndCityService provinceAndCityService)
+        IProvinceAndCityService provinceAndCityService,
+        IUnitOfWork uow)
     {
         _orderService = orderService;
         _provinceAndCityService = provinceAndCityService;
+        _uow = uow;
     }
 
     [BindProperty(SupportsGet = true)]
@@ -70,5 +76,32 @@ public class IndexModel : InventoryPanelBase
         {
             Data = cities
         });
+    }
+
+    public async Task<IActionResult> OnPostChangeStatusToInventoryProcessing(long orderId)
+    {
+        var order = await _orderService.FindByIdAsync(orderId);
+        if (order is null)
+        {
+            return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
+        }
+
+        order.Status = OrderStatus.InventoryProcessing;
+
+        await _uow.SaveChangesAsync();
+
+        return Json(new JsonResultOperation(true, "سفارش مورد نظر وارد مرحله پردازش انبار شد"));
+    }
+
+    public async Task<IActionResult> OnGetGetOrderDetails(long orderId)
+    {
+        if (orderId < 1)
+        {
+            return Json(new JsonResultOperation(false));
+        }
+
+        var consignmentDetails = await _orderService.GetOrderDetails(orderId);
+
+        return Partial("_OrderDetailsPartial", consignmentDetails);
     }
 }

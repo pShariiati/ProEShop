@@ -29,3 +29,17 @@ function putCitiesInTheSelectBox(message, data) {
         $('#Orders_SearchOrders_CityId').append(`<option value="${key}">${value}</optoin>`);
     });
 }
+
+function getOrderDetails(e) {
+    var orderId = $(e).attr('order-id');
+    getHtmlWithAJAX('?handler=GetOrderDetails', { orderId: orderId }, 'showOrderDetailsInModal', e);
+}
+
+function showOrderDetailsInModal(result, clickedButton) {
+    appendHtmlModalPlaceToBody();
+    var currentModal = $('#html-modal-place');
+    currentModal.find('.modal-body').html(result);
+    currentModal.modal('show');
+    $('#html-modal-place .modal-header h5').html($(clickedButton).text().trim());
+    convertEnglishNumbersToPersianNumber();
+}

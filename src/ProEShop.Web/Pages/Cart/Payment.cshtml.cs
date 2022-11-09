@@ -162,7 +162,7 @@ public class PaymentModel : PageBase
             // مرسوله
             var parcelPostToAdd = new Entities.ParcelPost()
             {
-                Dimension = Dimension.Normal,
+                Dimension = Dimension.Heavy,
                 Status = ParcelPostStatus.WaitingForPaying,
                 ShippingPrice = sumPriceOfNormalProducts < 500000 ? 45000 : 0
             };

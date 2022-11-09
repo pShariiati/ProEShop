@@ -21,4 +21,11 @@ public interface IOrderService : IGenericService<Order>
     /// <param name="model"></param>
     /// <returns></returns>
     Task<ShowOrdersViewModel> GetOrders(ShowOrdersViewModel model);
+
+    /// <summary>
+    /// گرفتن جزییات سفارش
+    /// </summary>
+    /// <param name="orderId"></param>
+    /// <returns></returns>
+    Task<OrderDetailsViewModel> GetOrderDetails(long orderId);
 }
