@@ -44,6 +44,14 @@ public class Order : EntityBase, IAuditableEntity
     /// </summary>
     public bool PayFromWallet { get; set; }
 
+    public int TotalPrice { get; set; }
+
+    public int? DiscountPrice { get; set; }
+
+    public byte TotalScore { get; set; }
+
+    public byte ShippingCount { get; set; }
+
     /// <summary>
     /// از کدام درگاه، پرداختی انجام شده است
     /// </summary>

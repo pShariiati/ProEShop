@@ -22,6 +22,14 @@ public class OrderDetailsViewModel
 
     public bool PayFromWallet { get; set; }
 
+    public int TotalPrice { get; set; }
+
+    public int? DiscountPrice { get; set; }
+
+    public byte TotalScore { get; set; }
+
+    public byte ShippingCount { get; set; }
+
     public List<ParcelPostForOrderDetailsViewModel> ParcelPosts { get; set; }
 }
 
@@ -51,7 +59,7 @@ public class ParcelPostItemForOrderDetailsViewModel
 
     public int Price { get; set; }
 
-    public int DiscountPrice { get; set; }
+    public int? DiscountPrice { get; set; }
 
     public int Count { get; set; }
 
@@ -60,4 +68,10 @@ public class ParcelPostItemForOrderDetailsViewModel
     public string ProductVariantProductProductCode { get; set; }
 
     public string ProductVariantProductSlug { get; set; }
+
+    public string ProductVariantVariantColorCode { get; set; }
+
+    public bool? ProductVariantVariantIsColor { get; set; }
+
+    public string ProductVariantVariantValue { get; set; }
 }

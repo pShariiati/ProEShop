@@ -100,8 +100,13 @@ public class IndexModel : InventoryPanelBase
             return Json(new JsonResultOperation(false));
         }
 
-        var consignmentDetails = await _orderService.GetOrderDetails(orderId);
+        var orderDetails = await _orderService.GetOrderDetails(orderId);
 
-        return Partial("_OrderDetailsPartial", consignmentDetails);
+        if (orderDetails is null)
+        {
+            return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
+        }
+
+        return Partial("_OrderDetailsPartial", orderDetails);
     }
 }

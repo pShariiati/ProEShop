@@ -152,3 +152,8 @@ li {
 .bg-custom-grey {
     background: #c0c2c5;
 }
+
+.color-element-in-cart {
+    width: 17px;
+    height: 17px;
+}

@@ -164,7 +164,7 @@ public class PaymentModel : PageBase
             {
                 Dimension = Dimension.Heavy,
                 Status = ParcelPostStatus.WaitingForPaying,
-                ShippingPrice = sumPriceOfNormalProducts < 500000 ? 45000 : 0
+                ShippingPrice = sumPriceOfHeavyProducts < 500000 ? 45000 : 0
             };
 
             // محتوای داخل مرسوله
@@ -233,6 +233,10 @@ public class PaymentModel : PageBase
 
         #endregion
 
+        // قیمت نهایی بدون محاسبه تخفیف
+        var totalPrice = cartItems
+            .Sum(x => x.ProductVariantPrice * x.Count);
+
         // قیمت نهایی محصولات داخل سبد خرید کاربر با محاسبه تخفیف آنها
         var totalPriceWithDiscount = cartItems
             .Sum(x =>
@@ -240,6 +244,21 @@ public class PaymentModel : PageBase
                 *
                 x.Count
             );
+
+        // مجموع امتیاز هایی که کاربر بعد از پایان مهلت مرجوعی به دست میاورد
+        var sumScore = cartItems.Sum(x => x.Score);
+        if (sumScore > 150)
+            sumScore = 150;
+
+        // این سفارش در چند مرسوله ارسال میشود ؟
+        var shippingCount = 0;
+
+        if (normalProducts.Count > 0)
+            shippingCount++;
+        if (heavyProducts.Count > 0)
+            shippingCount++;
+        if (ultraHeavyProducts.Count > 0)
+            shippingCount++;
 
         // مجموع قیمت حمل و نقل مرسوله ها
         var sumPriceOfShipping = 0;
@@ -275,6 +294,15 @@ public class PaymentModel : PageBase
 
         orderToAdd.OrderNumber = result.TrackingNumber;
         orderToAdd.PaymentGateway = CreateOrderAndPayModel.PaymentGateway;
+        orderToAdd.TotalPrice = totalPrice;
+        var discountPrice = totalPrice - totalPriceWithDiscount;
+        if (discountPrice > 0)
+        {
+            orderToAdd.DiscountPrice = discountPrice;
+        }
+
+        orderToAdd.TotalScore = (byte)sumScore;
+        orderToAdd.ShippingCount = (byte)shippingCount;
 
         if (result.IsSucceed)
         {

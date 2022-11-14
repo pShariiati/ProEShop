@@ -1,4 +1,10 @@
 ﻿$(function () {
+
+    $(document).on('click', '.copy-post-tracking-code-button', function() {
+        var postTrackingCode = $(this).attr('post-tracking-code');
+        copyTextToClipboard(postTrackingCode, 'copyParcelPostLinkToClipboardFunction', $(this));
+    });
+
     fillDataTable();
 
     const dtp1Instance = new mds.MdsPersianDateTimePicker(document.getElementById('created-date-time-in-orders'), {
@@ -21,6 +27,18 @@
         getDataWithAJAX('?handler=GetCities', formData, 'putCitiesInTheSelectBox');
     });
 });
+
+function copyParcelPostLinkToClipboardFunction(clickedEl) {
+    $(clickedEl).find('i').addClass('d-none');
+    $(clickedEl).find('span:last').removeClass('d-none');
+
+    // این فانکشن فقط یکبار فراخوانی میشود
+    // و بهترین گزینه برای این سناریو می باشد
+    setTimeout(function () {
+        $(clickedEl).find('i').removeClass('d-none');
+        $(clickedEl).find('span:last').addClass('d-none');
+    }, 2000);
+}
 
 function putCitiesInTheSelectBox(message, data) {
     $('#Orders_SearchOrders_CityId option').remove();

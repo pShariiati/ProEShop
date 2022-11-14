@@ -54,4 +54,13 @@ public static class StringHelpers
     {
         return GenerateGuid() + Path.GetExtension(file.FileName);
     }
+
+    public static string ToShowGuaranteeFullTitle(this string input)
+    {
+        if (input.Contains("0 ماهه"))
+        {
+            return "گارانتی اصالت و سلامت فیزیکی کالا";
+        }
+        return input;
+    }
 }

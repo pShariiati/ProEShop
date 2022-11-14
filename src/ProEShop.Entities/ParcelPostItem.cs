@@ -22,11 +22,11 @@ public class ParcelPostItem : IAuditableEntity
 
     public int Price { get; set; }
 
-    public int DiscountPrice { get; set; }
+    public int? DiscountPrice { get; set; }
 
     public int Count { get; set; }
 
-    public int Score { get; set; }
+    public byte Score { get; set; }
 
     #endregion
 

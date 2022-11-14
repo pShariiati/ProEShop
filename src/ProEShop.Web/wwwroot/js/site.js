@@ -943,7 +943,7 @@ String.prototype.addCommaToDigits = function () {
     return this.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
-function fallbackCopyTextToClipboard(text, functionNameToCallInTheEnd) {
+function fallbackCopyTextToClipboard(text, functionNameToCallInTheEnd, clickedEl) {
     var textArea = document.createElement('textarea');
     textArea.value = text;
 
@@ -962,7 +962,7 @@ function fallbackCopyTextToClipboard(text, functionNameToCallInTheEnd) {
             showErrorMessage('مرورگر شما قابلیت کپی کردن متن را ندارد');
         else {
             if (typeof window[functionNameToCallInTheEnd] === 'function') {
-                window[functionNameToCallInTheEnd]();
+                window[functionNameToCallInTheEnd](clickedEl);
             }
         }
     } catch (err) {
@@ -971,14 +971,14 @@ function fallbackCopyTextToClipboard(text, functionNameToCallInTheEnd) {
 
     document.body.removeChild(textArea);
 }
-function copyTextToClipboard(text, functionNameToCallInTheEnd) {
+function copyTextToClipboard(text, functionNameToCallInTheEnd, clickedEl) {
     if (!navigator.clipboard) {
-        fallbackCopyTextToClipboard(text, functionNameToCallInTheEnd);
+        fallbackCopyTextToClipboard(text, functionNameToCallInTheEnd, clickedEl);
         return;
     }
     navigator.clipboard.writeText(text).then(function () {
         if (typeof window[functionNameToCallInTheEnd] === 'function') {
-            window[functionNameToCallInTheEnd]();
+            window[functionNameToCallInTheEnd](clickedEl);
         }
     }, function (err) {
         showErrorMessage('مرورگر شما قابلیت کپی کردن متن را ندارد');
