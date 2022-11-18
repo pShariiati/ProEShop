@@ -50,7 +50,7 @@ public static class ExpressionHelpers
                     // property: OrderNumber
                     // OrderNumber.ToString().Contains()
 
-                    if (propertyValue.IsNumericType())
+                    if (property.Type.Name.IsNumericType())
                     {
                         var toStringMethodExp = Expression.Call(property, "ToString", null);
 

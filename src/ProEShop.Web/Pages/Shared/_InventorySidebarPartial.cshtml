@@ -1,64 +1,91 @@
-﻿<div id="sidebar" class="col-6 col-sm-4 col-lg-2 bg-dark collapse show position-fixed">
+﻿@using ProEShop.Services.Services.Identity
+<div id="sidebar" class="col-6 col-sm-4 col-lg-2 bg-dark collapse show position-fixed">
     <ul class="nav d-flex flex-column">
-        <li class="nav-item">
-            <a href="#sub-menu1" class="d-flex justify-content-between collapsed nav-link"
+        @if (User.IsInRole(ConstantRoles.Warehouse))
+        {
+            <li class="nav-item">
+                <a href="#sub-menu1" class="d-flex justify-content-between collapsed nav-link"
                data-bs-toggle="collapse">
-                <div>
-                    <i class="bi bi-bar-chart-fill"></i>
-                    محموله ها
+                    <div>
+                        <i class="bi bi-bar-chart-fill"></i>
+                        محموله ها
+                    </div>
+                    <i class="bi bi-chevron-left"></i>
+                </a>
+                <div class="collapse bg-secondary rounded" id="sub-menu1">
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a asp-page="/Inventory/Consignment/Index" class="nav-link">
+                                <i class="bi bi-bar-chart-fill"></i>
+                                نمایش محموله ها
+                            </a>
+                        </li>
+                    </ul>
                 </div>
-                <i class="bi bi-chevron-left"></i>
-            </a>
-            <div class="collapse bg-secondary rounded" id="sub-menu1">
-                <ul class="nav">
-                    <li class="nav-item">
-                        <a asp-page="/Inventory/Consignment/Index" class="nav-link">
-                            <i class="bi bi-bar-chart-fill"></i>
-                            نمایش محموله ها
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </li>
-        <li class="nav-item">
-            <a href="#sub-menu2" class="d-flex justify-content-between collapsed nav-link"
+            </li>
+            <li class="nav-item">
+                <a href="#sub-menu2" class="d-flex justify-content-between collapsed nav-link"
                data-bs-toggle="collapse">
-                <div>
-                    <i class="bi bi-bar-chart-fill"></i>
-                    مدیریت موجودی محصولات
+                    <div>
+                        <i class="bi bi-bar-chart-fill"></i>
+                        مدیریت موجودی محصولات
+                    </div>
+                    <i class="bi bi-chevron-left"></i>
+                </a>
+                <div class="collapse bg-secondary rounded" id="sub-menu2">
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a asp-page="/Inventory/ProductStock/AddProductStockByConsignment" class="nav-link">
+                                <i class="bi bi-bar-chart-fill"></i>
+                                افزایش موجودی بر اساس محموله
+                            </a>
+                        </li>
+                    </ul>
                 </div>
-                <i class="bi bi-chevron-left"></i>
-            </a>
-            <div class="collapse bg-secondary rounded" id="sub-menu2">
-                <ul class="nav">
-                    <li class="nav-item">
-                        <a asp-page="/Inventory/ProductStock/AddProductStockByConsignment" class="nav-link">
-                            <i class="bi bi-bar-chart-fill"></i>
-                            افزایش موجودی بر اساس محموله
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </li>
-        <li class="nav-item">
-            <a href="#sub-menu3" class="d-flex justify-content-between collapsed nav-link"
+            </li>
+            <li class="nav-item">
+                <a href="#sub-menu3" class="d-flex justify-content-between collapsed nav-link"
                data-bs-toggle="collapse">
-                <div>
-                    <i class="bi bi-bar-chart-fill"></i>
-                    مدیریت سفارشات
+                    <div>
+                        <i class="bi bi-bar-chart-fill"></i>
+                        مدیریت سفارشات
+                    </div>
+                    <i class="bi bi-chevron-left"></i>
+                </a>
+                <div class="collapse bg-secondary rounded" id="sub-menu3">
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a asp-page="/Inventory/Order/Index" class="nav-link">
+                                <i class="bi bi-bar-chart-fill"></i>
+                                نمایش سفارشات
+                            </a>
+                        </li>
+                    </ul>
                 </div>
-                <i class="bi bi-chevron-left"></i>
-            </a>
-            <div class="collapse bg-secondary rounded" id="sub-menu3">
-                <ul class="nav">
-                    <li class="nav-item">
-                        <a asp-page="/Inventory/Order/Index" class="nav-link">
-                            <i class="bi bi-bar-chart-fill"></i>
-                            نمایش سفارشات
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </li>
+            </li>
+        }
+        @if (User.IsInRole(ConstantRoles.DeliveryMan))
+        {
+            <li class="nav-item">
+                <a href="#sub-menu4" class="d-flex justify-content-between collapsed nav-link"
+                   data-bs-toggle="collapse">
+                    <div>
+                        <i class="bi bi-bar-chart-fill"></i>
+                        محموله های در انتظار تحویل به پست
+                    </div>
+                    <i class="bi bi-chevron-left"></i>
+                </a>
+                <div class="collapse bg-secondary rounded" id="sub-menu4">
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a asp-page="/Inventory/DeliveryOrder/Index" class="nav-link">
+                                <i class="bi bi-bar-chart-fill"></i>
+                                نمایش سفارشات
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        }
     </ul>
 </div>

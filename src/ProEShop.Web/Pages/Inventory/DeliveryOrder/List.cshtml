@@ -1,0 +1,138 @@
+﻿@using ProEShop.Entities.Enums
+@using ProEShop.Common.Helpers
+@model ProEShop.ViewModels.Orders.ShowOrdersInDeliveryOrdersViewModel
+@if (Model.Orders.Count > 0)
+{
+    <div class="table-responsive data-table-body">
+        <table class="table table-bordered table-striped table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th>@Html.DisplayNameFor(x => x.Orders[0].OrderNumber)</th>
+                    <th>@Html.DisplayNameFor(x => x.Orders[0].AddressFullName)</th>
+                    <th>@Html.DisplayNameFor(x => x.Orders[0].CreatedDateTime)</th>
+                    <th>@Html.DisplayNameFor(x => x.Orders[0].Destination)</th>
+                    <th>@Html.DisplayNameFor(x => x.Orders[0].Status)</th>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model.Orders)
+                {
+                    <tr>
+                        <td>@order.OrderNumber</td>
+                        <td>@order.AddressFullName</td>
+                        <td>@order.CreatedDateTime</td>
+                        <td>@order.Destination</td>
+                        <td>
+                            @{
+                                var orderStatusColor = string.Empty;
+                                var orderStatusIcon = string.Empty;
+                                switch (order.Status)
+                                {
+                                    case OrderStatus.WaitingForPaying:
+                                        orderStatusColor = "danger";
+                                        orderStatusIcon = "coin";
+                                        break;
+                                    case OrderStatus.Processing:
+                                        orderStatusColor = "primary";
+                                        orderStatusIcon = "cpu";
+                                        break;
+                                    case OrderStatus.InventoryProcessing:
+                                        orderStatusColor = "primary";
+                                        orderStatusIcon = "box-fill";
+                                        break;
+                                    case OrderStatus.SomeParcelsDeliveredToPost:
+                                        orderStatusColor = "warning";
+                                        orderStatusIcon = "mailbox";
+                                        break;
+                                    case OrderStatus.CompletelyParcelsDeliveredToPost:
+                                        orderStatusColor = "success";
+                                        orderStatusIcon = "mailbox";
+                                        break;
+                                    case OrderStatus.DeliveredToClient:
+                                        orderStatusColor = "success";
+                                        orderStatusIcon = "check2-square";
+                                        break;
+                                }
+                            }
+                            <button type="button" class="btn btn-@orderStatusColor">
+                                <i class="bi bi-@orderStatusIcon"></i>
+                                @order.Status.GetEnumDisplayName()
+                            </button>
+                        </td>
+                        <td>
+                            <button order-id="@order.Id" functionNameToCallOnClick="getOrderDetails" type="button" class="get-html-with-ajax btn btn-primary">
+                                جزییات سفارش
+                            </button>
+                            @foreach (var parcelPost in order.ParcelPosts)
+                            {
+                                @if (parcelPost.Status == ParcelPostStatus.InventoryProcessing)
+                                {
+                                    <button class="btn btn-dark get-html-with-ajax"
+                                            parcel-post-id="@parcelPost.Id" functionNameToCallOnClick="changeStatusToDeliveryToPost"
+                                            type="button">
+                                        تحویل مرسوله
+                                        @if (parcelPost.Dimension == Dimension.Normal)
+                                        {
+                                            @:عادی
+                                        }
+                                        else if (parcelPost.Dimension == Dimension.Heavy)
+                                        {
+                                            @:سنگین
+                                        }
+                                        else
+                                        {
+                                            @:فوق سنگین
+                                        }
+                                        به اداره پست
+                                    </button>
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <!-- Pagination -->
+    <div class="btn-toolbar my-3 d-flex justify-content-center" id="main-pagination">
+            <div class="btn-group me-2">
+                @if (Model.Pagination.CurrentPage != 1)
+                {
+                    <button value="1" type="button" class="btn btn-outline-primary">
+                        <i class="bi bi-chevron-double-right"></i>
+                    </button>
+                    <button value="@(Model.Pagination.CurrentPage - 1)" type="button" class="btn btn-outline-primary">قبلی</button>
+                }
+                @for (int counter = Model.Pagination.StartPage; counter <= Model.Pagination.EndPage; counter++)
+                {
+                    <button value="@counter" type="button"
+                    class="@(counter == Model.Pagination.CurrentPage ? "active " : string.Empty)btn btn-outline-primary">
+                        @counter
+                    </button>
+                }
+                @if (Model.Pagination.CurrentPage != Model.Pagination.PagesCount)
+                {
+                    <button value="@(Model.Pagination.CurrentPage + 1)" type="button" class="btn btn-outline-primary">بعدی</button>
+                    <button data-bs-toggle="tooltip" data-bs-placement="top" title="کل صفحات @Model.Pagination.PagesCount" value="@Model.Pagination.PagesCount" type="button" class="btn btn-outline-primary">
+                        <i class="bi bi-chevron-double-left"></i>
+                        @Model.Pagination.PagesCount
+                    </button>
+                }
+            </div>
+            <div>
+                <select id="page-count-selectbox" asp-for="Pagination.PageCount" class="form-select" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.PageCount>()"></select>
+            </div>
+        </div>
+        <div class="col-10 col-sm-6 col-md-4 col-xl-3 m-auto">
+            <div class="input-group">
+                <input id="page-number-input" value="@Model.Pagination.CurrentPage" min="1" max="@Model.Pagination.PagesCount" type="number" class="form-control rtl-direction" placeholder="شماره صفحه">
+                <button id="go-to-page-button" class="btn btn-outline-primary" type="submit">برو به صفحه</button>
+            </div>
+        </div>
+        <!-- End pagination -->
+</div>
+}
+else
+{
+    <partial name="_RecordNotFound" />
+}

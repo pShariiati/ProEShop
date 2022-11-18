@@ -61,3 +61,24 @@ function showOrderDetailsInModal(result, clickedButton) {
     $('#html-scrollable-modal-place .modal-header h5').html($(clickedButton).text().trim());
     convertEnglishNumbersToPersianNumber();
 }
+
+
+function changeStatusToDeliveryToPost(e) {
+    var parcelPostId = $(e).attr('parcel-post-id');
+    getHtmlWithAJAX('?handler=ShowDeliveryToPostPartial', { id: parcelPostId }, 'showChangeStatusToDeliveryToPost', e);
+}
+
+function showChangeStatusToDeliveryToPost(result, clickedButton) {
+    appendHtmlModalPlaceToBody();
+    var currnetModal = $('#html-modal-place');
+    currnetModal.find('.modal-body').html(result);
+    currnetModal.modal('show');
+    $('#html-modal-place .modal-header h5').html($(clickedButton).text().trim());
+    $.validator.unobtrusive.parse($('#html-modal-place form'));
+}
+
+// بعد از تحویل مرسوله به پست، گرید را رفرش میکنیم
+function changeStatusToDeliveryToPostFunction(message, data) {
+    showToastr('success', message);
+    fillDataTable();
+}

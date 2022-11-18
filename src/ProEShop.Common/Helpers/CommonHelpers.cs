@@ -7,21 +7,12 @@ using System.Threading.Tasks;
 namespace ProEShop.Common.Helpers;
 public static class CommonHelpers
 {
-    public static bool IsNumericType(this object o)
+    public static bool IsNumericType(this string input)
     {
-        switch (Type.GetTypeCode(o.GetType()))
+        switch (input)
         {
-            case TypeCode.Byte:
-            case TypeCode.SByte:
-            case TypeCode.UInt16:
-            case TypeCode.UInt32:
-            case TypeCode.UInt64:
-            case TypeCode.Int16:
-            case TypeCode.Int32:
-            case TypeCode.Int64:
-            case TypeCode.Decimal:
-            case TypeCode.Double:
-            case TypeCode.Single:
+            case "Int32":
+            case "Int64":
                 return true;
             default:
                 return false;

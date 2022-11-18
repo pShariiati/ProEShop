@@ -77,6 +77,7 @@ public class VerifyPaymentModel : PageModel
         // شماره پیگیری بانک بعد از پرداخت وجه سفارش
         order.BankTransactionCode = verifyResult.TransactionCode;
         order.Status = OrderStatus.Processing;
+        order.IsPay = true;
         await _uow.SaveChangesAsync();
 
         return Content("The payment was successful");

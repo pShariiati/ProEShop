@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ProEShop.Common;
+using ProEShop.Common.Attributes;
 using ProEShop.Common.Constants;
 using ProEShop.Common.Helpers;
 using ProEShop.Common.IdentityToolkit;
@@ -9,9 +10,11 @@ using ProEShop.Entities.Enums;
 using ProEShop.Services.Contracts;
 using ProEShop.Services.Services;
 using ProEShop.ViewModels.Orders;
+using ProEShop.ViewModels.ParcelPosts;
 
-namespace ProEShop.Web.Pages.Inventory.Order;
+namespace ProEShop.Web.Pages.Inventory.DeliveryOrder;
 
+[CheckModelStateInRazorPages]
 public class IndexModel : InventoryPanelBase
 {
     #region Constructor
@@ -19,21 +22,24 @@ public class IndexModel : InventoryPanelBase
     private readonly IOrderService _orderService;
     private readonly IProvinceAndCityService _provinceAndCityService;
     private readonly IUnitOfWork _uow;
+    private readonly IParcelPostService _parcelPostService;
 
     public IndexModel(
         IOrderService orderService,
         IProvinceAndCityService provinceAndCityService,
-        IUnitOfWork uow)
+        IUnitOfWork uow,
+        IParcelPostService parcelPostService)
     {
         _orderService = orderService;
         _provinceAndCityService = provinceAndCityService;
         _uow = uow;
+        _parcelPostService = parcelPostService;
     }
 
     #endregion
 
     [BindProperty(SupportsGet = true)]
-    public ShowOrdersViewModel Orders { get; set; }
+    public ShowOrdersInDeliveryOrdersViewModel Orders { get; set; }
         = new();
 
     public async Task OnGet()
@@ -52,7 +58,7 @@ public class IndexModel : InventoryPanelBase
                 Data = ModelState.GetModelStateErrors()
             });
         }
-        return Partial("List", await _orderService.GetOrders(Orders));
+        return Partial("List", await _orderService.GetDeliveryOrders(Orders));
     }
 
     public async Task<IActionResult> OnGetGetCities(long provinceId)
@@ -82,26 +88,6 @@ public class IndexModel : InventoryPanelBase
         });
     }
 
-    public async Task<IActionResult> OnPostChangeStatusToInventoryProcessing(long orderId)
-    {
-        var order = await _orderService.FindByIdWithIncludesAsync(orderId, nameof(Entities.Order.ParcelPosts));
-        if (order is null)
-        {
-            return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
-        }
-
-        order.Status = OrderStatus.InventoryProcessing;
-
-        foreach (var parcelPost in order.ParcelPosts)
-        {
-            parcelPost.Status = ParcelPostStatus.InventoryProcessing;
-        }
-
-        await _uow.SaveChangesAsync();
-
-        return Json(new JsonResultOperation(true, "سفارش مورد نظر وارد مرحله پردازش انبار شد"));
-    }
-
     public async Task<IActionResult> OnGetGetOrderDetails(long orderId)
     {
         if (orderId < 1)
@@ -116,6 +102,34 @@ public class IndexModel : InventoryPanelBase
             return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
         }
 
-        return Partial("_OrderDetailsPartial", orderDetails);
+        return Partial("../Inventory/Order/_OrderDetailsPartial", orderDetails);
+    }
+
+    public async Task<IActionResult> OnGetShowDeliveryToPostPartial(long id)
+    {
+        if (!await _parcelPostService.IsExistsBy(nameof(Entities.ParcelPost.Id), id))
+        {
+            return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
+        }
+
+        return Partial("_DeliveryToPostPartial");
+    }
+
+    public async Task<IActionResult> OnPostChangeStatusToDeliveryToPost(DeliveryParcelPostToPostViewModel model)
+    {
+        var parcelPost = await _parcelPostService.FindByIdAsync(model.Id);
+
+        if (parcelPost is null)
+        {
+            return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
+        }
+
+        parcelPost.Status = ParcelPostStatus.DeliveredToPost;
+        parcelPost.PostTrackingCode = model.PostTrackingCode;
+
+        await _uow.SaveChangesAsync();
+
+        return Json(
+            new JsonResultOperation(true, "وضعیت مرسوله مورد نظر به \"تحویل داده شده به اداره پست\" تغییر یافت"));
     }
 }

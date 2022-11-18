@@ -92,6 +92,12 @@ public class IdentityDbInitializer : IIdentityDbInitializer
                 throw new InvalidOperationException(warehouseRole.DumpErrors());
             }
 
+            var deliveryManRole = identityDbSeedData.SeedDeliveryManRole().Result;
+            if (deliveryManRole == IdentityResult.Failed())
+            {
+                throw new InvalidOperationException(deliveryManRole.DumpErrors());
+            }
+
             identityDbSeedData.SeedProvincesAndCities().GetAwaiter().GetResult();
             identityDbSeedData.SeedProductShortLinks().GetAwaiter().GetResult();
         });
@@ -160,6 +166,31 @@ public class IdentityDbInitializer : IIdentityDbInitializer
             if (warehouseRoleResult == IdentityResult.Failed())
             {
                 _logger.LogError($"{thisMethodName}: warehouseRole CreateAsync failed. {warehouseRoleResult.DumpErrors()}");
+                return IdentityResult.Failed();
+            }
+
+            await _uow.SaveChangesAsync();
+        }
+        else
+        {
+            _logger.LogInformation($"{thisMethodName}: warehouseRole already exists.");
+        }
+
+        return IdentityResult.Success;
+    }
+
+    public async Task<IdentityResult> SeedDeliveryManRole()
+    {
+        var thisMethodName = nameof(SeedDeliveryManRole);
+        //Create the `Warehouse` Role if it does not exist
+        var deliveryManRole = await _roleManager.FindByNameAsync(ConstantRoles.DeliveryMan);
+        if (deliveryManRole == null)
+        {
+            deliveryManRole = new Role(ConstantRoles.DeliveryMan, "پیک");
+            var deliveryManRoleResult = await _roleManager.CreateAsync(deliveryManRole);
+            if (deliveryManRoleResult == IdentityResult.Failed())
+            {
+                _logger.LogError($"{thisMethodName}: deliveryManRole CreateAsync failed. {deliveryManRoleResult.DumpErrors()}");
                 return IdentityResult.Failed();
             }
 

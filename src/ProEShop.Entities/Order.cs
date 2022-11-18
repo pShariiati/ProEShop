@@ -59,6 +59,8 @@ public class Order : EntityBase, IAuditableEntity
 
     public OrderStatus Status { get; set; }
 
+    public bool IsPay { get; set; }
+
     #endregion
 
     #region Relations

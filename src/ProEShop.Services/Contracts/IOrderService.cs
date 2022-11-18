@@ -23,6 +23,13 @@ public interface IOrderService : IGenericService<Order>
     Task<ShowOrdersViewModel> GetOrders(ShowOrdersViewModel model);
 
     /// <summary>
+    /// نمایش تمامی سفارشات در داخل گرید تحویل دادن مرسوله ها
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    Task<ShowOrdersInDeliveryOrdersViewModel> GetDeliveryOrders(ShowOrdersInDeliveryOrdersViewModel model);
+
+    /// <summary>
     /// گرفتن جزییات سفارش
     /// </summary>
     /// <param name="orderId"></param>

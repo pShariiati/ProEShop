@@ -16,6 +16,21 @@ var htmlModalPlace = `<div class="modal fade" id="html-modal-place" data-bs-back
     </div>
 </div>`;
 
+var htmlScrollableModalPlace = `<div class="modal fade" id="html-scrollable-modal-place" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer d-flex justify-content-start">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">بستن</button>
+            </div>
+        </div>
+    </div>
+</div>`;
+
 var secondHtmlModalPlace = `<div class="modal fade" id="second-html-modal-place" data-bs-backdrop="static">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -34,6 +49,12 @@ var secondHtmlModalPlace = `<div class="modal fade" id="second-html-modal-place"
 function appendHtmlModalPlaceToBody() {
     if ($('#html-modal-place').length === 0) {
         $('body').append(htmlModalPlace);
+    }
+}
+
+function appendHtmlScrollableModalPlaceToBody() {
+    if ($('#html-scrollable-modal-place').length === 0) {
+        $('body').append(htmlScrollableModalPlace);
     }
 }
 
@@ -242,7 +263,8 @@ function initializeSelect2() {
     if ($('.modal .custom-select2').length > 0) {
         $('.modal .custom-select2').select2({
             theme: 'bootstrap-5',
-            dropdownParent: $('#form-modal-place')
+            dropdownParent: $('#form-modal-place'),
+            width: '100%'
         });
     }
 }
@@ -250,7 +272,8 @@ function initializeSelect2() {
 function initializeSelect2WithoutModal() {
     if ($('.custom-select2').length > 0) {
         $('.custom-select2').select2({
-            theme: 'bootstrap-5'
+            theme: 'bootstrap-5',
+            width: '100%'
         });
     }
 }

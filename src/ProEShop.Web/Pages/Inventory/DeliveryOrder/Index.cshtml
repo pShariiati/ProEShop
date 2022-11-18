@@ -1,7 +1,7 @@
 ﻿@page
-@model ProEShop.Web.Pages.Inventory.Order.IndexModel
+@model ProEShop.Web.Pages.Inventory.DeliveryOrder.IndexModel
 @{
-    ViewData["Title"] = "سفارشات";
+    ViewData["Title"] = "تحویل سفارشات";
 }
 
 <div class="card text-dark bg-white border-0 shadow">
@@ -53,21 +53,9 @@
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
                     <label class="form-label" asp-for="Orders.SearchOrders.Status"></label>
-                    <select class="form-select" asp-for="Orders.SearchOrders.Status" asp-items="Html.GetEnumSelectList<ProEShop.Entities.Enums.OrderStatus>()">
+                    <select class="form-select" asp-for="Orders.SearchOrders.Status" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.Orders.OrderStatusInDeliveryOrders>()">
                         <option value="">همه</option>
                     </select>
-                </div>
-                <div class="col-12 col-sm-6 col-lg-3 my-2">
-                    <label class="form-label" asp-for="Orders.SearchOrders.PaymentGateway"></label>
-                    <select class="form-select" asp-for="Orders.SearchOrders.PaymentGateway" asp-items="Html.GetEnumSelectList<ProEShop.Entities.Enums.PaymentGateway>()">
-                        <option value="">همه</option>
-                    </select>
-                </div>
-                <div class="col-12 col-sm-6 col-lg-3 my-2 form-check form-switch px-3">
-                    <label class="form-check-label" asp-for="Orders.SearchOrders.IsPay"></label>
-                    <div>
-                        <input class="form-check-input m-0" asp-for="Orders.SearchOrders.IsPay" />
-                    </div>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
                     <label class="form-label" asp-for="Orders.SearchOrders.Sorting"></label>
@@ -103,7 +91,7 @@
 }
 
 @section CustomScripts{
-    <script src="~/Pages/Inventory/Order/Index.cshtml.js"></script>
+    <script src="~/Pages/Inventory/DeliveryOrder/Index.cshtml.js"></script>
 }
 
 @section Styles

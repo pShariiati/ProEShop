@@ -1,5 +1,4 @@
-﻿using ProEShop.ViewModels.Brands;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ProEShop.Common.Attributes;
 using ProEShop.Common.Constants;
@@ -9,13 +8,13 @@ using ProEShop.Entities.Enums;
 namespace ProEShop.ViewModels.Orders;
 
 /// <summary>
-/// نمایش سفارشات
+/// نمایش سفارشات در بخش تحویل دادن مرسوله
 /// </summary>
-public class ShowOrdersViewModel
+public class ShowOrdersInDeliveryOrdersViewModel
 {
-    public List<ShowOrderViewModel> Orders { get; set; }
+    public List<ShowOrderInDeliveryOrdersViewModel> Orders { get; set; }
 
-    public SearchOrdersViewModel SearchOrders { get; set; }
+    public SearchOrdersInDeliveryOrdersViewModel SearchOrders { get; set; }
         = new();
 
     public PaginationViewModel Pagination { get; set; }
@@ -24,7 +23,7 @@ public class ShowOrdersViewModel
     public List<SelectListItem> Provinces { get; set; }
 }
 
-public class ShowOrderViewModel
+public class ShowOrderInDeliveryOrdersViewModel
 {
     public long Id { get; set; }
 
@@ -40,14 +39,22 @@ public class ShowOrderViewModel
     [Display(Name = "مقصد")]
     public string Destination { get; set; }
 
-    [Display(Name = "درگاه")]
-    public PaymentGateway? PaymentGateway { get; set; }
-
     [Display(Name = "وضعیت")]
     public OrderStatus Status { get; set; }
+
+    public List<ShowParcelPostInDeliveryOrdersViewModel> ParcelPosts { get; set; }
 }
 
-public class SearchOrdersViewModel
+public class ShowParcelPostInDeliveryOrdersViewModel
+{
+    public long Id { get; set; }
+
+    public Dimension Dimension { get; set; }
+
+    public ParcelPostStatus Status { get; set; }
+}
+
+public class SearchOrdersInDeliveryOrdersViewModel
 {
     [Display(Name = "شماره سفارش")]
     [ContainsSearch]
@@ -79,23 +86,22 @@ public class SearchOrdersViewModel
     [Range(1, long.MaxValue, ErrorMessage = AttributesErrorMessages.RegularExpressionMessage)]
     public long? CityId { get; set; }
 
-    [Display(Name = "درگاه")]
-    [EnumEqualSearch]
-    public PaymentGateway? PaymentGateway { get; set; }
-
     [Display(Name = "وضعیت")]
     [EnumEqualSearch]
-    public OrderStatus? Status { get; set; }
-
-    [Display(Name = "فقط پرداخت شده ها")]
-    public bool IsPay { get; set; } = true;
+    public OrderStatusInDeliveryOrders? Status { get; set; }
 }
 
-public enum SortingOrders
+public enum OrderStatusInDeliveryOrders : byte
 {
-    [Display(Name = "شماره سفارش")]
-    OrderNumber,
+    [Display(Name = "پردازش انبار")]
+    InventoryProcessing = 2,
 
-    [Display(Name = "تاریخ ایجاد")]
-    CreatedDateTime
+    [Display(Name = "بخشی از مرسوله ها در پست")]
+    SomeParcelsDeliveredToPost,
+
+    [Display(Name = "تمام مرسوله ها در پست")]
+    CompletelyParcelsDeliveredToPost,
+
+    [Display(Name = "تحویل شده")]
+    DeliveredToClient
 }

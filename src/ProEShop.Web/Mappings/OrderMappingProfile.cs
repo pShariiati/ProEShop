@@ -16,6 +16,16 @@ public class OrderMappingProfile : Profile
                 options =>
                     options.MapFrom(src => src.Address.Province.Title + " - " + src.Address.City.Title));
 
+        this.CreateMap<Entities.ParcelPost, ShowParcelPostInDeliveryOrdersViewModel>();
+
+        this.CreateMap<Entities.Order, ShowOrderInDeliveryOrdersViewModel>()
+            .ForMember(dest => dest.CreatedDateTime,
+                options =>
+                    options.MapFrom(src => src.CreatedDateTime.ToLongPersianDateTime()))
+            .ForMember(dest => dest.Destination,
+                options =>
+                    options.MapFrom(src => src.Address.Province.Title + " - " + src.Address.City.Title));
+
         this.CreateMap<Entities.Order, OrderDetailsViewModel>()
             .ForMember(dest => dest.CreatedDateTime,
                 options =>
