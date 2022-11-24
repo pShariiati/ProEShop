@@ -301,6 +301,7 @@ public class PaymentModel : PageBase
             orderToAdd.DiscountPrice = discountPrice;
         }
 
+        orderToAdd.FinalPrice = totalPrice + sumPriceOfShipping - discountPrice;
         orderToAdd.TotalScore = (byte)sumScore;
         orderToAdd.ShippingCount = (byte)shippingCount;
 

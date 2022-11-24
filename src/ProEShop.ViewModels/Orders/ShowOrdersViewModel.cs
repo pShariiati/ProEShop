@@ -45,6 +45,9 @@ public class ShowOrderViewModel
 
     [Display(Name = "وضعیت")]
     public OrderStatus Status { get; set; }
+
+    [Display(Name = "قیمت پرداخت شده")]
+    public int FinalPrice { get; set; }
 }
 
 public class SearchOrdersViewModel
@@ -89,6 +92,14 @@ public class SearchOrdersViewModel
 
     [Display(Name = "فقط پرداخت شده ها")]
     public bool IsPay { get; set; } = true;
+
+    [Display(Name = "قیمت پرداخت شده، از")]
+    [BetweenNumbers]
+    public int? FinalPriceFrom { get; set; }
+
+    [Display(Name = "قیمت پرداخت شده، تا")]
+    [BetweenNumbers]
+    public int? FinalPriceTo { get; set; }
 }
 
 public enum SortingOrders

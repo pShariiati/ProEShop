@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ProEShop.Common.Helpers;
+using ProEShop.Entities.Enums;
 using ProEShop.ViewModels.Orders;
 
 namespace ProEShop.Web.Mappings;
@@ -24,7 +25,11 @@ public class OrderMappingProfile : Profile
                     options.MapFrom(src => src.CreatedDateTime.ToLongPersianDateTime()))
             .ForMember(dest => dest.Destination,
                 options =>
-                    options.MapFrom(src => src.Address.Province.Title + " - " + src.Address.City.Title));
+                    options.MapFrom(src => src.Address.Province.Title + " - " + src.Address.City.Title))
+            .ForMember(dest => dest.DeliveredParcelPostsToPostCount,
+                options =>
+                    options.MapFrom(src => src.ParcelPosts.Count(x =>
+                        x.Status == ParcelPostStatus.DeliveredToClient || x.Status == ParcelPostStatus.DeliveredToPost)));
 
         this.CreateMap<Entities.Order, OrderDetailsViewModel>()
             .ForMember(dest => dest.CreatedDateTime,

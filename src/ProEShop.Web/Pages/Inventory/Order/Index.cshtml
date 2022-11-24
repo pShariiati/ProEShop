@@ -29,6 +29,16 @@
                     <span class="span-error-message" asp-validation-for="Orders.SearchOrders.FullName"></span>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
+                    <label class="form-label" asp-for="Orders.SearchOrders.FinalPriceFrom"></label>
+                    <input class="form-control" asp-for="Orders.SearchOrders.FinalPriceFrom" />
+                    <span class="span-error-message" asp-validation-for="Orders.SearchOrders.FinalPriceFrom"></span>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3 my-2">
+                    <label class="form-label" asp-for="Orders.SearchOrders.FinalPriceTo"></label>
+                    <input class="form-control" asp-for="Orders.SearchOrders.FinalPriceTo" />
+                    <span class="span-error-message" asp-validation-for="Orders.SearchOrders.FinalPriceTo"></span>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3 my-2">
                     <label class="form-label" asp-for="Orders.SearchOrders.CreatedDateTime"></label>
                     <div class="input-group">
                         <input class="form-control custom-md-persian-datepicker" asp-for="Orders.SearchOrders.CreatedDateTime" readonly="readonly" />

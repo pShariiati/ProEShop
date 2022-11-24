@@ -43,6 +43,19 @@ public class ShowOrderInDeliveryOrdersViewModel
     public OrderStatus Status { get; set; }
 
     public List<ShowParcelPostInDeliveryOrdersViewModel> ParcelPosts { get; set; }
+
+    /// <summary>
+    /// تعداد کل مرسول های این سفارش
+    /// </summary>
+    public int ParcelPostsCount { get; set; }
+
+    /// <summary>
+    /// تعداد مرسولات این سفارش که به اداره پست تحویل داده شده اند
+    /// </summary>
+    public int DeliveredParcelPostsToPostCount { get; set; }
+
+    [Display(Name = "قیمت پرداخت شده")]
+    public int FinalPrice { get; set; }
 }
 
 public class ShowParcelPostInDeliveryOrdersViewModel
@@ -89,6 +102,14 @@ public class SearchOrdersInDeliveryOrdersViewModel
     [Display(Name = "وضعیت")]
     [EnumEqualSearch]
     public OrderStatusInDeliveryOrders? Status { get; set; }
+
+    [Display(Name = "قیمت پرداخت شده، از")]
+    [BetweenNumbers]
+    public int? FinalPriceFrom { get; set; }
+
+    [Display(Name = "قیمت پرداخت شده، تا")]
+    [BetweenNumbers]
+    public int? FinalPriceTo { get; set; }
 }
 
 public enum OrderStatusInDeliveryOrders : byte

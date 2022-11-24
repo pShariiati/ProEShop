@@ -9,8 +9,10 @@
                 <tr>
                     <th>@Html.DisplayNameFor(x => x.Orders[0].OrderNumber)</th>
                     <th>@Html.DisplayNameFor(x => x.Orders[0].AddressFullName)</th>
+                    <th>@Html.DisplayNameFor(x => x.Orders[0].FinalPrice)</th>
                     <th>@Html.DisplayNameFor(x => x.Orders[0].CreatedDateTime)</th>
                     <th>@Html.DisplayNameFor(x => x.Orders[0].Destination)</th>
+                    <th>مرسوله تحویلی به پست</th>
                     <th>@Html.DisplayNameFor(x => x.Orders[0].Status)</th>
                     <th>عملیات</th>
                 </tr>
@@ -21,8 +23,14 @@
                     <tr>
                         <td>@order.OrderNumber</td>
                         <td>@order.AddressFullName</td>
+                        <td class="persian-numbers">@order.FinalPrice.ToString("#,0")</td>
                         <td>@order.CreatedDateTime</td>
                         <td>@order.Destination</td>
+                        <td class="persian-numbers">
+                            @order.ParcelPostsCount
+                            /
+                            @order.DeliveredParcelPostsToPostCount
+                        </td>
                         <td>
                             @{
                                 var orderStatusColor = string.Empty;
@@ -68,25 +76,43 @@
                             {
                                 @if (parcelPost.Status == ParcelPostStatus.InventoryProcessing)
                                 {
-                                    <button class="btn btn-dark get-html-with-ajax"
-                                            parcel-post-id="@parcelPost.Id" functionNameToCallOnClick="changeStatusToDeliveryToPost"
-                                            type="button">
-                                        تحویل مرسوله
-                                        @if (parcelPost.Dimension == Dimension.Normal)
-                                        {
-                                            @:عادی
-                                        }
-                                        else if (parcelPost.Dimension == Dimension.Heavy)
-                                        {
-                                            @:سنگین
-                                        }
-                                        else
-                                        {
-                                            @:فوق سنگین
-                                        }
-                                        به اداره پست
-                                    </button>
+                                    if (parcelPost.Dimension != Dimension.UltraHeavy)
+                                    {
+                                        <button class="btn btn-dark get-html-with-ajax"
+                                                parcel-post-id="@parcelPost.Id" functionNameToCallOnClick="changeStatusToDeliveryToPost"
+                                                type="button">
+                                            تحویل مرسوله
+                                            @if (parcelPost.Dimension == Dimension.Normal)
+                                            {
+                                                @:عادی
+                                            }
+                                            else
+                                            {
+                                                @:سنگین
+                                            }
+                                            به اداره پست
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <form asp-page-handler="ChangeStatusToDeliveryToPost" class="d-inline-block">
+                                            <input type="hidden" name="Id" value="@parcelPost.Id" />
+                                            <input type="hidden" name="PostTrackingCode" value="123" />
+                                            <button custom-message="وضعیت سفارش به تحویل داده شده به پست تغییر یابد ؟" type="button" class="btn btn-dark delete-row-button">
+                                                تحویل مرسوله فوق سنگین به اداره پست
+                                            </button>
+                                        </form>
+                                    }
                                 }
+                            }
+                            @if (order.Status == OrderStatus.CompletelyParcelsDeliveredToPost)
+                            {
+                                <form asp-page-handler="DeliveredToClient" class="d-inline-block">
+                                    <input type="hidden" name="orderId" value="@order.Id" />
+                                    <button custom-message="وضعیت سفارش به تحویل داده شده به مشتری تغییر یابد ؟" type="button" class="btn btn-success delete-row-button">
+                                        تحویل به مشتری
+                                    </button>
+                                </form>
                             }
                         </td>
                     </tr>
@@ -94,7 +120,7 @@
             </tbody>
         </table>
         <!-- Pagination -->
-    <div class="btn-toolbar my-3 d-flex justify-content-center" id="main-pagination">
+        <div class="btn-toolbar my-3 d-flex justify-content-center" id="main-pagination">
             <div class="btn-group me-2">
                 @if (Model.Pagination.CurrentPage != 1)
                 {
@@ -130,7 +156,7 @@
             </div>
         </div>
         <!-- End pagination -->
-</div>
+    </div>
 }
 else
 {

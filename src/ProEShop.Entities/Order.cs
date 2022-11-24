@@ -48,6 +48,8 @@ public class Order : EntityBase, IAuditableEntity
 
     public int? DiscountPrice { get; set; }
 
+    public int FinalPrice { get; set; }
+
     public byte TotalScore { get; set; }
 
     public byte ShippingCount { get; set; }

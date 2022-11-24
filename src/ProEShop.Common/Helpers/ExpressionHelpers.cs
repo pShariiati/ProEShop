@@ -21,12 +21,13 @@ public static class ExpressionHelpers
         var equalExpressions = CreateEqualExpressions(containsExpressions, model);
         var enumEqualExpressions = CreateEnumEqualExpressions(equalExpressions, model);
         var equalDateTimeExpressions = CreateEqualDateTimeExpressions(enumEqualExpressions, model);
+        var betweenNumbersExpressions = CreateBetweenNumbersExpressions(equalDateTimeExpressions, model);
         if (callDeletedStatusExpression)
         {
-            return CreateDeletedStatusExpression(equalDateTimeExpressions, model);
+            return CreateDeletedStatusExpression(betweenNumbersExpressions, model);
         }
 
-        return equalDateTimeExpressions;
+        return betweenNumbersExpressions;
     }
 
     public static IQueryable<T> CreateContainsExpressions<T>(IQueryable<T> query, object model)
@@ -96,6 +97,52 @@ public static class ExpressionHelpers
                     var equal = Expression.Equal(property, constantValue);
                     var exp = Expression.Lambda<Func<T, bool>>(equal, parameter);
                     result = result.Where(exp);
+                }
+            }
+        }
+
+        return result;
+    }
+
+    public static IQueryable<T> CreateBetweenNumbersExpressions<T>(IQueryable<T> query, object model)
+    {
+        var result = query;
+        var propertiesToSearch = model.GetType().GetProperties()
+            .Where(x => Attribute.IsDefined(x, typeof(BetweenNumbersAttribute)))
+            .ToList();
+        if (propertiesToSearch.Count > 0)
+        {
+            foreach (var propertyInfo in propertiesToSearch)
+            {
+                var propertyValue = propertyInfo.GetValue(model);
+                if (!string.IsNullOrWhiteSpace(propertyValue?.ToString()))
+                {
+                    var propertyName = propertyInfo.Name;
+
+                    if (propertyName.EndsWith("From"))
+                    {
+                        // x => x.FinalPrice >= 13,275,000
+                        propertyName = propertyName[..^4];
+
+                        var parameter = Expression.Parameter(typeof(T));
+                        var property = Expression.Property(parameter, propertyName);
+                        var constantValue = Expression.Constant(propertyValue);
+                        var equal = Expression.GreaterThanOrEqual(property, constantValue);
+                        var exp = Expression.Lambda<Func<T, bool>>(equal, parameter);
+                        result = result.Where(exp);
+                    }
+                    else if (propertyName.EndsWith("To"))
+                    {
+                        // x => x.FinalPrice <= 13,275,000
+                        propertyName = propertyName[..^2];
+
+                        var parameter = Expression.Parameter(typeof(T));
+                        var property = Expression.Property(parameter, propertyName);
+                        var constantValue = Expression.Constant(propertyValue);
+                        var equal = Expression.LessThanOrEqual(property, constantValue);
+                        var exp = Expression.Lambda<Func<T, bool>>(equal, parameter);
+                        result = result.Where(exp);
+                    }
                 }
             }
         }

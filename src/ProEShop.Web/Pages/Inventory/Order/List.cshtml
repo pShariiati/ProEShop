@@ -9,6 +9,7 @@
                 <tr>
                     <th>@Html.DisplayNameFor(x => x.Orders[0].OrderNumber)</th>
                     <th>@Html.DisplayNameFor(x => x.Orders[0].AddressFullName)</th>
+                    <th>@Html.DisplayNameFor(x => x.Orders[0].FinalPrice)</th>
                     <th>@Html.DisplayNameFor(x => x.Orders[0].CreatedDateTime)</th>
                     <th>@Html.DisplayNameFor(x => x.Orders[0].Destination)</th>
                     <th>@Html.DisplayNameFor(x => x.Orders[0].PaymentGateway)</th>
@@ -22,6 +23,7 @@
                     <tr>
                         <td>@order.OrderNumber</td>
                         <td>@order.AddressFullName</td>
+                        <td class="persian-numbers">@order.FinalPrice.ToString("#,0")</td>
                         <td>@order.CreatedDateTime</td>
                         <td>@order.Destination</td>
                         <td>

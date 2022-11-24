@@ -575,6 +575,7 @@ function fillDataTable() {
             activatingDeleteButtons();
             activatingPageCount();
             enablingTooltips();
+            convertEnglishNumbersToPersianNumber();
         }
     }).fail(function () {
         showErrorMessage();
@@ -826,6 +827,7 @@ $(document).on('submit', 'form.search-form-via-ajax', function (e) {
             activatingDeleteButtons();
             activatingPageCount();
             enablingTooltips();
+            convertEnglishNumbersToPersianNumber();
         }
     }).fail(function () {
         showErrorMessage();
