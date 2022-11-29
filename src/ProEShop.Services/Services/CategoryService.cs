@@ -227,6 +227,22 @@ public class CategoryService : GenericService<Category>, ICategoryService
             .SingleOrDefaultAsync(x => x.Id == categoryId);
     }
 
+    public async Task<bool> CheckProductCategoryIdsInComparePage(params int[] input)
+    {
+        var productCodes = await _products.Where(x => input.Contains(x.ProductCode))
+            .Select(x => x.ProductCode).ToListAsync();
+
+        // آیا رکوردی وجود دارد یا نه ؟
+
+        if (productCodes.Count < 1)
+        {
+            return false;
+        }
+
+        // آیا تمامی آیتم های داخل لیست مشابه هم هستند یا نه ؟
+        return productCodes.Distinct().Count() == 1;
+    }
+
     public override async Task<DuplicateColumns> AddAsync(Category entity)
     {
         var result = new List<string>();

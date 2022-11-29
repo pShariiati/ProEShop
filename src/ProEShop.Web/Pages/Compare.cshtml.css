@@ -1,0 +1,29 @@
+﻿.remove-button-in-compare-page {
+    width: 22px;
+    height: 22px;
+}
+
+.remove-button-in-compare-page i {
+    margin-top: 1px;
+}
+
+.product-name-in-compare-page {
+    line-height: 32px;
+}
+
+.product-item-in-compare-page:not(:nth-child(4)) {
+    border-left: 1px solid #dee2e6;
+}
+
+.product-details-item-in-compare-page:not(:last-child) {
+    border-bottom: 1px solid #dee2e6;
+}
+
+.product-details-item-in-compare-page .row div:not(:last-child) {
+    border-left: 1px solid #dee2e6;
+}
+
+.custom-overflow-in-compare-page {
+    overflow-x: auto;
+    overflow-y: hidden;
+}

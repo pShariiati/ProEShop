@@ -66,4 +66,11 @@ public interface IProductService : IGenericService<Product>
     /// <param name="ids"></param>
     /// <returns></returns>
     Task<List<Product>> GetProductsForChangeStatus(List<long> ids);
+
+    /// <summary>
+    /// گرفتن محصولات برای صفحه مقایسه محصولات
+    /// </summary>
+    /// <param name="productCodes"></param>
+    /// <returns></returns>
+    Task<List<ShowProductInCompareViewModel>> GetProductsForCompare(params int[] productCodes);
 }

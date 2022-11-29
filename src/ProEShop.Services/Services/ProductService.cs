@@ -304,4 +304,13 @@ public class ProductService : GenericService<Product>, IProductService
     {
         return _products.Where(x => ids.Contains(x.Id)).ToListAsync();
     }
+
+    public Task<List<ShowProductInCompareViewModel>> GetProductsForCompare(params int[] productCodes)
+    {
+        productCodes = productCodes.Where(x => x > 0).ToArray();
+
+        return _mapper.ProjectTo<ShowProductInCompareViewModel>(
+            _products.Where(x => productCodes.Contains(x.ProductCode))
+        ).ToListAsync();
+    }
 }

@@ -10,7 +10,7 @@
     font-weight: bold;
 }
 
-#buttons-next-to-gallery-box button {
+#buttons-next-to-gallery-box button, #buttons-next-to-gallery-box a {
     color: #6d706f;
     background-color: white;
     border-radius: 8px;
@@ -19,9 +19,9 @@
     margin: 3px 0;
 }
 
-#buttons-next-to-gallery-box button:hover {
-    border: 1px solid #626766;
-}
+    #buttons-next-to-gallery-box button:hover, #buttons-next-to-gallery-box a:hover {
+        border: 1px solid #626766;
+    }
 
 #buttons-next-to-gallery-box i {
     padding: 5px;

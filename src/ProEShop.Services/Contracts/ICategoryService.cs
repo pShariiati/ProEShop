@@ -45,4 +45,14 @@ public interface ICategoryService : IGenericService<Category>
     /// <param name="categoryId"></param>
     /// <returns></returns>
     Task<Entities.Category> GetCategoryForEditVariant(long categoryId);
+
+    /// <summary>
+    /// بررسی کد محصولات در صفحه مقایسه
+    /// باید دسته بندی تمامی محصولات وارد شده مشابه اولین محصول وارد شده باشد
+    /// برای مثال اگر دسته بندی اولین محصول گوشی موبایل است
+    /// سایر محصولات هم باید در دسته بندی گوشی موبایل باشند
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    Task<bool> CheckProductCategoryIdsInComparePage(params int[] input);
 }
