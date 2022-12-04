@@ -52,7 +52,7 @@ public interface ICategoryService : IGenericService<Category>
     /// برای مثال اگر دسته بندی اولین محصول گوشی موبایل است
     /// سایر محصولات هم باید در دسته بندی گوشی موبایل باشند
     /// </summary>
-    /// <param name="input"></param>
+    /// <param name="productCodes"></param>
     /// <returns></returns>
-    Task<bool> CheckProductCategoryIdsInComparePage(params int[] input);
+    Task<bool> CheckProductCategoryIdsInComparePage(params int[] productCodes);
 }

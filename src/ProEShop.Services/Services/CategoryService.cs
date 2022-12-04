@@ -227,20 +227,20 @@ public class CategoryService : GenericService<Category>, ICategoryService
             .SingleOrDefaultAsync(x => x.Id == categoryId);
     }
 
-    public async Task<bool> CheckProductCategoryIdsInComparePage(params int[] input)
+    public async Task<bool> CheckProductCategoryIdsInComparePage(params int[] productCodes)
     {
-        var productCodes = await _products.Where(x => input.Contains(x.ProductCode))
-            .Select(x => x.ProductCode).ToListAsync();
+        var mainCategoryIds = await _products.Where(x => productCodes.Contains(x.ProductCode))
+            .Select(x => x.MainCategoryId).ToListAsync();
 
         // آیا رکوردی وجود دارد یا نه ؟
 
-        if (productCodes.Count < 1)
+        if (mainCategoryIds.Count < 1)
         {
             return false;
         }
 
-        // آیا تمامی آیتم های داخل لیست مشابه هم هستند یا نه ؟
-        return productCodes.Distinct().Count() == 1;
+        // آیا تمامی دسته بندی های محصولات داخل لیست مشابه هم هستند یا نه ؟
+        return mainCategoryIds.Distinct().Count() == 1;
     }
 
     public override async Task<DuplicateColumns> AddAsync(Category entity)

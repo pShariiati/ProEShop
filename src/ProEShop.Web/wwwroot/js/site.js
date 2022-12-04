@@ -46,6 +46,14 @@ var secondHtmlModalPlace = `<div class="modal fade" id="second-html-modal-place"
     </div>
 </div>`;
 
+function closeHtmlModal() {
+    $('#html-modal-place').modal('hide');
+}
+
+function closeScrollableHtmlModal() {
+    $('#html-scrollable-modal-place').modal('hide');
+}
+
 function appendHtmlModalPlaceToBody() {
     if ($('#html-modal-place').length === 0) {
         $('body').append(htmlModalPlace);

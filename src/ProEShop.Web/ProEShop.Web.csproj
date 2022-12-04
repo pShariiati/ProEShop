@@ -36,6 +36,9 @@
 	  <None Remove="Pages\Cart\_CartBodyPartial.cshtml.css" />
 	  <None Remove="Pages\Cart\_EmptyCartPartial - Copy.cshtml.css" />
 	  <None Remove="Pages\Cart\_EmptyCartPartial.cshtml.css" />
+	  <None Remove="Pages\Compare\Compare.cshtml.js" />
+	  <None Remove="Pages\Compare\_AddProductPartial - Copy.cshtml.css" />
+	  <None Remove="Pages\Compare\_AddProductPartial.cshtml.css" />
 	  <None Remove="Pages\Identity\LoginWithPhoneNumber.cshtml.css" />
 	  <None Remove="Pages\Identity\LoginWithPhoneNumber.cshtml.js" />
 	  <None Remove="Pages\Identity\RegisterLogin.cshtml.css" />
@@ -81,6 +84,8 @@
 	  <Content Include="Pages\Cart\Index.cshtml.js" />
 	  <Content Include="Pages\Cart\_CartBodyPartial.cshtml.css" />
 	  <Content Include="Pages\Cart\_EmptyCartPartial.cshtml.css" />
+	  <Content Include="Pages\Compare\Index.cshtml.js" />
+	  <Content Include="Pages\Compare\_AddProductPartial.cshtml.css" />
 	  <Content Include="Pages\Identity\LoginWithPhoneNumber.cshtml.js" />
 	  <Content Include="Pages\Identity\LoginWithPhoneNumber.cshtml.css" />
 	  <Content Include="Pages\Identity\RegisterLogin.cshtml.css" />

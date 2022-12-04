@@ -73,4 +73,6 @@ public interface IProductService : IGenericService<Product>
     /// <param name="productCodes"></param>
     /// <returns></returns>
     Task<List<ShowProductInCompareViewModel>> GetProductsForCompare(params int[] productCodes);
+
+    Task<ShowProductInComparePartialViewModel> GetProductsForAddProductInCompare();
 }

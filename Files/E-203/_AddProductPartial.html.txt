@@ -1,0 +1,39 @@
+<div class="input-group mb-3">
+            <span class="input-group-text bi bi-search">
+            </span>
+            <input type="text" class="form-control" placeholder="جستجو در کالاها ..." />
+          </div>
+
+          <div class="d-flex justify-content-between text-secondary rem15px">
+            <div class="mb-3">برترین کالاها برای مقایسه</div>
+            <div>
+              <span class="persian-numbers">۸,۱۰۰</span>
+              کالا
+            </div>
+          </div>
+
+          <div class="row" id="add-product-modal-in-compare-page">
+            <a href="#" class="col-12 col-md-6 border-bottom text-dark">
+              <div class="text-center mt-3">
+                <img src="images/products/product1.jpg" width="200" />
+              </div>
+              <div class="rem14px py-3 fw-bold">
+                لپ تاپ 15.6 اینچی ایسوس مدل TUF Gaming F15 FX506LH-BA - کاستوم شده
+              </div>
+              <div class="d-flex justify-content-between">
+                <div class="text-danger rem12px">
+                  تنها
+                  <span class="persian-numbers">1</span>
+                  عدد در انبار باقی مانده
+                </div>
+                <div>
+                  <span class="persian-numbers rem13px">۴.۳</span>
+                  <i class="bi bi-star-fill text-warning rem14px"></i>
+                </div>
+              </div>
+              <div class="text-end fw-bold rem15px pt-2 pb-3">
+                <span class="persian-numbers">۲۷,۰۰۰,۰۰۰</span>
+                تومان
+              </div>
+            </a>
+          </div>

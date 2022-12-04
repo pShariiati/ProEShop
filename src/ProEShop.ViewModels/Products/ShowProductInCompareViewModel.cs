@@ -12,6 +12,8 @@ public class ShowProductInCompareViewModel
 
     public double Score { get; set; }
 
+    public int Price { get; set; }
+
     public List<ShowFeatureInCompareViewModel> ProductFeatures { get; set; }
 }
 

@@ -1,0 +1,16 @@
+﻿@page
+@model ProEShop.Web.Pages.Compare.IndexModel
+@{
+    ViewData["Title"] = "مقایسه محصولات";
+}
+
+<div class="container" id="compare-page">
+
+    <partial name="_CompareBodyPartial" model="@Model.Products" />
+
+</div>
+
+@section CustomScripts
+{
+    <script src="~/Pages/Compare/Index.cshtml.js"></script>
+}

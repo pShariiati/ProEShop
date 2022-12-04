@@ -313,4 +313,15 @@ public class ProductService : GenericService<Product>, IProductService
             _products.Where(x => productCodes.Contains(x.ProductCode))
         ).ToListAsync();
     }
+
+    public async Task<ShowProductInComparePartialViewModel> GetProductsForAddProductInCompare()
+    {
+        var result = new ShowProductInComparePartialViewModel();
+
+        result.Products = await _mapper.ProjectTo<ProductItemForShowProductInComparePartialViewModel>(
+                _products.AsNoTracking()
+            ).ToListAsync();
+
+        return result;
+    }
 }

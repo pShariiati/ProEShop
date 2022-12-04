@@ -80,10 +80,10 @@ builder.Services.AddParbad()
 builder.Services.AddRazorPages()
     .AddRazorPagesOptions(options =>
     {
-        options.Conventions.AddPageRoute("/Compare", "/compare/pc-{productCode1}");
-        options.Conventions.AddPageRoute("/Compare", "/compare/pc-{productCode1}/pc-{productCode2}");
-        options.Conventions.AddPageRoute("/Compare", "/compare/pc-{productCode1}/pc-{productCode2}/pc-{productCode3}");
-        options.Conventions.AddPageRoute("/Compare", "/compare/pc-{productCode1}/pc-{productCode2}/pc-{productCode3}/pc-{productCode4}");
+        options.Conventions.AddPageRoute("/Compare/Index", "/compare/pc-{productCode1}");
+        options.Conventions.AddPageRoute("/Compare/Index", "/compare/pc-{productCode1}/pc-{productCode2}");
+        options.Conventions.AddPageRoute("/Compare/Index", "/compare/pc-{productCode1}/pc-{productCode2}/pc-{productCode3}");
+        options.Conventions.AddPageRoute("/Compare/Index", "/compare/pc-{productCode1}/pc-{productCode2}/pc-{productCode3}/pc-{productCode4}");
     });
 builder.Services.Configure<WebEncoderOptions>(options =>
 {

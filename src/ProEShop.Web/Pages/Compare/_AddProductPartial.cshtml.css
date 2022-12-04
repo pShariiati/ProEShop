@@ -1,0 +1,9 @@
+﻿@media screen and (min-width: 768px) {
+    #add-product-modal-in-compare-page > ::deep a:nth-child(odd) {
+        border-left: 1px solid #dee2e6;
+    }
+}
+
+#add-product-modal-in-compare-page a:hover {
+    box-shadow: 0 1rem 3rem rgba(0,0,0,.175);
+}
