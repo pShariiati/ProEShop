@@ -890,14 +890,16 @@ function getDataWithAJAX(url, formData, functionNameToCallInTheEnd) {
 // خواندن صفحات
 // html
 // از سمت سرور
-function getHtmlWithAJAX(url, formData, functionNameToCallInTheEnd, clickedButton) {
+function getHtmlWithAJAX(url, formData, functionNameToCallInTheEnd, clickedButton, loading = true) {
     $.ajax({
         url: url,
         data: formData,
         type: 'GET',
         traditional: true,
         beforeSend: function () {
-            showLoading();
+            if (loading) {
+                showLoading();
+            }
         },
         success: function (data) {
             if (data.isSuccessful === false) {

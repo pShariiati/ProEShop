@@ -3,6 +3,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Utilities;
 using ProEShop.Common.Helpers;
 using ProEShop.Common.IdentityToolkit;
 using ProEShop.DataLayer.Context;
@@ -314,13 +315,41 @@ public class ProductService : GenericService<Product>, IProductService
         ).ToListAsync();
     }
 
-    public async Task<ShowProductInComparePartialViewModel> GetProductsForAddProductInCompare()
+    public async Task<ShowProductInComparePartialViewModel> GetProductsForAddProductInCompare(int pageNumber)
     {
         var result = new ShowProductInComparePartialViewModel();
 
+        if (pageNumber < 1)
+            pageNumber = 1;
+
+        var query = _products
+            .AsNoTracking()
+            .OrderBy(x => x.Id);
+
+        var itemsCount = await query.LongCountAsync();
+
+        var take = 3;
+
+        var pagesCount = (int)Math.Ceiling(
+            (decimal)itemsCount / take
+        );
+
+        if (pagesCount <= 0)
+            pagesCount = 1;
+
+        if (pageNumber >= pagesCount)
+        {
+            result.IsLastPage = true;
+            pageNumber = pagesCount;
+        }
+
+        var skip = (pageNumber - 1) * take;
+
         result.Products = await _mapper.ProjectTo<ProductItemForShowProductInComparePartialViewModel>(
-                _products.AsNoTracking()
+                query.Skip(skip).Take(take)
             ).ToListAsync();
+
+        result.PageNumber = pageNumber;
 
         return result;
     }

@@ -1,5 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using ProEShop.Common.Helpers;
 using ProEShop.Services.Contracts;
 using ProEShop.ViewModels.Products;
 
@@ -11,13 +12,16 @@ public class IndexModel : PageBase
 
     private readonly IProductService _productService;
     private readonly ICategoryService _categoryService;
+    private readonly IViewRendererService _viewRendererService;
 
     public IndexModel(
         IProductService productService,
-        ICategoryService categoryService)
+        ICategoryService categoryService,
+        IViewRendererService viewRendererService)
     {
         _productService = productService;
         _categoryService = categoryService;
+        _viewRendererService = viewRendererService;
     }
 
     #endregion
@@ -62,9 +66,54 @@ public class IndexModel : PageBase
         return Partial("_CompareBodyPartial", Products);
     }
 
-    public async Task<IActionResult> OnGetShowAddProduct()
+    /// <summary>
+    /// گرفتن محصولات برای مودال افزودن محصول در صفحه مقایسه
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <returns></returns>
+    public async Task<IActionResult> OnGetShowAddProduct(int pageNumber = 1)
     {
-        var products = await _productService.GetProductsForAddProductInCompare();
-        return Partial("_AddProductPartial", products);
+        var result = await _productService.GetProductsForAddProductInCompare(pageNumber);
+
+        // چرا برای این ایف از پارامتر ورودی هندلر استفاده نکردیم ؟
+        // چون امکان داره که عدد صفر رو وارد کنه
+        // و اگه صفر وارد بشه، وارد الس میشه و "پارشل صفحه یک به بالا" رو نمایش میده
+        // به خاطر همین از پیج نامبری استفاده میکنیم که مطمئنیم عدد درست رو داره
+        // یعنی پیج نامبری که خودمون داخل سرویس مقدار دهی میکنیم
+        if (result.PageNumber == 1)
+        {
+            // صفحه یک
+            // کل محتویات داخل مودال رو تغییر میدیم
+            return Json(new JsonResultOperation(true, string.Empty)
+            {
+                // به تعداد محصولات نیاز نداریم
+                // چون در داخل خود پارشل، تعداد محصولات نمایش داده میشه
+                Data = new
+                {
+                    ProductsBody = await _viewRendererService
+                        .RenderViewToStringAsync("~/Pages/Compare/_AddProductPartial.cshtml",
+                            result),
+                    PageNumber = result.PageNumber,
+                    IsLastPage = result.IsLastPage
+                }
+            });
+        }
+        else
+        {
+            // صفحه یک به بالا
+            // تنها بخش محصولات رو تغییر میدیم
+            return Json(new JsonResultOperation(true, string.Empty)
+            {
+                Data = new
+                {
+                    ProductsBody = await _viewRendererService
+                        .RenderViewToStringAsync("~/Pages/Compare/_ProductsInAddProductPartial.cshtml",
+                            result.Products),
+                    ProductsCount = result.Count,
+                    PageNumber = result.PageNumber,
+                    IsLastPage = result.IsLastPage
+                }
+            });
+        }
     }
 }

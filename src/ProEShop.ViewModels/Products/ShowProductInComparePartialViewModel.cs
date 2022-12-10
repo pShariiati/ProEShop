@@ -10,6 +10,16 @@ public class ShowProductInComparePartialViewModel
     /// </summary>
     public long Count { get; set; }
 
+    /// <summary>
+    /// در چه صفحه ایی هستیم ؟
+    /// </summary>
+    public int PageNumber { get; set; }
+
+    /// <summary>
+    /// آیا صفحه آخر است ؟
+    /// </summary>
+    public bool IsLastPage { get; set; }
+
     public List<ProductItemForShowProductInComparePartialViewModel> Products { get; set; }
 }
 

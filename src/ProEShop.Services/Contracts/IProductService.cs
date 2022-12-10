@@ -74,5 +74,5 @@ public interface IProductService : IGenericService<Product>
     /// <returns></returns>
     Task<List<ShowProductInCompareViewModel>> GetProductsForCompare(params int[] productCodes);
 
-    Task<ShowProductInComparePartialViewModel> GetProductsForAddProductInCompare();
+    Task<ShowProductInComparePartialViewModel> GetProductsForAddProductInCompare(int pageNumber);
 }
