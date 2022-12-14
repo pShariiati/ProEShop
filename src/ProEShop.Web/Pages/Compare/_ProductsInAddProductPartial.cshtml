@@ -1,40 +1,47 @@
 ﻿@model List<ProEShop.ViewModels.Products.ProductItemForShowProductInComparePartialViewModel>
 
-@foreach (var product in Model)
+@if (!Model.Any())
 {
-    <a asp-page="/Product/Index" asp-route-productCode="@product.ProductCode" asp-route-slug="@product.Slug"
-       class="col-12 col-md-6 border-bottom text-dark" product-code="@product.ProductCode">
-        <div class="text-center mt-3">
-            <img src="@WwwRootPaths.ProductImage/@product.MainPicture" width="200" />
-        </div>
-        <div class="rem14px py-3 fw-bold">
-            @product.PersianTitle
-        </div>
-        <div class="d-flex justify-content-between">
-            @{
-                var visibleOrNotForCount = product.Count == 0 ? " invisible" : string.Empty;
-                var visibleOrNotForScore = product.Score == 0 ? "invisible" : string.Empty;
-            }
-            <div class="text-danger rem12px@(visibleOrNotForCount)">
-                تنها
-                <span class="persian-numbers">@product.Count</span>
-                عدد در انبار باقی مانده
+    <partial name="~/Pages/Shared/_RecordNotFound.cshtml" />
+}
+else
+{
+    @foreach (var product in Model)
+    {
+        <a asp-page="/Product/Index" asp-route-productCode="@product.ProductCode" asp-route-slug="@product.Slug"
+           class="col-12 col-md-6 border-bottom text-dark" product-code="@product.ProductCode">
+            <div class="text-center mt-3">
+                <img src="@WwwRootPaths.ProductImage/@product.MainPicture" width="200" />
             </div>
-            <div class="@(visibleOrNotForScore)">
-                <span class="persian-numbers rem13px">@product.Score.ToString("#.0")</span>
-                <i class="bi bi-star-fill text-warning rem14px"></i>
+            <div class="rem14px py-3 fw-bold">
+                @product.PersianTitle
             </div>
-        </div>
-        <div class="text-end fw-bold rem15px pt-2 pb-3">
-            @if (product.Price > 0)
-            {
-                <span class="persian-numbers">@product.Price.ToString("#,0")</span>
-                @:تومان
-            }
-            else
-            {
-                @:ناموجود
-            }
-        </div>
-    </a>
+            <div class="d-flex justify-content-between">
+                @{
+                    var visibleOrNotForCount = product.Count == 0 ? " invisible" : string.Empty;
+                    var visibleOrNotForScore = product.Score == 0 ? "invisible" : string.Empty;
+                }
+                <div class="text-danger rem12px@(visibleOrNotForCount)">
+                    تنها
+                    <span class="persian-numbers">@product.Count</span>
+                    عدد در انبار باقی مانده
+                </div>
+                <div class="@(visibleOrNotForScore)">
+                    <span class="persian-numbers rem13px">@product.Score.ToString("#.0")</span>
+                    <i class="bi bi-star-fill text-warning rem14px"></i>
+                </div>
+            </div>
+            <div class="text-end fw-bold rem15px pt-2 pb-3">
+                @if (product.Price > 0)
+                {
+                    <span class="persian-numbers">@product.Price.ToString("#,0")</span>
+                    @:تومان
+                }
+                else
+                {
+                    @:ناموجود
+                }
+            </div>
+        </a>
+    }
 }

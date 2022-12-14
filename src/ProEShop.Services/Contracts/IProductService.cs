@@ -74,5 +74,21 @@ public interface IProductService : IGenericService<Product>
     /// <returns></returns>
     Task<List<ShowProductInCompareViewModel>> GetProductsForCompare(params int[] productCodes);
 
-    Task<ShowProductInComparePartialViewModel> GetProductsForAddProductInCompare(int pageNumber);
+    /// <summary>
+    /// گرفتن محصولات برای مودال افزودن محصول
+    /// شامل صفحه بندی و جستجوی متنی
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="searchValue"></param>
+    /// <param name="productCodesToHide">چه محصولاتی باید نمایش داده نشوند، برای مثال اگر
+    /// در داخل صفحه مقایسه محصول اول اضافه شده نباید دیگر در داخل مودال افزودن محصول، محصول اول را نمایش دهیم</param>
+    /// <returns></returns>
+    Task<ShowProductInComparePartialViewModel> GetProductsForAddProductInCompare(int pageNumber, string searchValue, int[] productCodesToHide);
+
+    /// <summary>
+    /// گرفتن آیدی دسته بندی محصول
+    /// </summary>
+    /// <param name="productCode"></param>
+    /// <returns></returns>
+    Task<long> GetProductCategoryId(long productCode);
 }

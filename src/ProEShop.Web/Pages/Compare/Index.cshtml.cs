@@ -69,11 +69,18 @@ public class IndexModel : PageBase
     /// <summary>
     /// گرفتن محصولات برای مودال افزودن محصول در صفحه مقایسه
     /// </summary>
+    /// <param name="productCodesToHide"></param>
     /// <param name="pageNumber"></param>
+    /// <param name="searchValue"></param>
     /// <returns></returns>
-    public async Task<IActionResult> OnGetShowAddProduct(int pageNumber = 1)
+    public async Task<IActionResult> OnGetShowAddProduct(int[] productCodesToHide, int pageNumber = 1, string searchValue = "")
     {
-        var result = await _productService.GetProductsForAddProductInCompare(pageNumber);
+        if (!productCodesToHide.Any())
+        {
+            return Json(new JsonResultOperation(false));
+        }
+
+        var result = await _productService.GetProductsForAddProductInCompare(pageNumber, searchValue, productCodesToHide);
 
         // چرا برای این ایف از پارامتر ورودی هندلر استفاده نکردیم ؟
         // چون امکان داره که عدد صفر رو وارد کنه

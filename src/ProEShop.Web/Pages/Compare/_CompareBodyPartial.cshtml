@@ -16,7 +16,7 @@
     {
         <div class="col-12 col-md-6 col-lg-4 col-xl-3 product-item-in-compare-page"
              product-code="@product.ProductCode">
-            <div class="d-flex justify-content-end">
+            <div class="d-flex justify-content-end@(productsCount == 1 ? " invisible" : string.Empty)">
                 <div class="pointer-cursor bg-secondary rounded-circle remove-button-in-compare-page d-flex justify-content-center text-white">
                     <i class="bi bi-x"></i>
                 </div>

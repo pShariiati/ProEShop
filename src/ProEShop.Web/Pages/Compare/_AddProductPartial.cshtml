@@ -2,13 +2,13 @@
 <div class="input-group mb-3">
     <span class="input-group-text bi bi-search">
     </span>
-    <input type="text" class="form-control" placeholder="جستجو در کالاها ..." />
+    <input type="text" class="form-control" id="search-input-in-compare-page" autocomplete="off" placeholder="جستجو در کالاها ..." />
 </div>
 
-<div class="d-flex justify-content-between text-secondary rem15px">
+<div class="d-flex justify-content-between text-secondary rem15px" id="add-product-header-in-compare-page">
     <div class="mb-3">برترین کالاها برای مقایسه</div>
     <div>
-        <span class="persian-numbers">۸,۱۰۰</span>
+        <span class="persian-numbers" id="product-count-in-compare-page">@Model.Count</span>
         کالا
     </div>
 </div>

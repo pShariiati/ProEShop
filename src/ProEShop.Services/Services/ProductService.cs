@@ -315,15 +315,30 @@ public class ProductService : GenericService<Product>, IProductService
         ).ToListAsync();
     }
 
-    public async Task<ShowProductInComparePartialViewModel> GetProductsForAddProductInCompare(int pageNumber)
+    public async Task<ShowProductInComparePartialViewModel> GetProductsForAddProductInCompare(int pageNumber, string searchValue, int[] productCodesToHide)
     {
         var result = new ShowProductInComparePartialViewModel();
+
+        searchValue = searchValue?.Trim() ?? string.Empty;
 
         if (pageNumber < 1)
             pageNumber = 1;
 
+        var firstProductCategoryId = await GetProductCategoryId(productCodesToHide.First());
+
         var query = _products
+            .Where(x =>
+                searchValue == ""
+                ||
+                    (
+                        x.PersianTitle.Contains(searchValue)
+                        ||
+                        x.EnglishTitle.Contains(searchValue)
+                    )
+                )
             .AsNoTracking()
+            .Where(x => productCodesToHide.Contains(x.ProductCode) == false)
+            .Where(x => x.MainCategoryId == firstProductCategoryId)
             .OrderBy(x => x.Id);
 
         var itemsCount = await query.LongCountAsync();
@@ -350,7 +365,15 @@ public class ProductService : GenericService<Product>, IProductService
             ).ToListAsync();
 
         result.PageNumber = pageNumber;
+        result.Count = itemsCount;
 
         return result;
+    }
+
+    public Task<long> GetProductCategoryId(long productCode)
+    {
+        return _products.Where(x => x.ProductCode == productCode)
+            .Select(x => x.MainCategoryId)
+            .SingleOrDefaultAsync();
     }
 }
