@@ -1,6 +1,6 @@
 ﻿$(function () {
     // حذف محصولات
-    $(document).on('click', '.remove-button-in-compare-page', function() {
+    $(document).on('click', '.remove-button-in-compare-page', function () {
         $(this).parents('.product-item-in-compare-page').remove();
 
         var productCode1 = $('.product-item-in-compare-page').eq(0).attr('product-code');
@@ -12,7 +12,10 @@
             productCode2: productCode2,
             productCode3: productCode3
         }
-        
+
+        // اگر محصولات صفحه تغییر پیدا کردند (چه حذف چه اضافه)، باید مصحصولات داخل مودال
+        // از نو از پایگاه داده دریافت شوند
+        isModalOpened = false;
         getHtmlWithAJAX('/compare/index?handler=GetProductsForCompare', dataToSend, 'showProductsInCompareFunction', null);
     });
 
@@ -58,6 +61,7 @@
                         productCodesToHide: getProductCodesToHide(),
                         searchValue: searchValue
                     }
+                    pageNumber = 1;
                     getHtmlWithAJAX('?handler=ShowAddProduct', dataToSend, 'showAddProductInModal', null, false);
                 }
             }
@@ -120,7 +124,7 @@ function showAddProductInModal(result, clickedButton) {
     isProcessing = false;
     isModalOpened = true;
 
-    appendHtmlScrollableModalPlaceToBody();
+    appendHtmlScrollableModalPlaceToBody('modal-lg');
 
     $('#html-scrollable-modal-place .modal-body').off('scroll').scroll(function (e) {
         // کل عرض المنت
@@ -163,7 +167,7 @@ function showAddProductInModal(result, clickedButton) {
         currentModal.find('.modal-body #add-product-modal-in-compare-page').append(result.data.productsBody);
         $('#product-count-in-compare-page').html(result.data.productsCount);
     }
-    
+
     isLastPage = result.data.isLastPage;
 
     // اگر صفحه آخر لود شد، باید گیف لودینگ رو مخفی کنیم
@@ -213,6 +217,9 @@ $(document).on('click', '#add-product-modal-in-compare-page a', function (e) {
         productCode4: productCode4
     }
 
+    // اگر محصولات صفحه تغییر پیدا کردند (چه حذف چه اضافه)، باید مصحصولات داخل مودال
+    // از نو از پایگاه داده دریافت شوند
+    isModalOpened = false;
     closeScrollableHtmlModal();
     getHtmlWithAJAX('/compare/index?handler=GetProductsForCompare', dataToSend, 'showProductsInCompareFunction', e);
 });

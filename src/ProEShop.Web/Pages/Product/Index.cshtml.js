@@ -111,7 +111,61 @@ function copyProductLinkToClipboardFunction() {
     }, 2000);
 }
 
+// اسکرول اسپای برای آپشن های محصول
+// معرفی محصول، پرسش و پاسخ و غیره
+function productInfoScrollSpy(e) {
+    var scrollTop = $(e).scrollTop();
+
+    $('#product-options-box-in-single-page-of-product > div').removeClass('text-danger fw-bold');
+    $('#product-options-box-in-single-page-of-product > div div').addClass('d-none');
+
+    if (scrollTop > $('#questions-el-in-single-page-of-product').offset().top - 70) {
+        $('#questions-title-el-in-single-page-of-product').addClass('fw-bold text-danger');
+        $('#questions-title-el-in-single-page-of-product div').removeClass('d-none');
+    }
+    else if (scrollTop > $('#comments-el-in-single-page-of-product').offset().top - 70) {
+        $('#comments-title-el-in-single-page-of-product').addClass('fw-bold text-danger');
+        $('#comments-title-el-in-single-page-of-product div').removeClass('d-none');
+    }
+    else if (scrollTop > $('#product-features-el-in-single-page-of-product').offset().top - 70) {
+        $('#product-features-title-el-in-single-page-of-product').addClass('fw-bold text-danger');
+        $('#product-features-title-el-in-single-page-of-product div').removeClass('d-none');
+    }
+    else if (scrollTop > $('#specialty-check-el-in-single-page-of-product').offset().top - 70) {
+        $('#specialty-check-title-el-in-single-page-of-product').addClass('fw-bold text-danger');
+        $('#specialty-check-title-el-in-single-page-of-product div').removeClass('d-none');
+    } else {
+        $('#product-options-box-in-single-page-of-product > div:first').addClass('text-danger fw-bold');
+        $('#product-options-box-in-single-page-of-product > div:first div').removeClass('d-none');
+    }
+}
+
 $(function () {
+    // همون بار اول ایونت اسکرول فراخوانی نمیشه
+    // پس برای بار اول این فانکشن رو فراخوانی میکنیم
+    // که عنوان مورد نظر رو اکتیو کنه
+    productInfoScrollSpy($(this));
+
+    $(document).scroll(function() {
+        productInfoScrollSpy($(this));
+    });
+
+    // باید طول بزگترین مشحصات محصول را به دست آوریم
+    // برای مثال طول بزرگترین مشخصات محصول مربوطه مشخصات دوربین است
+    // حالا طول مشخصات دوربین 70 پیکسل است
+    // باید طول تمامی مشخصات محصول دیگر را به 70 پیکسل تغییر دهیم
+    // که همه آن موارد در یک راستا قرار گیرند
+    var theLongestWidthOfProductDetail = 0;
+
+    $('#product-details-in-single-page-of-product .d-flex').each(function() {
+        var currentElementWidth = $(this).find('div:first').width();
+        if (currentElementWidth > theLongestWidthOfProductDetail) {
+            theLongestWidthOfProductDetail = currentElementWidth;
+        }
+    });
+
+    $('#product-details-in-single-page-of-product .d-flex')
+        .find('div:first').width(theLongestWidthOfProductDetail);
 
     // چونکه مقدار داخل دراپ داون سبد خرید هر بار تغییر میکنه و بعد از لود صفحه به صفحه اضافه میشه در نتیجه باید از
     // $(document).on

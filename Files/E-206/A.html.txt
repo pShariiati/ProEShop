@@ -1,0 +1,88 @@
+<div class="container-fluid mt-4">
+    <div
+      class="d-none d-sm-flex justify-content-sm-between justify-content-lg-start rem14px text-secondary border-bottom"
+      id="product-options-box-in-single-page-of-product">
+      <div class="mx-3 pointer-cursor p-2 text-danger fw-bold position-relative">
+        معرفی
+        <div class="bg-danger position-absolute start-0 bottom-0 rounded-top"></div>
+      </div>
+      <div class="mx-3 pointer-cursor p-2 position-relative">
+        بررسی تخصصی
+        <div class="bg-danger position-absolute start-0 bottom-0 rounded-top d-none"></div>
+      </div>
+      <div class="mx-3 pointer-cursor p-2 position-relative">
+        مشخصات
+        <div class="bg-danger position-absolute start-0 bottom-0 rounded-top d-none"></div>
+      </div>
+      <div class="mx-3 pointer-cursor p-2 position-relative">
+        دیدگاه ها
+        <div class="bg-danger position-absolute start-0 bottom-0 rounded-top d-none"></div>
+      </div>
+      <div class="mx-3 pointer-cursor p-2 position-relative">
+        پرسش ها
+        <div class="bg-danger position-absolute start-0 bottom-0 rounded-top d-none"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-9 mt-4">
+        <div>
+          <span class="fw-bold rem18px border-bottom border-2 border-danger pe-3 pb-2">معرفی</span>
+        </div>
+        <div class="mt-4 rem14px" id="product-introduction-in-single-page-of-product">
+          تست
+        </div>
+        <div class="mt-2 text-info">
+          <span class="rem14px pointer-cursor">
+            بستن
+            <i class="bi bi-chevron-left rem11px"></i>
+          </span>
+        </div>
+        <div class="break-line-in-single-page-of-product bg-custom-grey my-4"></div>
+        <div>
+          <span class="fw-bold rem18px border-bottom border-2 border-danger pe-3 pb-2">بررسی تخصصی</span>
+        </div>
+        <div class="mt-4" id="product-specialty-check-in-single-page-of-product">
+          تست
+        </div>
+        <div class="mt-2 text-info">
+          <span class="rem14px pointer-cursor">
+            بستن
+            <i class="bi bi-chevron-left rem11px"></i>
+          </span>
+        </div>
+        <div class="break-line-in-single-page-of-product bg-custom-grey my-4"></div>
+        <div>
+          <span class="fw-bold rem18px border-bottom border-2 border-danger pe-3 pb-2">مشخصات</span>
+        </div>
+
+        <div class="mt-4 rem15px" id="product-details-in-single-page-of-product">
+          <div class="d-flex">
+            <div class="py-3 text-secondary mx-md-5 me-5">وزن</div>
+            <div class="py-3 flex-grow-1 border-bottom">۱۶۰.۸x۷۸.۱x۷.۷</div>
+          </div>
+          <div class="d-flex">
+            <div class="py-3 text-secondary mx-md-5 me-5">وزن</div>
+            <div class="py-3 flex-grow-1 border-bottom">
+              ۲۴۰ گرم
+              ۲۴۰ گرم
+              ۲۴۰ گرم
+            </div>
+          </div>
+          <div class="mt-3 text-info">
+            <span class="rem14px pointer-cursor">
+              بستن
+              <i class="bi bi-chevron-left rem11px"></i>
+            </span>
+          </div>
+        </div>
+        <div class="break-line-in-single-page-of-product bg-custom-grey my-4"></div>
+        <div>
+          <span class="fw-bold rem18px border-bottom border-2 border-danger pe-3 pb-2">امتیاز و دیدگاه کاربران</span>
+        </div>
+      </div>
+      <div class="col-lg-3 d-none d-lg-block"></div>
+    </div>
+  </div>

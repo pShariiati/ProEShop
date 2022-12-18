@@ -49,6 +49,10 @@ public class ShowProductInfoViewModel
         }
     }
 
+    public string ShortDescription { get; set; }
+
+    public string SpecialtyCheck { get; set; }
+
     public string ProductShortLinkDisplayLink { get; set; }
 
     public List<ProductMediaForProductInfoViewModel> ProductMedia { get; set; }

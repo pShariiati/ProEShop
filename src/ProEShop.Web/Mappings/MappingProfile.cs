@@ -152,7 +152,7 @@ public class MappingProfile : Profile
         this.CreateMap<Entities.ProductVariant, ShowProductVariantViewModel>()
             .ForMember(dest => dest.StartDateTime,
                 options =>
-                    options.MapFrom(src => 
+                    options.MapFrom(src =>
                         src.StartDateTime != null
                         ? src.StartDateTime.Value.ToLongPersianDate()
                         : null))
@@ -183,7 +183,7 @@ public class MappingProfile : Profile
         this.CreateMap<Entities.ConsignmentItem, ShowConsignmentItemViewModel>();
 
         this.CreateMap<AddProductStockByConsignmentViewModel, Entities.ProductStock>();
-        
+
         this.CreateMap<Entities.Product, ShowProductInfoViewModel>()
             .ForMember(dest => dest.Score,
                 options =>
@@ -195,7 +195,8 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.ProductCommentsCount,
                 options =>
                         options.MapFrom(src =>
-                        src.ProductComments.LongCount(pc => pc.CommentTitle != null)
+                        src.ProductComments.Where(x => x.IsConfirmed)
+                            .LongCount(pc => pc.CommentTitle != null)
                     ))
             .ForMember(dest => dest.SuggestCount,
                 options =>
@@ -234,7 +235,7 @@ public class MappingProfile : Profile
         this.CreateMap<Entities.ProductCategory, ProductCategoryForProductInfoViewModel>();
 
         this.CreateMap<Entities.ProductFeature, ProductFeatureForProductInfoViewModel>();
-        
+
         this.CreateMap<Entities.ProductVariant, ProductVariantForProductInfoViewModel>()
             .ForMember(dest => dest.EndDateTime,
                 options =>
@@ -263,7 +264,7 @@ public class MappingProfile : Profile
                     options.MapFrom(src => src.Product.PersianTitle))
             .ForMember(dest => dest.IsDiscountActive,
                 options =>
-                    options.MapFrom(src => 
+                    options.MapFrom(src =>
                             src.OffPercentage != null && (src.StartDateTime <= now && src.EndDateTime >= now)
                         ))
             .ForMember(dest => dest.CommissionPercentage,

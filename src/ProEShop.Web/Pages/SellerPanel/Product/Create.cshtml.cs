@@ -104,8 +104,23 @@ public class CreateModel : SellerPanelBase
         productToAdd.SellerId = await _sellerService.GetSellerId(User.Identity.GetLoggedInUserId());
         productToAdd.ProductCode = await _productService.GetProductCodeForCreateProduct();
 
-        productToAdd.ShortDescription = _htmlSanitizer.Sanitize(Product.ShortDescription);
-        productToAdd.SpecialtyCheck = _htmlSanitizer.Sanitize(Product.SpecialtyCheck);
+        if (string.IsNullOrWhiteSpace(Product.ShortDescription))
+        {
+            productToAdd.ShortDescription = null;
+        }
+        else
+        {
+            productToAdd.ShortDescription = _htmlSanitizer.Sanitize(Product.ShortDescription);
+        }
+
+        if (string.IsNullOrWhiteSpace(Product.SpecialtyCheck))
+        {
+            productToAdd.SpecialtyCheck = null;
+        }
+        else
+        {
+            productToAdd.SpecialtyCheck = _htmlSanitizer.Sanitize(Product.SpecialtyCheck);
+        }
 
         if (!await _categoryService.CanAddFakeProduct(Product.MainCategoryId))
         {

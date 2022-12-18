@@ -54,16 +54,22 @@ function closeScrollableHtmlModal() {
     $('#html-scrollable-modal-place').modal('hide');
 }
 
-function appendHtmlModalPlaceToBody() {
+function appendHtmlModalPlaceToBody(customClass = 'modal-xl') {
     if ($('#html-modal-place').length === 0) {
         $('body').append(htmlModalPlace);
     }
+
+    $('#html-modal-place div:first').removeClass('modal-sm modal-lg modal-xl');
+    $('#html-modal-place div:first').addClass(customClass);
 }
 
-function appendHtmlScrollableModalPlaceToBody() {
+function appendHtmlScrollableModalPlaceToBody(customClass = 'modal-xl') {
     if ($('#html-scrollable-modal-place').length === 0) {
         $('body').append(htmlScrollableModalPlace);
     }
+
+    $('#html-scrollable-modal-place div:first').removeClass('modal-sm modal-lg modal-xl');
+    $('#html-scrollable-modal-place div:first').addClass(customClass);
 }
 
 function appendSecondHtmlModalPlaceToBody() {

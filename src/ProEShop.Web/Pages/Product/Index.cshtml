@@ -184,10 +184,10 @@
                             <div class="d-flex align-items-center me-2">
                                 <span>
                                     <i class="bi bi-star-fill text-warning"></i>
-                                    <span class="rem13px">
+                                    <span class="rem13px persian-numbers">
                                         @Model.ProductInfo.Score.ToString("0.#")
                                     </span>
-                                    <span class="text-custom-grey rem12px">
+                                    <span class="text-custom-grey rem12px persian-numbers">
                                         (
                                         @Model.ProductInfo.ProductCommentsLongCount
                                         نفر
@@ -204,7 +204,7 @@
 
                             <div class="d-flex align-items-center me-2">
                                 <div class="bg-custom-grey mx-2 rounded-circle product-info-dots"></div>
-                                <span class="rem13px text-info">
+                                <span class="rem13px text-info persian-numbers">
                                     @Model.ProductInfo.ProductCommentsCount
                                     دیدگاه
                                 </span>
@@ -218,7 +218,7 @@
 
                             <div class="d-flex align-items-center">
                                 <div class="bg-custom-grey mx-2 rounded-circle product-info-dots"></div>
-                                <span class="rem13px text-info">
+                                <span class="rem13px text-info persian-numbers">
                                     ۴۶۷۶
                                     پرسش
                                 </span>
@@ -234,7 +234,7 @@
                         <div class="row mt-2 mt-md-3">
                             <span class="d-flex align-items-center">
                                 <i class="bi bi-hand-thumbs-up text-success me-1 rem16px"></i>
-                                <span class="rem13px">
+                                <span class="rem13px persian-numbers">
                                     @(Model.ProductInfo.SuggestPercentage.ToString("0"))%
                                     (@Model.ProductInfo.SuggestCount)
                                     نفر از خریداران، این کالا را پیشنهاد کرده اند
@@ -543,7 +543,7 @@
                                 <div class="d-flex align-items-center text-danger shadow rounded p-2">
                                     <span class="px-2 disable-selecting@(isCartFull ? " text-custom-grey" : " pointer-cursor")">
                                         <form method="post" functionNameToCallInTheEnd="addProductVariantToCart"
-                                              class="public-ajax-form" asp-page-handler="AddProductVariantToCart">
+                                          class="public-ajax-form" asp-page-handler="AddProductVariantToCart">
                                             <input type="hidden" name="productVariantId" value="@currentVariant.Id" />
                                             <input type="hidden" name="isIncrease" value="true" />
                                             <span class="rem20px increaseProductVariantInCartButton">+</span>
@@ -559,7 +559,7 @@
                                     </span>
                                     <span class="px-2 disable-selecting pointer-cursor@((productVariantInCart?.Count == 1 ? string.Empty : " d-none") ?? " d-none")">
                                         <form method="post" functionNameToCallInTheEnd="addProductVariantToCart"
-                                              class="public-ajax-form" asp-page-handler="AddProductVariantToCart">
+                                          class="public-ajax-form" asp-page-handler="AddProductVariantToCart">
                                             <input type="hidden" name="productVariantId" value="@currentVariant.Id" />
                                             <span class="empty-variants-in-cart">
                                                 <i class="bi bi-trash"></i>
@@ -633,6 +633,129 @@
 <!-- Other variants -->
 
 <partial name="_OtherVariantsPartail" model="(productVariants, productInfo.ProductVariantsInCart)" />
+
+<div class="container-fluid bg-white sticky-top">
+    <div class="mt-4 d-none d-sm-flex justify-content-sm-between justify-content-lg-start rem14px text-secondary border-bottom"
+         id="product-options-box-in-single-page-of-product">
+        @if (productInfo.ShortDescription != null)
+        {
+            <div class="mx-3 pointer-cursor p-2 position-relative" id="product-introduction-title-el-in-single-page-of-product">
+                معرفی
+                <div class="bg-danger position-absolute start-0 bottom-0 rounded-top d-none"></div>
+            </div>
+        }
+        @if (productInfo.SpecialtyCheck != null)
+        {
+            <div class="mx-3 pointer-cursor p-2 position-relative" id="specialty-check-title-el-in-single-page-of-product">
+                بررسی تخصصی
+                <div class="bg-danger position-absolute start-0 bottom-0 rounded-top d-none"></div>
+            </div>
+        }
+        @if (productInfo.ProductFeatures.Count > 0)
+        {
+            <div class="mx-3 pointer-cursor p-2 position-relative" id="product-features-title-el-in-single-page-of-product">
+                مشخصات
+                <div class="bg-danger position-absolute start-0 bottom-0 rounded-top d-none"></div>
+            </div>
+        }
+        <div class="mx-3 pointer-cursor p-2 position-relative" id="comments-title-el-in-single-page-of-product">
+            دیدگاه ها
+            <div class="bg-danger position-absolute start-0 bottom-0 rounded-top d-none"></div>
+        </div>
+        <div class="mx-3 pointer-cursor p-2 position-relative" id="questions-title-el-in-single-page-of-product">
+            پرسش ها
+            <div class="bg-danger position-absolute start-0 bottom-0 rounded-top d-none"></div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-9 mt-4">
+            @if (productInfo.ShortDescription != null)
+            {
+                <div id="product-introduction-el-in-single-page-of-product">
+                    <span class="fw-bold rem18px border-bottom border-2 border-danger pe-3 pb-2">معرفی</span>
+                </div>
+                <div class="mt-4 rem14px" id="product-introduction-in-single-page-of-product">
+                    @Html.Raw(productInfo.ShortDescription)
+                </div>
+                <div class="mt-2 text-info">
+                    <span class="rem14px pointer-cursor">
+                        بستن
+                        <i class="bi bi-chevron-left rem11px"></i>
+                    </span>
+                </div>
+                <div class="break-line-in-single-page-of-product bg-custom-grey my-4"></div>
+            }
+            @if (productInfo.SpecialtyCheck != null)
+            {
+                <div id="specialty-check-el-in-single-page-of-product">
+                    <span class="fw-bold rem18px border-bottom border-2 border-danger pe-3 pb-2">بررسی تخصصی</span>
+                </div>
+                <div class="mt-4" id="product-specialty-check-in-single-page-of-product">
+                    @Html.Raw(productInfo.SpecialtyCheck)
+                </div>
+                <div class="mt-2 text-info">
+                    <span class="rem14px pointer-cursor">
+                        بستن
+                        <i class="bi bi-chevron-left rem11px"></i>
+                    </span>
+                </div>
+                <div class="break-line-in-single-page-of-product bg-custom-grey my-4"></div>
+            }
+            @if (productInfo.ProductFeatures.Count > 0)
+            {
+                <div id="product-features-el-in-single-page-of-product">
+                    <span class="fw-bold rem18px border-bottom border-2 border-danger pe-3 pb-2">مشخصات</span>
+                </div>
+
+                <div class="mt-4 rem15px" id="product-details-in-single-page-of-product">
+                    @foreach (var feature in productInfo.ProductFeatures)
+                    {
+                        <div class="d-flex">
+                            <div class="py-3 text-secondary mx-md-5 me-5">@feature.FeatureTitle</div>
+                            <div class="py-3 flex-grow-1 border-bottom persian-numbers">
+                                @{
+                                    var splitValue = feature.Value.Split("|||");
+                                    if (splitValue.Length > 1)
+                                    {
+                                        foreach (var featureValue in splitValue)
+                                        {
+                                            <span class="badge bg-primary">@featureValue</span>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        @feature.Value
+                                    }
+                                }
+                            </div>
+                        </div>
+                    }
+                    <div class="mt-3 text-info">
+                        <span class="rem14px pointer-cursor">
+                            بستن
+                            <i class="bi bi-chevron-left rem11px"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="break-line-in-single-page-of-product bg-custom-grey my-4"></div>
+            }
+            <div id="comments-el-in-single-page-of-product">
+                <span class="fw-bold rem18px border-bottom border-2 border-danger pe-3 pb-2">امتیاز و دیدگاه کاربران</span>
+            </div>
+            <div class="break-line-in-single-page-of-product bg-custom-grey my-4"></div>
+
+            <div id="questions-el-in-single-page-of-product">
+                <span class="fw-bold rem18px border-bottom border-2 border-danger pe-3 pb-2">پرسش و پاسخ</span>
+            </div>
+            <div class="break-line-in-single-page-of-product bg-custom-grey my-4"></div>
+        </div>
+        <div class="col-lg-3 d-none d-lg-block"></div>
+    </div>
+</div>
+
 <div style="height: 1000px"></div>
 @{
     var shareProductData = (productInfo.PersianTitle,
@@ -647,7 +770,7 @@
     <script src="~/Pages/Product/Index.cshtml.js"></script>
 }
 
-    @section Scripts
+@section Scripts
     {
     <script src="~/lib/js-image-zoom/js-image-zoom.min.js"></script>
 }
