@@ -123,4 +123,13 @@ public class ProductVariantService : GenericService<ProductVariant>, IProductVar
             .Select(x => x.First().VariantId.Value)
             .ToListAsync();
     }
+
+    public async Task<bool> IsThisVariantAddedForSeller(long? variantId, long productId)
+    {
+        var sellerId = await _sellerService.GetSellerId();
+
+        return await _productVariants.Where(x => x.SellerId == sellerId)
+            .Where(x => x.ProductId == productId)
+            .AnyAsync(x => x.VariantId == variantId);
+    }
 }

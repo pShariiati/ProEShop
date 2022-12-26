@@ -260,11 +260,17 @@ public class ProductService : GenericService<Product>, IProductService
             .ToListAsync();
     }
 
-    public Task<AddVariantViewModel> GetProductInfoForAddVariant(long productId)
+    public async Task<AddVariantViewModel> GetProductInfoForAddVariant(long productId)
     {
-        return _mapper.ProjectTo<AddVariantViewModel>(
-            _products
-        ).SingleOrDefaultAsync(x => x.ProductId == productId);
+        var sellerId = await _sellerService.GetSellerId();
+
+        return await _products
+            .AsNoTracking()
+            .AsSplitQuery()
+            .ProjectTo<AddVariantViewModel>(
+                configuration: _mapper.ConfigurationProvider,
+                parameters: new { sellerId = sellerId }
+            ).SingleOrDefaultAsync(x => x.ProductId == productId);
     }
 
     public Task<ShowProductInfoViewModel> GetProductInfo(long productCode)

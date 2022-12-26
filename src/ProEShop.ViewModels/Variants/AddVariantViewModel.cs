@@ -46,4 +46,12 @@ public class AddVariantViewModel
     public string MainPicture { get; set; }
 
     public List<ShowCategoryVariantInAddVariantViewModel> Variants { get; set; }
+
+    /// <summary>
+    /// این فروشنده برای این محصول چه تنوع هایی را اضافه کرده است ؟
+    /// اگر برای مثال تنوع قرمز رو برای یک محصول
+    /// از قبل اضافه کرده نباید اجازه دهیم دوباره تنوع قرمز رو برای
+    /// این محصول اضافه کنه
+    /// </summary>
+    public List<long?> AddedVariantsIds { get; set; }
 }

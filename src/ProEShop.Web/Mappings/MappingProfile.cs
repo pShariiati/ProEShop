@@ -23,6 +23,7 @@ public class MappingProfile : Profile
         #region Parameters
 
         long userId = 0;
+        long sellerId = 0;
         long consignmentId = 0;
         DateTime now = default;
 
@@ -140,10 +141,16 @@ public class MappingProfile : Profile
                 options =>
                     options.MapFrom(src => src.ProductMedia.First().FileName))
             .ForMember(dest => dest.Variants,
+                options =>
+                    options.MapFrom(
+                        src => src.Category.CategoryVariants.Where(x => x.Variant.IsConfirmed)
+                    ))
+            .ForMember(dest => dest.AddedVariantsIds,
             options =>
                 options.MapFrom(
-                    src => src.Category.CategoryVariants.Where(x => x.Variant.IsConfirmed)
-                    ));
+                    src => src.ProductVariants
+                        .Where(x => x.SellerId == sellerId).Select(x => x.VariantId)
+                ));
 
         this.CreateMap<Entities.CategoryVariant, ShowCategoryVariantInAddVariantViewModel>();
 

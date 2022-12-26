@@ -127,11 +127,13 @@ function productInfoScrollSpy(e) {
         $('#comments-title-el-in-single-page-of-product').addClass('fw-bold text-danger');
         $('#comments-title-el-in-single-page-of-product div').removeClass('d-none');
     }
-    else if (scrollTop > $('#product-features-el-in-single-page-of-product').offset().top - 70) {
+    else if ($('#product-features-el-in-single-page-of-product').length &&
+        scrollTop > $('#product-features-el-in-single-page-of-product').offset().top - 70) {
         $('#product-features-title-el-in-single-page-of-product').addClass('fw-bold text-danger');
         $('#product-features-title-el-in-single-page-of-product div').removeClass('d-none');
     }
-    else if (scrollTop > $('#specialty-check-el-in-single-page-of-product').offset().top - 70) {
+    else if ($('#specialty-check-el-in-single-page-of-product').length &&
+        scrollTop > $('#specialty-check-el-in-single-page-of-product').offset().top - 70) {
         $('#specialty-check-title-el-in-single-page-of-product').addClass('fw-bold text-danger');
         $('#specialty-check-title-el-in-single-page-of-product div').removeClass('d-none');
     } else {
@@ -141,31 +143,88 @@ function productInfoScrollSpy(e) {
 }
 
 $(function () {
+    // جزییات محصول اگه از اِن مورد بیشتر باشند
+    // مابقی را مخفی میکنیم
+    $('#product-details-in-single-page-of-product > div.text-info').click(function() {
+        var isAllFeaturesShown = $(this).find('span:last').html().trim() === 'بستن';
+        if (isAllFeaturesShown) {
+            $(this).find('span:last').html('مشاهده بیشتر');
+            $('#product-details-in-single-page-of-product > div.d-flex:gt(2)').addClass('d-none');
+        } else {
+            $(this).find('span:last').html('بستن');
+            $('#product-details-in-single-page-of-product > div.d-flex').removeClass('d-none');
+        }
+    });
+
+    // روی هر کدام از المنت های معرفی، پرسش و پاسخ و ... کلیک شد
+    // باید به آن بخش اسکرول شود
+    $('#product-introduction-title-el-in-single-page-of-product').click(function () {
+        $('html, body').animate({
+            scrollTop: $('#product-introduction-el-in-single-page-of-product').offset().top - 69
+        }, 0);
+    });
+
+    $('#specialty-check-title-el-in-single-page-of-product').click(function () {
+        $('html, body').animate({
+            scrollTop: $('#specialty-check-el-in-single-page-of-product').offset().top - 69
+        }, 0);
+    });
+
+    $('#product-features-title-el-in-single-page-of-product').click(function () {
+        $('html, body').animate({
+            scrollTop: $('#product-features-el-in-single-page-of-product').offset().top - 69
+        }, 0);
+    });
+
+    $('#comments-title-el-in-single-page-of-product').click(function () {
+        $('html, body').animate({
+            scrollTop: $('#comments-el-in-single-page-of-product').offset().top - 69
+        }, 0);
+    });
+
+    $('#questions-title-el-in-single-page-of-product').click(function () {
+        $('html, body').animate({
+            scrollTop: $('#questions-el-in-single-page-of-product').offset().top - 69
+        }, 0);
+    });
+
     // همون بار اول ایونت اسکرول فراخوانی نمیشه
     // پس برای بار اول این فانکشن رو فراخوانی میکنیم
     // که عنوان مورد نظر رو اکتیو کنه
     productInfoScrollSpy($(this));
 
-    $(document).scroll(function() {
+    $(document).scroll(function () {
         productInfoScrollSpy($(this));
     });
 
-    // باید طول بزگترین مشحصات محصول را به دست آوریم
-    // برای مثال طول بزرگترین مشخصات محصول مربوطه مشخصات دوربین است
-    // حالا طول مشخصات دوربین 70 پیکسل است
-    // باید طول تمامی مشخصات محصول دیگر را به 70 پیکسل تغییر دهیم
-    // که همه آن موارد در یک راستا قرار گیرند
-    var theLongestWidthOfProductDetail = 0;
+    // اگه جزییات وجود داشته باشه
+    if ($('#product-details-in-single-page-of-product').length) {
+        // چونکه نمتیوان طول یک المنت مخفی را به دست آورد از ین ترفند استفاده میکنیم
+        // المنت را به بادی اضافه میکنیم و بعد موارد مخفی رو نمایش میدیم
+        // طول بزرگترین المنت رو به دست میاریم و در نهایت این المنت موقت رو حذف میکنیم
+        var productFeaturesHtml = $('#product-details-in-single-page-of-product').html();
+        $('body').append(`<div id="product-features-box-temp" style="visibility: hidden">${productFeaturesHtml}</div>`);
+        $('#product-features-box-temp > div.d-flex').removeClass('d-none');
 
-    $('#product-details-in-single-page-of-product .d-flex').each(function() {
-        var currentElementWidth = $(this).find('div:first').width();
-        if (currentElementWidth > theLongestWidthOfProductDetail) {
-            theLongestWidthOfProductDetail = currentElementWidth;
-        }
-    });
+        // باید طول بزگترین مشحصات محصول را به دست آوریم
+        // برای مثال طول بزرگترین مشخصات محصول مربوطه مشخصات دوربین است
+        // حالا طول مشخصات دوربین 70 پیکسل است
+        // باید طول تمامی مشخصات محصول دیگر را به 70 پیکسل تغییر دهیم
+        // که همه آن موارد در یک راستا قرار گیرند
+        var theLongestWidthOfProductDetail = 0;
 
-    $('#product-details-in-single-page-of-product .d-flex')
-        .find('div:first').width(theLongestWidthOfProductDetail);
+        $('#product-features-box-temp > div.d-flex').each(function () {
+            var currentElementWidth = $(this).find('div:first').width();
+            if (currentElementWidth > theLongestWidthOfProductDetail) {
+                theLongestWidthOfProductDetail = currentElementWidth;
+            }
+        });
+
+        $('#product-features-box-temp').remove();
+
+        $('#product-details-in-single-page-of-product > div.d-flex')
+            .find('div:first').width(theLongestWidthOfProductDetail);
+    }
 
     // چونکه مقدار داخل دراپ داون سبد خرید هر بار تغییر میکنه و بعد از لود صفحه به صفحه اضافه میشه در نتیجه باید از
     // $(document).on

@@ -82,6 +82,16 @@ public class AddVariantModel : SellerPanelBase
         {
             productVariantToAdd.VariantId = null;
         }
+
+        // نباید اجازه دهیم که یک فروشنده دوبار یک تنوع را اضافه کند
+        if (await _productVariantService.IsThisVariantAddedForSeller(
+                productVariantToAdd.VariantId,
+                productVariantToAdd.ProductId)
+            )
+        {
+            return Json(new JsonResultOperation(false));
+        }
+
         productVariantToAdd.VariantCode = await _productVariantService.GetVariantCodeForCreateProductVariant();
 
         // Get seller id for entity

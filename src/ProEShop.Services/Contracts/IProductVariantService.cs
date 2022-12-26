@@ -73,4 +73,13 @@ public interface IProductVariantService : IGenericService<ProductVariant>
     /// <param name="categoryId"></param>
     /// <returns></returns>
     Task<List<long>> GetAddedVariantsToProductVariants(List<long> variantsIds, long categoryId);
+
+    /// <summary>
+    /// بررسی میکنیم که آیا این تنوع برای این فروشنده از قبل اضافه شده است یا خیر ؟
+    /// اگر اضافه شده باشد نباید اجازه بدهیم که یک بار دیگر این تنوع افزوده شود
+    /// </summary>
+    /// <param name="variantId"></param>
+    /// <param name="productId"></param>
+    /// <returns></returns>
+    Task<bool> IsThisVariantAddedForSeller(long? variantId, long productId);
 }
