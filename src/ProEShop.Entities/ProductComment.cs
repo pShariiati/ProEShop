@@ -15,8 +15,14 @@ public class ProductComment : EntityBase, IAuditableEntity
 {
     #region Properties
 
+    /// <summary>
+    /// کدام کاربر نظر ثبت کرده است ؟
+    /// </summary>
     public long? UserId { get; set; }
 
+    /// <summary>
+    /// کدام فروشنده نظر ثبت کرده است ؟
+    /// </summary>
     public long? SellerId { get; set; }
 
     public long ProductId { get; set; }
@@ -39,6 +45,9 @@ public class ProductComment : EntityBase, IAuditableEntity
     [MaxLength(1000)]
     public string NegativeItems { get; set; }
 
+    /// <summary>
+    /// خریدار از کدام فروشنده خرید کرده است ؟
+    /// </summary>
     public long? SellerShopNameId { get; set; }
 
     public DateTime CreatedDateTime { get; set; }
@@ -57,9 +66,16 @@ public class ProductComment : EntityBase, IAuditableEntity
 
     public Seller Seller { get; set; }
 
+    /// <summary>
+    /// خریدار از کدام فروشنده خرید کرده است ؟
+    /// </summary>
     public Seller SellerShopName { get; set; }
 
     public Variant Variant { get; set; }
+
+    public ICollection<CommentScore> CommentsScores { get; set; }
+
+    public ICollection<CommentReport> CommentsReports { get; set; }
 
     #endregion
 }

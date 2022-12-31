@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProEShop.DataLayer.Context;
 
@@ -11,9 +12,10 @@ using ProEShop.DataLayer.Context;
 namespace ProEShop.DataLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230101011136_V2023_01_01_0441")]
+    partial class V2023_01_01_0441
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -477,21 +479,6 @@ namespace ProEShop.DataLayer.Migrations
                     b.HasIndex("VariantId");
 
                     b.ToTable("CategoryVariants");
-                });
-
-            modelBuilder.Entity("ProEShop.Entities.CommentReport", b =>
-                {
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("ProductCommentId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("UserId", "ProductCommentId");
-
-                    b.HasIndex("ProductCommentId");
-
-                    b.ToTable("CommentsReports");
                 });
 
             modelBuilder.Entity("ProEShop.Entities.CommentScore", b =>
@@ -2488,25 +2475,6 @@ namespace ProEShop.DataLayer.Migrations
                     b.Navigation("Variant");
                 });
 
-            modelBuilder.Entity("ProEShop.Entities.CommentReport", b =>
-                {
-                    b.HasOne("ProEShop.Entities.ProductComment", "ProductComment")
-                        .WithMany("CommentsReports")
-                        .HasForeignKey("ProductCommentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ProEShop.Entities.Identity.User", "User")
-                        .WithMany("CommentsReports")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("ProductComment");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("ProEShop.Entities.CommentScore", b =>
                 {
                     b.HasOne("ProEShop.Entities.ProductComment", "ProductComment")
@@ -2964,8 +2932,6 @@ namespace ProEShop.DataLayer.Migrations
                 {
                     b.Navigation("Carts");
 
-                    b.Navigation("CommentsReports");
-
                     b.Navigation("CommentsScores");
 
                     b.Navigation("Orders");
@@ -3010,8 +2976,6 @@ namespace ProEShop.DataLayer.Migrations
 
             modelBuilder.Entity("ProEShop.Entities.ProductComment", b =>
                 {
-                    b.Navigation("CommentsReports");
-
                     b.Navigation("CommentsScores");
                 });
 

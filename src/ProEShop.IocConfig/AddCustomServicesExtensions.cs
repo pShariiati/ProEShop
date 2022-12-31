@@ -76,6 +76,8 @@ public static class AddCustomServicesExtensions
         services.AddScoped<IAddressService, AddressService>();
         services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<IParcelPostService, ParcelPostService>();
+        services.AddScoped<ICommentReportService, CommentReportService>();
+        services.AddScoped<IProductCommentService, ProductCommentService>();
 
         #region Html sanitizer
         IHtmlSanitizer sanitizer = new HtmlSanitizer();

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ProEShop.Common.Helpers;
 using ProEShop.DataLayer.Context;
 using ProEShop.Services.Contracts;
 
@@ -31,5 +32,13 @@ public class CustomGenericService<TEntity> : ICustomGenericService<TEntity> wher
     public void RemoveRange(List<TEntity> entities)
     {
         _entities.RemoveRange(entities);
+    }
+
+    public Task<bool> IsExistsBy(string propertyName1, string propertyName2, object propertyValue1, object propertyValue2)
+    {
+        var exp = ExpressionHelpers.CreateExistExpressionForMiddleEntities<TEntity>(propertyName1, propertyName2,
+            propertyValue1, propertyValue2);
+
+        return _entities.AnyAsync(exp);
     }
 }

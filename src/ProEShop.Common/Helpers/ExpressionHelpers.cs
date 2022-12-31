@@ -15,6 +15,41 @@ public static class ExpressionHelpers
         return Expression.Lambda<Func<T, bool>>(equal, parameter);
     }
 
+    /// <summary>
+    /// تولید اکسپرشن مورد نیاز
+    /// IsExists
+    /// برای موجودیت های واسط
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="propertyName1"></param>
+    /// <param name="propertyName2"></param>
+    /// <param name="propertyValue1"></param>
+    /// <param name="propertyValue2"></param>
+    /// <returns></returns>
+    public static Expression<Func<T, bool>> CreateExistExpressionForMiddleEntities<T>(string propertyName1, string propertyName2, object propertyValue1, object propertyValue2)
+    {
+        var parameter = Expression.Parameter(typeof(T));
+
+        var property = Expression.Property(parameter, propertyName1);
+        if (propertyValue1 is string)
+            propertyValue1 = propertyValue1.ToString()?.Trim();
+        var constantValue = Expression.Constant(propertyValue1);
+        var equal = Expression.Equal(property, constantValue);
+
+        var property2 = Expression.Property(parameter, propertyName2);
+        if (propertyValue2 is string)
+            propertyValue2 = propertyValue2.ToString()?.Trim();
+        var constantValue2 = Expression.Constant(propertyValue2);
+
+        var equal2 = Expression.Equal(property2, constantValue2);
+
+        // Difference between And and AndAlso
+        // https://stackoverflow.com/a/302080/16180500
+        var finalResult = Expression.AndAlso(equal, equal2);
+
+        return Expression.Lambda<Func<T, bool>>(finalResult, parameter);
+    }
+
     public static IQueryable<T> CreateSearchExpressions<T>(IQueryable<T> query, object model, bool callDeletedStatusExpression = true)
     {
         var containsExpressions = CreateContainsExpressions(query, model);

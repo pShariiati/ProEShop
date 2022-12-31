@@ -12,4 +12,6 @@ public interface ICustomGenericService<TEntity> where TEntity : class
     void Remove(TEntity entity);
 
     void RemoveRange(List<TEntity> entities);
+
+    Task<bool> IsExistsBy(string propertyName1, string propertyName2, object propertyValue1, object propertyValue2);
 }

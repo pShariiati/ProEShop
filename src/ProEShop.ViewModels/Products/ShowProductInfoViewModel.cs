@@ -67,6 +67,8 @@ public class ShowProductInfoViewModel
     /// تنوع های این محصول که در سبد خرید این کاربری که، صفحه رو لود میکنه قرار داره
     /// </summary>
     public List<ProductVariantInCartForProductInfoViewModel> ProductVariantsInCart { get; set; }
+
+    public List<ProductCommentForProductInfoViewModel> ProductComments { get; set; }
 }
 
 public class ProductVariantInCartForProductInfoViewModel
@@ -139,4 +141,41 @@ public class ProductVariantForProductInfoViewModel
             return (byte)result;
         }
     }
+}
+
+public class ProductCommentForProductInfoViewModel
+{
+    public long Id { get; set; }
+
+    /// <summary>
+    /// آیا این نظر توسط  یک فروشگاه ثبت شده است
+    /// </summary>
+    public bool IsShop { get; set; }
+
+    /// <summary>
+    /// نام کس یا فروشگاهی که کامنت رو ثبت کرده
+    /// </summary>
+    public string Name { get; set; }
+
+    public byte Score { get; set; }
+
+    public string CommentTitle { get; set; }
+
+    public string CreatedDateTime { get; set; }
+
+    public bool IsBuyer { get; set; }
+
+    public string CommentText { get; set; }
+
+    public string SellerShopNameShopName { get; set; }
+
+    public long Like { get; set; }
+
+    public long Dislike { get; set; }
+
+    public string VariantColorCode { get; set; }
+
+    public bool? VariantIsColor { get; set; }
+
+    public string VariantValue { get; set; }
 }

@@ -4,6 +4,7 @@ using ProEShop.Common.Constants;
 using ProEShop.Common.Helpers;
 using ProEShop.Common.IdentityToolkit;
 using ProEShop.DataLayer.Context;
+using ProEShop.Entities;
 using ProEShop.Services.Contracts;
 using ProEShop.ViewModels.Products;
 
@@ -19,6 +20,8 @@ public class IndexModel : PageBase
     private readonly IProductVariantService _productVariantService;
     private readonly ICartService _cartService;
     private readonly IViewRendererService _viewRendererService;
+    private readonly ICommentReportService _commentReportService;
+    private readonly IProductCommentService _productCommentService;
 
     public IndexModel(
         IProductService productService,
@@ -26,7 +29,9 @@ public class IndexModel : PageBase
         IUnitOfWork uow,
         IProductVariantService productVariantService,
         ICartService cartService,
-        IViewRendererService viewRendererService)
+        IViewRendererService viewRendererService,
+        ICommentReportService commentReportService,
+        IProductCommentService productCommentService)
     {
         _productService = productService;
         _userProductFavoriteService = userProductFavoriteService;
@@ -34,6 +39,8 @@ public class IndexModel : PageBase
         _productVariantService = productVariantService;
         _cartService = cartService;
         _viewRendererService = viewRendererService;
+        _commentReportService = commentReportService;
+        _productCommentService = productCommentService;
     }
 
     #endregion
@@ -178,5 +185,49 @@ public class IndexModel : PageBase
                 CartsDetails = await _viewRendererService.RenderViewToStringAsync("~/Pages/Shared/_CartPartial.cshtml", carts)
             }
         });
+    }
+
+    /// <summary>
+    /// افزودن گزارش دیدگاه
+    /// </summary>
+    /// <param name="commentId"></param>
+    /// <returns></returns>
+    public async Task<IActionResult> OnPostAddCommentReport(long commentId)
+    {
+        var userId = User.Identity.GetUserId();
+
+        // اگر کاربر لاگین نباشه نال میشه
+        if (userId is null)
+        {
+            return Json(new JsonResultOperation(false));
+        }
+
+        // آیا کامنت وجود داره ؟
+        if (!await _productCommentService.IsExistsBy(nameof(Entities.ProductComment.Id), commentId))
+        {
+            return JsonBadRequest();
+        }
+
+        // آیا از قبل گزارش ثبت کرده یا خیر
+        // اگر این بررسی را انجام ندهیم و یک مورد تکراری اضافه شود
+        // اکسپشن ایجاد میشود
+        if (await _commentReportService.IsExistsBy(
+                nameof(Entities.CommentReport.UserId), nameof(Entities.CommentReport.ProductCommentId)
+                , userId, commentId
+            ))
+        {
+            return Json(new JsonResultOperation(false, "شما از قبل این دیدگاه را گزارش داده بودید"));
+        }
+
+        // افزودن گزارش کامنت
+        await _commentReportService.AddAsync(new CommentReport()
+        {
+            UserId = userId.Value,
+            ProductCommentId = commentId
+        });
+
+        await _uow.SaveChangesAsync();
+
+        return Json(new JsonResultOperation(true, "گزارش این دیدگاه با موفقیت ثبت شد"));
     }
 }

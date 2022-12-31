@@ -232,7 +232,15 @@ public class MappingProfile : Profile
                 options =>
                     options.MapFrom(src =>
                         src.Category.IsVariantColor == null
-                    ));
+                    ))
+            .ForMember(dest => dest.ProductComments,
+            options =>
+                options.MapFrom(src =>
+                    src.ProductComments.Where(x => x.IsConfirmed)
+                        .Where(x => x.CommentTitle != null)
+                        // جدیدترین دیدگاه ها
+                        .OrderByDescending(x => x.Id)
+                ));
         //.ForMember(dest => dest.ProductCommentsLongCount,
         //        options =>
         //                options.MapFrom(src =>

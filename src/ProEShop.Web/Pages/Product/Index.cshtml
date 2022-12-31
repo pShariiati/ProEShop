@@ -750,6 +750,124 @@
             <div id="comments-el-in-single-page-of-product">
                 <span class="fw-bold rem18px border-bottom border-2 border-danger pe-3 pb-2">امتیاز و دیدگاه کاربران</span>
             </div>
+            
+            <div class="row mt-4">
+                <div class="col-lg-3"></div>
+                <div class="col-lg-9">
+                    <div class="border-bottom pb-3">
+                        <div class="rem13px fw-bold">
+                            <i class="bi bi-hand-thumbs-up text-success rem17px"></i>
+                            <span class="persian-numbers">۸۷</span>%
+                            (<span class="persian-numbers">۲۳۰</span> نفر)
+                            درصد از خریداران، این کالا را پیشنهاد کرده اند
+                            <i class="bi bi-info-circle rem16px" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                               title="خریداران کالا با انتخاب یکی از گزینه های پیشنهاد یا عدم پیشنهاد، تجربه خرید خود را با کاربران به اشتراک می گذارند."></i>
+                        </div>
+                        <div class="d-flex d-sm-block justify-content-center mt-3">
+                            <img src="~/images/products/00e2b2c15d974d268ea4e1fc5c0baf75.jpg" class="rounded-3 me-4" width="60" />
+                            <img src="~/images/products/00e2b2c15d974d268ea4e1fc5c0baf75.jpg" class="rounded-3 me-4" width="60" />
+                            <img src="~/images/products/00e2b2c15d974d268ea4e1fc5c0baf75.jpg" class="rounded-3 me-4" width="60" />
+                            <img src="~/images/products/00e2b2c15d974d268ea4e1fc5c0baf75.jpg" class="rounded-3 me-4" width="60" />
+                            <img src="~/images/products/00e2b2c15d974d268ea4e1fc5c0baf75.jpg" class="rounded-3 me-4" width="60" />
+                        </div>
+                        <div class="mt-3 rem13px text-info pointer-cursor">
+                            مشاهده همه
+                            <i class="bi bi-chevron-left"></i>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between mt-3">
+                        <div class="rem13px d-flex">
+                            <i class="bi bi-sort-down rem21px me-2"></i>
+                            <div class="me-2">مرتب سازی:</div>
+                            <div class="text-danger me-2 pointer-cursor">جدیدترین</div>
+                            <div class="text-secondary me-2 pointer-cursor">دیدگاه خریداران</div>
+                            <div class="text-secondary me-2 pointer-cursor">مفیدترین</div>
+                        </div>
+                        <div class="rem13px text-secondary">
+                            <span class="persian-numbers">@productInfo.ProductCommentsCount</span>
+                            دیدگاه
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        @foreach (var comment in productInfo.ProductComments)
+                        {
+                            <div class="border-bottom pb-3 mt-2">
+                                <div class="d-flex justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-success persian-numbers text-white rem14px px-2 rounded-3">@comment.Score.0</div>
+                                        <div class="fw-bold ms-2">@comment.CommentTitle</div>
+                                    </div>
+                                    <div class="dropdown">
+                                        <i class="bi bi-three-dots-vertical pointer-cursor text-black-50 rem19px" data-bs-toggle="dropdown"></i>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <form asp-page-handler="AddCommentReport"
+                                              method="post" class="public-ajax-form" functionNameToCallInTheEnd="commentReportFunction">
+                                                <input type="hidden" name="commentId" value="@comment.Id" />
+                                                <button type="submit" class="dropdown-item pointer-cursor">
+                                                    <i class="bi bi-flag text-danger"></i>
+                                                    گزارش این دیدگاه
+                                                </button>
+                                            </form>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="mt-4 px-5">
+                                    <div class="d-flex align-items-center text-black-50 rem13px pb-3 border-bottom mb-3">
+                                        <div>@comment.CreatedDateTime</div>
+                                        <div class="mx-3 product-info-dots bg-custom-grey rounded-circle"></div>
+                                        <div>@(comment.Name ?? "کاربر سایت")</div>
+                                        @if (comment.IsBuyer)
+                                        {
+                                            <div class="ms-2 px-2 buyer-backgournd-color-in-single-page-of-product text-dark">خریدار</div>
+                                        }
+                                        else if (comment.IsShop)
+                                        {
+                                            <div class="ms-2 px-2 buyer-backgournd-color-in-single-page-of-product text-dark">فروشگاه</div>
+                                        }
+                                    </div>
+                                    <div class="rem14px text-success">
+                                        <i class="bi bi-hand-thumbs-up rem17px me-1"></i>
+                                        پیشنهاد میکنم
+                                    </div>
+                                    <div class="my-3 rem15px border-bottom pb-3">
+                                        @Html.Raw(comment.CommentText)
+                                    </div>
+                                    <div class="d-flex align-items-center rem14px">
+                                        <i class="bi bi-shop rem18px me-2"></i>
+                                        <div>@comment.SellerShopNameShopName</div>
+                                        @if (comment.VariantValue != null)
+                                        {
+                                            <div class="product-info-dots bg-custom-grey rounded-circle mx-3"></div>
+                                            @if (comment.VariantIsColor == true)
+                                            {
+                                                <div class="comment-variant-color-in-single-page-of-product rounded-circle me-2" style="background-color: @comment.VariantColorCode"></div>
+                                                @comment.VariantValue
+                                            }
+                                            @if (comment.VariantIsColor == false)
+                                            {
+                                                <i class="bi bi-sort-numeric-up me-2"></i>
+                                                <span>@comment.VariantValue</span>
+                                            }
+                                        }
+                                    </div>
+                                    <div class="d-flex justify-content-end text-black-50 rem14px align-items-center">
+                                        <div class="me-5">آیا این دیدگاه مفید بود ؟</div>
+                                        <div class="me-3 pointer-cursor">
+                                            <span class="persian-numbers">@comment.Like</span>
+                                            <i class="bi bi-hand-thumbs-up rem19px"></i>
+                                        </div>
+                                        <div class="pointer-cursor">
+                                            <span class="persian-numbers">@comment.Dislike</span>
+                                            <i class="bi bi-hand-thumbs-down rem19px"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
             <div class="break-line-in-single-page-of-product bg-custom-grey my-4"></div>
 
             <div id="questions-el-in-single-page-of-product">

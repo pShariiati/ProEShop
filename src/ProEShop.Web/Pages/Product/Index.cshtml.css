@@ -93,4 +93,13 @@
     height: 3px;
 }
 
+.buyer-backgournd-color-in-single-page-of-product {
+    background-color: #dedede;
+}
+
+.comment-variant-color-in-single-page-of-product {
+    width: 17px;
+    height: 17px;
+}
+
 /* End show product info */

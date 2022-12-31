@@ -522,3 +522,7 @@ function addFavoriteFunction() {
         $('#addFavoriteButton i:last').addClass('d-none');
     }
 }
+
+function commentReportFunction(message) {
+    showToastr('success', message);
+}
