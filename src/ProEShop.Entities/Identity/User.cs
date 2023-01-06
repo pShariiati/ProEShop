@@ -59,6 +59,8 @@ public class User : IdentityUser<long>, IAuditableEntity
 
     public ICollection<CommentReport> CommentsReports { get; set; }
 
+    public ICollection<ProductQuestionAnswerScore> ProductsQuestionsAnswersScores { get; set; }
+
     #endregion
 }
 

@@ -14,6 +14,7 @@
     var isVariantColor = !string.IsNullOrWhiteSpace(Model.ProductInfo.ProductVariants.First().VariantColorCode);
     var showScore = Model.ProductInfo.Score > 0;
     var showCommentsCount = Model.ProductInfo.ProductCommentsCount > 0;
+    var showQuestionCount = Model.ProductInfo.ProductQuestionsCount > 0;
     var showQuestionsCount = false;
     var productTitle = Model.ProductInfo.PersianTitle;
     var productCategory = Model.ProductInfo.CategoryTitle;
@@ -750,7 +751,7 @@
             <div id="comments-el-in-single-page-of-product">
                 <span class="fw-bold rem18px border-bottom border-2 border-danger pe-3 pb-2">امتیاز و دیدگاه کاربران</span>
             </div>
-            
+
             <div class="row mt-4">
                 <div class="col-lg-3"></div>
                 <div class="col-lg-9">
@@ -815,7 +816,7 @@
                                     <div class="d-flex align-items-center text-black-50 rem13px pb-3 border-bottom mb-3">
                                         <div>@comment.CreatedDateTime</div>
                                         <div class="mx-3 product-info-dots bg-custom-grey rounded-circle"></div>
-                                        <div>@(comment.Name ?? "کاربر سایت")</div>
+                                        <div>@(string.IsNullOrWhiteSpace(comment.Name) ? "کاربر سایت" : comment.Name)</div>
                                         @if (comment.IsBuyer)
                                         {
                                             <div class="ms-2 px-2 buyer-backgournd-color-in-single-page-of-product text-dark">خریدار</div>
@@ -873,6 +874,94 @@
             <div id="questions-el-in-single-page-of-product">
                 <span class="fw-bold rem18px border-bottom border-2 border-danger pe-3 pb-2">پرسش و پاسخ</span>
             </div>
+
+            <div class="row mt-4">
+                <div class="col-lg-3"></div>
+                <div class="col-lg-9">
+                    <div class="d-flex justify-content-between mt-3">
+                        <div class="rem13px d-flex">
+                            <i class="bi bi-sort-down rem21px me-2"></i>
+                            <div class="me-2">مرتب سازی:</div>
+                            <div class="text-danger me-2 pointer-cursor">جدیدترین</div>
+                            <div class="text-secondary me-2 pointer-cursor">مفیدترین</div>
+                        </div>
+                        <div class="rem13px text-secondary">
+                            <span class="persian-numbers">@productInfo.ProductQuestionsCount</span>
+                            پرسش
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        @foreach (var question in productInfo.ProductsQuestionsAndAnswers)
+                        {
+                            <div class="border-bottom pb-3 question-box-in-single-page-product">
+                                <div class="d-flex align-items-center">
+                                    <div>
+                                        <i class="bi bi-question-square rem21px text-info"></i>
+                                    </div>
+                                    <div class="ms-3">
+                                        @question.Body
+                                    </div>
+                                </div>
+                                @foreach (var answer in question.Answers.Select((value, index) => new { index, value}))
+                                {
+                                    <div class="d-flex mt-3 text-secondary">
+                                        <div class="rem13px">
+                                            پاسخ
+                                        </div>
+                                        <div class="ms-3 rem14px flex-grow-1">
+                                            <div>
+                                                @answer.value.Body
+                                            </div>
+                                            <div class="mt-4 d-flex justify-content-between align-items-center border-bottom pb-2">
+                                                <div class="d-flex rem13px">
+                                                    <div>@(string.IsNullOrWhiteSpace(answer.value.Name) ? "کاربر سایت" : answer.value.Name)</div>
+                                                    @if (answer.value.IsBuyer)
+                                                    {
+                                                        <div class="ms-2 px-2 buyer-backgournd-color-in-single-page-of-product text-dark">خریدار</div>
+                                                    }
+                                                    else if (answer.value.IsShop)
+                                                    {
+                                                        <div class="ms-2 px-2 buyer-backgournd-color-in-single-page-of-product text-dark">فروشگاه</div>
+                                                    }
+                                                </div>
+                                                <div class="d-flex text-black-50 rem14px align-items-center">
+                                                    <div class="me-3 me-md-5">آیا این پاسخ مفید بود ؟</div>
+                                                    <div class="me-3 pointer-cursor">
+                                                        <span class="persian-numbers">@answer.value.Like</span>
+                                                        <i class="bi bi-hand-thumbs-up rem19px"></i>
+                                                    </div>
+                                                    <div class="pointer-cursor">
+                                                        <span class="persian-numbers">@answer.value.Dislike</span>
+                                                        <i class="bi bi-hand-thumbs-down rem19px"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @if (question.Answers.Count > 1 && answer.index == 0)
+                                            {
+                                                <div class="d-flex mt-3">
+                                                    <div class="text-info rem14px pointer-cursor">
+                                                        مشاهده پاسخ های دیگر
+                                                        <i class="bi bi-chevron-down"></i>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                                <div class="text-info rem14px mt-3 pointer-cursor">
+                                    ثبت پاسخ
+                                    @if (question.Answers.Count > 0)
+                                    {
+                                        @: جدید
+                                    }
+                                    <i class="bi bi-chevron-left"></i>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
             <div class="break-line-in-single-page-of-product bg-custom-grey my-4"></div>
         </div>
         <div class="col-lg-3 d-none d-lg-block"></div>
@@ -889,11 +978,11 @@
 
 <!-- End other variants -->
 @section CustomScripts
-    {
+{
     <script src="~/Pages/Product/Index.cshtml.js"></script>
 }
 
 @section Scripts
-    {
+{
     <script src="~/lib/js-image-zoom/js-image-zoom.min.js"></script>
 }

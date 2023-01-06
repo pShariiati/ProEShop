@@ -205,6 +205,12 @@ public class MappingProfile : Profile
                         src.ProductComments.Where(x => x.IsConfirmed)
                             .LongCount(pc => pc.CommentTitle != null)
                     ))
+            .ForMember(dest => dest.ProductQuestionsCount,
+                options =>
+                    options.MapFrom(src =>
+                        src.ProductsQuestionsAndAnswers.Where(x => x.IsConfirmed)
+                            .LongCount(pc => pc.ParentId == null)
+                    ))
             .ForMember(dest => dest.SuggestCount,
                 options =>
                         options.MapFrom(src =>
@@ -234,13 +240,21 @@ public class MappingProfile : Profile
                         src.Category.IsVariantColor == null
                     ))
             .ForMember(dest => dest.ProductComments,
-            options =>
-                options.MapFrom(src =>
-                    src.ProductComments.Where(x => x.IsConfirmed)
-                        .Where(x => x.CommentTitle != null)
-                        // جدیدترین دیدگاه ها
-                        .OrderByDescending(x => x.Id)
-                ));
+                options =>
+                    options.MapFrom(src =>
+                        src.ProductComments.Where(x => x.IsConfirmed)
+                            .Where(x => x.CommentTitle != null)
+                            // جدیدترین دیدگاه ها
+                            .OrderByDescending(x => x.Id)
+                    ))
+            .ForMember(dest => dest.ProductsQuestionsAndAnswers,
+                options =>
+                    options.MapFrom(src =>
+                        src.ProductsQuestionsAndAnswers.Where(x => x.IsConfirmed)
+                            .Where(x => x.ParentId == null)
+                            // جدیدترین پرسش ها
+                            .OrderByDescending(x => x.Id)
+                    ));
         //.ForMember(dest => dest.ProductCommentsLongCount,
         //        options =>
         //                options.MapFrom(src =>

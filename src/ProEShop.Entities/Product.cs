@@ -87,6 +87,8 @@ public class Product : EntityBase, IAuditableEntity
 
     public ICollection<UserProductFavorite> UserProductsFavorites { get; set; }
 
+    public ICollection<ProductQuestionAndAnswer> ProductsQuestionsAndAnswers { get; set; }
+
     public ProductShortLink ProductShortLink { get; set; }
 
     #endregion

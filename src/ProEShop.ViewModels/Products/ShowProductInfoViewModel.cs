@@ -1,5 +1,8 @@
 ﻿namespace ProEShop.ViewModels.Products;
 
+/// <summary>
+/// نمایش اطلاعات محصول در صفحه تکی محصول
+/// </summary>
 public class ShowProductInfoViewModel
 {
     public long Id { get; set; }
@@ -24,22 +27,43 @@ public class ShowProductInfoViewModel
 
     public string CategoryProductPageGuide { get; set; }
 
+    /// <summary>
+    /// امتیاز محصول
+    /// از پنج
+    /// </summary>
     public double Score { get; set; }
 
     /// <summary>
     /// تعداد کل رکورد های جدول کامنت محصول
+    /// چه تایید شده چه نشده
+    /// نیاز به فور ممبر ندارد، قوانین توکار خود اتو مپر این پراپرتی رو مقدار دهی میکنه
     /// </summary>
     public long ProductCommentsLongCount { get; set; }
 
     /// <summary>
     /// تعداد نظراتی که برای محصول وجود دارد
+    /// فقط تایید شده ها و آنهایی که متن نظر دارند
     /// </summary>
     public long ProductCommentsCount { get; set; }
 
+    /// <summary>
+    /// تعداد سوالات تایید شده این محصول
+    /// </summary>
+    public long ProductQuestionsCount { get; set; }
+
+    /// <summary>
+    /// چند نفر از خریداران ای کالا را پیشنهاد کرده اند
+    /// </summary>
     public long SuggestCount { get; set; }
 
+    /// <summary>
+    /// تعداد کل خریداران
+    /// </summary>
     public long BuyerCount { get; set; }
 
+    /// <summary>
+    /// چند درصد از خریداران این کالا را پیشنهاد کرده اند
+    /// </summary>
     public double SuggestPercentage
     {
         get
@@ -69,6 +93,8 @@ public class ShowProductInfoViewModel
     public List<ProductVariantInCartForProductInfoViewModel> ProductVariantsInCart { get; set; }
 
     public List<ProductCommentForProductInfoViewModel> ProductComments { get; set; }
+
+    public List<ProductQuestionForProductInfoViewModel> ProductsQuestionsAndAnswers { get; set; }
 }
 
 public class ProductVariantInCartForProductInfoViewModel
@@ -178,4 +204,41 @@ public class ProductCommentForProductInfoViewModel
     public bool? VariantIsColor { get; set; }
 
     public string VariantValue { get; set; }
+}
+
+/// <summary>
+/// سوالات محصول
+/// </summary>
+public class ProductQuestionForProductInfoViewModel
+{
+    /// <summary>
+    /// متن سوال
+    /// </summary>
+    public string Body { get; set; }
+
+    public List<ProductQuestionAnswerForProductInfoViewModel> Answers { get; set; }
+}
+
+/// <summary>
+/// جواب های پرسش های محصول
+/// </summary>
+public class ProductQuestionAnswerForProductInfoViewModel
+{
+    /// <summary>
+    /// آیا این پاسخ توسط یک فروشگاه به ثبت رسیده است ؟
+    /// </summary>
+    public bool IsShop { get; set; }
+
+    /// <summary>
+    /// متن پاسخ
+    /// </summary>
+    public string Body { get; set; }
+
+    public bool IsBuyer { get; set; }
+
+    public string Name { get; set; }
+
+    public long Like { get; set; }
+
+    public long Dislike { get; set; }
 }

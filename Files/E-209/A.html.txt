@@ -1,0 +1,95 @@
+<div class="row mt-4">
+          <div class="col-lg-3"></div>
+          <div class="col-lg-9">
+            <div class="d-flex justify-content-between mt-3">
+              <div class="rem13px d-flex">
+                <i class="bi bi-sort-down rem21px me-2"></i>
+                <div class="me-2">مرتب سازی:</div>
+                <div class="text-danger me-2 pointer-cursor">جدیدترین</div>
+                <div class="text-secondary me-2 pointer-cursor">مفیدترین</div>
+              </div>
+              <div class="rem13px text-secondary">
+                <span class="persian-numbers">۳۵۳</span>
+                پرسش
+              </div>
+            </div>
+            <div class="mt-4">
+              <div class="border-bottom pb-3 question-box-in-single-page-product">
+                <div class="d-flex align-items-center">
+                  <div>
+                    <i class="bi bi-question-square rem21px text-info"></i>
+                  </div>
+                  <div class="ms-3">
+                    آ یا میشه ازش هنگامی که به برق متصل هست استفاده کرد؟ ایا باطری اینجوری خراب میشه؟ ممنون
+                  </div>
+                </div>
+                <div class="d-flex mt-3 text-secondary">
+                  <div class="rem13px">
+                    پاسخ
+                  </div>
+                  <div class="ms-3 rem14px flex-grow-1">
+                    <div>
+                      مشکلی برای باتری بوجود نمیاد
+                      حتی میشه سیستم را طوری تنظیم کرد که باتری تا یه حدی شارژ بشه و بعد از شارژر جدا بشه
+                    </div>
+                    <div class="mt-4 d-flex justify-content-between align-items-center border-bottom pb-2">
+                      <div class="d-flex rem13px">
+                        <div>علی احمدی</div>
+                        <div class="ms-2 px-2 buyer-backgournd-color-in-single-page-of-product text-dark">خریدار</div>
+                      </div>
+                      <div class="d-flex text-black-50 rem14px align-items-center">
+                        <div class="me-3 me-md-5">آیا این پاسخ مفید بود ؟</div>
+                        <div class="me-3 pointer-cursor">
+                          <span class="persian-numbers">۵۵</span>
+                          <i class="bi bi-hand-thumbs-up rem19px"></i>
+                        </div>
+                        <div class="pointer-cursor">
+                          <span class="persian-numbers">۵۵</span>
+                          <i class="bi bi-hand-thumbs-down rem19px"></i>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="d-flex mt-3">
+                      <div class="text-info rem14px pointer-cursor">
+                        مشاهده پاسخ های دیگر
+                        <i class="bi bi-chevron-down"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex mt-3 text-secondary">
+                  <div class="rem13px">
+                    پاسخ
+                  </div>
+                  <div class="ms-3 rem14px flex-grow-1">
+                    <div>
+                      مشکلی برای باتری بوجود نمیاد
+                      حتی میشه سیستم را طوری تنظیم کرد که باتری تا یه حدی شارژ بشه و بعد از شارژر جدا بشه
+                    </div>
+                    <div class="mt-4 d-flex justify-content-between align-items-center border-bottom pb-2">
+                      <div class="d-flex rem13px">
+                        <div>علی احمدی</div>
+                        <div class="ms-2 px-2 buyer-backgournd-color-in-single-page-of-product text-dark">خریدار</div>
+                      </div>
+                      <div class="d-flex text-black-50 rem14px align-items-center">
+                        <div class="me-3 me-md-5">آیا این پاسخ مفید بود ؟</div>
+                        <div class="me-3 pointer-cursor">
+                          <span class="persian-numbers">۵۵</span>
+                          <i class="bi bi-hand-thumbs-up rem19px"></i>
+                        </div>
+                        <div class="pointer-cursor">
+                          <span class="persian-numbers">۵۵</span>
+                          <i class="bi bi-hand-thumbs-down rem19px"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="text-info rem14px mt-3 pointer-cursor">
+                  ثبت پاسخ جدید / ثبت پاسخ
+                  <i class="bi bi-chevron-left"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
