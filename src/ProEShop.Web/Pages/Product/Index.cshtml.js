@@ -523,6 +523,62 @@ function addFavoriteFunction() {
     }
 }
 
+// این فانکشن بعد از ریپورت یک نظر فراخوانی میشود
 function commentReportFunction(message) {
     showToastr('success', message);
+}
+
+// نمایش نظرات به صورت صفحه بندی شده
+function showCommentsByPagination(el) {
+    var productId = $('.container-fluid[product-id]').attr('product-id');
+    var pageNumber = $(el).attr('page-number');
+    var sortBy = $('#comments-sorting-box-in-single-page-of-product div.text-danger').attr('sort-by');
+    var orderBy = $('#comments-sorting-box-in-single-page-of-product div.text-danger').attr('order-by');
+
+    // برای اینکه تعداد صفحات نظرات رو یکبار دیگه سمت سرور
+    // محاسبه نکنیم این مورد رو هم به سمت سرور ارسال میکنم
+    // که نیازی به محاسبه مجدد تعداد صفحات نظرات وجود نداشته باشه
+    var commentsPagesCount = $('.container-fluid[product-id]').attr('comments-pages-count');
+
+    var dataToSend = {
+        productId: productId,
+        pageNumber: pageNumber,
+        commentsPagesCount: commentsPagesCount,
+        sortBy: sortBy,
+        orderBy: orderBy
+    }
+
+    getHtmlWithAJAX('?handler=ShowCommentsByPagination', dataToSend, 'showCommentsByPaginationFunction');
+}
+
+$('#comments-sorting-box-in-single-page-of-product div.pointer-cursor').click(function () {
+    $('#comments-sorting-box-in-single-page-of-product div.pointer-cursor').removeClass('text-danger');
+    $('#comments-sorting-box-in-single-page-of-product div.pointer-cursor').addClass('text-secondary');
+    $(this).addClass('text-danger');
+
+    var productId = $('.container-fluid[product-id]').attr('product-id');
+    var pageNumber = 1;
+    var sortBy = $(this).attr('sort-by');
+    var orderBy = $(this).attr('order-by');
+
+    // برای اینکه تعداد صفحات نظرات رو یکبار دیگه سمت سرور
+    // محاسبه نکنیم این مورد رو هم به سمت سرور ارسال میکنم
+    // که نیازی به محاسبه مجدد تعداد صفحات نظرات وجود نداشته باشه
+    var commentsPagesCount = $('.container-fluid[product-id]').attr('comments-pages-count');
+
+    var dataToSend = {
+        productId: productId,
+        pageNumber: pageNumber,
+        commentsPagesCount: commentsPagesCount,
+        sortBy: sortBy,
+        orderBy: orderBy
+    }
+
+    getHtmlWithAJAX('?handler=ShowCommentsByPagination', dataToSend, 'showCommentsByPaginationFunction');
+});
+
+// نمایش نظرات به صورت صفحه بندی شده
+function showCommentsByPaginationFunction(data) {
+    $('#comments-box-in-single-page-of-product').html(data);
+    convertEnglishNumbersToPersianNumber();
 }

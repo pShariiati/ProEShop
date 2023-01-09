@@ -1,0 +1,20 @@
+<div class="d-flex mt-4 align-items-center">
+              <div class="flex-grow-1 text-danger d-flex">
+                <div class="pointer-cursor">
+                  <i class="bi bi-chevron-right rem12px"></i>
+                  <span class="rem14px ms-1">قبلی</span>
+                </div>
+              </div>
+              <div class="flex-grow-1 d-flex justify-content-center pagination-box-in-single-page-of-product">
+                <div class="persian-numbers rounded-circle mx-1 d-flex align-items-center justify-content-center pointer-cursor rem14px bg-danger text-white">۱</div>
+                <div class="persian-numbers rounded-circle mx-1 d-flex align-items-center justify-content-center pointer-cursor rem14px">۱</div>
+                <div class="pagination-dots-in-single-page-of-produdts d-flex justify-content-center align-items-center rem11px">...</div>
+                <div class="persian-numbers rounded-circle mx-1 d-flex align-items-center justify-content-center pointer-cursor rem14px">۱</div>
+              </div>
+              <div class="flex-grow-1 text-danger d-flex justify-content-end">
+                <div class="pointer-cursor">
+                  <span class="rem14px me-1">بعدی</span>
+                  <i class="bi bi-chevron-left rem12px"></i>
+                </div>
+              </div>
+            </div>

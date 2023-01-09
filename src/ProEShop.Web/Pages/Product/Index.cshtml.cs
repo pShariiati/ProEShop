@@ -6,6 +6,8 @@ using ProEShop.Common.IdentityToolkit;
 using ProEShop.DataLayer.Context;
 using ProEShop.Entities;
 using ProEShop.Services.Contracts;
+using ProEShop.ViewModels;
+using ProEShop.ViewModels.ProductComments;
 using ProEShop.ViewModels.Products;
 
 namespace ProEShop.Web.Pages.Product;
@@ -63,6 +65,11 @@ public class IndexModel : PageBase
                 slug = ProductInfo.Slug
             });
         }
+
+        // نظرات این محصول در چند صفحه نمایش داده میشوند
+        ProductInfo.CommentsPagesCount = (int)Math.Ceiling(
+            (decimal)ProductInfo.ProductCommentsCount / 2
+        );
 
         // آیدی های تنوع های این محصول
         var productVariantsIds = ProductInfo.ProductVariants.Select(x => x.Id).ToList();
@@ -229,5 +236,27 @@ public class IndexModel : PageBase
         await _uow.SaveChangesAsync();
 
         return Json(new JsonResultOperation(true, "گزارش این دیدگاه با موفقیت ثبت شد"));
+    }
+
+    /// <summary>
+    /// گرفتن نظرات محصولات به صورت صفحه بندی
+    /// </summary>
+    /// <param name="productId"></param>
+    /// <param name="pageNumber"></param>
+    /// <param name="commentsPagesCount">برای اینکه تعداد صفحات نظرات رو سمت سرور مجددامحاسبه نکنیم
+    /// از همون مقدار سمت کلاینت که قبلا محاسبه شده استفاده میکنیم</param>
+    /// /// <param name="sortBy"></param>
+    /// /// <param name="orderBy"></param>
+    /// <returns></returns>
+    public async Task<IActionResult> OnGetShowCommentsByPagination(long productId, int pageNumber, int commentsPagesCount, CommentsSortingForProductInfo sortBy, SortingOrder orderBy)
+    {
+        if (!await _productService.IsExistsBy(nameof(Entities.Product.Id), productId))
+        {
+            return JsonBadRequest();
+        }
+
+        var comments = await _productCommentService.GetCommentsByPagination(productId, pageNumber, sortBy, orderBy);
+
+        return Partial("_CommentsPartial", (comments, commentsPagesCount, pageNumber));
     }
 }

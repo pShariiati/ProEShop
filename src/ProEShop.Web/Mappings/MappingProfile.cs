@@ -246,6 +246,7 @@ public class MappingProfile : Profile
                             .Where(x => x.CommentTitle != null)
                             // جدیدترین دیدگاه ها
                             .OrderByDescending(x => x.Id)
+                            .Take(2)
                     ))
             .ForMember(dest => dest.ProductsQuestionsAndAnswers,
                 options =>

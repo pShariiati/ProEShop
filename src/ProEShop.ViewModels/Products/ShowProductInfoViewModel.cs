@@ -79,6 +79,11 @@ public class ShowProductInfoViewModel
 
     public string ProductShortLinkDisplayLink { get; set; }
 
+    /// <summary>
+    /// نظرات این محصول در چند صفحه نمایش داده میشوند
+    /// </summary>
+    public int CommentsPagesCount { get; set; }
+
     public List<ProductMediaForProductInfoViewModel> ProductMedia { get; set; }
 
     public List<ProductCategoryForProductInfoViewModel> ProductCategories { get; set; }

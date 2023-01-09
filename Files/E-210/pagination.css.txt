@@ -1,0 +1,8 @@
+.pagination-box-in-single-page-of-product div:not(.pagination-dots-in-single-page-of-produdts){
+    width: 36px;
+    height: 36px;
+}
+
+.pagination-box-in-single-page-of-product div:not(.pagination-dots-in-single-page-of-produdts):hover{
+    border:2px solid #dc3545;
+}

@@ -111,4 +111,23 @@ public abstract class GenericService<TEntity> : IGenericService<TEntity> where T
             Query = items.Skip(skip).Take(take)
         };
     }
+
+    public async Task<IQueryable<T>> GenericPaginationAsync<T>(IQueryable<T> query, int pageNumber, int take)
+    {
+        if (pageNumber < 1)
+            pageNumber = 1;
+
+        var itemsCount = await query.LongCountAsync();
+        var pagesCount = (int)Math.Ceiling(
+            (decimal)itemsCount / take
+        );
+
+        if (pagesCount <= 0)
+            pagesCount = 1;
+        if (pageNumber > pagesCount)
+            pageNumber = pagesCount;
+        var skip = (pageNumber - 1) * take;
+
+        return query.Skip(skip).Take(take);
+    }
 }
