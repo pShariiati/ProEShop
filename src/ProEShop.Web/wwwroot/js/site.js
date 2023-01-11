@@ -729,7 +729,7 @@ function publicAjaxFormFunction(form) {
                 }
             }
             else {
-                window[functionName](data.message, data.data);
+                window[functionName](data.message, data.data, form);
             }
         },
         complete: function () {
@@ -979,6 +979,17 @@ String.prototype.toPersinaDigit = function () {
     });
 }
 
+// Convert Perisan numbers to English numbers
+String.prototype.toEnglishDigit = function () {
+    var find = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+    var replace = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    var replaceString = this; var regex;
+    for (var i = 0; i < find.length; i++) {
+        regex = new RegExp(find[i], "g"); replaceString = replaceString.replace(regex, replace[i]);
+    }
+    return replaceString;
+};
+
 // Add comma after 3 digits
 String.prototype.addCommaToDigits = function () {
     return this.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -1058,3 +1069,10 @@ $(function () {
         };
     });
 });
+
+// اسکرول به صورت انیمیت به یک المنت خاص
+function scrollToEl(el, subtract = 0) {
+    $('html, body').animate({
+        scrollTop: $(el).offset().top - subtract
+    }, 0);
+}

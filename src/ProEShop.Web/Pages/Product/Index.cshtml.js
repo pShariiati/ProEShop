@@ -145,7 +145,7 @@ function productInfoScrollSpy(e) {
 $(function () {
     // جزییات محصول اگه از اِن مورد بیشتر باشند
     // مابقی را مخفی میکنیم
-    $('#product-details-in-single-page-of-product > div.text-info').click(function() {
+    $('#product-details-in-single-page-of-product > div.text-info').click(function () {
         var isAllFeaturesShown = $(this).find('span:last').html().trim() === 'بستن';
         if (isAllFeaturesShown) {
             $(this).find('span:last').html('مشاهده بیشتر');
@@ -530,6 +530,12 @@ function commentReportFunction(message) {
 
 // نمایش نظرات به صورت صفحه بندی شده
 function showCommentsByPagination(el) {
+    // اگر در داخل صفحه یک هستیم، و دوباره روی صفحه یک کلیک کردیم نیازی به گرفتن
+    // اطلاعات از سمت سرور نیست و نباید اجازه دهیم درخواستی به سمت سرور زده شود
+    if ($(el).hasClass('bg-danger')) {
+        return;
+    }
+
     var productId = $('.container-fluid[product-id]').attr('product-id');
     var pageNumber = $(el).attr('page-number');
     var sortBy = $('#comments-sorting-box-in-single-page-of-product div.text-danger').attr('sort-by');
@@ -552,6 +558,13 @@ function showCommentsByPagination(el) {
 }
 
 $('#comments-sorting-box-in-single-page-of-product div.pointer-cursor').click(function () {
+    // اگر برای مثال مرتب سازی مفیدترین ها اکتیو باشد و
+    // دوباره روی مرتب سازی مفیدترین ها کلیک کنیم نیازی به گرفتن
+    // اطلاعات از سمت سرور نیست و نباید اجازه دهیم درخواستی به سمت سرور زده شود
+    if ($(this).hasClass('text-danger')) {
+        return;
+    }
+
     $('#comments-sorting-box-in-single-page-of-product div.pointer-cursor').removeClass('text-danger');
     $('#comments-sorting-box-in-single-page-of-product div.pointer-cursor').addClass('text-secondary');
     $(this).addClass('text-danger');
@@ -581,4 +594,97 @@ $('#comments-sorting-box-in-single-page-of-product div.pointer-cursor').click(fu
 function showCommentsByPaginationFunction(data) {
     $('#comments-box-in-single-page-of-product').html(data);
     convertEnglishNumbersToPersianNumber();
+
+    scrollToEl('#comments-el-in-single-page-of-product', 69);
+}
+
+// اگر روی آیکون های لایک و دیسلایک کامنت ها کلیک شد فرم رو ارسال کن
+// که لایک و دیسلایک کامنت ها ایجاد بشه
+$(document).on('click', '.comment-score-form-in-single-page-of-product div', function () {
+    $(this).parent().submit();
+});
+
+// لایک و دیسلایک کامنت ها
+function commentScoreFunction(message, data, form) {
+    // اگه روی دکمه لایک کلیک بشه این مورد هم ترو میشه
+    var isLikeClicked = $(form).find('i').hasClass('bi-hand-thumbs-up')
+        ||
+        $(form).find('i').hasClass('bi-hand-thumbs-up-fill');
+
+    var currentSpan = $(form).find('span');
+    var currentScoreValue = parseInt(currentSpan.html().trim().toEnglishDigit());
+    var valueToReplace;
+
+    if (data === 'Add' || data === 'Subtract') {
+        valueToReplace = (data === 'Add' ? currentScoreValue + 1 : currentScoreValue - 1).toString()
+            .toPersinaDigit();
+        currentSpan.html(valueToReplace);
+
+        // اگر افزودن لایک یا دیسلایک انجام شده باشه
+        if (data === 'Add') {
+            // اگر روی دکمه لایک کلیک شده بود باید دکمه رو سبز کنیم و آیکون رو هم تو پر کنیم
+            if (isLikeClicked) {
+                $(form).find('i').removeClass('bi-hand-thumbs-up');
+                $(form).find('i').addClass('text-success bi-hand-thumbs-up-fill');
+            }
+            // اگر روی دکمه دیس لایک کلیک شده بود باید دکمه رو قرمز کنیم و آیکون رو هم تو پر کنیم
+            else {
+                $(form).find('i').removeClass('bi-hand-thumbs-down');
+                $(form).find('i').addClass('text-danger bi-hand-thumbs-down-fill');
+            }
+        }
+        // اگر کم شدن لایک یا دیسلایک انجام شده باشه
+        else {
+            // اگر روی دکمه لایک کلیک شده بود که از ش کم بشه باید دکمه رو
+            // از حالت سبز خارج کنیم و آیکون رو هم از حالت تو پری در بیاریم
+            if (isLikeClicked) {
+                $(form).find('i').removeClass('text-success bi-hand-thumbs-up-fill');
+                $(form).find('i').addClass('bi-hand-thumbs-up');
+            }
+            // اگر روی دکمه دیس لایک کلیک شده بود که از ش کم بشه باید دکمه رو
+            // از حالت قرمز خارج کنیم و آیکون رو هم از حالت تو پری در بیاریم
+            else {
+                $(form).find('i').removeClass('text-danger bi-hand-thumbs-down-fill');
+                $(form).find('i').addClass('bi-hand-thumbs-down');
+            }
+        }
+    }
+    // Add and subtract
+    else {
+        // Start Add
+
+        valueToReplace = (currentScoreValue + 1).toString().toPersinaDigit();
+        currentSpan.html(valueToReplace);
+
+        if (isLikeClicked) {
+            $(form).find('i').removeClass('bi-hand-thumbs-up');
+            $(form).find('i').addClass('text-success bi-hand-thumbs-up-fill');
+        } else {
+            $(form).find('i').removeClass('bi-hand-thumbs-down');
+            $(form).find('i').addClass('text-danger bi-hand-thumbs-down-fill');
+        }
+
+        // End add
+
+        // Start subtract
+
+        // اگر روی لایک کلیک شده بود باید فرم دیسلایک رو بگیریم و بعد از عددش یکی کم کنیم
+        var anotherForm;
+        if (isLikeClicked) {
+            anotherForm = $(form).parent().find('form:last');
+            anotherForm.find('i').removeClass('text-danger bi-hand-thumbs-down-fill');
+            anotherForm.find('i').addClass('bi-hand-thumbs-down');
+        } else {
+            anotherForm = $(form).parent().find('form:first');
+            anotherForm.find('i').removeClass('text-success bi-hand-thumbs-up-fill');
+            anotherForm.find('i').addClass('bi-hand-thumbs-up');
+        }
+
+        var anotherSpan = anotherForm.find('span');
+        var anotherScoreValue = parseInt(anotherForm.find('span').html().trim().toEnglishDigit());
+
+        anotherSpan.html((anotherScoreValue - 1).toString().toPersinaDigit());
+
+        // End subtract
+    }
 }

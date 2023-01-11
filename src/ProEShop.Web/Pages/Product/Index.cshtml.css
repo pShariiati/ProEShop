@@ -93,15 +93,6 @@
     height: 3px;
 }
 
-.buyer-backgournd-color-in-single-page-of-product {
-    background-color: #dedede;
-}
-
-.comment-variant-color-in-single-page-of-product {
-    width: 17px;
-    height: 17px;
-}
-
 .question-box-in-single-page-product:not(:first-child) {
     margin-top: 1rem;
 }

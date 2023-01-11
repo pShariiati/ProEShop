@@ -64,14 +64,22 @@
                 </div>
                 <div class="d-flex justify-content-end text-black-50 rem14px align-items-center">
                     <div class="me-5">آیا این دیدگاه مفید بود ؟</div>
-                    <div class="me-3 pointer-cursor">
-                        <span class="persian-numbers">@comment.Like</span>
-                        <i class="bi bi-hand-thumbs-up rem19px"></i>
-                    </div>
-                    <div class="pointer-cursor">
-                        <span class="persian-numbers">@comment.Dislike</span>
-                        <i class="bi bi-hand-thumbs-down rem19px"></i>
-                    </div>
+                    <form method="post" asp-page-handler="CommentScore" class="public-ajax-form comment-score-form-in-single-page-of-product" functionNameToCallInTheEnd="commentScoreFunction">
+                        <input type="hidden" value="@comment.Id" name="commentId" />
+                        <input type="hidden" value="true" name="isLike" />
+                        <div class="me-3 pointer-cursor">
+                            <span class="persian-numbers">@comment.Like</span>
+                            <i class="bi bi-hand-thumbs-up rem19px"></i>
+                        </div>
+                    </form>
+                    <form method="post" asp-page-handler="CommentScore" class="public-ajax-form comment-score-form-in-single-page-of-product" functionNameToCallInTheEnd="commentScoreFunction">
+                        <input type="hidden" value="@comment.Id" name="commentId" />
+                        <input type="hidden" value="false" name="isLike" />
+                        <div class="pointer-cursor">
+                            <span class="persian-numbers">@comment.Dislike</span>
+                            <i class="bi bi-hand-thumbs-down rem19px"></i>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

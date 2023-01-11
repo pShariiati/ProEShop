@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.CodeAnalysis.FlowAnalysis;
 using ProEShop.Common.Constants;
 using ProEShop.Common.Helpers;
 using ProEShop.Common.IdentityToolkit;
@@ -24,6 +25,7 @@ public class IndexModel : PageBase
     private readonly IViewRendererService _viewRendererService;
     private readonly ICommentReportService _commentReportService;
     private readonly IProductCommentService _productCommentService;
+    private readonly ICommentScoreService _commentScoreService;
 
     public IndexModel(
         IProductService productService,
@@ -33,7 +35,8 @@ public class IndexModel : PageBase
         ICartService cartService,
         IViewRendererService viewRendererService,
         ICommentReportService commentReportService,
-        IProductCommentService productCommentService)
+        IProductCommentService productCommentService,
+        ICommentScoreService commentScoreService)
     {
         _productService = productService;
         _userProductFavoriteService = userProductFavoriteService;
@@ -43,6 +46,7 @@ public class IndexModel : PageBase
         _viewRendererService = viewRendererService;
         _commentReportService = commentReportService;
         _productCommentService = productCommentService;
+        _commentScoreService = commentScoreService;
     }
 
     #endregion
@@ -258,5 +262,65 @@ public class IndexModel : PageBase
         var comments = await _productCommentService.GetCommentsByPagination(productId, pageNumber, sortBy, orderBy);
 
         return Partial("_CommentsPartial", (comments, commentsPagesCount, pageNumber));
+    }
+
+    /// <summary>
+    /// لایک و دیسلایک کامنت ها
+    /// </summary>
+    /// <param name="commentId"></param>
+    /// <param name="isLike"></param>
+    /// <returns></returns>
+    public async Task<IActionResult> OnPostCommentScore(long commentId, bool isLike)
+    {
+        var userId = User.Identity.GetUserId();
+
+        if (userId is null)
+        {
+            return JsonBadRequest();
+        }
+
+        if (!await _productCommentService.IsExistsBy(nameof(Entities.ProductComment.Id), commentId))
+        {
+            return JsonBadRequest();
+        }
+
+        var commentScore = await _commentScoreService.FindAsync(userId.Value, commentId);
+
+        var operation = string.Empty;
+
+        // اگر وجود نداشته باشه اضافه میکنیم
+        if (commentScore is null)
+        {
+            operation = "Add";
+
+            await _commentScoreService.AddAsync(new CommentScore()
+            {
+                IsLike = isLike,
+                ProductCommentId = commentId,
+                UserId = userId.Value
+            });
+        }
+        // اگر کاربر لایک کرده بود و بعد دوباره روی دکمه لایک کلیک کرد باید لایک کاربر رو حذف کنیم
+        // اگر کاربر دیسلایک کرده بود و بعد دوباره روی دکمه دیسلایک کلیک کرد باید دیسلایک کاربر رو حذف کنیم
+        else if (commentScore.IsLike && isLike || !commentScore.IsLike && !isLike)
+        {
+            operation = "Subtract";
+
+            _commentScoreService.Remove(commentScore);
+        }
+        // اگر کاربر لایک کرده بود و بعد روی دیسلایک کلیک کرد باید ایز لایک رو به فالس تغییر بدیم
+        // اگر کاربر دیسلایک کرده بود و بعد روی لایک کلیک کرد باید ایز لایک رو به ترو تغییر بدیم
+        else
+        {
+            operation = "AddAndSubtract";
+            commentScore.IsLike = !commentScore.IsLike;
+        }
+
+        await _uow.SaveChangesAsync();
+
+        return Json(new JsonResultOperation(true, string.Empty)
+        {
+            Data = operation
+        });
     }
 }
