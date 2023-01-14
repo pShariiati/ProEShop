@@ -21,7 +21,8 @@ public class ProductCommentMappingProfile : Profile
                     options.MapFrom(src => src.CommentsScores.LongCount(x => !x.IsLike)))
             .ForMember(dest => dest.Name,
                 options =>
-                    options.MapFrom(src => src.IsUnknown ? null
+                    options.MapFrom(src => src.IsUnknown
+                        ? null
                         : (
                             src.UserId != null ? src.User.FullName : src.Seller.ShopName
                         )))

@@ -93,8 +93,4 @@
     height: 3px;
 }
 
-.question-box-in-single-page-product:not(:first-child) {
-    margin-top: 1rem;
-}
-
 /* End show product info */

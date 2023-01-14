@@ -1,4 +1,4 @@
-﻿@model (List<ProEShop.ViewModels.Products.ProductCommentForProductInfoViewModel> ProductComments, int CommentsPagesCount, int currentPage)
+﻿@model ProEShop.ViewModels.ProductComments.CommentForCommentPartialViewModel
 
 <div class="mt-4">
     @foreach (var comment in Model.ProductComments)
@@ -13,7 +13,7 @@
                     <i class="bi bi-three-dots-vertical pointer-cursor text-black-50 rem19px" data-bs-toggle="dropdown"></i>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <form asp-page-handler="AddCommentReport"
-                              method="post" class="public-ajax-form" functionNameToCallInTheEnd="commentReportFunction">
+                          method="post" class="public-ajax-form" functionNameToCallInTheEnd="commentReportFunction">
                             <input type="hidden" name="commentId" value="@comment.Id" />
                             <button type="submit" class="dropdown-item pointer-cursor">
                                 <i class="bi bi-flag text-danger"></i>
@@ -37,12 +37,55 @@
                         <div class="ms-2 px-2 buyer-backgournd-color-in-single-page-of-product text-dark">فروشگاه</div>
                     }
                 </div>
-                <div class="rem14px text-success">
-                    <i class="bi bi-hand-thumbs-up rem17px me-1"></i>
-                    پیشنهاد میکنم
-                </div>
+                @if (comment.IsBuyer)
+                {
+                    if (comment.Suggest is null)
+                    {
+                        <div class="rem14px text-secondary d-flex">
+                            <i class="bi bi-dot rem17px me-1"></i>
+                            مطمئن نیستم
+                        </div>
+                    }
+                    else if (comment.Suggest.Value)
+                    {
+                        <div class="rem14px text-success">
+                            <i class="bi bi-hand-thumbs-up rem17px me-1"></i>
+                            پیشنهاد میکنم
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="rem14px not-suggeset-color-in-single-page-of-product">
+                            <i class="bi bi-hand-thumbs-down rem17px me-1"></i>
+                            پیشنهاد نمیکنم
+                        </div>
+                    }
+                }
                 <div class="my-3 rem15px border-bottom pb-3">
                     @Html.Raw(comment.CommentText)
+                    @{
+                        var positiveItems = comment.PositiveItems?.Split(new[] { "|||" }, StringSplitOptions.None) ?? new string[] { };
+                        var negativeItems = comment.NegativeItems?.Split(new[] { "|||" }, StringSplitOptions.None) ?? new string[] { };
+                    }
+                    @if (positiveItems.Length > 0 || negativeItems.Length > 0)
+                    {
+                        <div class="mt-3 rem14px">
+                        @foreach (var positive in positiveItems)
+                        {
+                            <div class="my-1">
+                                <i class="bi bi-plus-lg text-success"></i>
+                                @positive
+                            </div>
+                        }
+                        @foreach (var negative in negativeItems)
+                        {
+                            <div class="my-1">
+                                <i class="bi bi-dash-lg text-danger"></i>
+                                @negative
+                            </div>
+                        }
+                        </div>
+                    }
                 </div>
                 <div class="d-flex align-items-center rem14px">
                     <i class="bi bi-shop rem18px me-2"></i>
@@ -63,21 +106,40 @@
                     }
                 </div>
                 <div class="d-flex justify-content-end text-black-50 rem14px align-items-center">
+                    @{
+                        var commentScore = Model.LikedCommentsByUser.SingleOrDefault(x => x.ProductCommentId == comment.Id);
+                    }
                     <div class="me-5">آیا این دیدگاه مفید بود ؟</div>
-                    <form method="post" asp-page-handler="CommentScore" class="public-ajax-form comment-score-form-in-single-page-of-product" functionNameToCallInTheEnd="commentScoreFunction">
+                    <form hide-loading="true" method="post" asp-page-handler="CommentScore" class="public-ajax-form comment-score-form-in-single-page-of-product" functionNameToCallInTheEnd="commentScoreFunction">
                         <input type="hidden" value="@comment.Id" name="commentId" />
                         <input type="hidden" value="true" name="isLike" />
                         <div class="me-3 pointer-cursor">
+                            <img src="~/images/application/loading2.gif" width="28" class="d-none" />
                             <span class="persian-numbers">@comment.Like</span>
-                            <i class="bi bi-hand-thumbs-up rem19px"></i>
+                            @if (commentScore is null || !commentScore.IsLike)
+                            {
+                                <i class="bi bi-hand-thumbs-up rem19px"></i>
+                            }
+                            else
+                            {
+                                <i class="text-success bi bi-hand-thumbs-up-fill rem19px"></i>
+                            }
                         </div>
                     </form>
-                    <form method="post" asp-page-handler="CommentScore" class="public-ajax-form comment-score-form-in-single-page-of-product" functionNameToCallInTheEnd="commentScoreFunction">
+                    <form hide-loading="true" method="post" asp-page-handler="CommentScore" class="public-ajax-form comment-score-form-in-single-page-of-product" functionNameToCallInTheEnd="commentScoreFunction">
                         <input type="hidden" value="@comment.Id" name="commentId" />
                         <input type="hidden" value="false" name="isLike" />
                         <div class="pointer-cursor">
+                            <img src="~/images/application/loading2.gif" width="28" class="d-none" />
                             <span class="persian-numbers">@comment.Dislike</span>
-                            <i class="bi bi-hand-thumbs-down rem19px"></i>
+                            @if (commentScore is null || commentScore.IsLike)
+                            {
+                                <i class="bi bi-hand-thumbs-down rem19px"></i>
+                            }
+                            else
+                            {
+                                <i class="text-danger bi bi-hand-thumbs-down-fill rem19px"></i>
+                            }
                         </div>
                     </form>
                 </div>
@@ -86,4 +148,7 @@
     }
 </div>
 
-<partial name="_PaginationPartial" model="(Model.CommentsPagesCount, Model.currentPage)" />
+@{
+    var functionName = "showCommentsByPagination";
+}
+<partial name="_PaginationPartial" model="(Model.CommentsPagesCount, Model.CurrentPage, functionName)" />

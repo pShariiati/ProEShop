@@ -255,6 +255,7 @@ public class MappingProfile : Profile
                             .Where(x => x.ParentId == null)
                             // جدیدترین پرسش ها
                             .OrderByDescending(x => x.Id)
+                            .Take(2)
                     ));
         //.ForMember(dest => dest.ProductCommentsLongCount,
         //        options =>

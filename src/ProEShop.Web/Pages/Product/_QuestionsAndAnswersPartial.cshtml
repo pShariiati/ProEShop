@@ -1,0 +1,104 @@
+﻿@model ProEShop.ViewModels.QuestionsAndAnswers.QuestionAndAnswerForQuestionAndAnswerPartialViewModel
+
+<div class="mt-4">
+    @foreach (var question in Model.ProductQuestionsAndAnswers)
+    {
+        <div class="border-bottom pb-3 question-box-in-single-page-product">
+            <div class="d-flex align-items-center">
+                <div>
+                    <i class="bi bi-question-square rem21px text-info"></i>
+                </div>
+                <div class="ms-3">
+                    @question.Body
+                </div>
+            </div>
+            @foreach (var answer in question.Answers.Select((value, index) => new { index, value }))
+            {
+                <div class="d-flex mt-3 text-secondary@(answer.index > 0 ? " d-none" : string.Empty)">
+                    <div class="rem13px">
+                        پاسخ
+                    </div>
+                    <div class="ms-3 rem14px flex-grow-1">
+                        <div>
+                            @answer.value.Body
+                        </div>
+                        <div class="mt-4 d-flex justify-content-between align-items-center border-bottom pb-2">
+                            <div class="d-flex rem13px">
+                                <div>@(string.IsNullOrWhiteSpace(answer.value.Name) ? "کاربر سایت" : answer.value.Name)</div>
+                                @if (answer.value.IsBuyer)
+                                {
+                                    <div class="ms-2 px-2 buyer-backgournd-color-in-single-page-of-product text-dark">خریدار</div>
+                                }
+                                else if (answer.value.IsShop)
+                                {
+                                    <div class="ms-2 px-2 buyer-backgournd-color-in-single-page-of-product text-dark">فروشگاه</div>
+                                }
+                            </div>
+                            <div class="d-flex text-black-50 rem14px align-items-center">
+                                @{
+                                    var answerScore = Model.LikedAnswersByUser.SingleOrDefault(x => x.AnswerId == answer.value.Id);
+                                }
+                                <div class="me-3 me-md-5">آیا این پاسخ مفید بود ؟</div>
+                                <form hide-loading="true" method="post" asp-page-handler="QuestionScore" class="public-ajax-form answer-score-form-in-single-page-of-product" functionNameToCallInTheEnd="questionScoreFunction">
+                                    <input type="hidden" value="@answer.value.Id" name="answerId"/>
+                                    <input type="hidden" value="true" name="isLike"/>
+                                    <div class="me-3 pointer-cursor">
+                                        <img src="~/images/application/loading2.gif" width="28" class="d-none" />
+                                        <span class="persian-numbers">@answer.value.Like</span>
+                                        @if (answerScore is null || !answerScore.IsLike)
+                                        {
+                                            <i class="bi bi-hand-thumbs-up rem19px"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="text-success bi bi-hand-thumbs-up-fill rem19px"></i>
+                                        }
+                                    </div>
+                                </form>
+                                <form hide-loading="true" method="post" asp-page-handler="QuestionScore" class="public-ajax-form answer-score-form-in-single-page-of-product" functionNameToCallInTheEnd="questionScoreFunction">
+                                    <input type="hidden" value="@answer.value.Id" name="answerId" />
+                                    <input type="hidden" value="false" name="isLike" />
+                                    <div class="pointer-cursor">
+                                        <img src="~/images/application/loading2.gif" width="28" class="d-none"/>
+                                        <span class="persian-numbers">@answer.value.Dislike</span>
+                                        @if (answerScore is null || answerScore.IsLike)
+                                        {
+                                            <i class="bi bi-hand-thumbs-down rem19px"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="text-danger bi bi-hand-thumbs-down-fill rem19px"></i>
+                                        }
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        @if (question.Answers.Count > 1 && answer.index == 0)
+                        {
+                            <div class="d-flex mt-3">
+                                <div class="text-info rem14px pointer-cursor show-another-answer-button-single-page-of-product">
+                                    مشاهده پاسخ های دیگر
+                                    <i class="bi bi-chevron-down"></i>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+            <div class="text-info rem14px mt-3 pointer-cursor@(question.Answers.Count > 1 ? " d-none" : string.Empty)">
+                ثبت پاسخ
+                @if (question.Answers.Count > 0)
+                {
+                    @: جدید
+                }
+                <i class="bi bi-chevron-left"></i>
+            </div>
+        </div>
+    }
+</div>
+
+@{
+    var functionName = "showQuestionsAndAnswersByPagination";
+}
+
+<partial name="_PaginationPartial" model="(Model.QuestionsAndAnswersPagesCount, Model.CurrentPage, functionName)" />

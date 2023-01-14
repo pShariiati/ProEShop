@@ -10,6 +10,7 @@ using ProEShop.Services.Contracts;
 using ProEShop.ViewModels;
 using ProEShop.ViewModels.ProductComments;
 using ProEShop.ViewModels.Products;
+using ProEShop.ViewModels.QuestionsAndAnswers;
 
 namespace ProEShop.Web.Pages.Product;
 
@@ -26,6 +27,8 @@ public class IndexModel : PageBase
     private readonly ICommentReportService _commentReportService;
     private readonly IProductCommentService _productCommentService;
     private readonly ICommentScoreService _commentScoreService;
+    private readonly IAnswerScoreService _answerScoreService;
+    private readonly IQuestionAndAnswerService _questionAndAnswerService;
 
     public IndexModel(
         IProductService productService,
@@ -36,7 +39,9 @@ public class IndexModel : PageBase
         IViewRendererService viewRendererService,
         ICommentReportService commentReportService,
         IProductCommentService productCommentService,
-        ICommentScoreService commentScoreService)
+        ICommentScoreService commentScoreService,
+        IAnswerScoreService answerScoreService,
+        IQuestionAndAnswerService questionAndAnswerService)
     {
         _productService = productService;
         _userProductFavoriteService = userProductFavoriteService;
@@ -47,6 +52,8 @@ public class IndexModel : PageBase
         _commentReportService = commentReportService;
         _productCommentService = productCommentService;
         _commentScoreService = commentScoreService;
+        _answerScoreService = answerScoreService;
+        _questionAndAnswerService = questionAndAnswerService;
     }
 
     #endregion
@@ -69,15 +76,40 @@ public class IndexModel : PageBase
                 slug = ProductInfo.Slug
             });
         }
+        var userId = User.Identity.GetLoggedInUserId();
+
+        // آیدی کامنت هایی که در صفحه نمایش داده میشوند
+        var commentIds = ProductInfo.ProductComments
+            .Select(x => x.Id)
+            .ToArray();
+
+        // آیدی سوالاتی که در صفحه نمایش داده میشوند
+        var questionIds = ProductInfo.ProductsQuestionsAndAnswers
+            .SelectMany(x => x.Answers)
+            .Select(x => x.Id)
+            .ToArray();
+
+        // از داخل کامنت هایی که در صفحه نمایش داده میشوند کدام یک توسط این کاربر
+        // لایک و یا دیسلایک روی آنها انجام شده است
+        ProductInfo.LikedCommentsByUser = await _commentScoreService.GetLikedCommentsLikedByUser(userId, commentIds);
+
+        // از داخل جواب هایی که در صفحه نمایش داده میشوند کدام یک توسط این کاربر
+        // لایک و یا دیسلایک روی آنها انجام شده است
+        ProductInfo.LikedAnswersByUser = await _answerScoreService.GetLikedAnswersLikedByUser(userId, questionIds);
 
         // نظرات این محصول در چند صفحه نمایش داده میشوند
         ProductInfo.CommentsPagesCount = (int)Math.Ceiling(
             (decimal)ProductInfo.ProductCommentsCount / 2
         );
 
+        // سوالات این محصول در چند صفحه نمایش داده میشوند
+        ProductInfo.QuestionsPagesCount = (int)Math.Ceiling(
+            (decimal)ProductInfo.ProductQuestionsCount / 2
+        );
+
         // آیدی های تنوع های این محصول
+        
         var productVariantsIds = ProductInfo.ProductVariants.Select(x => x.Id).ToList();
-        var userId = User.Identity.GetLoggedInUserId();
         // تنوع های این محصول که در سبد خرید این کاربری که، صفحه رو لود میکنه قرار داره
         ProductInfo.ProductVariantsInCart = await _cartService.GetProductVariantsInCart(productVariantsIds, userId);
         return Page();
@@ -261,7 +293,26 @@ public class IndexModel : PageBase
 
         var comments = await _productCommentService.GetCommentsByPagination(productId, pageNumber, sortBy, orderBy);
 
-        return Partial("_CommentsPartial", (comments, commentsPagesCount, pageNumber));
+        var model = new CommentForCommentPartialViewModel()
+        {
+            CurrentPage = pageNumber,
+            CommentsPagesCount = commentsPagesCount,
+            ProductComments = comments
+        };
+
+        var userId = User.Identity.GetUserId();
+
+        if (userId != null)
+        {
+            var commentIds = comments
+                .Select(x => x.Id)
+                .ToArray();
+
+            model.LikedCommentsByUser = await _commentScoreService
+                .GetLikedCommentsLikedByUser(userId.Value, commentIds);
+        }
+
+        return Partial("_CommentsPartial", model);
     }
 
     /// <summary>
@@ -314,6 +365,108 @@ public class IndexModel : PageBase
         {
             operation = "AddAndSubtract";
             commentScore.IsLike = !commentScore.IsLike;
+        }
+
+        await _uow.SaveChangesAsync();
+
+        return Json(new JsonResultOperation(true, string.Empty)
+        {
+            Data = operation
+        });
+    }
+
+    /// <summary>
+    /// گرفتن سوالات محصولات به صورت صفحه بندی
+    /// </summary>
+    /// <param name="productId"></param>
+    /// <param name="pageNumber"></param>
+    /// <param name="questionsPagesCount">برای اینکه تعداد صفحات سوالات رو سمت سرور مجددامحاسبه نکنیم
+    /// از همون مقدار سمت کلاینت که قبلا محاسبه شده استفاده میکنیم</param>
+    /// /// <param name="sortBy"></param>
+    /// /// <param name="orderBy"></param>
+    /// <returns></returns>
+    public async Task<IActionResult> OnGetShowQuestionsByPagination(long productId, int pageNumber, int questionsPagesCount, QuestionsSortingForProductInfo sortBy, SortingOrder orderBy)
+    {
+        if (!await _productService.IsExistsBy(nameof(Entities.Product.Id), productId))
+        {
+            return JsonBadRequest();
+        }
+
+        var questions = await _questionAndAnswerService.GetQuestionsByPagination(productId, pageNumber, sortBy, orderBy);
+
+        var model = new QuestionAndAnswerForQuestionAndAnswerPartialViewModel()
+        {
+            CurrentPage = pageNumber,
+            QuestionsAndAnswersPagesCount = questionsPagesCount,
+            ProductQuestionsAndAnswers = questions
+        };
+
+        var userId = User.Identity.GetUserId();
+
+        if (userId != null)
+        {
+            var answerIds = questions
+                .SelectMany(x => x.Answers)
+                .Select(x => x.Id)
+                .ToArray();
+
+            model.LikedAnswersByUser = await _answerScoreService
+                .GetLikedAnswersLikedByUser(userId.Value, answerIds);
+        }
+
+        return Partial("_QuestionsAndAnswersPartial", model);
+    }
+
+    /// <summary>
+    /// لایک و دیسلایک جواب های سوالات
+    /// </summary>
+    /// <param name="answerId"></param>
+    /// <param name="isLike"></param>
+    /// <returns></returns>
+    public async Task<IActionResult> OnPostQuestionScore(long answerId, bool isLike)
+    {
+        var userId = User.Identity.GetUserId();
+
+        if (userId is null)
+        {
+            return JsonBadRequest();
+        }
+
+        if (!await _questionAndAnswerService.IsExistsAndAnswer(answerId))
+        {
+            return JsonBadRequest();
+        }
+
+        var answerScore = await _answerScoreService.FindAsync(userId.Value, answerId);
+
+        var operation = string.Empty;
+
+        // اگر وجود نداشته باشه اضافه میکنیم
+        if (answerScore is null)
+        {
+            operation = "Add";
+
+            await _answerScoreService.AddAsync(new ProductQuestionAnswerScore()
+            {
+                IsLike = isLike,
+                AnswerId = answerId,
+                UserId = userId.Value
+            });
+        }
+        // اگر کاربر لایک کرده بود و بعد دوباره روی دکمه لایک کلیک کرد باید لایک کاربر رو حذف کنیم
+        // اگر کاربر دیسلایک کرده بود و بعد دوباره روی دکمه دیسلایک کلیک کرد باید دیسلایک کاربر رو حذف کنیم
+        else if (answerScore.IsLike && isLike || !answerScore.IsLike && !isLike)
+        {
+            operation = "Subtract";
+
+            _answerScoreService.Remove(answerScore);
+        }
+        // اگر کاربر لایک کرده بود و بعد روی دیسلایک کلیک کرد باید ایز لایک رو به فالس تغییر بدیم
+        // اگر کاربر دیسلایک کرده بود و بعد روی لایک کلیک کرد باید ایز لایک رو به ترو تغییر بدیم
+        else
+        {
+            operation = "AddAndSubtract";
+            answerScore.IsLike = !answerScore.IsLike;
         }
 
         await _uow.SaveChangesAsync();

@@ -143,6 +143,17 @@ function productInfoScrollSpy(e) {
 }
 
 $(function () {
+    // کلیک روی دکمه نمایش پاسخ های دیگر
+    $(document).on('click', '.show-another-answer-button-single-page-of-product', function () {
+        // نمایش تمامی جواب ها
+        // نمایش المنت ثبت پاسخ/جدید
+        // حذف المنت نمایش پاسخ های دیگر
+        var parent = $(this).parents('.question-box-in-single-page-product');
+        parent.find('.text-secondary').removeClass('d-none');
+        parent.find('.text-info:last').removeClass('d-none');
+        $(this).parent().remove();
+    });
+
     // جزییات محصول اگه از اِن مورد بیشتر باشند
     // مابقی را مخفی میکنیم
     $('#product-details-in-single-page-of-product > div.text-info').click(function () {
@@ -590,6 +601,43 @@ $('#comments-sorting-box-in-single-page-of-product div.pointer-cursor').click(fu
     getHtmlWithAJAX('?handler=ShowCommentsByPagination', dataToSend, 'showCommentsByPaginationFunction');
 });
 
+$('#questions-and-answers-sorting-box-in-single-page-of-product div.pointer-cursor').click(function () {
+    // اگر برای مثال مرتب سازی مفیدترین ها اکتیو باشد و
+    // دوباره روی مرتب سازی مفیدترین ها کلیک کنیم نیازی به گرفتن
+    // اطلاعات از سمت سرور نیست و نباید اجازه دهیم درخواستی به سمت سرور زده شود
+    if ($(this).hasClass('text-danger')) {
+        return;
+    }
+
+    $('#questions-and-answers-sorting-box-in-single-page-of-product div.pointer-cursor')
+        .removeClass('text-danger');
+
+    $('#questions-and-answers-sorting-box-in-single-page-of-product div.pointer-cursor')
+        .addClass('text-secondary');
+
+    $(this).addClass('text-danger');
+
+    var productId = $('.container-fluid[product-id]').attr('product-id');
+    var pageNumber = 1;
+    var sortBy = $(this).attr('sort-by');
+    var orderBy = $(this).attr('order-by');
+
+    // برای اینکه تعداد صفحات نظرات رو یکبار دیگه سمت سرور
+    // محاسبه نکنیم این مورد رو هم به سمت سرور ارسال میکنم
+    // که نیازی به محاسبه مجدد تعداد صفحات نظرات وجود نداشته باشه
+    var questionsPagesCount = $('.container-fluid[product-id]').attr('questions-pages-count');
+
+    var dataToSend = {
+        productId: productId,
+        pageNumber: pageNumber,
+        questionsPagesCount: questionsPagesCount,
+        sortBy: sortBy,
+        orderBy: orderBy
+    }
+
+    getHtmlWithAJAX('?handler=ShowQuestionsByPagination', dataToSend, 'showQuestionsByPaginationFunction');
+});
+
 // نمایش نظرات به صورت صفحه بندی شده
 function showCommentsByPaginationFunction(data) {
     $('#comments-box-in-single-page-of-product').html(data);
@@ -600,12 +648,36 @@ function showCommentsByPaginationFunction(data) {
 
 // اگر روی آیکون های لایک و دیسلایک کامنت ها کلیک شد فرم رو ارسال کن
 // که لایک و دیسلایک کامنت ها ایجاد بشه
-$(document).on('click', '.comment-score-form-in-single-page-of-product div', function () {
+$(document).on('click', '.comment-score-form-in-single-page-of-product div, .answer-score-form-in-single-page-of-product div', function () {
+    // اگه سمت سرور بودیم و روی لودینگ کلیک کرد نباید دوباره
+    // درخواست دیگری به سمت سرور ارسال کنیم
+    if ($(this).find('span').hasClass('d-none')) {
+        return;
+    }
+
+    // زمانیکه سمت سرور هستیم
+    // کرسر رو تغییر میدیم به دیفالت
+    // تعداد لایک، دیس لایک و آیکون لایک و دیسلایک رو مخفیف میکنیم
+    // جیف لودینگ رو نمایش میدیم
+    $(this).removeClass('pointer-cursor');
+    $(this).find('span').addClass('d-none');
+    $(this).find('i').addClass('d-none');
+    $(this).find('img').removeClass('d-none');
+
     $(this).parent().submit();
 });
 
 // لایک و دیسلایک کامنت ها
 function commentScoreFunction(message, data, form) {
+    // اگه از سمت سرور برگشتیم
+    // کرسر رو به پوینتر تغییر میدیم
+    // تعداد لایک و دیسلایک و آیکون لایک و دیس لایک رو نمایش میدیم
+    // و جیف لودینگ رو مخفی میکنیم
+    $(form).find('div').addClass('pointer-cursor');
+    $(form).find('span').removeClass('d-none');
+    $(form).find('i').removeClass('d-none');
+    $(form).find('img').addClass('d-none');
+
     // اگه روی دکمه لایک کلیک بشه این مورد هم ترو میشه
     var isLikeClicked = $(form).find('i').hasClass('bi-hand-thumbs-up')
         ||
@@ -687,4 +759,48 @@ function commentScoreFunction(message, data, form) {
 
         // End subtract
     }
+}
+
+// لایک و دیسلایک جواب های سوالات
+function questionScoreFunction(message, data, form) {
+    commentScoreFunction(message, data, form);
+}
+
+// ==== Questions
+
+// نمایش سوال و جواب ها به صورت صفحه بندی شده
+function showQuestionsAndAnswersByPagination(el) {
+    // اگر در داخل صفحه یک هستیم، و دوباره روی صفحه یک کلیک کردیم نیازی به گرفتن
+    // اطلاعات از سمت سرور نیست و نباید اجازه دهیم درخواستی به سمت سرور زده شود
+    if ($(el).hasClass('bg-danger')) {
+        return;
+    }
+
+    var productId = $('.container-fluid[product-id]').attr('product-id');
+    var pageNumber = $(el).attr('page-number');
+    var sortBy = $('#questions-and-answers-sorting-box-in-single-page-of-product div.text-danger').attr('sort-by');
+    var orderBy = $('#questions-and-answers-sorting-box-in-single-page-of-product div.text-danger').attr('order-by');
+
+    // برای اینکه تعداد صفحات سوالات رو یکبار دیگه سمت سرور
+    // محاسبه نکنیم این مورد رو هم به سمت سرور ارسال میکنم
+    // که نیازی به محاسبه مجدد تعداد صفحات سوالات وجود نداشته باشه
+    var questionsPagesCount = $('.container-fluid[product-id]').attr('questions-pages-count');
+
+    var dataToSend = {
+        productId: productId,
+        pageNumber: pageNumber,
+        questionsPagesCount: questionsPagesCount,
+        sortBy: sortBy,
+        orderBy: orderBy
+    }
+
+    getHtmlWithAJAX('?handler=ShowQuestionsByPagination', dataToSend, 'showQuestionsByPaginationFunction');
+}
+
+// نمایش سوال و جواب ها به صورت صفحه بندی شده
+function showQuestionsByPaginationFunction(data) {
+    $('#questions-and-answers-box-in-single-page-of-product').html(data);
+    convertEnglishNumbersToPersianNumber();
+
+    scrollToEl('#questions-el-in-single-page-of-product', 69);
 }

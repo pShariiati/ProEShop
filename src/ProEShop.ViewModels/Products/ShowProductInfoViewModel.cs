@@ -84,6 +84,11 @@ public class ShowProductInfoViewModel
     /// </summary>
     public int CommentsPagesCount { get; set; }
 
+    /// <summary>
+    /// سوالات این محصول در چند صفحه نمایش داده میشوند
+    /// </summary>
+    public int QuestionsPagesCount { get; set; }
+
     public List<ProductMediaForProductInfoViewModel> ProductMedia { get; set; }
 
     public List<ProductCategoryForProductInfoViewModel> ProductCategories { get; set; }
@@ -100,6 +105,10 @@ public class ShowProductInfoViewModel
     public List<ProductCommentForProductInfoViewModel> ProductComments { get; set; }
 
     public List<ProductQuestionForProductInfoViewModel> ProductsQuestionsAndAnswers { get; set; }
+
+    public List<LikedCommentByUserViewModel> LikedCommentsByUser { get; set; }
+
+    public List<LikedAnswerByUserViewModel> LikedAnswersByUser { get; set; }
 }
 
 public class ProductVariantInCartForProductInfoViewModel
@@ -196,6 +205,12 @@ public class ProductCommentForProductInfoViewModel
 
     public bool IsBuyer { get; set; }
 
+    public bool? Suggest { get; set; }
+
+    public string PositiveItems { get; set; }
+
+    public string NegativeItems { get; set; }
+
     public string CommentText { get; set; }
 
     public string SellerShopNameShopName { get; set; }
@@ -209,6 +224,26 @@ public class ProductCommentForProductInfoViewModel
     public bool? VariantIsColor { get; set; }
 
     public string VariantValue { get; set; }
+}
+
+/// <summary>
+/// ویوو مدل برای کامنت هایی که توسط کاربر داخل سیستم لایک و دیس لایک شده اند
+/// </summary>
+public class LikedCommentByUserViewModel
+{
+    public long ProductCommentId { get; set; }
+
+    public bool IsLike { get; set; }
+}
+
+/// <summary>
+/// ویوو مدل برای جواب های سوالاتی که توسط کاربر داخل سیستم لایک و دیس لایک شده اند
+/// </summary>
+public class LikedAnswerByUserViewModel
+{
+    public long AnswerId { get; set; }
+
+    public bool IsLike { get; set; }
 }
 
 /// <summary>
@@ -229,6 +264,8 @@ public class ProductQuestionForProductInfoViewModel
 /// </summary>
 public class ProductQuestionAnswerForProductInfoViewModel
 {
+    public long Id { get; set; }
+
     /// <summary>
     /// آیا این پاسخ توسط یک فروشگاه به ثبت رسیده است ؟
     /// </summary>

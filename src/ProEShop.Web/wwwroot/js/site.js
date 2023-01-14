@@ -689,10 +689,14 @@ if (jQuery.validator) {
 $(document).on('submit', 'form.public-ajax-form', function (e) {
     e.preventDefault();
     var currentForm = this;
+    var hideLoadingAttr = $(this).attr('hide-loading');
 
     $('#html-modal-place').modal('hide');
     $('#second-html-modal-place').modal('hide');
-    showLoading();
+
+    if (!hideLoadingAttr) {
+        showLoading();
+    }
 
     if ($(this).parents('.modal').length === 0) {
         publicAjaxFormFunction(currentForm);
