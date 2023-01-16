@@ -14,8 +14,7 @@
     var isVariantColor = !string.IsNullOrWhiteSpace(Model.ProductInfo.ProductVariants.First().VariantColorCode);
     var showScore = Model.ProductInfo.Score > 0;
     var showCommentsCount = Model.ProductInfo.ProductCommentsCount > 0;
-    var showQuestionCount = Model.ProductInfo.ProductQuestionsCount > 0;
-    var showQuestionsCount = false;
+    var showQuestionsCount = Model.ProductInfo.ProductQuestionsCount > 0;
     var productTitle = Model.ProductInfo.PersianTitle;
     var productCategory = Model.ProductInfo.CategoryTitle;
     var productBrand = Model.ProductInfo.BrandTitleFa;
@@ -86,7 +85,7 @@
                             </button>
                         </li>
                         <li>
-                            <button type="button" class="btn" data-bs-toggle="tooltip" data-bs-placement="left"
+                            <button type="button" class="btn get-html-with-ajax" functionNameToCallOnClick="showDiscountNotice" data-bs-toggle="tooltip" data-bs-placement="left"
                                     title="اطلاع رسانی شگفت انگیز">
                                 <i class="bi bi-bell"></i>
                             </button>
@@ -205,8 +204,8 @@
 
                             <div class="d-flex align-items-center me-2">
                                 <div class="bg-custom-grey mx-2 rounded-circle product-info-dots"></div>
-                                <span class="rem13px text-info persian-numbers">
-                                    @Model.ProductInfo.ProductCommentsCount
+                                <span class="rem13px text-info persian-numbers pointer-cursor" id="comments-count-box-in-single-page-product">
+                                    @productInfo.ProductCommentsCount
                                     دیدگاه
                                 </span>
                             </div>
@@ -219,8 +218,8 @@
 
                             <div class="d-flex align-items-center">
                                 <div class="bg-custom-grey mx-2 rounded-circle product-info-dots"></div>
-                                <span class="rem13px text-info persian-numbers">
-                                    ۴۶۷۶
+                                <span class="rem13px text-info persian-numbers pointer-cursor" id="questions-count-box-in-single-page-product">
+                                    @productInfo.ProductQuestionsCount
                                     پرسش
                                 </span>
                             </div>
@@ -579,7 +578,7 @@
                                     <div>در سبد شما</div>
                                     <div>
                                         مشاهده
-                                        <a href="#">سبد خرید</a>
+                                        <a asp-page="/Cart/Index">سبد خرید</a>
                                     </div>
                                 </div>
                             </div>

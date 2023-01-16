@@ -191,6 +191,14 @@ public class IndexModel : SellerPanelBase
         productVariant.StartDateTime = parsedDateTimes.StartDate;
         productVariant.EndDateTime = parsedDateTimes.EndDate;
         _mapper.Map(model, productVariant);
+
+        #region Send Discount Notice
+
+        // todo: Send notices to the users
+        // todo: Remove all notices records
+
+        #endregion
+
         await _uow.SaveChangesAsync();
         return Json(new JsonResultOperation(true, "تنوع محصول مورد نظر با موفقیت ویرایش شد"));
     }

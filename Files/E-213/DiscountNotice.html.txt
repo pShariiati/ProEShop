@@ -1,0 +1,29 @@
+<div class="fw-bold">
+    اگر کالا شگفت انگیز شد، چطور به شما اطلاع دهیم ؟
+</div>
+
+<form method="post" class="mt-3 public-ajax-form">
+    <div class="form-check my-2">
+        <input class="form-check-input" type="checkbox" name="Email" value="" id="email-discount-notice" />
+        <label for="email-discount-notice" class="form-check-label rem14px text-secondary ms-2">
+            ارسال ایمیل به
+            test@gmail.com
+        </label>
+    </div>
+    <div class="form-check my-2">
+        <input class="form-check-input" type="checkbox" name="Email" value="" id="phone-number-discount-notice" />
+        <label for="phone-number-discount-notice" class="form-check-label rem14px text-secondary ms-2">
+            ارسال پیامک به
+            <span class="persian-numbers">09054445522</span>
+        </label>
+    </div>
+    <div class="form-check my-2">
+        <input class="form-check-input" type="checkbox" name="Email" value="" id="chat-discount-notice" />
+        <label for="chat-discount-notice" class="form-check-label rem14px text-secondary ms-2">
+            سیستم پیام شخصی پروشاپ
+        </label>
+    </div>
+    <div class="text-end">
+        <button class="btn btn-danger px-4">ثبت</button>
+    </div>
+</form>

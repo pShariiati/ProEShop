@@ -21,4 +21,12 @@ public class PageBase : PageModel
     {
         return Json(new JsonResultOperation(false, message ?? "خطایی به وجود آمد"));
     }
+
+    public JsonResult JsonOk(string message, object data = null)
+    {
+        return Json(new JsonResultOperation(true, message)
+        {
+            Data = data
+        });
+    }
 }

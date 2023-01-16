@@ -91,6 +91,8 @@ public class Product : EntityBase, IAuditableEntity
 
     public ProductShortLink ProductShortLink { get; set; }
 
+    public ICollection<DiscountNotice> DiscountNotices { get; set; }
+
     #endregion
 }
 

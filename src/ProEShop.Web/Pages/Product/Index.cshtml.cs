@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Claims;
+using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.CodeAnalysis.FlowAnalysis;
 using ProEShop.Common.Constants;
@@ -8,6 +10,7 @@ using ProEShop.DataLayer.Context;
 using ProEShop.Entities;
 using ProEShop.Services.Contracts;
 using ProEShop.ViewModels;
+using ProEShop.ViewModels.DiscountNotices;
 using ProEShop.ViewModels.ProductComments;
 using ProEShop.ViewModels.Products;
 using ProEShop.ViewModels.QuestionsAndAnswers;
@@ -29,6 +32,8 @@ public class IndexModel : PageBase
     private readonly ICommentScoreService _commentScoreService;
     private readonly IAnswerScoreService _answerScoreService;
     private readonly IQuestionAndAnswerService _questionAndAnswerService;
+    private readonly IDiscountNoticeService _discountNoticeService;
+    private readonly IMapper _mapper;
 
     public IndexModel(
         IProductService productService,
@@ -41,7 +46,9 @@ public class IndexModel : PageBase
         IProductCommentService productCommentService,
         ICommentScoreService commentScoreService,
         IAnswerScoreService answerScoreService,
-        IQuestionAndAnswerService questionAndAnswerService)
+        IQuestionAndAnswerService questionAndAnswerService,
+        IDiscountNoticeService discountNoticeService,
+        IMapper mapper)
     {
         _productService = productService;
         _userProductFavoriteService = userProductFavoriteService;
@@ -54,6 +61,8 @@ public class IndexModel : PageBase
         _commentScoreService = commentScoreService;
         _answerScoreService = answerScoreService;
         _questionAndAnswerService = questionAndAnswerService;
+        _discountNoticeService = discountNoticeService;
+        _mapper = mapper;
     }
 
     #endregion
@@ -475,5 +484,79 @@ public class IndexModel : PageBase
         {
             Data = operation
         });
+    }
+
+    /// <summary>
+    /// نمایش پارشل اطلاع رسانی شگفت انگیز
+    /// </summary>
+    /// <param name="productId"></param>
+    /// <returns></returns>
+    public async Task<IActionResult> OnGetShowDiscountNotice(long productId)
+    {
+        var userId = User.Identity.GetUserId();
+
+        if (userId is null)
+            return JsonBadRequest();
+
+        // گرفتن اطلاعات برای بخش اطلاع رسانی شگفت انگیز
+        // برای مثال اگه اطلاع رسانی از طریق شماره تلفن رو از قبل فعال کرده باشد
+        // باید چکباکس مربوطه رو تیک بزنیم
+        var discountNotice = await _discountNoticeService.GetDataForAddDiscountNotice(productId, userId.Value)
+                             ?? new();
+
+        discountNotice.Email = User.Identity.GetUserClaimValue(ClaimTypes.Email);
+        discountNotice.PhoneNumber = User.Identity.Name;
+
+        return Partial("_DiscountNotice", discountNotice);
+    }
+
+    /// <summary>
+    /// ایجاد اطلاع رسانی شگفت انگیز
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    public async Task<IActionResult> OnPostAddDiscountNotice(AddDiscountNoticeViewModel model)
+    {
+        var userId = User.Identity.GetUserId();
+
+        if (userId is null)
+            return JsonBadRequest();
+
+        if (!await _productService.IsExistsBy(nameof(Entities.Product.Id), model.ProductId))
+        {
+            return JsonBadRequest();
+        }
+
+        var discountNotice = await _discountNoticeService.FindAsync(userId.Value, model.ProductId);
+
+        // اگه هم ایمیل هم موبایل هم چت فالس باشه، این متغیر ترو میشه
+        var isAllItemsFalse = !model.NoticeViaChat && !model.NoticeViaEmail && !model.NoticeViaPhoneNumber;
+
+        // اگه وجود نداشت اضافه کن
+        // اگه وجود داشت به روز رسانی کن
+        if (discountNotice is null)
+        {
+            // اگه هیچکدام از موارد رو تیک نزده بود، رکورد رو اضافه نکن
+            if (!isAllItemsFalse)
+            {
+                var discountToAdd = _mapper.Map<Entities.DiscountNotice>(model);
+                discountToAdd.UserId = userId.Value;
+                await _discountNoticeService.AddAsync(discountToAdd);
+            }
+        }
+        // اگه رکورد از قبل وجود داشت و هیچکدام از موارد تیک نخورده بود
+        // یعنی باید رکورد رو حذف کنیم
+        else if (isAllItemsFalse)
+        {
+            _discountNoticeService.Remove(discountNotice);
+        }
+        else
+        {
+            discountNotice = _mapper.Map(model, discountNotice);
+        }
+
+        await _uow.SaveChangesAsync();
+
+        return JsonOk("عملیات با موفقیت انجام شد");
     }
 }

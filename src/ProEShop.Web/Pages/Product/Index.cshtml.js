@@ -1,4 +1,6 @@
-﻿function addProductVariantToCart(message, data) {
+﻿var productId;
+
+function addProductVariantToCart(message, data) {
     // المنت افزودن به سبد خرید
     var addProductVariantToCartEl = $('.add-product-variant-to-cart[variant-id="' + data.productVariantId + '"]');
 
@@ -143,6 +145,18 @@ function productInfoScrollSpy(e) {
 }
 
 $(function () {
+    productId = $('.container-fluid[product-id]').attr('product-id');
+
+    // کلیک روی تعداد نظرات و اسکرول به بخش نظرات
+    $('#comments-count-box-in-single-page-product').click(function () {
+        scrollToEl('#comments-el-in-single-page-of-product', 69);
+    });
+
+    // کلیک روی تعداد سوالات و اسکرول به بخش سوالات
+    $('#questions-count-box-in-single-page-product').click(function () {
+        scrollToEl('#questions-el-in-single-page-of-product', 69);
+    });
+
     // کلیک روی دکمه نمایش پاسخ های دیگر
     $(document).on('click', '.show-another-answer-button-single-page-of-product', function () {
         // نمایش تمامی جواب ها
@@ -546,8 +560,7 @@ function showCommentsByPagination(el) {
     if ($(el).hasClass('bg-danger')) {
         return;
     }
-
-    var productId = $('.container-fluid[product-id]').attr('product-id');
+    
     var pageNumber = $(el).attr('page-number');
     var sortBy = $('#comments-sorting-box-in-single-page-of-product div.text-danger').attr('sort-by');
     var orderBy = $('#comments-sorting-box-in-single-page-of-product div.text-danger').attr('order-by');
@@ -579,8 +592,7 @@ $('#comments-sorting-box-in-single-page-of-product div.pointer-cursor').click(fu
     $('#comments-sorting-box-in-single-page-of-product div.pointer-cursor').removeClass('text-danger');
     $('#comments-sorting-box-in-single-page-of-product div.pointer-cursor').addClass('text-secondary');
     $(this).addClass('text-danger');
-
-    var productId = $('.container-fluid[product-id]').attr('product-id');
+    
     var pageNumber = 1;
     var sortBy = $(this).attr('sort-by');
     var orderBy = $(this).attr('order-by');
@@ -616,8 +628,7 @@ $('#questions-and-answers-sorting-box-in-single-page-of-product div.pointer-curs
         .addClass('text-secondary');
 
     $(this).addClass('text-danger');
-
-    var productId = $('.container-fluid[product-id]').attr('product-id');
+    
     var pageNumber = 1;
     var sortBy = $(this).attr('sort-by');
     var orderBy = $(this).attr('order-by');
@@ -775,8 +786,7 @@ function showQuestionsAndAnswersByPagination(el) {
     if ($(el).hasClass('bg-danger')) {
         return;
     }
-
-    var productId = $('.container-fluid[product-id]').attr('product-id');
+    
     var pageNumber = $(el).attr('page-number');
     var sortBy = $('#questions-and-answers-sorting-box-in-single-page-of-product div.text-danger').attr('sort-by');
     var orderBy = $('#questions-and-answers-sorting-box-in-single-page-of-product div.text-danger').attr('order-by');
@@ -803,4 +813,41 @@ function showQuestionsByPaginationFunction(data) {
     convertEnglishNumbersToPersianNumber();
 
     scrollToEl('#questions-el-in-single-page-of-product', 69);
+}
+
+// برای اینکه فقط یکبار از سمت سرور اطلاعات رو بخونه
+// از این متغیر استفاده میکنیم
+var isDiscountNoticeLoaded = false;
+
+// نمایش اطلاع رسانی شگفت انگیز
+function showDiscountNotice(el) {
+    // موقعی که روی دکمه نمایش اطلاع رسانی شگفت انگیز کلیک میکنیم
+    // دکمه مورد نظر در حالت فوکس قرار میگیره و هنگامی که مودال نمایش داده شده
+    // چون دکمه هنوز در حالت فوکس هست، اگه دکمه اسپیس رو بزنیم
+    // مثل اینه که دوباره روی باتن کلیک کرده باشیم و به خاطر همین
+    // مجددا این فانکشن رو فراخوانی میکنه
+    // پس موقعی که روی دکمه کلیک میکنیم اون رو از حالت فوکس خارج میکنیم
+    $(el).blur();
+    if (isDiscountNoticeLoaded) {
+        var currentModal = $('#html-modal-place');
+        currentModal.modal('show');
+    } else {
+        getHtmlWithAJAX('?handler=ShowDiscountNotice', { productId: productId }, 'showDiscountNoticeFunction');
+    }
+}
+
+// نمایش اطلاع رسانی شگفت انگیز
+function showDiscountNoticeFunction(result) {
+    isDiscountNoticeLoaded = true;
+    appendHtmlModalPlaceToBody('normal', true, false);
+    var currentModal = $('#html-modal-place');
+    currentModal.find('.modal-body').html(result);
+    currentModal.modal('show');
+    addModalHeader(currentModal, 'اطلاع رسانی');
+    convertEnglishNumbersToPersianNumber();
+}
+
+// ایجاد اطلاع رسانی شگفت انگیز
+function addDiscountNoticeFunction(message) {
+    showToastr('success', message);
 }

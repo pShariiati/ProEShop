@@ -46,6 +46,10 @@ var secondHtmlModalPlace = `<div class="modal fade" id="second-html-modal-place"
     </div>
 </div>`;
 
+function addModalHeader(modal, headerText) {
+    modal.find('.modal-header h5').html(headerText);
+}
+
 function closeHtmlModal() {
     $('#html-modal-place').modal('hide');
 }
@@ -54,13 +58,24 @@ function closeScrollableHtmlModal() {
     $('#html-scrollable-modal-place').modal('hide');
 }
 
-function appendHtmlModalPlaceToBody(customClass = 'modal-xl') {
+function appendHtmlModalPlaceToBody(customClass = 'modal-xl', showInCenter = false, backdropStatic = true) {
+    if (customClass === 'normal') {
+        customClass = '';
+    }
+
     if ($('#html-modal-place').length === 0) {
         $('body').append(htmlModalPlace);
     }
 
-    $('#html-modal-place div:first').removeClass('modal-sm modal-lg modal-xl');
+    $('#html-modal-place').removeAttr('data-bs-backdrop');
+    $('#html-modal-place div:first').removeClass('modal-sm modal-lg modal-xl modal-dialog-centered');
     $('#html-modal-place div:first').addClass(customClass);
+    if (showInCenter) {
+        $('#html-modal-place div:first').addClass('modal-dialog-centered');
+    }
+    if (backdropStatic) {
+        $('#html-modal-place').attr('data-bs-backdrop', 'static');
+    }
 }
 
 function appendHtmlScrollableModalPlaceToBody(customClass = 'modal-xl') {
@@ -658,24 +673,25 @@ $(document).on('submit', 'form.custom-ajax-form', function (e) {
     });
 });
 
-// به محض بلر شدن یک اینپوت
-// تمامی اینپوت های فرم را مجددا اعتبار سنجی میکند
-// چرا از این استفاده میکنیم ؟
-// برای مثال شما روی دکمه ثبت نام کلیک میکنید و
-// در بالای صفحه و داخل تگ
-// <div asp-validation-summary="All" class="text-danger"></div>
-// مینویسد ایمیل را وارد کنید
-// شما نیز ایمیل را وارد میکنید
-// اما در قسمت بالای صفحه همچنان متن "لطفا ایمیل را وارد کنید" وجود دارد
-// برای اینکه این مشکل حل شود از این کد استفاده میکنیم
-$(document).on('blur', 'form input', function () {
-    var currentForm = $(this).parents('form');
-    currentForm.valid();
-    if (currentForm.valid()) {
-        currentForm.find('div[class*="validation-summary"] ul').html('');
-    }
-});
 if (jQuery.validator) {
+    // به محض بلر شدن یک اینپوت
+    // تمامی اینپوت های فرم را مجددا اعتبار سنجی میکند
+    // چرا از این استفاده میکنیم ؟
+    // برای مثال شما روی دکمه ثبت نام کلیک میکنید و
+    // در بالای صفحه و داخل تگ
+    // <div asp-validation-summary="All" class="text-danger"></div>
+    // مینویسد ایمیل را وارد کنید
+    // شما نیز ایمیل را وارد میکنید
+    // اما در قسمت بالای صفحه همچنان متن "لطفا ایمیل را وارد کنید" وجود دارد
+    // برای اینکه این مشکل حل شود از این کد استفاده میکنیم
+    $(document).on('blur', 'form input', function () {
+        var currentForm = $(this).parents('form');
+        currentForm.valid();
+        if (currentForm.valid()) {
+            currentForm.find('div[class*="validation-summary"] ul').html('');
+        }
+    });
+
     $(document).on('change',
         'form input.custom-md-persian-datepicker, form select, form input[type="checkbox"], form input[type="file"]',
         function () {

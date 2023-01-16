@@ -61,6 +61,8 @@ public class User : IdentityUser<long>, IAuditableEntity
 
     public ICollection<ProductQuestionAnswerScore> ProductsQuestionsAnswersScores { get; set; }
 
+    public ICollection<DiscountNotice> DiscountNotices { get; set; }
+
     #endregion
 }
 
