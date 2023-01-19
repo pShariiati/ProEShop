@@ -93,6 +93,8 @@ public class Product : EntityBase, IAuditableEntity
 
     public ICollection<DiscountNotice> DiscountNotices { get; set; }
 
+    public ICollection<UserListProduct> UserListsProducts { get; set; }
+
     #endregion
 }
 

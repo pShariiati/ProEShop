@@ -1,0 +1,18 @@
+<form method="post" class="public-ajax-form" asp-page-handler="AddUserList"
+	  functionNameToCallInTheEnd="addUserListFunction">
+	<div asp-validation-summary="All" class="text-danger"></div>
+	<div>
+		<label asp-for="" class="form-label"></label>
+		<input asp-for="" class="form-control"/>
+		<span asp-validation-for="" class="span-error-message"></span>
+	</div>
+	<div class="my-3">
+		<label asp-for="" class="form-label"></label>
+		<textarea asp-for="" class="form-control" rows="5"></textarea>
+		<span asp-validation-for="" class="span-error-message"></span>
+	</div>
+	<div class="text-end">
+		<button type="button" class="btn btn-outline-danger px-3">بازگشت</button>
+		<button class="btn btn-danger px-3">ایجاد</button>
+	</div>
+</form>

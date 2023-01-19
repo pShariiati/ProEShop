@@ -17,9 +17,12 @@ public class PageBase : PageModel
         return Json(new JsonResultOperation(false, message ?? PublicConstantStrings.RecordNotFoundMessage));
     }
 
-    public JsonResult JsonBadRequest(string message = null)
+    public JsonResult JsonBadRequest(string message = null, object data = null)
     {
-        return Json(new JsonResultOperation(false, message ?? "خطایی به وجود آمد"));
+        return Json(new JsonResultOperation(false, message ?? "خطایی به وجود آمد")
+        {
+            Data = data
+        });
     }
 
     public JsonResult JsonOk(string message, object data = null)

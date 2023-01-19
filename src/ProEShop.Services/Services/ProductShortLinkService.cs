@@ -55,6 +55,7 @@ public class ProductShortLinkService : GenericService<ProductShortLink>, IProduc
     public Task<ProductShortLink> GetProductShortLinkForCreateProduct()
     {
         return _productShortLinks
+            .Where(x => x.IsUsed == false)
             .OrderBy(x => Guid.NewGuid())
             .FirstAsync();
     }

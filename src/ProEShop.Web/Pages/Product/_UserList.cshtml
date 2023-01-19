@@ -1,0 +1,46 @@
+﻿@model ProEShop.ViewModels.UserLists.ShowUserListInProductInfoViewModel
+<div class="rem15px">
+    <div id="user-lists-box-in-single-page-of-product">
+        <div>کالا را به کدام لیست اضافه میکنید ؟</div>
+        <div class="text-info d-flex border p-3 rounded-3 mt-3 pointer-cursor" id="add-user-list-button-in-single-page-product">
+            <i class="bi bi-plus-lg me-3"></i>
+            <div>اضافه به لیست جدید</div>
+        </div>
+        <form method="post" asp-page-handler="UpdateUserList" class="public-ajax-form"
+              functionNameToCallInTheEnd="updateUserList">
+            <input asp-for="ProductId" />
+            @foreach (var userList in Model.Items)
+            {
+                <div class="border rounded-3 my-3 d-flex p-3">
+                    <input name="userListIds" value="@userList.Id" type="checkbox" class="rem15px form-check-input me-3 border border-2 add-to-list-checkbox-in-single-page-of-product" id="user-list-@userList.Id" @(userList.IsChecked ? "checked=checked" : string.Empty) />
+                    <label for="user-list-@userList.Id" class="form-check-label flex-grow-1 add-to-list-text-in-single-page-of-product">
+                        @userList.Title
+                    </label>
+                </div>
+            }
+            <div class="text-end">
+                <button class="btn btn-danger px-3">تایید</button>
+            </div>
+        </form>
+    </div>
+    <div id="add-user-list-in-single-page-of-product" class="d-none">
+        <form method="post" class="public-ajax-form" asp-page-handler="AddUserList"
+              functionNameToCallInTheEnd="addUserListFunction" showModalInTheEnd="true">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div>
+                <label asp-for="AddUserList.Title" class="form-label"></label>
+                <input asp-for="AddUserList.Title" class="form-control" />
+                <span asp-validation-for="AddUserList.Title" class="span-error-message"></span>
+            </div>
+            <div class="my-3">
+                <label asp-for="AddUserList.Description" class="form-label"></label>
+                <textarea asp-for="AddUserList.Description" class="form-control" rows="5"></textarea>
+                <span asp-validation-for="AddUserList.Description" class="span-error-message"></span>
+            </div>
+            <div class="text-end">
+                <button type="button" class="btn btn-outline-danger px-3" id="back-to-user-lists-in-single-page-of-product">بازگشت</button>
+                <button class="btn btn-danger px-3">ایجاد</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -157,3 +157,7 @@ li {
     width: 17px;
     height: 17px;
 }
+
+[class*=validation-summary] ul {
+    padding: 0 !important;
+}

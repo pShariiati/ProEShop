@@ -9,6 +9,8 @@ public interface ICustomGenericService<TEntity> where TEntity : class
 
     Task AddAsync(TEntity entity);
 
+    Task AddRangeAsync(IEnumerable<TEntity> entities);
+
     void Remove(TEntity entity);
 
     void RemoveRange(List<TEntity> entities);

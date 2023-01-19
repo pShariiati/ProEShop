@@ -26,4 +26,6 @@ public interface IIdentityDbInitializer
     Task SeedProvincesAndCities();
 
     Task SeedProductShortLinks();
+
+    Task SeedUserListShortLinks();
 }

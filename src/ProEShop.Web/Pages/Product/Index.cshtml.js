@@ -1,4 +1,5 @@
-﻿var productId;
+﻿// به محض فراخوانی صفحه این متغیر مقدار دهی میشود
+var productId;
 
 function addProductVariantToCart(message, data) {
     // المنت افزودن به سبد خرید
@@ -146,6 +147,20 @@ function productInfoScrollSpy(e) {
 
 $(function () {
     productId = $('.container-fluid[product-id]').attr('product-id');
+
+    // اگر روی دکمه ایجاد لیست کلیک شد
+    // فرم ایجاد لیست رو نمایش بده و لیست ها رو مخفی کن
+    $(document).on('click', '#add-user-list-button-in-single-page-product', function () {
+        $('#user-lists-box-in-single-page-of-product').addClass('d-none');
+        $('#add-user-list-in-single-page-of-product').removeClass('d-none');
+    });
+
+    // اگر در داخل فرم افزودن لیست، روی دکمه برگشت کلیک کردیم
+    // باید فرم ایجاد لیست رو مخفی و لیست ها رو مجددا نمایش بدیم
+    $(document).on('click', '#back-to-user-lists-in-single-page-of-product', function () {
+        $('#add-user-list-in-single-page-of-product').addClass('d-none');
+        $('#user-lists-box-in-single-page-of-product').removeClass('d-none');
+    });
 
     // کلیک روی تعداد نظرات و اسکرول به بخش نظرات
     $('#comments-count-box-in-single-page-product').click(function () {
@@ -560,7 +575,7 @@ function showCommentsByPagination(el) {
     if ($(el).hasClass('bg-danger')) {
         return;
     }
-    
+
     var pageNumber = $(el).attr('page-number');
     var sortBy = $('#comments-sorting-box-in-single-page-of-product div.text-danger').attr('sort-by');
     var orderBy = $('#comments-sorting-box-in-single-page-of-product div.text-danger').attr('order-by');
@@ -592,7 +607,7 @@ $('#comments-sorting-box-in-single-page-of-product div.pointer-cursor').click(fu
     $('#comments-sorting-box-in-single-page-of-product div.pointer-cursor').removeClass('text-danger');
     $('#comments-sorting-box-in-single-page-of-product div.pointer-cursor').addClass('text-secondary');
     $(this).addClass('text-danger');
-    
+
     var pageNumber = 1;
     var sortBy = $(this).attr('sort-by');
     var orderBy = $(this).attr('order-by');
@@ -628,7 +643,7 @@ $('#questions-and-answers-sorting-box-in-single-page-of-product div.pointer-curs
         .addClass('text-secondary');
 
     $(this).addClass('text-danger');
-    
+
     var pageNumber = 1;
     var sortBy = $(this).attr('sort-by');
     var orderBy = $(this).attr('order-by');
@@ -786,7 +801,7 @@ function showQuestionsAndAnswersByPagination(el) {
     if ($(el).hasClass('bg-danger')) {
         return;
     }
-    
+
     var pageNumber = $(el).attr('page-number');
     var sortBy = $('#questions-and-answers-sorting-box-in-single-page-of-product div.text-danger').attr('sort-by');
     var orderBy = $('#questions-and-answers-sorting-box-in-single-page-of-product div.text-danger').attr('order-by');
@@ -821,18 +836,11 @@ var isDiscountNoticeLoaded = false;
 
 // نمایش اطلاع رسانی شگفت انگیز
 function showDiscountNotice(el) {
-    // موقعی که روی دکمه نمایش اطلاع رسانی شگفت انگیز کلیک میکنیم
-    // دکمه مورد نظر در حالت فوکس قرار میگیره و هنگامی که مودال نمایش داده شده
-    // چون دکمه هنوز در حالت فوکس هست، اگه دکمه اسپیس رو بزنیم
-    // مثل اینه که دوباره روی باتن کلیک کرده باشیم و به خاطر همین
-    // مجددا این فانکشن رو فراخوانی میکنه
-    // پس موقعی که روی دکمه کلیک میکنیم اون رو از حالت فوکس خارج میکنیم
-    $(el).blur();
     if (isDiscountNoticeLoaded) {
         var currentModal = $('#html-modal-place');
         currentModal.modal('show');
     } else {
-        getHtmlWithAJAX('?handler=ShowDiscountNotice', { productId: productId }, 'showDiscountNoticeFunction');
+        getHtmlWithAJAX('?handler=ShowDiscountNotice', { productId: productId }, 'showDiscountNoticeFunction', el);
     }
 }
 
@@ -849,5 +857,67 @@ function showDiscountNoticeFunction(result) {
 
 // ایجاد اطلاع رسانی شگفت انگیز
 function addDiscountNoticeFunction(message) {
+    showToastr('success', message);
+}
+
+// نمایش لیست های کاربر
+function showUserList(el) {
+    getHtmlWithAJAX('?handler=ShowUserList', { productId: productId }, 'showUserListFunction', el);
+}
+
+// نمایش لیست های کاربر
+function showUserListFunction(result) {
+    appendHtmlScrollableModalPlaceToBody('normal', true, false);
+    var currentModal = $('#html-scrollable-modal-place');
+    currentModal.find('.modal-body').html(result);
+    currentModal.modal('show');
+    addModalHeader(currentModal, 'افزودن به لیست');
+    activatingModalFormValidation(currentModal);
+}
+
+// به روز رسانی لیست های کاربر
+function updateUserList(message) {
+    showToastr('success', message);
+}
+
+// افزودن لیست برای کاربر
+// بعد از اتمام کار، اینپوت ها رو خالی میکنیم
+// فرم افزودن رو مخفی میکنیم
+// و لیست ها رو دوباره نمایش میدیم
+function addUserListFunction(message, data, form) {
+    // خالی کردن اینپوت ها
+    $(form).find('input:text').val('');
+    $(form).find('textarea').val('');
+
+    // مخفی کردن فرم افزودن لیست و نمایش دادن لیست ها
+    $('#add-user-list-in-single-page-of-product').addClass('d-none');
+    $('#user-lists-box-in-single-page-of-product').removeClass('d-none');
+
+    // برای اینکه استایل ها اعمال بشن باید حتما رشته رندوم
+    // css isolation
+    // رو اضافه کنیم، از یکی از دیو های صفحه این مقدار رو میگیریم
+    var cssIsolationRandomString;
+
+    $('#user-lists-box-in-single-page-of-product div:first').each(function() {
+        $.each(this.attributes, function () {
+            cssIsolationRandomString = this.name;
+        });
+    });
+
+    // افزودن لیست اضافه شده به صورت دستی به لیست ها
+    $('#user-lists-box-in-single-page-of-product form').prepend(
+        `<div ${cssIsolationRandomString} class="border rounded-3 my-3 d-flex p-3">
+                    <input ${cssIsolationRandomString} name="userListIds" type="checkbox" class="rem15px form-check-input me-3 border border-2 add-to-list-checkbox-in-single-page-of-product">
+                    <label ${cssIsolationRandomString} class="form-check-label flex-grow-1 add-to-list-text-in-single-page-of-product"></label>
+                </div>`
+    );
+
+    var currentEl = $('#user-lists-box-in-single-page-of-product form div.border:first');
+    currentEl.find('input').val(data.id);
+    currentEl.find('input').attr('id', `user-list-${data.id}`);
+
+    currentEl.find('label').attr('for', `user-list-${data.id}`);
+    currentEl.find('label').html(data.title);
+
     showToastr('success', message);
 }

@@ -1,0 +1,14 @@
+<div class="rem15px">
+    <div>کالا را به کدام لیست اضافه میکنید ؟</div>
+    <div class="text-info d-flex border p-3 rounded-3 mt-3 pointer-cursor">
+      <i class="bi bi-plus-lg me-3"></i>
+      <div>اضافه به لیست جدید</div>
+    </div>
+    <div class="border rounded-3 my-3 d-flex p-3">
+      <input type="checkbox" class="rem15px form-check-input me-3 border border-2 add-to-list-checkbox-in-single-page-of-product" id="test1" />
+      <label for="test1" class="form-check-label flex-grow-1 add-to-list-text-in-single-page-of-product">تست</label>
+    </div>
+    <div class="text-end">
+      <button class="btn btn-danger px-3">تایید</button>
+    </div>
+  </div>

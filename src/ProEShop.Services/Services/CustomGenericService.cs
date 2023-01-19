@@ -19,6 +19,11 @@ public class CustomGenericService<TEntity> : ICustomGenericService<TEntity> wher
         await _entities.AddAsync(entity);
     }
 
+    public Task AddRangeAsync(IEnumerable<TEntity> entities)
+    {
+        return _entities.AddRangeAsync(entities);
+    }
+
     public async Task<TEntity> FindAsync(params object[] ids)
     {
         return await _entities.FindAsync(ids);

@@ -3,20 +3,25 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.CodeAnalysis.FlowAnalysis;
+using ProEShop.Common.Attributes;
 using ProEShop.Common.Constants;
 using ProEShop.Common.Helpers;
 using ProEShop.Common.IdentityToolkit;
 using ProEShop.DataLayer.Context;
 using ProEShop.Entities;
 using ProEShop.Services.Contracts;
+using ProEShop.Services.Services;
 using ProEShop.ViewModels;
+using ProEShop.ViewModels.Categories;
 using ProEShop.ViewModels.DiscountNotices;
 using ProEShop.ViewModels.ProductComments;
 using ProEShop.ViewModels.Products;
 using ProEShop.ViewModels.QuestionsAndAnswers;
+using ProEShop.ViewModels.UserLists;
 
 namespace ProEShop.Web.Pages.Product;
 
+[CheckModelStateInRazorPages]
 public class IndexModel : PageBase
 {
     #region Constructor
@@ -34,6 +39,9 @@ public class IndexModel : PageBase
     private readonly IQuestionAndAnswerService _questionAndAnswerService;
     private readonly IDiscountNoticeService _discountNoticeService;
     private readonly IMapper _mapper;
+    private readonly IUserListService _userListService;
+    private readonly IUserListProductService _userListProductService;
+    private readonly IUserListShortLinkService _userListShortLinkService;
 
     public IndexModel(
         IProductService productService,
@@ -48,7 +56,10 @@ public class IndexModel : PageBase
         IAnswerScoreService answerScoreService,
         IQuestionAndAnswerService questionAndAnswerService,
         IDiscountNoticeService discountNoticeService,
-        IMapper mapper)
+        IMapper mapper,
+        IUserListService userListService,
+        IUserListProductService userListProductService,
+        IUserListShortLinkService userListShortLinkService)
     {
         _productService = productService;
         _userProductFavoriteService = userProductFavoriteService;
@@ -63,6 +74,9 @@ public class IndexModel : PageBase
         _questionAndAnswerService = questionAndAnswerService;
         _discountNoticeService = discountNoticeService;
         _mapper = mapper;
+        _userListService = userListService;
+        _userListProductService = userListProductService;
+        _userListShortLinkService = userListShortLinkService;
     }
 
     #endregion
@@ -117,7 +131,7 @@ public class IndexModel : PageBase
         );
 
         // آیدی های تنوع های این محصول
-        
+
         var productVariantsIds = ProductInfo.ProductVariants.Select(x => x.Id).ToList();
         // تنوع های این محصول که در سبد خرید این کاربری که، صفحه رو لود میکنه قرار داره
         ProductInfo.ProductVariantsInCart = await _cartService.GetProductVariantsInCart(productVariantsIds, userId);
@@ -558,5 +572,129 @@ public class IndexModel : PageBase
         await _uow.SaveChangesAsync();
 
         return JsonOk("عملیات با موفقیت انجام شد");
+    }
+
+    /// <summary>
+    /// نمایش لیست های کاربر
+    /// </summary>
+    /// <returns></returns>
+    public async Task<IActionResult> OnGetShowUserList(long productId)
+    {
+        var userId = User.Identity.GetUserId();
+
+        if (userId is null)
+            return JsonBadRequest();
+
+        var userLists = await _userListService.GetUserListInProductInfo(productId, userId.Value);
+
+        var modelToPass = new ShowUserListInProductInfoViewModel()
+        {
+            Items = userLists
+        };
+
+        return Partial("_UserList", modelToPass);
+    }
+
+    /// <summary>
+    /// به روز رسانی لیست های کاربر
+    /// </summary>
+    /// <param name="productId"></param>
+    /// <param name="userListIds"></param>
+    /// <returns></returns>
+    public async Task<IActionResult> OnPostUpdateUserList(long productId, List<long> userListIds)
+    {
+        var userId = User.Identity.GetUserId();
+
+        if (userId is null)
+            return JsonBadRequest();
+
+        // تمامی لیست های کاربر
+        var allUserListIds = await _userListService.GetAllUserListIds(userId.Value);
+
+        // چند تا لیست رو تیک زده ؟ برای مثال دو تا
+        // این دو رکورد رو در داخل تمامی لیست های کاربر سرچ میکنیم
+        // اگه دو رکورد پیدا شد همه چی اوکیه
+        if (!_userListService.CheckUserListIdsForUpdate(userListIds, allUserListIds))
+        {
+            return JsonBadRequest();
+        }
+
+        // این محصول رو از تمامی لیست های کاربر حذف میکنیم که از نو اضافه کنیم
+        var userListsProductsToRemove = await _userListProductService.GetUserListProducts(productId, allUserListIds);
+
+        _userListProductService.RemoveRange(userListsProductsToRemove);
+
+        // این محصول رو بعد از اینکه از تمامی لیست های کاربر حذف کردیم، مجددا به
+        // لیست هایی که تیکشون فعال شده اضافه میکنیم
+        var userListsProductsToAdd = new List<Entities.UserListProduct>();
+
+        userListIds.ForEach(x =>
+        {
+            userListsProductsToAdd.Add(new UserListProduct()
+            {
+                ProductId = productId,
+                UserListId = x
+            });
+        });
+
+        await _userListProductService.AddRangeAsync(userListsProductsToAdd);
+
+        await _uow.SaveChangesAsync();
+
+        return JsonOk("عملیات با موفقیت انجام شد");
+    }
+
+    /// <summary>
+    /// افزودن لیست برای کاربر
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    public async Task<IActionResult> OnPostAddUserList(ShowUserListInProductInfoViewModel model)
+    {
+        var userId = User.Identity.GetUserId();
+
+        if (userId is null)
+            return JsonBadRequest();
+
+        var userListToAdd = _mapper.Map<Entities.UserList>(model.AddUserList);
+        userListToAdd.UserId = userId.Value;
+
+        var result = await _userListService.AddAsync(userListToAdd);
+        if (!result.Ok)
+        {
+            return JsonBadRequest(PublicConstantStrings.DuplicateErrorMessage,
+                result.Columns.SetDuplicateColumnsErrorMessages<AddCategoryViewModel>());
+        }
+
+        // گرفتن لینک رندوم برای این لیست
+        var shortLint = await _userListShortLinkService.GetUserListShortLinkForCreateUserList();
+        userListToAdd.UserListShortLinkId = shortLint.Id;
+        shortLint.IsUsed = true;
+
+        await _uow.SaveChangesAsync();
+
+        // آیدی و عنوان رو برگشت میزنیم که به صورت دستی به لیست های کاربر اضافه ش کنیم
+        return JsonOk("لیست مورد نظر با موفقیت ایجاد شد", new
+        {
+            Id = userListToAdd.Id,
+            Title = userListToAdd.Title
+        });
+    }
+
+    /// <summary>
+    /// بررسی تکراری بودن عنوان لیست کاربر
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    public async Task<IActionResult> OnGetCheckForTitle(ShowUserListInProductInfoViewModel model)
+    {
+        var userId = User.Identity.GetUserId();
+
+        if (userId is null)
+        {
+            return Json(true);
+        }
+
+        return Json(!await _userListService.CheckForTitleDuplicate(userId.Value, model.AddUserList.Title));
     }
 }

@@ -82,6 +82,9 @@ public static class AddCustomServicesExtensions
         services.AddScoped<IAnswerScoreService, AnswerScoreService>();
         services.AddScoped<IQuestionAndAnswerService, QuestionAndAnswerService>();
         services.AddScoped<IDiscountNoticeService, DiscountNoticeService>();
+        services.AddScoped<IUserListShortLinkService, UserListShortLinkService>();
+        services.AddScoped<IUserListService, UserListService>();
+        services.AddScoped<IUserListProductService, UserListProductService>();
 
         #region Html sanitizer
         IHtmlSanitizer sanitizer = new HtmlSanitizer();

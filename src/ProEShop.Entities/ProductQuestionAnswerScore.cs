@@ -11,7 +11,7 @@ namespace ProEShop.Entities;
 /// هر کاربر میتواند برای هر جواب فقط یک لایک یا دیسلایک داشته باشد
 /// </summary>
 [Table("ProductsQuestionsAnswersScores")]
-public class ProductQuestionAnswerScore
+public class ProductQuestionAnswerScore : IAuditableEntity
 {
     #region Properties
 

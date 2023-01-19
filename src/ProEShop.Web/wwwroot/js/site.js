@@ -78,13 +78,24 @@ function appendHtmlModalPlaceToBody(customClass = 'modal-xl', showInCenter = fal
     }
 }
 
-function appendHtmlScrollableModalPlaceToBody(customClass = 'modal-xl') {
+function appendHtmlScrollableModalPlaceToBody(customClass = 'modal-xl', showInCenter = false, backdropStatic = true) {
+    if (customClass === 'normal') {
+        customClass = '';
+    }
+
     if ($('#html-scrollable-modal-place').length === 0) {
         $('body').append(htmlScrollableModalPlace);
     }
 
-    $('#html-scrollable-modal-place div:first').removeClass('modal-sm modal-lg modal-xl');
+    $('#html-scrollable-modal-place').removeAttr('data-bs-backdrop');
+    $('#html-scrollable-modal-place div:first').removeClass('modal-sm modal-lg modal-xl modal-dialog-centered');
     $('#html-scrollable-modal-place div:first').addClass(customClass);
+    if (showInCenter) {
+        $('#html-scrollable-modal-place div:first').addClass('modal-dialog-centered');
+    }
+    if (backdropStatic) {
+        $('#html-scrollable-modal-place').attr('data-bs-backdrop', 'static');
+    }
 }
 
 function appendSecondHtmlModalPlaceToBody() {
@@ -708,6 +719,7 @@ $(document).on('submit', 'form.public-ajax-form', function (e) {
     var hideLoadingAttr = $(this).attr('hide-loading');
 
     $('#html-modal-place').modal('hide');
+    $('#html-scrollable-modal-place').modal('hide');
     $('#second-html-modal-place').modal('hide');
 
     if (!hideLoadingAttr) {
@@ -727,7 +739,10 @@ function publicAjaxFormFunction(form) {
     var currentForm = $(form);
     var formAction = currentForm.attr('action');
     var functionName = currentForm.attr('functionNameToCallInTheEnd');
+    var showModalInTheEnd = currentForm.attr('showModalInTheEnd');
     var formData = new FormData(form);
+    var modalId = currentForm.parents('.modal').attr('id');
+
     $.ajax({
         url: formAction,
         data: formData,
@@ -741,19 +756,35 @@ function publicAjaxFormFunction(form) {
                 var finalData = data.data || [data.message];
                 fillValidationForm(finalData, currentForm);
                 showToastr('warning', data.message);
-                var modalId = currentForm.parents('.modal').attr('id');
                 if (modalId === 'second-html-modal-place') {
-                    $('#second-html-modal-place').modal('show');
-                } else if (modalId == 'html-modal-place') {
-                    $('#html-modal-place').modal('show');
+                    $(`#${modalId}`).modal('show');
+                } else if (modalId === 'html-modal-place') {
+                    $(`#${modalId}`).modal('show');
+                }
+                else if (modalId === 'html-scrollable-modal-place') {
+                    $(`#${modalId}`).modal('show');
                 }
             }
             else {
+                if (showModalInTheEnd) {
+                    if (modalId === 'second-html-modal-place') {
+                        $(`#${modalId}`).modal('show');
+                    } else if (modalId === 'html-modal-place') {
+                        $(`#${modalId}`).modal('show');
+                    }
+                    else if (modalId === 'html-scrollable-modal-place') {
+                        $(`#${modalId}`).modal('show');
+                    }
+                }
+
                 window[functionName](data.message, data.data, form);
             }
         },
         complete: function () {
             hideLoading();
+            // دکمه رو از حالت فوکس خارج میکنیم که اگر کاربر
+            // دکمه اسپیس رو فشار داد، مجددا این فانکشن فراخوانی نشود
+            currentForm.find('button:submit').blur();
             currentForm.parents('.modal').off('hidden.bs.modal');
         },
         error: function () {
@@ -917,6 +948,11 @@ function getDataWithAJAX(url, formData, functionNameToCallInTheEnd) {
 // html
 // از سمت سرور
 function getHtmlWithAJAX(url, formData, functionNameToCallInTheEnd, clickedButton, loading = true) {
+    if (clickedButton) {
+        // دکمه رو از حالت فوکس خارج میکنیم که اگر کاربر
+        // دکمه اسپیس رو فشار داد، مجددا این فانکشن فراخوانی نشود
+        $(clickedButton).blur();
+    }
     $.ajax({
         url: url,
         data: formData,
@@ -1064,6 +1100,18 @@ function convertEnglishNumbersToPersianNumber() {
     });
 }
 
+// اسکرول به صورت انیمیت به یک المنت خاص
+function scrollToEl(el, subtract = 0) {
+    $('html, body').animate({
+        scrollTop: $(el).offset().top - subtract
+    }, 0);
+}
+
+// فعال سازی اعتبار سنجی داخل فرم مودال
+function activatingModalFormValidation(modal) {
+    $.validator.unobtrusive.parse(modal.find('form'));
+}
+
 $(function () {
     activatingInputAttributes();
     initializeSelect2WithoutModal();
@@ -1089,10 +1137,3 @@ $(function () {
         };
     });
 });
-
-// اسکرول به صورت انیمیت به یک المنت خاص
-function scrollToEl(el, subtract = 0) {
-    $('html, body').animate({
-        scrollTop: $(el).offset().top - subtract
-    }, 0);
-}

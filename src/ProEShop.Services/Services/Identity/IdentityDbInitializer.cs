@@ -25,6 +25,7 @@ public class IdentityDbInitializer : IIdentityDbInitializer
     private readonly IUnitOfWork _uow;
     private readonly IProvinceAndCityService _provinceAndCityService;
     private readonly IProductShortLinkService _productShortLinkService;
+    private readonly IUserListShortLinkService _userListShortLinkService;
 
     public IdentityDbInitializer(
         IApplicationUserManager applicationUserManager,
@@ -33,7 +34,8 @@ public class IdentityDbInitializer : IIdentityDbInitializer
         IOptionsSnapshot<SiteSettings> adminUserSeedOptions,
         ILogger<IdentityDbInitializer> logger, IUnitOfWork uow,
         IProvinceAndCityService provinceAndCityService,
-        IProductShortLinkService productShortLinkService)
+        IProductShortLinkService productShortLinkService,
+        IUserListShortLinkService userListShortLinkService)
     {
         _applicationUserManager = applicationUserManager;
         _applicationUserManager.CheckArgumentIsNull(nameof(_applicationUserManager));
@@ -51,6 +53,7 @@ public class IdentityDbInitializer : IIdentityDbInitializer
         _uow = uow;
         _provinceAndCityService = provinceAndCityService;
         _productShortLinkService = productShortLinkService;
+        _userListShortLinkService = userListShortLinkService;
         _logger.CheckArgumentIsNull(nameof(_logger));
     }
 
@@ -100,6 +103,7 @@ public class IdentityDbInitializer : IIdentityDbInitializer
 
             identityDbSeedData.SeedProvincesAndCities().GetAwaiter().GetResult();
             identityDbSeedData.SeedProductShortLinks().GetAwaiter().GetResult();
+            identityDbSeedData.SeedUserListShortLinks().GetAwaiter().GetResult();
         });
     }
 
@@ -290,6 +294,54 @@ public class IdentityDbInitializer : IIdentityDbInitializer
             }
 
             await _productShortLinkService.AddRangeAsync(links);
+            await _uow.SaveChangesAsync();
+        }
+    }
+
+    public async Task SeedUserListShortLinks()
+    {
+        if (!await _userListShortLinkService.AnyAsync())
+        {
+            var links = new List<Entities.UserListShortLink>();
+
+            for (var letter1 = 'A'; letter1 <= 'z'; letter1++)
+            {
+                if (!char.IsLetterOrDigit(letter1))
+                    continue;
+                var link = $"{(byte)letter1}";
+                var displayLink = $"{letter1.ToString()}";
+                links.Add(new UserListShortLink()
+                {
+                    DisplayLink = displayLink,
+                    Link = link
+                });
+                //for (var letter2 = '0'; letter2 <= 'z'; letter2++)
+                //{
+                //    if (!char.IsLetterOrDigit(letter2))
+                //        continue;
+                //    var link = $"{(byte)letter1}.{(byte)letter2}";
+                //    var displayLink = $"{letter1.ToString()}{letter2}";
+                //    links.Add(new ProductShortLink()
+                //    {
+                //        DisplayLink = displayLink,
+                //        Link = link
+                //    });
+                //    for (var letter3 = '0'; letter3 <= 'z'; letter3++)
+                //    {
+                //        if (!char.IsLetterOrDigit(letter3))
+                //            continue;
+                //        var displayLink = $"{letter1.ToString()}{letter2}{letter3}";
+                //        var link = $"{(byte)letter1}.{(byte)letter2}.{(byte)letter3}";
+                //        links.Add(new ProductShortLink()
+                //        {
+                //            DisplayLink = displayLink,
+                //            Link = link
+                //        });
+                //    }
+                //}
+            }
+
+            await _userListShortLinkService.AddRangeAsync(links);
             await _uow.SaveChangesAsync();
         }
     }

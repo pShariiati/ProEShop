@@ -101,7 +101,7 @@
                             </a>
                         </li>
                         <li>
-                            <button type="button" class="btn" data-bs-toggle="tooltip" data-bs-placement="left"
+                            <button type="button" class="btn get-html-with-ajax" functionNameToCallOnClick="showUserList" data-bs-toggle="tooltip" data-bs-placement="left"
                                     title="اضافه به لیست">
                                 <i class="bi bi-list-ul"></i>
                             </button>
@@ -855,11 +855,12 @@
 
 <!-- End other variants -->
 @section CustomScripts
-    {
+{
     <script src="~/Pages/Product/Index.cshtml.js"></script>
 }
 
 @section Scripts
-    {
+{
+    <partial name="Shared/_ValidationScriptsPartial" />
     <script src="~/lib/js-image-zoom/js-image-zoom.min.js"></script>
 }
