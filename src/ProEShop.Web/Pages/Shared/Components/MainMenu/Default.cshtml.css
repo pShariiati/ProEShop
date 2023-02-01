@@ -1,0 +1,51 @@
+﻿.custom-navbar {
+    background-color: #616161;
+}
+
+.nav-line {
+    height: 2px;
+}
+
+.main-menu-dropdown {
+    width: 99%;
+}
+
+.main-link-dropdown-in-main-menu i {
+    padding: 5px;
+    vertical-align: -2px;
+    transition: padding-right .1s;
+}
+
+.main-link-dropdown-in-main-menu a:hover {
+    display: inline;
+    padding: 5px;
+    transition: padding-right .1s;
+}
+
+.list-gruop-main-menu a {
+    color: #6a6a6a;
+    padding-right: 30px;
+}
+
+.list-gruop-main-menu a:hover {
+    font-weight: bolder;
+}
+
+.list-gruop-main-menu li {
+    padding-right: 2px;
+}
+
+.custom-navbar .nav-link {
+    height: 37px;
+}
+
+.custom-navbar .nav-link:hover {
+    transition: box-shadow .3s;
+    border-bottom: 2px solid #ef5651;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.200) !important;
+}
+
+.main-menu-left-link {
+    background-color: #4f4f4f;
+    padding: 2px 7px;
+}

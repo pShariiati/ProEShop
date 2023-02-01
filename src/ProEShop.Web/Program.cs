@@ -24,9 +24,9 @@ builder.Services.Configure<ContentSecurityPolicyConfig>(options => builder.Confi
 // Adds all of the ASP.NET Core Identity related services and configurations at once.
 builder.Services.AddCustomIdentityServices();
 builder.Services.AddParbad()
-    .ConfigureStorage(builder =>
+    .ConfigureStorage(parbadBuilder =>
     {
-        builder.UseEfCore(options =>
+        parbadBuilder.UseEfCore(options =>
         {
             // Example 1: Using SQL Server
             var assemblyName = typeof(ApplicationDbContext).Assembly.GetName().Name;
@@ -49,42 +49,19 @@ builder.Services.AddParbad()
         gateways
         .AddZarinPal()
             .WithAccounts(source => source.Add<ParbadGatewaysAccounts>(ServiceLifetime.Transient));
-        //.WithAccounts(accounts =>
-        //{
-        //    accounts.AddInMemory(account =>
-        //    {
-        //        account.MerchantId = "test";
-        //        account.IsSandbox = true;
-        //    });
-        //});
 
         gateways
             .AddMellat()
             .WithAccounts(source => source.Add<ParbadGatewaysAccounts>(ServiceLifetime.Transient));
-        //.WithAccounts(accounts =>
-        //{
-        //    accounts.AddInMemory(account =>
-        //    {
-        //        account.TerminalId = 123;
-        //        account.UserName = "MyId";
-        //        account.UserPassword = "MyPassword";
-        //    });
-        //});
 
         gateways
             .AddParbadVirtual()
             .WithOptions(options => options.GatewayPath = "/Cart/Payment/VirtualGateway");
     })
-    .ConfigureHttpContext(builder => builder.UseDefaultAspNetCore());
+    .ConfigureHttpContext(parbadBuilder => parbadBuilder.UseDefaultAspNetCore());
 
-builder.Services.AddRazorPages()
-    .AddRazorPagesOptions(options =>
-    {
-        options.Conventions.AddPageRoute("/Compare/Index", "/compare/pc-{productCode1}");
-        options.Conventions.AddPageRoute("/Compare/Index", "/compare/pc-{productCode1}/pc-{productCode2}");
-        options.Conventions.AddPageRoute("/Compare/Index", "/compare/pc-{productCode1}/pc-{productCode2}/pc-{productCode3}");
-        options.Conventions.AddPageRoute("/Compare/Index", "/compare/pc-{productCode1}/pc-{productCode2}/pc-{productCode3}/pc-{productCode4}");
-    });
+builder.CreateCustomRoutes();
+
 builder.Services.Configure<WebEncoderOptions>(options =>
 {
     options.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.All);

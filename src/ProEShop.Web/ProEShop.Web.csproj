@@ -63,6 +63,7 @@
 	  <None Remove="Pages\Seller\CreateSeller.cshtml.js" />
 	  <None Remove="Pages\Seller\Register.cshtml.css" />
 	  <None Remove="Pages\Seller\Register.cshtml.js" />
+	  <None Remove="Pages\Shared\_CartPartial.cshtml.css" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -107,6 +108,7 @@
 	  <Content Include="Pages\Seller\CreateSeller.cshtml.css" />
 	  <Content Include="Pages\Seller\Register.cshtml.css" />
 	  <Content Include="Pages\Seller\Register.cshtml.js" />
+	  <Content Include="Pages\Shared\_CartPartial.cshtml.css" />
 	</ItemGroup>
 
 	<ItemGroup>

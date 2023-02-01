@@ -1,0 +1,65 @@
+/* Start profile page */
+
+.custom-border-color-in-profile{
+    border-color: #dcdce4 !important;
+}
+
+#user-avatar-in-profile{
+    right: -8px;
+    top: -6px;
+}
+
+#user-fullname-in-profile{
+    margin-right: 42px;
+}
+
+#line-in-profile{
+    height: 153px;
+    width: 1px;
+    background-color: #dcdce4;
+    right: 16px;
+}
+
+.circle-in-profile{
+    width: 8px;
+    height: 8px;
+    right: 12px;
+    top: 80px;
+    background-color: #dcdce4;
+}
+
+.circle-in-profile:nth-child(3){
+    top: 146px !important;
+}
+
+.link-active-sign-in-profile{
+    width: 4px;
+    height: 80%;
+}
+
+.main-link-in-profile:hover{
+    background-color: #e9e9e9;
+}
+
+/* End profile page */
+
+/* Start profile commnet */
+
+.commnent-title-line-in-profile-comment{
+    height: 4px;
+}
+
+#guide-text-in-profile-comment{
+    background-color: #c8e2e6;
+}
+
+.pagination-box-in-profile-comment div:not(.pagination-dots-in-profile-comment){
+    width: 36px;
+    height: 36px;
+}
+
+.pagination-box-in-profile-comment div:not(.pagination-dots-in-profile-comment):hover{
+    border:2px solid #dc3545;
+}
+
+/* End profile comment */

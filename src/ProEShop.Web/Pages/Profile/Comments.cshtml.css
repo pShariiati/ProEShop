@@ -1,0 +1,16 @@
+﻿.commnent-title-line-in-profile-comment {
+    height: 4px;
+}
+
+#guide-text-in-profile-comment {
+    background-color: #c8e2e6;
+}
+
+.pagination-box-in-profile-comment div:not(.pagination-dots-in-profile-comment) {
+    width: 36px;
+    height: 36px;
+}
+
+.pagination-box-in-profile-comment div:not(.pagination-dots-in-profile-comment):hover {
+    border: 2px solid #dc3545;
+}

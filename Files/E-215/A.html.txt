@@ -1,0 +1,149 @@
+<div class="container mt-3">
+    <div class="row g-2">
+      <div class="col-lg-3">
+        <div class="border rounded-3 custom-border-color-in-profile">
+          <div class="mt-4 mx-3 custom-border-color-in-profile position-relative border-bottom border-2 ps-2">
+            <div id="line-in-profile" class="position-absolute"></div>
+            <img src="avatars/user-default-avatar.png" width="50" class="position-absolute"
+              id="user-avatar-in-profile" />
+            <div class="circle-in-profile position-absolute rounded-circle"></div>
+            <div class="circle-in-profile position-absolute rounded-circle"></div>
+            <div class="d-flex justify-content-between align-items-center">
+              <div id="user-fullname-in-profile">
+                <div class="fw-bold">محمد احمدی</div>
+                <div class="text-secondary">۰۹۰۱۲۳۴۹۹۳۳</div>
+              </div>
+              <a href="#">
+                <i class="bi bi-pen text-info rem18px"></i>
+              </a>
+            </div>
+            <a href="#" class="ms-3 d-flex justify-content-between align-items-center my-3 text-dark rem15px">
+              <div>
+                <div class="mb-2">کیف پول</div>
+                <div class="text-info rem14px">
+                  افزایش موجودی
+                  <i class="bi bi-chevron-left"></i>
+                </div>
+              </div>
+              <div class="fw-bold">
+                <span class="persian-numbers">۲,۰۰۰</span>
+                تومان
+              </div>
+            </a>
+            <a href="#" class="ms-3 d-flex justify-content-between align-items-center my-3 text-dark rem15px">
+              <div>
+                <div class="mb-2">پرو کلاب</div>
+                <div class="text-info rem14px">
+                  مشاهده جوایز
+                  <i class="bi bi-chevron-left"></i>
+                </div>
+              </div>
+              <div class="fw-bold">
+                <span class="persian-numbers">۲۰</span>
+                امتیاز
+              </div>
+            </a>
+          </div>
+          <div>
+            <div class="main-link-in-profile position-relative">
+              <a href="#" class="mx-3 text-dark d-flex align-items-center py-2">
+                <i class="bi bi-arrow-right rem21px me-3"></i>
+                بازگشت
+              </a>
+            </div>
+            <div class="main-link-in-profile position-relative d-none d-lg-block">
+              <a href="#" class="mx-3 text-dark d-flex align-items-center py-2 border-bottom custom-border-color-in-profile">
+                <div class="link-active-sign-in-profile bg-danger position-absolute rounded-end start-0 d-none"></div>
+                <i class="bi bi-chat rem21px me-3"></i>
+                دیدگاه ها
+              </a>
+            </div>
+            <div class="main-link-in-profile position-relative pointer-cursor d-none d-lg-block">
+              <div class="mx-3 text-dark d-flex align-items-center py-2">
+                <i class="bi bi-box-arrow-right rem21px me-3"></i>
+                خروج
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-9">
+        <div class="border rounded-3 py-3 custom-border-color-in-profile">
+          <div class="fw-bold ms-3">دیدگاه ها</div>
+          <div class="d-flex mt-4 border-bottom">
+            <a href="#" class="text-danger fw-bold pointer-cursor ms-2">
+              <div class="mx-3 my-2">
+                در انتظار ثبت نظر
+              </div>
+              <div class="commnent-title-line-in-profile-comment custom-border-color-in-profile w-100 bg-danger rounded-top">
+              </div>
+            </a>
+            <a href="#" class="text-dark pointer-cursor">
+              <div class="mx-3 my-2">
+                دیدگاه های من
+              </div>
+            </a>
+          </div>
+          <div class="container-fluid mt-3">
+            <div id="guide-text-in-profile-comment" class="ps-3 rem13px py-3 rounded-3">
+              از این کالا راضی هستید ؟
+              <br />
+              <span class="text-secondary">
+                با ثبت دیدگاه برای هر کالا ۵ امتیاز از پرو کلاب هدیه بگیرید!
+              </span>
+            </div>
+            <div class="row mt-3">
+              <div class="col-lg-6">
+                <div class="border rounded-3">
+                  <div class="d-flex mt-3">
+                    <img src="images/products/product1.jpg" width="100" class="ms-3" />
+                    <div class="ms-3">
+                      محصول شماره یک
+                      محصول شماره یک
+                      محصول شماره یک
+                      محصول شماره یک
+                      محصول شماره یک
+                      محصول شماره یک
+                    </div>
+                  </div>
+                  <div class="d-grid my-3">
+                    <a href="#" class="text-danger border border-danger rounded-3 mx-3 text-center p-2 rem14px">
+                      <i class="bi bi-chat"></i>
+                      ثبت دیدگاه و امتیاز
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex mt-4 align-items-center">
+              <div class="flex-grow-1 text-danger d-flex">
+                <div class="pointer-cursor">
+                  <i class="bi bi-chevron-right rem12px"></i>
+                  <span class="rem14px ms-1">قبلی</span>
+                </div>
+              </div>
+              <div class="flex-grow-1 d-flex justify-content-center pagination-box-in-profile-comment">
+                <div
+                  class="persian-numbers rounded-circle mx-1 d-flex align-items-center justify-content-center pointer-cursor rem14px bg-danger text-white">
+                  ۱</div>
+                <div
+                  class="persian-numbers rounded-circle mx-1 d-flex align-items-center justify-content-center pointer-cursor rem14px">
+                  ۱</div>
+                <div class="pagination-dots-in-profile-comment d-flex justify-content-center align-items-center rem11px">
+                  ...</div>
+                <div
+                  class="persian-numbers rounded-circle mx-1 d-flex align-items-center justify-content-center pointer-cursor rem14px">
+                  ۱</div>
+              </div>
+              <div class="flex-grow-1 text-danger d-flex justify-content-end">
+                <div class="pointer-cursor">
+                  <span class="rem14px me-1">بعدی</span>
+                  <i class="bi bi-chevron-left rem12px"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -18,6 +18,8 @@ public class ParcelPostItem : IAuditableEntity
 
     public long ProductVariantId { get; set; }
 
+    public DateTime CreatedDateTime { get; set; }
+
     public long GuaranteeId { get; set; }
 
     public int Price { get; set; }

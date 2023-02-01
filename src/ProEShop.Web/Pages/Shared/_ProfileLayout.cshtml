@@ -1,0 +1,113 @@
+﻿<!doctype html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.rtl.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="~/lib/toastr.js/toastr.min.css" />
+    <link rel="stylesheet" href="~/css/site.css">
+    <link rel="stylesheet" href="~/css/profile-styles.css">
+    <link rel="stylesheet" href="~/ProEShop.Web.styles.css">
+    <title>@ViewData["Title"] | پروشاپ</title>
+    @if (ViewData["HeaderDescription"] != null)
+    {
+        <meta name="description" content="@ViewData["HeaderDescription"]" />
+    }
+</head>
+
+<body is-authenticated="@(User.Identity.IsAuthenticated ? "true" : "false")" login-page-url="@Url.Page("/Identity/RegisterLogin")">
+
+    <vc:main-header></vc:main-header>
+
+    <vc:main-menu></vc:main-menu>
+
+    <div class="container mt-3">
+        <div class="row g-2">
+            <div class="col-lg-3">
+                <div class="border rounded-3 custom-border-color-in-profile">
+                    <div class="mt-4 mx-3 custom-border-color-in-profile position-relative border-bottom border-2 ps-2">
+                        <div id="line-in-profile" class="position-absolute"></div>
+                        <img src="avatars/user-default-avatar.png" width="50" class="position-absolute"
+                             id="user-avatar-in-profile" />
+                        <div class="circle-in-profile position-absolute rounded-circle"></div>
+                        <div class="circle-in-profile position-absolute rounded-circle"></div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div id="user-fullname-in-profile">
+                                <div class="fw-bold">محمد احمدی</div>
+                                <div class="text-secondary">۰۹۰۱۲۳۴۹۹۳۳</div>
+                            </div>
+                            <a href="#">
+                                <i class="bi bi-pen text-info rem18px"></i>
+                            </a>
+                        </div>
+                        <a href="#" class="ms-3 d-flex justify-content-between align-items-center my-3 text-dark rem15px">
+                            <div>
+                                <div class="mb-2">کیف پول</div>
+                                <div class="text-info rem14px">
+                                    افزایش موجودی
+                                    <i class="bi bi-chevron-left"></i>
+                                </div>
+                            </div>
+                            <div class="fw-bold">
+                                <span class="persian-numbers">۲,۰۰۰</span>
+                                تومان
+                            </div>
+                        </a>
+                        <a href="#" class="ms-3 d-flex justify-content-between align-items-center my-3 text-dark rem15px">
+                            <div>
+                                <div class="mb-2">پرو کلاب</div>
+                                <div class="text-info rem14px">
+                                    مشاهده جوایز
+                                    <i class="bi bi-chevron-left"></i>
+                                </div>
+                            </div>
+                            <div class="fw-bold">
+                                <span class="persian-numbers">۲۰</span>
+                                امتیاز
+                            </div>
+                        </a>
+                    </div>
+                    <div>
+                        <div class="main-link-in-profile position-relative">
+                            <a href="#" class="mx-3 text-dark d-flex align-items-center py-2">
+                                <i class="bi bi-arrow-right rem21px me-3"></i>
+                                بازگشت
+                            </a>
+                        </div>
+                        <div class="main-link-in-profile position-relative d-none d-lg-block">
+                            <a asp-page="Comments" class="mx-3 text-dark d-flex align-items-center py-2 border-bottom custom-border-color-in-profile">
+                                <div class="link-active-sign-in-profile bg-danger position-absolute rounded-end start-0 d-none"></div>
+                                <i class="bi bi-chat rem21px me-3"></i>
+                                دیدگاه ها
+                            </a>
+                        </div>
+                        <div class="main-link-in-profile position-relative pointer-cursor d-none d-lg-block">
+                            <div class="mx-3 text-dark d-flex align-items-center py-2">
+                                <i class="bi bi-box-arrow-right rem21px me-3"></i>
+                                خروج
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+<script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/toastr.js/toastr.min.js"></script>
+    @await RenderSectionAsync("Scripts", false)
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/profile-scripts.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("CustomScripts", false)
+</body>
+
+</html>

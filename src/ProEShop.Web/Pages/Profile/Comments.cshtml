@@ -1,0 +1,79 @@
+﻿@page
+@model ProEShop.Web.Pages.Profile.CommentsModel
+@{
+    ViewData["Title"] = "دیدگاه ها";
+}
+
+<div class="border rounded-3 py-3 custom-border-color-in-profile">
+    <div class="fw-bold ms-3">دیدگاه ها</div>
+    <div class="d-flex mt-4 border-bottom">
+        <a href="#" class="text-danger fw-bold pointer-cursor ms-2">
+            <div class="mx-3 my-2">
+                در انتظار ثبت نظر
+            </div>
+            <div class="commnent-title-line-in-profile-comment custom-border-color-in-profile w-100 bg-danger rounded-top">
+            </div>
+        </a>
+        <a href="#" class="text-dark pointer-cursor">
+            <div class="mx-3 my-2">
+                دیدگاه های من
+            </div>
+        </a>
+    </div>
+    <div class="container-fluid mt-3">
+        <div id="guide-text-in-profile-comment" class="ps-3 rem13px py-3 rounded-3">
+            از این کالا راضی هستید ؟
+            <br />
+            <span class="text-secondary">
+                با ثبت دیدگاه برای هر کالا ۵ امتیاز از پرو کلاب هدیه بگیرید!
+            </span>
+        </div>
+        <div class="row mt-3 gy-1">
+            @foreach (var product in Model.Products.Items)
+            {
+                <div class="col-lg-6">
+                    <div class="border rounded-3">
+                        <div class="d-flex mt-3">
+                            <img src="@WwwRootPaths.ProductImage/@product.Picture" width="100" class="ms-3" />
+                            <div class="ms-3">@product.Title</div>
+                        </div>
+                        <div class="d-grid my-3">
+                            <a href="#" class="text-danger border border-danger rounded-3 mx-3 text-center p-2 rem14px">
+                                <i class="bi bi-chat"></i>
+                                ثبت دیدگاه و امتیاز
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="d-flex mt-4 align-items-center">
+            <div class="flex-grow-1 text-danger d-flex">
+                <div class="pointer-cursor">
+                    <i class="bi bi-chevron-right rem12px"></i>
+                    <span class="rem14px ms-1">قبلی</span>
+                </div>
+            </div>
+            <div class="flex-grow-1 d-flex justify-content-center pagination-box-in-profile-comment">
+                <div class="persian-numbers rounded-circle mx-1 d-flex align-items-center justify-content-center pointer-cursor rem14px bg-danger text-white">
+                    ۱
+                </div>
+                <div class="persian-numbers rounded-circle mx-1 d-flex align-items-center justify-content-center pointer-cursor rem14px">
+                    ۱
+                </div>
+                <div class="pagination-dots-in-profile-comment d-flex justify-content-center align-items-center rem11px">
+                    ...
+                </div>
+                <div class="persian-numbers rounded-circle mx-1 d-flex align-items-center justify-content-center pointer-cursor rem14px">
+                    ۱
+                </div>
+            </div>
+            <div class="flex-grow-1 text-danger d-flex justify-content-end">
+                <div class="pointer-cursor">
+                    <span class="rem14px me-1">بعدی</span>
+                    <i class="bi bi-chevron-left rem12px"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+﻿#cart-dropdown-body ul {
+    max-height: 266px;
+    overflow-y: auto;
+}
+
+    #cart-dropdown-body ul li {
+        width: 96%;
+    }
+
+        #cart-dropdown-body ul li:not(:last-child) {
+            width: 96%;
+            border-bottom: 1px solid#ebe7e7;
+        }
