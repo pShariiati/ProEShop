@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ProEShop.Common.Helpers;
 using ProEShop.ViewModels.Carts;
+using ProEShop.ViewModels.ProductComments;
 using ProEShop.ViewModels.Products;
 
 namespace ProEShop.Web.Mappings;
@@ -29,5 +30,16 @@ public class ProductCommentMappingProfile : Profile
             .ForMember(dest => dest.IsShop,
                 options =>
                     options.MapFrom(src => src.SellerId != null));
+
+        this.CreateMap<Entities.ProductComment, ShowProductCommentInProfile>()
+            .ForMember(dest => dest.MainPicture,
+                options =>
+                    options.MapFrom(src => src.Product.ProductMedia.First().FileName))
+            .ForMember(dest => dest.IsSeller,
+                options =>
+                    options.MapFrom(src => src.SellerId != null))
+            .ForMember(dest => dest.Like,
+                options =>
+                    options.MapFrom(src => src.CommentsScores.LongCount(x => x.IsLike)));
     }
 }

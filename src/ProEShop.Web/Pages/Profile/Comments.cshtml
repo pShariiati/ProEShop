@@ -20,33 +20,159 @@
             </div>
         </a>
     </div>
-    <div class="container-fluid mt-3">
-        <div id="guide-text-in-profile-comment" class="ps-3 rem13px py-3 rounded-3">
-            از این کالا راضی هستید ؟
-            <br />
-            <span class="text-secondary">
-                با ثبت دیدگاه برای هر کالا ۵ امتیاز از پرو کلاب هدیه بگیرید!
-            </span>
-        </div>
-        <div class="row mt-3 gy-1">
-            @foreach (var product in Model.Products.Items)
+    <div class="container-fluid mt-3" id="comments-box-in-comment-profile">
+        @if (Model.IsActiveTabPending)
+        {
+            <div id="guide-text-in-profile-comment" class="ps-3 rem13px py-3 rounded-3">
+                از این کالا راضی هستید ؟
+                <br />
+                <span class="text-secondary">
+                    با ثبت دیدگاه برای هر کالا ۵ امتیاز از پرو کلاب هدیه بگیرید!
+                </span>
+            </div>
+            <div class="row mt-3 gy-1">
+                @foreach (var product in Model.Products.Items)
+                {
+                    <div class="col-lg-6">
+                        <div class="border rounded-3">
+                            <div class="d-flex mt-3">
+                                <img src="@WwwRootPaths.ProductImage/@product.Picture" width="100" class="ms-3" />
+                                <div class="ms-3">@product.Title</div>
+                            </div>
+                            <div class="d-grid my-3">
+                                <a href="#" class="text-danger border border-danger rounded-3 mx-3 text-center p-2 rem14px">
+                                    <i class="bi bi-chat"></i>
+                                    ثبت دیدگاه و امتیاز
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            foreach (var comment in Model.Comments.Items)
             {
-                <div class="col-lg-6">
-                    <div class="border rounded-3">
-                        <div class="d-flex mt-3">
-                            <img src="@WwwRootPaths.ProductImage/@product.Picture" width="100" class="ms-3" />
-                            <div class="ms-3">@product.Title</div>
+                var justScore = comment.CommentTitle == null;
+                var confirmClass = comment.IsConfirmed == null ? "not-suggest-color-in-profile-comment bg-check-comment-in-profile-comment" : (comment.IsConfirmed.Value ? "text-success bg-confirmed-comment-in-profile-comment" : "text-danger bg-not-confirmed-comment-in-profile-comment");
+                var suggestClass = comment.Suggest is null ? "text-secondary" : (comment.Suggest.Value ? "text-success" : "not-suggest-color-in-profile-comment");
+                <div class="d-flex comment-box-item-in-profile-comment">
+                    <div class="text-end ms-2">
+                        <a asp-page="/Product/Index" asp-route-productCode="@comment.ProductProductCode" asp-route-slug="@comment.ProductSlug">
+                            <img src="@WwwRootPaths.ProductImage/@comment.MainPicture" width="64" />
+                        </a>
+                        <br />
+                        <span class="badge bg-success persian-numbers">@comment.Score</span>
+                    </div>
+                    <div class="flex-grow-1 ms-4">
+                        <div class="d-flex justify-content-between border-bottom pb-2">
+                            <div class="fw-bold">@(justScore ? "فقط امتیاز اضافه شده است" : comment.CommentTitle)</div>
+                            <div class="d-flex align-items-center">
+                                @if (comment.IsSeller)
+                                {
+                                    <div class="bg-secondary text-white rem13px px-2 me-3">فروشگاه</div>
+                                }
+                                <div class="@confirmClass rem13px px-2 me-3">
+                                    @if (comment.IsConfirmed is null)
+                                    {
+                                        @:در حال بررسی
+                                    }
+                                    else if (comment.IsConfirmed.Value)
+                                    {
+                                        @:تایید شده
+                                    }
+                                    else
+                                    {
+                                        @:رد شده
+                                    }
+                                </div>
+                                <div class="dropdown comment-action-box-in-profile-comment">
+                                    <i class="bi bi-three-dots-vertical pointer-cursor rem18px" data-bs-toggle="dropdown"></i>
+                                    <ul class="dropdown-menu dropdown-menu-end pointer-cursor">
+                                        <li class="d-flex align-items-center py-2 px-3">
+                                            <i class="bi bi-pencil-square rem18px me-3"></i>
+                                            <div>ویرایش دیدگاه</div>
+                                        </li>
+                                        <li class="d-flex align-items-center py-2 px-3">
+                                            <i class="bi bi-trash rem18px text-danger me-3"></i>
+                                            <div>حذف دیدگاه</div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                        <div class="d-grid my-3">
-                            <a href="#" class="text-danger border border-danger rounded-3 mx-3 text-center p-2 rem14px">
-                                <i class="bi bi-chat"></i>
-                                ثبت دیدگاه و امتیاز
-                            </a>
-                        </div>
+                        @if (comment.SellerShopNameShopName != null)
+                        {
+                            <div class="@suggestClass d-flex mt-3 align-items-center">
+                                @if (comment.Suggest is null)
+                                {
+                                    <div class="circle-dot-in-profile-comment rounded-circle bg-secondary me-2"></div>
+                                }
+                                else if (comment.Suggest.Value)
+                                {
+                                    <i class="bi bi-hand-thumbs-up me-2"></i>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-hand-thumbs-down me-2"></i>
+                                }
+                                <div class="rem14px">
+                                    @if (comment.Suggest is null)
+                                    {
+                                        @:درباره خرید این کالا مطمئن نیستم
+                                    }
+                                    else if (comment.Suggest.Value)
+                                    {
+                                        @:خرید این محصول را توصیه میکنم
+                                    }
+                                    else
+                                    {
+                                        @:خرید این محصول را توصیه نمیکنم
+                                    }
+                                </div>
+                            </div>
+                        }
+                        <div class="mt-3 rem15px">@(justScore ? "فقط امتیاز اضافه شده است" : comment.CommentText)</div>
+                        @if (comment.SellerShopNameShopName != null)
+                        {
+                            <div class="mt-3 border-top pt-3 d-flex align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-shop"></i>
+                                    <div class="rem13px ms-2">@comment.SellerShopNameShopName</div>
+                                </div>
+                                @if (comment.VariantValue != null)
+                                {
+                                    <div class="circle-dot-in-profile-comment rounded-circle bg-secondary mx-3"></div>
+                                    <div class="d-flex align-items-center">
+                                        @if (comment.VariantIsColor)
+                                        {
+                                            <div style="background-color: @comment.VariantColorCode;" class="me-2 color-box-in-profile-comment rounded-circle"></div>
+                                        }
+                                        else
+                                        {
+                                            <i class="bi bi-sort-numeric-up me-2"></i>
+                                        }
+                                        <div class="rem13px">@comment.VariantValue</div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        @if (comment.Like > 0)
+                        {
+                            <div class="mt-3 border-top pt-3 d-flex justify-content-end text-success align-items-center">
+                                <div class="rem13px">
+                                    این نظر برای
+                                    <span class="persian-numbers">@comment.Like</span>
+                                    نفر مفید بود
+                                </div>
+                                <i class="bi bi-hand-thumbs-up ms-2"></i>
+                            </div>
+                        }
                     </div>
                 </div>
             }
-        </div>
+        }
         <div class="d-flex mt-4 align-items-center">
             <div class="flex-grow-1 text-danger d-flex">
                 <div class="pointer-cursor">

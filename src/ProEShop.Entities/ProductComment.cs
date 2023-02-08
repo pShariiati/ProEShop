@@ -56,7 +56,10 @@ public class ProductComment : EntityBase, IAuditableEntity
 
     public bool IsBuyer { get; set; }
 
-    public bool IsConfirmed { get; set; }
+    /// <summary>
+    /// اگر نال باشه یعنی نظر در حال بررسی است
+    /// </summary>
+    public bool? IsConfirmed { get; set; }
 
     #endregion
 
@@ -65,6 +68,8 @@ public class ProductComment : EntityBase, IAuditableEntity
     public User User { get; set; }
 
     public Seller Seller { get; set; }
+
+    public Product Product { get; set; }
 
     /// <summary>
     /// خریدار از کدام فروشنده خرید کرده است ؟

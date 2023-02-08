@@ -1,0 +1,35 @@
+.bg-confirmed-comment-in-profile-comment{
+    background-color: #dcecdc;
+}
+
+.bg-not-confirmed-comment-in-profile-comment{
+    background-color: #fee0e7;
+}
+
+.bg-check-comment-in-profile-comment{
+    background-color: #f5e7de;
+}
+
+.comment-action-box-in-profile-comment ul > li:hover{
+    background-color: #eeeeee;
+}
+
+.color-box-in-profile-comment{
+    width: 14px;
+    height: 14px;
+}
+
+.circle-dot-in-profile-comment{
+    width: 4px;
+    height: 4px;
+}
+
+#comments-box-in-comment-profile > .comment-box-item-in-profile-comment:not(:nth-last-child(2)){
+    border-bottom: 1px solid #acacac;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+}
+
+.not-suggest-color-in-profile-comment{
+    color: #f57f17;
+}

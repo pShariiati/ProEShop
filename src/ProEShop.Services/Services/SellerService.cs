@@ -197,6 +197,20 @@ public class SellerService : GenericService<Seller>, ISellerService
         return seller.Id;
     }
 
+    public async Task<long?> GetSellerId2()
+    {
+        var userId = _httpContextAccessor.HttpContext.User
+            .Identity.GetLoggedInUserId();
+        var seller = await _sellers
+            .Select(x => new
+            {
+                x.Id,
+                x.UserId
+            })
+            .SingleOrDefaultAsync(x => x.UserId == userId);
+        return seller?.Id;
+    }
+
     public Task<List<string>> GetShopNamesForAutocomplete(string input)
     {
         return _sellers.Where(x => x.ShopName.Contains(input))

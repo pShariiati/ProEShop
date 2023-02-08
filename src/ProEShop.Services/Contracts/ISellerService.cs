@@ -12,5 +12,13 @@ public interface ISellerService : IGenericService<Seller>
     Task<Seller> GetSellerToRemoveInManagingSellers(long id);
     Task<long> GetSellerId(long userId);
     Task<long> GetSellerId();
+
+    /// <summary>
+    /// اگر کاربرِ داخلِ سیستم، فروشنده باشه
+    /// آیدی فروشنده برگشت داده میشه
+    /// </summary>
+    /// <returns></returns>
+    Task<long?> GetSellerId2();
+
     Task<List<string>> GetShopNamesForAutocomplete(string input);
 }

@@ -32,6 +32,7 @@ public class ParcelPostItemService : CustomGenericService<ParcelPostItem>, IParc
         var userId = _httpContextAccessor.HttpContext.User.Identity.GetLoggedInUserId();
 
         var parcelPostItems = _parcelPostItems.AsNoTracking()
+            .Where(x => x.ParcelPost.Order.UserId == userId)
             .Where(x => x.ParcelPost.Order.Status == OrderStatus.DeliveredToClient)
             .Where(x => x.ProductVariant.Product.ProductComments.Any(pc => pc.UserId == userId) == false)
             .GroupBy(x => x.ProductVariant.ProductId)

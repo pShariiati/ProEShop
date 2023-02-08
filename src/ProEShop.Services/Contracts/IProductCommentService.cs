@@ -18,4 +18,11 @@ public interface IProductCommentService : IGenericService<ProductComment>
     /// <param name="orderBy"></param>
     /// <returns></returns>
     Task<List<ProductCommentForProductInfoViewModel>> GetCommentsByPagination(long productId, int pageNumber, CommentsSortingForProductInfo sortBy, SortingOrder orderBy);
+
+    /// <summary>
+    /// نمایش نظرات در بخش پروفایل کاربری
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    Task<ShowProductCommentsInProfile> GetCommentsInProfileComment(ShowProductCommentsInProfile model);
 }

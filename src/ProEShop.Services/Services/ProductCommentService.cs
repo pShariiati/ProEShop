@@ -1,9 +1,12 @@
 ﻿using System.Linq.Expressions;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using ProEShop.Common.Helpers;
+using ProEShop.Common.IdentityToolkit;
 using ProEShop.DataLayer.Context;
 using ProEShop.Entities;
+using ProEShop.Entities.Enums;
 using ProEShop.Services.Contracts;
 using ProEShop.ViewModels;
 using ProEShop.ViewModels.Brands;
@@ -18,18 +21,26 @@ public class ProductCommentService : GenericService<ProductComment>, IProductCom
 {
     private readonly DbSet<ProductComment> _productComments;
     private readonly IMapper _mapper;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly ISellerService _sellerService;
 
-    public ProductCommentService(IUnitOfWork uow, IMapper mapper)
+    public ProductCommentService(
+        IUnitOfWork uow,
+        IMapper mapper,
+        IHttpContextAccessor httpContextAccessor,
+        ISellerService sellerService)
         : base(uow)
     {
         _mapper = mapper;
+        _httpContextAccessor = httpContextAccessor;
+        _sellerService = sellerService;
         _productComments = uow.Set<ProductComment>();
     }
 
     public async Task<List<ProductCommentForProductInfoViewModel>> GetCommentsByPagination(long productId, int pageNumber, CommentsSortingForProductInfo sortBy, SortingOrder orderBy)
     {
         var query = _productComments
-            .Where(x => x.IsConfirmed)
+            .Where(x => x.IsConfirmed.Value)
             .Where(x => x.ProductId == productId);
 
         #region OrderBy
@@ -55,5 +66,25 @@ public class ProductCommentService : GenericService<ProductComment>, IProductCom
 
         return await _mapper.ProjectTo<ProductCommentForProductInfoViewModel>(query)
             .ToListAsync();
+    }
+
+    public async Task<ShowProductCommentsInProfile> GetCommentsInProfileComment(ShowProductCommentsInProfile model)
+    {
+        var userId = _httpContextAccessor.HttpContext.User.Identity.GetLoggedInUserId();
+        var sellerId = await _sellerService.GetSellerId2() ?? 0;
+
+        var parcelPostItems = _productComments.AsNoTracking()
+            .Where(x => x.UserId == userId || x.SellerId == sellerId)
+            .OrderByDescending(x => x.Id);
+
+        var paginationResult = await GenericPaginationAsync(parcelPostItems, model.Pagination);
+
+        return new()
+        {
+            Items = await _mapper.ProjectTo<ShowProductCommentInProfile>(
+                paginationResult.Query
+            ).ToListAsync(),
+            Pagination = paginationResult.Pagination
+        };
     }
 }

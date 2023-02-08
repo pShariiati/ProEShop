@@ -202,7 +202,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.ProductCommentsCount,
                 options =>
                         options.MapFrom(src =>
-                        src.ProductComments.Where(x => x.IsConfirmed)
+                        src.ProductComments.Where(x => x.IsConfirmed.Value)
                             .LongCount(pc => pc.CommentTitle != null)
                     ))
             .ForMember(dest => dest.ProductQuestionsCount,
@@ -242,7 +242,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.ProductComments,
                 options =>
                     options.MapFrom(src =>
-                        src.ProductComments.Where(x => x.IsConfirmed)
+                        src.ProductComments.Where(x => x.IsConfirmed.Value)
                             .Where(x => x.CommentTitle != null)
                             // جدیدترین دیدگاه ها
                             .OrderByDescending(x => x.Id)
