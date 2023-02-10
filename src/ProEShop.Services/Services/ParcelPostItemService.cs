@@ -38,7 +38,7 @@ public class ParcelPostItemService : CustomGenericService<ParcelPostItem>, IParc
             .GroupBy(x => x.ProductVariant.ProductId)
             .OrderByDescending(x => x.First().CreatedDateTime);
 
-        var paginationResult = await GenericPaginationAsync(parcelPostItems, model.Pagination);
+        var paginationResult = await GenericPagination2Async(parcelPostItems, model.Pagination);
 
         return new()
         {
@@ -47,5 +47,12 @@ public class ParcelPostItemService : CustomGenericService<ParcelPostItem>, IParc
             ).ToListAsync(),
             Pagination = paginationResult.Pagination
         };
+    }
+
+    public Task<ShowProductsInProfileCommentViewModel> GetProductsInProfileComment(int pageNumber)
+    {
+        var model = new ShowProductsInProfileCommentViewModel();
+        model.Pagination.CurrentPage = pageNumber;
+        return GetProductsInProfileComment(model);
     }
 }

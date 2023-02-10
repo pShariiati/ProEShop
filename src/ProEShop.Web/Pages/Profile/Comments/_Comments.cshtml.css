@@ -1,21 +1,4 @@
-﻿.commnent-title-line-in-profile-comment {
-    height: 4px;
-}
-
-#guide-text-in-profile-comment {
-    background-color: #c8e2e6;
-}
-
-.pagination-box-in-profile-comment div:not(.pagination-dots-in-profile-comment) {
-    width: 36px;
-    height: 36px;
-}
-
-.pagination-box-in-profile-comment div:not(.pagination-dots-in-profile-comment):hover {
-    border: 2px solid #dc3545;
-}
-
-.bg-confirmed-comment-in-profile-comment {
+﻿.bg-confirmed-comment-in-profile-comment {
     background-color: #dcecdc;
 }
 
@@ -41,7 +24,7 @@
     height: 4px;
 }
 
-#comments-box-in-comment-profile > .comment-box-item-in-profile-comment:not(:nth-last-child(2)) {
+#comments-box-in-comment-profile > .comment-box-item-in-profile-comment {
     border-bottom: 1px solid #acacac;
     margin-bottom: 1rem;
     padding-bottom: 1rem;

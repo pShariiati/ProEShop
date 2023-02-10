@@ -75,4 +75,26 @@ public class CustomGenericService<TEntity> : ICustomGenericService<TEntity> wher
             Query = items.Skip(skip).Take(take)
         };
     }
+
+    public async Task<CommonPaginationResultViewModel<T>> GenericPagination2Async<T>(IQueryable<T> items, CommonPaginationViewModel pagination)
+    {
+        if (pagination.CurrentPage < 1)
+            pagination.CurrentPage = 1;
+        const int take = 10;
+        var itemsCount = await items.LongCountAsync();
+        var pagesCount = (int)Math.Ceiling(
+            (decimal)itemsCount / take
+        );
+        if (pagesCount <= 0)
+            pagesCount = 1;
+        if (pagination.CurrentPage > pagesCount)
+            pagination.CurrentPage = pagesCount;
+        var skip = (pagination.CurrentPage - 1) * take;
+        pagination.PagesCount = pagesCount;
+        return new CommonPaginationResultViewModel<T>
+        {
+            Pagination = pagination,
+            Query = items.Skip(skip).Take(take)
+        };
+    }
 }

@@ -7,7 +7,7 @@ public class ShowProductCommentsInProfile
 {
     public List<ShowProductCommentInProfile> Items { get; set; }
 
-    public PaginationViewModel Pagination { get; set; }
+    public CommonPaginationViewModel Pagination { get; set; }
         = new();
 }
 

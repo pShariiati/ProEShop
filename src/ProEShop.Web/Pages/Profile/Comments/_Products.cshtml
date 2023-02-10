@@ -1,0 +1,34 @@
+﻿@model ProEShop.ViewModels.Products.ShowProductsInProfileCommentViewModel
+
+<div id="guide-text-in-profile-comment" class="ps-3 rem13px py-3 rounded-3">
+    از این کالا راضی هستید ؟
+    <br />
+    <span class="text-secondary">
+        با ثبت دیدگاه برای هر کالا ۵ امتیاز از پرو کلاب هدیه بگیرید!
+    </span>
+</div>
+<div class="row mt-3 gy-1">
+    @foreach (var product in Model.Items)
+    {
+        <div class="col-lg-6">
+            <div class="border rounded-3">
+                <div class="d-flex mt-3">
+                    <img src="@WwwRootPaths.ProductImage/@product.Picture" width="100" class="ms-3" />
+                    <div class="ms-3">@product.Title</div>
+                </div>
+                <div class="d-grid my-3">
+                    <a href="#" class="text-danger border border-danger rounded-3 mx-3 text-center p-2 rem14px">
+                        <i class="bi bi-chat"></i>
+                        ثبت دیدگاه و امتیاز
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@{
+    Model.Pagination.FunctionName = "showProductsByPagination";
+}
+
+<partial name="Shared/_CommonPagination" model="Model.Pagination" />

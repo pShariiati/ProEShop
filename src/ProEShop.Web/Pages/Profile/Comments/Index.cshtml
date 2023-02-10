@@ -1,0 +1,47 @@
+﻿@page
+@model ProEShop.Web.Pages.Profile.Comments.IndexModel
+@{
+    ViewData["Title"] = "دیدگاه ها";
+    var isActiveTabPending = Model.IsActiveTabPending;
+}
+
+<div class="border rounded-3 py-3 custom-border-color-in-profile">
+    <div class="fw-bold ms-3">دیدگاه ها</div>
+    <div class="d-flex mt-4 border-bottom">
+        <a asp-route-activeTab="pending" class="ms-2@(isActiveTabPending ? " text-danger fw-bold": " text-dark")">
+            <div class="mx-3 my-2">
+                در انتظار ثبت نظر
+            </div>
+            @if (isActiveTabPending)
+            {
+                <div class="title-line-in-profile w-100 bg-danger rounded-top">
+                </div>
+            }
+        </a>
+        <a asp-route-activeTab="comments" class="@(!isActiveTabPending ? "text-danger fw-bold": "text-dark")">
+            <div class="mx-3 my-2">
+                دیدگاه های من
+            </div>
+            @if (!isActiveTabPending)
+            {
+                <div class="title-line-in-profile w-100 bg-danger rounded-top">
+                </div>
+            }
+        </a>
+    </div>
+    <div class="container-fluid mt-3" id="comments-box-in-comment-profile">
+        @if (Model.IsActiveTabPending)
+        {
+            <partial name="_Products" model="Model.Products" />
+        }
+        else
+        {
+            <partial name="_Comments" model="Model.Comments" />
+        }
+    </div>
+</div>
+
+@section CustomScripts
+{
+    <script src="~/Pages/Profile/Comments/Index.cshtml.js"></script>
+}

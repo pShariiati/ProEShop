@@ -12,4 +12,11 @@ public interface IParcelPostItemService : ICustomGenericService<ParcelPostItem>
     /// <param name="model"></param>
     /// <returns></returns>
     Task<ShowProductsInProfileCommentViewModel> GetProductsInProfileComment(ShowProductsInProfileCommentViewModel model);
+
+    /// <summary>
+    /// این متد از متد بالایی استفاده میکند، اینجا فقط بهش شماره صحفه پاس میدیم
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <returns></returns>
+    Task<ShowProductsInProfileCommentViewModel> GetProductsInProfileComment(int pageNumber);
 }

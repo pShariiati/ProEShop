@@ -1,0 +1,8 @@
+﻿.common-pagination-box div:not(.common-pagination-dots) {
+    width: 36px;
+    height: 36px;
+}
+
+    .common-pagination-box div:not(.common-pagination-dots):hover {
+        border: 2px solid #dc3545;
+    }

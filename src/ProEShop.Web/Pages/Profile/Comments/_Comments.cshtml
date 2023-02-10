@@ -1,0 +1,133 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model ProEShop.ViewModels.ProductComments.ShowProductCommentsInProfile
+
+@{
+    var itemsCountToCompare = Model.Items.Count - 1;
+}
+
+@foreach (var comment in Model.Items.Select((value, index) => new { value, index }))
+{
+    var justScore = comment.value.CommentTitle == null;
+    var confirmClass = comment.value.IsConfirmed == null ? "not-suggest-color-in-profile-comment bg-check-comment-in-profile-comment" : (comment.value.IsConfirmed.Value ? "text-success bg-confirmed-comment-in-profile-comment" : "text-danger bg-not-confirmed-comment-in-profile-comment");
+    var suggestClass = comment.value.Suggest is null ? "text-secondary" : (comment.value.Suggest.Value ? "text-success" : "not-suggest-color-in-profile-comment");
+    <div class="d-flex@(itemsCountToCompare == comment.index ? string.Empty : " comment-box-item-in-profile-comment")">
+        <div class="text-end ms-2">
+            <a asp-page="/Product/Index" asp-route-productCode="@comment.value.ProductProductCode" asp-route-slug="@comment.value.ProductSlug">
+                <img src="@WwwRootPaths.ProductImage/@comment.value.MainPicture" width="64" />
+            </a>
+            <br />
+            <span class="badge bg-success persian-numbers">@comment.value.Score</span>
+        </div>
+        <div class="flex-grow-1 ms-4">
+            <div class="d-flex justify-content-between border-bottom pb-2">
+                <div class="fw-bold">@(justScore ? "فقط امتیاز اضافه شده است" : comment.value.CommentTitle)</div>
+                <div class="d-flex align-items-center">
+                    @if (comment.value.IsSeller)
+                    {
+                        <div class="bg-secondary text-white rem13px px-2 me-3">فروشگاه</div>
+                    }
+                    <div class="@confirmClass rem13px px-2 me-3">
+                        @if (comment.value.IsConfirmed is null)
+                        {
+                            @:در حال بررسی
+                        }
+                        else if (comment.value.IsConfirmed.Value)
+                        {
+                            @:تایید شده
+                        }
+                        else
+                        {
+                            @:رد شده
+                        }
+                    </div>
+                    <div class="dropdown comment-action-box-in-profile-comment">
+                        <i class="bi bi-three-dots-vertical pointer-cursor rem18px" data-bs-toggle="dropdown"></i>
+                        <ul class="dropdown-menu dropdown-menu-end pointer-cursor">
+                            <li class="d-flex align-items-center py-2 px-3">
+                                <i class="bi bi-pencil-square rem18px me-3"></i>
+                                <div>ویرایش دیدگاه</div>
+                            </li>
+                            <li class="d-flex align-items-center py-2 px-3">
+                                <i class="bi bi-trash rem18px text-danger me-3"></i>
+                                <div>حذف دیدگاه</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            @if (comment.value.SellerShopNameShopName != null)
+            {
+                <div class="@suggestClass d-flex mt-3 align-items-center">
+                    @if (comment.value.Suggest is null)
+                    {
+                        <div class="circle-dot-in-profile-comment rounded-circle bg-secondary me-2"></div>
+                    }
+                    else if (comment.value.Suggest.Value)
+                    {
+                        <i class="bi bi-hand-thumbs-up me-2"></i>
+                    }
+                    else
+                    {
+                        <i class="bi bi-hand-thumbs-down me-2"></i>
+                    }
+                    <div class="rem14px">
+                        @if (comment.value.Suggest is null)
+                        {
+                            @:درباره خرید این کالا مطمئن نیستم
+                        }
+                        else if (comment.value.Suggest.Value)
+                        {
+                            @:خرید این محصول را توصیه میکنم
+                        }
+                        else
+                        {
+                            @:خرید این محصول را توصیه نمیکنم
+                        }
+                    </div>
+                </div>
+            }
+            <div class="mt-3 rem15px">@(justScore ? "فقط امتیاز اضافه شده است" : comment.value.CommentText)</div>
+            @if (comment.value.SellerShopNameShopName != null)
+            {
+                <div class="mt-3 border-top pt-3 d-flex align-items-center">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-shop"></i>
+                        <div class="rem13px ms-2">@comment.value.SellerShopNameShopName</div>
+                    </div>
+                    @if (comment.value.VariantValue != null)
+                    {
+                        <div class="circle-dot-in-profile-comment rounded-circle bg-secondary mx-3"></div>
+                        <div class="d-flex align-items-center">
+                            @if (comment.value.VariantIsColor)
+                            {
+                                <div style="background-color: @comment.value.VariantColorCode;" class="me-2 color-box-in-profile-comment rounded-circle"></div>
+                            }
+                            else
+                            {
+                                <i class="bi bi-sort-numeric-up me-2"></i>
+                            }
+                            <div class="rem13px">@comment.value.VariantValue</div>
+                        </div>
+                    }
+                </div>
+            }
+            @if (comment.value.Like > 0)
+            {
+                <div class="mt-3 border-top pt-3 d-flex justify-content-end text-success align-items-center">
+                    <div class="rem13px">
+                        این نظر برای
+                        <span class="persian-numbers">@comment.value.Like</span>
+                        نفر مفید بود
+                    </div>
+                    <i class="bi bi-hand-thumbs-up ms-2"></i>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+@{
+    Model.Pagination.FunctionName = "showCommentsByPagination";
+}
+
+<partial name="Shared/_CommonPagination" model="Model.Pagination" />

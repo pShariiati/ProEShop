@@ -77,7 +77,7 @@ public class ProductCommentService : GenericService<ProductComment>, IProductCom
             .Where(x => x.UserId == userId || x.SellerId == sellerId)
             .OrderByDescending(x => x.Id);
 
-        var paginationResult = await GenericPaginationAsync(parcelPostItems, model.Pagination);
+        var paginationResult = await GenericPagination2Async(parcelPostItems, model.Pagination);
 
         return new()
         {
@@ -86,5 +86,12 @@ public class ProductCommentService : GenericService<ProductComment>, IProductCom
             ).ToListAsync(),
             Pagination = paginationResult.Pagination
         };
+    }
+
+    public Task<ShowProductCommentsInProfile> GetCommentsInProfileComment(int pageNumber)
+    {
+        var model = new ShowProductCommentsInProfile();
+        model.Pagination.CurrentPage = pageNumber;
+        return GetCommentsInProfileComment(model);
     }
 }
