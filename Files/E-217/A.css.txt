@@ -1,0 +1,11 @@
+#add-wallet-input-in-wallet{
+    width: 122px;
+}
+
+#add-wallet-input-in-wallet:focus{
+    outline: none;
+}
+
+#add-wallet-const-values-bg{
+    background-color: #e8e6e6;
+}

@@ -1051,6 +1051,11 @@ String.prototype.addCommaToDigits = function () {
     return this.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
+// Add slash after 3 digits
+String.prototype.addSlashToDigits = function () {
+    return this.replace(/\B(?=(\d{3})+(?!\d))/g, '/');
+}
+
 function fallbackCopyTextToClipboard(text, functionNameToCallInTheEnd, clickedEl) {
     var textArea = document.createElement('textarea');
     textArea.value = text;
