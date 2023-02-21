@@ -1,12 +1,8 @@
 ﻿using ProEShop.Common.Attributes;
 using ProEShop.Common.Constants;
 using ProEShop.Entities.Enums;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ProEShop.ViewModels.Wallets;
 
@@ -17,6 +13,8 @@ public class AddValueToWalletViewModel
 {
     public PaymentGateway PaymentGateway { get; set; }
 
+    [HiddenInput]
+    [Display(Name = "مبلغ")]
     [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
     [Range(10000, 20000000, ErrorMessage = "مبلغ وارد شده باید بین ۱۰/۰۰۰ تا ۲۰/۰۰۰/۰۰۰ تومان باشد")]
     [DivisibleBy10]

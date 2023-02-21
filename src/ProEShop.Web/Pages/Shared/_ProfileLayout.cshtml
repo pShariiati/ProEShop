@@ -20,7 +20,7 @@
     }
 </head>
 
-<body is-authenticated="@(User.Identity.IsAuthenticated ? "true" : "false")" login-page-url="@Url.Page("/Identity/RegisterLogin")">
+<body>
 
     <vc:main-header></vc:main-header>
 
@@ -72,7 +72,7 @@
                             </div>
                         </a>
                     </div>
-                    <div>
+                    <div id="sidebar-links-in-profile">
                         <div class="main-link-in-profile position-relative">
                             <a href="#" class="mx-3 text-dark d-flex align-items-center py-2">
                                 <i class="bi bi-arrow-right rem21px me-3"></i>
@@ -80,14 +80,16 @@
                             </a>
                         </div>
                         <div class="main-link-in-profile position-relative d-none d-lg-block">
-                            <a asp-page="Comments/Index" class="mx-3 text-dark d-flex align-items-center py-2 border-bottom custom-border-color-in-profile">
+                            <a asp-page="/Profile/Comments/Index" lowercase-url="/profile/comments/index" class="mx-3 text-dark d-flex align-items-center py-2 border-bottom custom-border-color-in-profile">
                                 <div class="link-active-sign-in-profile bg-danger position-absolute rounded-end start-0 d-none"></div>
                                 <i class="bi bi-chat rem21px me-3"></i>
                                 دیدگاه ها
                             </a>
                         </div>
-                        <div class="main-link-in-profile position-relative pointer-cursor d-none d-lg-block">
+                        <div class="main-link-in-profile position-relative pointer-cursor d-none d-lg-block" id="log-out-div-in-profile">
                             <div class="mx-3 text-dark d-flex align-items-center py-2">
+                                <form method="post" asp-page="/Identity/RegisterLogin" asp-page-handler="LogOut">
+                                </form>
                                 <i class="bi bi-box-arrow-right rem21px me-3"></i>
                                 خروج
                             </div>

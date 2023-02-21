@@ -5,28 +5,29 @@
 }
 
 <div class="container">
-    <form method="post">
-        <input asp-for="AddValueToWallet.Value" />
+    <form method="post" id="add-value-to-wallet-form">
+        <input asp-for="AddValueToWallet.Value" value="50000" />
         <div class="fw-bold text-center text-lg-start mb-2">افزایش موجودی کیف پول</div>
+        <div class="text-danger" asp-validation-summary="All"></div>
         <div class="text-center">
             <label class="form-label rem14px text-secondary">مبلغ مورد نظر جهت افزایش موجودی را وارد کنید</label>
             <div class="d-flex align-items-center rounded-pill border border-dark justify-content-center">
-                <input class="border-0 form-control-lg bg-transparent" placeholder="مبلغ دلخواه" id="add-wallet-input-in-wallet" dir="ltr">
+                <input class="border-0 form-control-lg bg-transparent" placeholder="مبلغ دلخواه" id="add-wallet-input-in-wallet" dir="ltr" value="۵۰/۰۰۰">
                 <div class="text-secondary">تومان</div>
             </div>
-            <span class="span-error-message">مبلغ وارد شده باید بین ۱۰/۰۰۰ تا ۲۰/۰۰۰/۰۰۰ تومان باشد</span>
+            <span class="span-error-message text-success">مبلغ وارد شده باید بین ۱۰/۰۰۰ تا ۲۰/۰۰۰/۰۰۰ تومان باشد</span>
         </div>
         <div class="container-fluid text-center my-3">
-            <div class="row">
+            <div class="row" id="add-wallet-const-values-box">
                 <div class="mx-1 col border rounded-pill py-1 px-3 border-2 rem13px border-primary text-primary pointer-cursor" id="add-wallet-const-values-bg">
                     ۵۰/۰۰۰
                     <span class="rem12px">تومان</span>
                 </div>
-                <div class="mx-1 col border rounded-pill py-1 px-3 border-1 rem13px border-dark pointer-cursor">
+                <div class="mx-1 col border rounded-pill py-1 px-3 rem13px border-dark pointer-cursor">
                     ۲۰۰/۰۰۰
                     <span class="rem12px">تومان</span>
                 </div>
-                <div class="mx-1 col border rounded-pill py-1 px-3 border-1 rem13px border-dark pointer-cursor">
+                <div class="mx-1 col border rounded-pill py-1 px-3 rem13px border-dark pointer-cursor">
                     ۵۰۰/۰۰۰
                     <span class="rem12px">تومان</span>
                 </div>
@@ -34,9 +35,7 @@
         </div>
         <div class="mb-3">
             <label class="form-label">درگاه</label>
-            <select class="form-select">
-                <option>زرین پال</option>
-                <option>ملت</option>
+            <select class="form-select" asp-for="AddValueToWallet.PaymentGateway" asp-items="Html.GetEnumSelectList<ProEShop.Entities.Enums.PaymentGateway>()">
             </select>
         </div>
         <div class="d-flex">

@@ -9,7 +9,6 @@ using ProEShop.Common.IdentityToolkit;
 using ProEShop.DataLayer.Context;
 using ProEShop.Entities.Enums;
 using ProEShop.Services.Contracts;
-using ProEShop.Services.Services;
 using ProEShop.ViewModels.Wallets;
 
 namespace ProEShop.Web.Pages.Profile.Wallet;

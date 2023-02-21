@@ -14,4 +14,15 @@ $(document).ready(function () {
             mainInputEl.attr('placeholder', 'جستجو ...');
         }
     });
+
+    // logout
+    $('#log-out-div-in-profile').click(function() {
+        $(this).find('form').submit();
+    });
+
+    // اکتیو کردن لینک جاری در بخش سایدبار
+    var currentPathname = location.pathname.toLowerCase();
+
+    $('#sidebar-links-in-profile a[lowercase-url^="' + currentPathname + '"]').find('div')
+        .removeClass('d-none');
 });
