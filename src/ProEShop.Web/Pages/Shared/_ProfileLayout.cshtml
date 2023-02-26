@@ -86,6 +86,13 @@
                                 دیدگاه ها
                             </a>
                         </div>
+                        <div class="main-link-in-profile position-relative d-none d-lg-block">
+                            <a asp-page="/Profile/UserHistory/Index" lowercase-url="/profile/userhistory/index" class="mx-3 text-dark d-flex align-items-center py-2 border-bottom custom-border-color-in-profile">
+                                <div class="link-active-sign-in-profile bg-danger position-absolute rounded-end start-0 d-none"></div>
+                                <i class="bi bi-chat rem21px me-3"></i>
+                                بازید های اخیر
+                            </a>
+                        </div>
                         <div class="main-link-in-profile position-relative pointer-cursor d-none d-lg-block" id="log-out-div-in-profile">
                             <div class="mx-3 text-dark d-flex align-items-center py-2">
                                 <form method="post" asp-page="/Identity/RegisterLogin" asp-page-handler="LogOut">

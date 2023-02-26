@@ -1,0 +1,46 @@
+/* Site */
+
+.ellipsis2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+/* End Site */
+
+/* User history */
+
+.product-item-in-user-history:hover{
+    box-shadow: 0 1px 6px 0 rgb(0 0 0 / 20%);
+}
+
+@media only screen and (min-width: 992px){
+    .product-item-in-user-history:nth-child(odd){
+        border-right: 1px solid #dee2e6;
+    }    
+}
+.product-title-in-user-history{
+    line-height: 1.7;
+    height: 52px;
+}
+
+.product-price-in-user-history{
+    height: 47px;
+}
+
+.product-price-margin-in-user-history{
+    margin-left: 36px;
+}
+
+.add-to-cart-box-in-user-history{
+    right: 7px
+}
+
+.add-to-cart-button-in-user-history{
+    width: 30px;
+    height: 30px;
+}
+
+/* End user history */

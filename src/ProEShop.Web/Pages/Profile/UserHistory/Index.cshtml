@@ -1,0 +1,98 @@
+﻿@page
+@model ProEShop.Web.Pages.Profile.UserHistory.IndexModel
+@{
+    ViewData["Title"] = "بازدید های اخیر";
+}
+
+<div class="border rounded-3 py-3 custom-border-color-in-profile">
+    <div class="fw-bold ms-3 d-flex">
+        <div class="border-bottom border-2 border-danger p-2">بازدید های اخیر</div>
+    </div>
+    <div class="container-fluid mt-4">
+        <div class="row g-0">
+            @foreach (var product in Model.Products)
+            {
+                <a product-id="@product.ProductId" asp-page="/Product/Index" asp-route-productCode="@product.ProductProductCode" asp-route-slug="@product.ProductSlug" target="_blank" class="col-lg-6 border-bottom text-dark px-1 product-item-in-user-history pt-2 py-3">
+                    <div class="fw-bold text-danger mb-1 ms-1@(product.OffPercentage is null ? " invisible" : string.Empty)">شگفت انگیز</div>
+                    <div class="text-center position-relative">
+                        <img src="@WwwRootPaths.ProductImage/@product.ProductImage" width="150" />
+                        <div class="position-absolute bottom-0 add-to-cart-box-in-user-history">
+                            <div class="border border-danger text-danger rounded-circle add-to-cart-button-in-user-history rem21px">
+                                @if (product.CountInCart == 0)
+                                {
+                                    @:+
+                                }
+                                else
+                                {
+                                    <span class="persian-numbers">@product.CountInCart</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-3 rem15px product-title-in-user-history ellipsis2">
+                        @product.ProductPersianTitle
+                    </div>
+                    <div class="mt-3 product-price-in-user-history">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="rounded-pill text-white bg-danger px-2 rem13px@(product.OffPercentage is null ? " invisible" : string.Empty)">
+                                <span class="persian-numbers">@product.OffPercentage</span>%
+                            </div>
+                            <div>
+                                <div>
+                                    <span class="persian-numbers fw-bold">@product.FinalPrice.ToString("#,0")</span>
+                                    <span class="rem14px">تومان</span>
+                                </div>
+                            </div>
+                        </div>
+                        @if (product.OffPercentage != null)
+                        {
+                            <div class="text-black-50 text-end mt-1 product-price-margin-in-user-history">
+                                <span class="persian-numbers fw-bold rem14px text-decoration-line-through">@product.Price.ToString("#,0")</span>
+                            </div>
+                        }
+                    </div>
+                    <div class="d-flex align-items-center mx-2 mt-3">
+                        <div class="border rounded-pill px-3 py-1 text-secondary remove-product-in-user-history">
+                            <i class="bi bi-trash"></i>
+                            <span class="rem15px">حذف</span>
+                        </div>
+                        <div class="border border-danger text-danger ms-2 flex-grow-1 rounded-pill px-3 py-1 text-center">
+                            <i class="bi bi-cart me-1"></i>
+                            اضافه به سبد
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+    </div>
+</div>
+
+@section CustomScripts
+{
+    <script src="~/Pages/Profile/UserHistory/Index.cshtml.js"></script>
+}
+
+<div class="modal fade" id="remove-product-in-user-history-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">حذف از بازدید های اخیر</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" functionNameToCallInTheEnd="removeProductFormUserHistory" class="public-ajax-form" asp-page-handler="RemoveProduct">
+                    <input type="hidden" value="" name="productId" />
+                    <div>
+                        آیا از حذف
+                        <span></span>
+                        از بازدید های اخیر اطمینان دارید ؟
+                    </div>
+                    <div class="text-end mt-3">
+                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">انصراف</button>
+                        <button class="btn btn-danger">حذف کالا</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -87,6 +87,7 @@ public static class AddCustomServicesExtensions
         services.AddScoped<IUserListProductService, UserListProductService>();
         services.AddScoped<IParcelPostItemService, ParcelPostItemService>();
         services.AddScoped<IWalletService, WalletService>();
+        services.AddScoped<IUserHistoryService, UserHistoryService>();
 
         #region Html sanitizer
         IHtmlSanitizer sanitizer = new HtmlSanitizer();

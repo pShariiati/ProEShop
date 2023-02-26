@@ -1,5 +1,6 @@
 ._0-Status.bat
 ._1-Reset-Git.bat
+._2-override-last-commit
 
 **/wwwroot/lib
 

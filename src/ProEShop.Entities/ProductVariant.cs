@@ -68,5 +68,7 @@ public class ProductVariant : EntityBase, IAuditableEntity
 
     public ICollection<ParcelPostItem> ParcelPostItems { get; set; }
 
+    public ICollection<Cart> Carts { get; set; }
+
     #endregion
 }

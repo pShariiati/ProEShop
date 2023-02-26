@@ -718,9 +718,13 @@ $(document).on('submit', 'form.public-ajax-form', function (e) {
     var currentForm = this;
     var hideLoadingAttr = $(this).attr('hide-loading');
 
-    $('#html-modal-place').modal('hide');
-    $('#html-scrollable-modal-place').modal('hide');
-    $('#second-html-modal-place').modal('hide');
+    //$('#html-modal-place').modal('hide');
+    //$('#html-scrollable-modal-place').modal('hide');
+    //$('#second-html-modal-place').modal('hide');
+
+    $('.modal').each(function() {
+        $(this).modal('hide');
+    });
 
     if (!hideLoadingAttr) {
         showLoading();

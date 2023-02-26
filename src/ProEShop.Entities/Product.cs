@@ -95,6 +95,8 @@ public class Product : EntityBase, IAuditableEntity
 
     public ICollection<UserListProduct> UserListsProducts { get; set; }
 
+    public ICollection<UserHistory> UserHistories { get; set; }
+
     #endregion
 }
 
