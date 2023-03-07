@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.rtl.min.css" />
     <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="~/lib/toastr.js/toastr.min.css" />
+    @await RenderSectionAsync("Styles", false)
     <link rel="stylesheet" href="~/css/site.css">
     <link rel="stylesheet" href="~/css/profile-styles.css">
     <link rel="stylesheet" href="~/ProEShop.Web.styles.css">
@@ -80,14 +81,21 @@
                             </a>
                         </div>
                         <div class="main-link-in-profile position-relative d-none d-lg-block">
-                            <a asp-page="/Profile/Comments/Index" lowercase-url="/profile/comments/index" class="mx-3 text-dark d-flex align-items-center py-2 border-bottom custom-border-color-in-profile">
+                            <a asp-page="/Profile/Comments/Index" lowercase-url="/profile/comments" class="mx-3 text-dark d-flex align-items-center py-2 border-bottom custom-border-color-in-profile">
                                 <div class="link-active-sign-in-profile bg-danger position-absolute rounded-end start-0 d-none"></div>
                                 <i class="bi bi-chat rem21px me-3"></i>
                                 دیدگاه ها
                             </a>
                         </div>
                         <div class="main-link-in-profile position-relative d-none d-lg-block">
-                            <a asp-page="/Profile/UserHistory/Index" lowercase-url="/profile/userhistory/index" class="mx-3 text-dark d-flex align-items-center py-2 border-bottom custom-border-color-in-profile">
+                            <a asp-page="/Profile/Addresses/Index" lowercase-url="/profile/addresses" class="mx-3 text-dark d-flex align-items-center py-2 border-bottom custom-border-color-in-profile">
+                                <div class="link-active-sign-in-profile bg-danger position-absolute rounded-end start-0 d-none"></div>
+                                <i class="bi bi-signpost-2 rem21px me-3"></i>
+                                آدرس ها
+                            </a>
+                        </div>
+                        <div class="main-link-in-profile position-relative d-none d-lg-block">
+                            <a asp-page="/Profile/UserHistory/Index" lowercase-url="/profile/userhistory" class="mx-3 text-dark d-flex align-items-center py-2 border-bottom custom-border-color-in-profile">
                                 <div class="link-active-sign-in-profile bg-danger position-absolute rounded-end start-0 d-none"></div>
                                 <i class="bi bi-chat rem21px me-3"></i>
                                 بازید های اخیر

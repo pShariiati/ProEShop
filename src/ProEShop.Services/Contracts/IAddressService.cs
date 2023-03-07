@@ -1,4 +1,5 @@
 ﻿using ProEShop.Entities;
+using ProEShop.ViewModels.Addresses;
 using ProEShop.ViewModels.Brands;
 using ProEShop.ViewModels.Carts;
 
@@ -20,4 +21,17 @@ public interface IAddressService : IGenericService<Address>
     /// <param name="userId"></param>
     /// <returns></returns>
     Task<(bool HasUserAddress, long AddressId)> GetAddressForCreateOrderAndPay(long userId);
+
+    /// <summary>
+    /// گرفتن تمامی آدرس های کاربر
+    /// </summary>
+    /// <returns></returns>
+    Task<List<ShowAddressInProfileViewModel>> GetAllUserAddresses();
+
+    /// <summary>
+    /// حذف آدرس کاربر
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    Task<bool> RemoveUserAddress(long id);
 }

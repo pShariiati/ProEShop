@@ -1,11 +1,14 @@
 ﻿using System.Linq.Expressions;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using ProEShop.Common.Helpers;
+using ProEShop.Common.IdentityToolkit;
 using ProEShop.DataLayer.Context;
 using ProEShop.Entities;
 using ProEShop.Services.Contracts;
 using ProEShop.ViewModels;
+using ProEShop.ViewModels.Addresses;
 using ProEShop.ViewModels.Brands;
 using ProEShop.ViewModels.Carts;
 using ProEShop.ViewModels.Categories;
@@ -16,11 +19,16 @@ public class AddressService : GenericService<Address>, IAddressService
 {
     private readonly DbSet<Address> _addresses;
     private readonly IMapper _mapper;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public AddressService(IUnitOfWork uow, IMapper mapper)
+    public AddressService(
+        IUnitOfWork uow,
+        IMapper mapper,
+        IHttpContextAccessor httpContextAccessor)
         : base(uow)
     {
         _mapper = mapper;
+        _httpContextAccessor = httpContextAccessor;
         _addresses = uow.Set<Address>();
     }
 
@@ -43,5 +51,29 @@ public class AddressService : GenericService<Address>, IAddressService
         if (address is null)
             return (false, default);
         return (true, address.Id);
+    }
+
+    public Task<List<ShowAddressInProfileViewModel>> GetAllUserAddresses()
+    {
+        var userId = _httpContextAccessor.HttpContext.User.Identity.GetLoggedInUserId();
+
+        return _mapper.ProjectTo<ShowAddressInProfileViewModel>(
+                _addresses.Where(x => x.UserId == userId)
+            ).ToListAsync();
+    }
+
+    public async Task<bool> RemoveUserAddress(long id)
+    {
+        var userId = _httpContextAccessor.HttpContext.User.Identity.GetLoggedInUserId();
+
+        var addressToRemove = await _addresses.Where(x => x.UserId == userId)
+            .SingleOrDefaultAsync(x => x.Id == id);
+
+        if (addressToRemove is null)
+            return false;
+
+        _addresses.Remove(addressToRemove);
+
+        return true;
     }
 }

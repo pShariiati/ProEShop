@@ -21,8 +21,8 @@ $(document).ready(function () {
     });
 
     // اکتیو کردن لینک جاری در بخش سایدبار
-    var currentPathname = location.pathname.toLowerCase();
+    var currentPathname = location.pathname.toLowerCase().replace(/\/index$/, '');
 
-    $('#sidebar-links-in-profile a[lowercase-url^="' + currentPathname + '"]').find('div')
+    $('#sidebar-links-in-profile a[lowercase-url="' + currentPathname + '"]').find('div')
         .removeClass('d-none');
 });

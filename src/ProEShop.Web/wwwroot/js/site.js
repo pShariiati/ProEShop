@@ -135,7 +135,9 @@ function showSweetAlert2(text, functionToCallAfterConfirm, functionToCallAfterRe
         if (result.isConfirmed) {
             window[functionToCallAfterConfirm]();
         } else {
-            window[functionToCallAfterReject]();
+            if (functionToCallAfterReject) {
+                window[functionToCallAfterReject]();
+            }
         }
     });
 }

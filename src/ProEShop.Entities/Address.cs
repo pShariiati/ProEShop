@@ -33,6 +33,10 @@ public class Address : EntityBase, IAuditableEntity
     /// </summary>
     public short Unit { get; set; }
 
+    /// <summary>
+    /// کد پستی
+    /// Post office box
+    /// </summary>
     [MaxLength(10)]
     public string Pob { get; set; }
 

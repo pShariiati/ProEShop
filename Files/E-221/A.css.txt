@@ -1,0 +1,17 @@
+/* Address */
+
+.address-action-box-in-profile-comment ul > li:hover{
+    background-color: #eeeeee;
+}
+
+.address-title-in-prfile-address{
+    line-height: 2;
+}
+
+.address-item-profile-address:not(:last-child){
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* End address */
