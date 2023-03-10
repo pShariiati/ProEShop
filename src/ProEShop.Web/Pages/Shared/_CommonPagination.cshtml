@@ -1,7 +1,6 @@
 ﻿@model ProEShop.ViewModels.CommonPaginationViewModel
 
-@if (Model.PagesCount > 1)
-{
+@{
     var functionName = Model.FunctionName;
     var pagesCount = Model.PagesCount;
     var currentPage = Model.CurrentPage;
@@ -13,11 +12,11 @@
     var isLastPage = currentPage == pagesCount;
 
     var paginationBoxClass = "justify-content-center";
-    if (isFirstPage)
+    if (isFirstPage && pagesCount > 1)
     {
         paginationBoxClass = "justify-content-end";
     }
-    else if (isLastPage)
+    else if (isLastPage && pagesCount > 1)
     {
         paginationBoxClass = "justify-content-start";
     }
@@ -31,52 +30,51 @@
     {
         endPage = pagesCount;
     }
-
-    <div class="d-flex mt-4 align-items-center pt-3 border-top border-2 custom-border-color-in-profile">
-        @if (!isFirstPage)
-        {
-            <div class="flex-grow-1 text-danger d-flex">
-                <div functionNameToCallOnClick="@functionName" page-number="@previousPage"
+}
+<div class="d-flex mt-4 align-items-center pt-3 border-top border-2 custom-border-color-in-profile">
+    @if (!isFirstPage)
+    {
+        <div class="flex-grow-1 text-danger d-flex">
+            <div functionNameToCallOnClick="@functionName" page-number="@previousPage"
              class="get-html-with-ajax pointer-cursor">
-                    <i class="bi bi-chevron-right rem12px"></i>
-                    <span class="rem14px ms-1">قبلی</span>
-                </div>
+                <i class="bi bi-chevron-right rem12px"></i>
+                <span class="rem14px ms-1">قبلی</span>
+            </div>
+        </div>
+    }
+    <div class="flex-grow-1 d-flex @(paginationBoxClass) common-pagination-box">
+        @if (currentPage >= 5)
+        {
+            <div functionNameToCallOnClick="@functionName" page-number="1"
+             class="get-html-with-ajax persian-numbers rounded-circle mx-1 d-flex align-items-center justify-content-center pointer-cursor rem14px">
+                ۱
+            </div>
+            <div class="common-pagination-box d-flex justify-content-center align-items-center rem11px">...</div>
+        }
+        @for (int counter = startPage; counter <= endPage; counter++)
+        {
+            <div functionNameToCallOnClick="@functionName" page-number="@counter"
+             class="get-html-with-ajax persian-numbers rounded-circle mx-1 d-flex align-items-center justify-content-center pointer-cursor rem14px@(counter == currentPage ? " bg-danger text-white" : string.Empty)">
+                @counter
             </div>
         }
-        <div class="flex-grow-1 d-flex @(paginationBoxClass) common-pagination-box">
-            @if (currentPage >= 5)
-            {
-                <div functionNameToCallOnClick="@functionName" page-number="1"
-             class="get-html-with-ajax persian-numbers rounded-circle mx-1 d-flex align-items-center justify-content-center pointer-cursor rem14px">
-                    ۱
-                </div>
-                <div class="common-pagination-box d-flex justify-content-center align-items-center rem11px">...</div>
-            }
-            @for (int counter = startPage; counter <= endPage; counter++)
-            {
-                <div functionNameToCallOnClick="@functionName" page-number="@counter"
-             class="get-html-with-ajax persian-numbers rounded-circle mx-1 d-flex align-items-center justify-content-center pointer-cursor rem14px@(counter == currentPage ? " bg-danger text-white" : string.Empty)">
-                    @counter
-                </div>
-            }
-            @if (pagesCount - 3 > currentPage)
-            {
-                <div class="common-pagination-box d-flex justify-content-center align-items-center rem11px">...</div>
-                <div functionNameToCallOnClick="@functionName" page-number="@pagesCount"
-             class="get-html-with-ajax persian-numbers rounded-circle mx-1 d-flex align-items-center justify-content-center pointer-cursor rem14px">
-                    @pagesCount
-                </div>
-            }
-        </div>
-        @if (!isLastPage)
+        @if (pagesCount - 3 > currentPage)
         {
-            <div class="flex-grow-1 text-danger d-flex justify-content-end">
-                <div functionNameToCallOnClick="@functionName" page-number="@nextPage"
-             class="get-html-with-ajax pointer-cursor">
-                    <span class="rem14px me-1">بعدی</span>
-                    <i class="bi bi-chevron-left rem12px"></i>
-                </div>
+            <div class="common-pagination-box d-flex justify-content-center align-items-center rem11px">...</div>
+            <div functionNameToCallOnClick="@functionName" page-number="@pagesCount"
+             class="get-html-with-ajax persian-numbers rounded-circle mx-1 d-flex align-items-center justify-content-center pointer-cursor rem14px">
+                @pagesCount
             </div>
         }
     </div>
-}
+    @if (!isLastPage)
+    {
+        <div class="flex-grow-1 text-danger d-flex justify-content-end">
+            <div functionNameToCallOnClick="@functionName" page-number="@nextPage"
+             class="get-html-with-ajax pointer-cursor">
+                <span class="rem14px me-1">بعدی</span>
+                <i class="bi bi-chevron-left rem12px"></i>
+            </div>
+        </div>
+    }
+</div>

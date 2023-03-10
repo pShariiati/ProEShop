@@ -1,0 +1,82 @@
+<div class="border rounded-3 py-3 custom-border-color-in-profile">
+          <div class="d-flex justify-content-between mx-3">
+            <div class="fw-bold">تاریخچه سفارشات</div>
+            <div>
+              <i class="bi bi-search pointer-cursor"></i>
+            </div>
+          </div>
+          <div class="d-flex mt-4 border-bottom">
+            <a href="#" class="text-dark ms-2">
+              <div class="mx-3 my-2">
+                جاری
+              </div>
+            </a>
+            <a href="#" class="text-danger fw-bold pointer-cursor">
+              <div class="mx-3 my-2">
+                تحویل شده
+                <span class="badge rounded-3 bg-danger">
+                  <span class="persian-nnumbers">۵</span>
+                </span>
+              </div>
+              <div class="orders-title-line-in-profile-orders custom-border-color-in-profile w-100 bg-danger rounded-top">
+              </div>
+            </a>
+          </div>
+          <div class="d-flex flex-column mx-2 mt-3">
+            <a href="#" class="text-dark border rounded-3 item-in-profile-order">
+              <div class="p-3 border-bottom">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="d-flex">
+                    <div class="check-icon-in-profile-orders text-white rounded-circle me-2 position-relative">
+                      <i class="bi bi-check2 position-absolute"></i>
+                    </div>
+                    <div>تحویل شده</div>
+                  </div>
+                  <div>
+                    <bi class="bi bi-chevron-left"></bi>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center mt-3 rem15px">
+                  <div class="text-secondary">۸ اسفند ۱۴۰۱</div>
+                  <div class="circle-dot-in-profile-orders bg-custom-grey rounded-circle mx-2"></div>
+                  <div>
+                    <span class="text-secondary">کد سفارش</span>
+                    <span class="persian-numbers fw-bold">۴۷۳۸۹</span>
+                  </div>
+                  <div class="circle-dot-in-profile-orders bg-custom-grey rounded-circle mx-2"></div>
+                  <div>
+                    <span class="text-secondary">مبلغ</span>
+                    <span class="persian-numbers fw-bold">۴۸۰,۰۰۰</span>
+                    تومان
+                  </div>
+                </div>
+                <div class="rem15px d-flex align-items-center mt-3">
+                  <i class="bi bi-trophy rem18px text-warning me-2"></i>
+                  <span class="text-secondary me-2">امتیاز پرو کلاب</span>
+                  <span class="persian-numbers fw-bold">۱۰</span>
+                </div>
+              </div>
+              <div class="border-bottom py-3 d-flex align-items-center">
+                <div class="mx-3">
+                  <img src="images/products/product1.jpg" width="64" />
+                </div>
+                <div class="mx-3">
+                  <img src="images/products/product1.jpg" width="64" />
+                </div>
+                <div class="mx-3">
+                  <img src="images/products/product1.jpg" width="64" />
+                </div>
+                <div class="rem14px">
+                  <span class=persian-numbers>۳</span>
+                  +
+                </div>
+              </div>
+              <div class="d-flex justify-content-end py-3">
+                <div class="me-3 text-info">
+                  <i class="bi bi-receipt me-1"></i>
+                  <span class="rem14px">مشاهده فاکتور</span>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>

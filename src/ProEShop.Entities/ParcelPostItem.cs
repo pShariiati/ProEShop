@@ -30,6 +30,8 @@ public class ParcelPostItem : IAuditableEntity
 
     public byte Score { get; set; }
 
+    public long OrderId { get; set; }
+
     #endregion
 
     #region Relations
@@ -39,6 +41,8 @@ public class ParcelPostItem : IAuditableEntity
     public ProductVariant ProductVariant { get; set; }
 
     public Guarantee Guarantee { get; set; }
+
+    public Order Order { get; set; }
 
     #endregion
 }

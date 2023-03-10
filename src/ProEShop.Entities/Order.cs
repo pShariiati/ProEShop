@@ -74,5 +74,8 @@ public class Order : EntityBase, IAuditableEntity
     public ICollection<ParcelPost> ParcelPosts { get; set; }
         = new List<ParcelPost>();
 
+    public ICollection<ParcelPostItem> ParcelPostItems { get; set; }
+        = new List<ParcelPostItem>();
+
     #endregion
 }

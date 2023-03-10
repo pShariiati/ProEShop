@@ -147,7 +147,8 @@ public class PaymentModel : PageBase
                     ProductVariantId = normalProduct.ProductVariantId,
                     GuaranteeId = normalProduct.ProductVariantGuaranteeId,
                     Score = normalProduct.Score,
-                    Price = normalProduct.ProductVariantPrice
+                    Price = normalProduct.ProductVariantPrice,
+                    Order = orderToAdd
                 };
                 if (normalProduct.IsDiscountActive)
                     parcelPostItemToAdd.DiscountPrice =
@@ -176,7 +177,8 @@ public class PaymentModel : PageBase
                     ProductVariantId = heavyProduct.ProductVariantId,
                     GuaranteeId = heavyProduct.ProductVariantGuaranteeId,
                     Score = heavyProduct.Score,
-                    Price = heavyProduct.ProductVariantPrice
+                    Price = heavyProduct.ProductVariantPrice,
+                    Order = orderToAdd
                 };
                 if (heavyProduct.IsDiscountActive)
                     parcelPostItemToAdd.DiscountPrice =
@@ -205,7 +207,8 @@ public class PaymentModel : PageBase
                     ProductVariantId = ultraHeavyProduct.ProductVariantId,
                     GuaranteeId = ultraHeavyProduct.ProductVariantGuaranteeId,
                     Score = ultraHeavyProduct.Score,
-                    Price = ultraHeavyProduct.ProductVariantPrice
+                    Price = ultraHeavyProduct.ProductVariantPrice,
+                    Order = orderToAdd
                 };
                 if (ultraHeavyProduct.IsDiscountActive)
                     parcelPostItemToAdd.DiscountPrice =

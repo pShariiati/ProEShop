@@ -15,5 +15,10 @@ public class ParcelPostItemConfiguration : IEntityTypeConfiguration<ParcelPostIt
             .WithMany(x => x.ParcelPostItems)
             .HasForeignKey(x => x.ProductVariantId)
             .OnDelete(DeleteBehavior.NoAction);
+
+        builder.HasOne(x => x.Order)
+            .WithMany(x => x.ParcelPostItems)
+            .HasForeignKey(x => x.OrderId)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

@@ -2,6 +2,7 @@
 using ProEShop.ViewModels.Brands;
 using ProEShop.ViewModels.Carts;
 using ProEShop.ViewModels.Orders;
+using ProEShop.ViewModels.ProductComments;
 
 namespace ProEShop.Services.Contracts;
 
@@ -35,4 +36,18 @@ public interface IOrderService : IGenericService<Order>
     /// <param name="orderId"></param>
     /// <returns></returns>
     Task<OrderDetailsViewModel> GetOrderDetails(long orderId);
+
+    /// <summary>
+    /// نمایش تمامی سفارشات در بخش پروفایل
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    Task<ShowOrdersInProfileViewModel> GetOrdersInProfile(ShowOrdersInProfileViewModel model);
+
+    /// <summary>
+    /// این متد از متد بالایی استفاده میکند، اینجا فقط بهش شماره صحفه پاس میدیم
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <returns></returns>
+    Task<ShowOrdersInProfileViewModel> GetOrdersInProfile(int pageNumber);
 }

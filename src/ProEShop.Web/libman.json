@@ -60,6 +60,10 @@
       "provider": "jsdelivr",
       "library": "js-image-zoom@0.7.0",
       "destination": "wwwroot\\lib\\js-image-zoom"
+    },
+    {
+      "library": "Swiper@9.1.0",
+      "destination": "wwwroot/lib/Swiper/"
     }
   ]
 }

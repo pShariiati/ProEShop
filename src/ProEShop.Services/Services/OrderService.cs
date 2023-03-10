@@ -11,6 +11,7 @@ using ProEShop.ViewModels.Brands;
 using ProEShop.ViewModels.Carts;
 using ProEShop.ViewModels.Categories;
 using ProEShop.ViewModels.Orders;
+using ProEShop.ViewModels.ProductComments;
 
 namespace ProEShop.Services.Services;
 
@@ -145,5 +146,63 @@ public class OrderService : GenericService<Order>, IOrderService
                 .AsSplitQuery()
                 .AsNoTracking())
             .SingleOrDefaultAsync(x => x.Id == orderId);
+    }
+
+    public async Task<ShowOrdersInProfileViewModel> GetOrdersInProfile(ShowOrdersInProfileViewModel model)
+    {
+        var orders = _orders
+            .Where(x => x.Status == OrderStatus.DeliveredToClient)
+            .OrderByDescending(x => x.Id)
+            .Where(x => x.IsPay)
+            .AsNoTracking()
+            .AsQueryable();
+
+        #region Search
+
+        // We can't search (Contains) on [NotMapped] properties
+        //var searchedFullName = model.SearchOrders.FullName;
+        //if (!string.IsNullOrWhiteSpace(searchedFullName))
+        //{
+        //    orders = orders.Where(x => (x.Address.FirstName + " " + x.Address.LastName).Contains(searchedFullName));
+        //}
+
+        //var searchedProvinceId = model.SearchOrders.ProvinceId;
+        //if (searchedProvinceId is > 0)
+        //{
+        //    orders = orders.Where(x => x.Address.ProvinceId == searchedProvinceId);
+        //}
+
+        //var searchedCityId = model.SearchOrders.CityId;
+        //if (searchedCityId is > 0)
+        //{
+        //    orders = orders.Where(x => x.Address.CityId == searchedCityId);
+        //}
+
+        //if (model.SearchOrders.Status is null)
+        //{
+        //    orders = orders.Where(x => x.Status != OrderStatus.WaitingForPaying)
+        //        .Where(x => x.Status != OrderStatus.Processing);
+        //}
+
+        //orders = ExpressionHelpers.CreateSearchExpressions(orders, model.SearchOrders, false);
+
+        #endregion
+
+        var paginationResult = await GenericPagination2Async(orders, model.Pagination);
+
+        return new()
+        {
+            Orders = await _mapper.ProjectTo<ShowOrderInProfileViewModel>(
+                paginationResult.Query
+            ).ToListAsync(),
+            Pagination = paginationResult.Pagination
+        };
+    }
+
+    public Task<ShowOrdersInProfileViewModel> GetOrdersInProfile(int pageNumber)
+    {
+        var model = new ShowOrdersInProfileViewModel();
+        model.Pagination.CurrentPage = pageNumber;
+        return GetOrdersInProfile(model);
     }
 }

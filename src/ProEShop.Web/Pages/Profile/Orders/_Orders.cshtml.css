@@ -1,0 +1,19 @@
+﻿.check-icon-in-profile-orders {
+    width: 23px !important;
+    height: 23px !important;
+    background: #6bb927;
+}
+
+.check-icon-in-profile-orders i {
+    top: 1px;
+    right: 3px;
+}
+
+.circle-dot-in-profile-orders {
+    width: 4px;
+    height: 4px;
+}
+
+.item-in-profile-order:not(:nth-last-child(2)) {
+    margin-bottom: 1rem;
+}

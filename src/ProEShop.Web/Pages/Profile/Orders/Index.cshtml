@@ -1,0 +1,49 @@
+﻿@page
+@model ProEShop.Web.Pages.Profile.Orders.IndexModel
+@{
+    ViewData["Title"] = "سفارش ها";
+}
+
+<div class="border rounded-3 py-3 custom-border-color-in-profile">
+    <div class="d-flex justify-content-between mx-3">
+        <div class="fw-bold">تاریخچه سفارشات</div>
+        <div>
+            <i class="bi bi-search pointer-cursor"></i>
+        </div>
+    </div>
+    <div class="d-flex mt-4 border-bottom">
+        <a href="#" class="text-dark ms-2">
+            <div class="mx-3 my-2">
+                جاری
+            </div>
+        </a>
+        <a href="#" class="text-danger fw-bold pointer-cursor">
+            <div class="mx-3 my-2">
+                تحویل شده
+                <span class="badge rounded-3 bg-danger">
+                    <span class="persian-nnumbers">۵</span>
+                </span>
+            </div>
+            <div class="orders-title-line-in-profile-orders custom-border-color-in-profile w-100 bg-danger rounded-top">
+            </div>
+        </a>
+    </div>
+    <div class="d-flex flex-column mx-2 mt-3" id="orders-box-in-comment-profile">
+        <partial name="_Orders" model="@Model.Orders" />
+    </div>
+</div>
+
+@section CustomScripts
+{
+    <script src="~/Pages/Profile/Orders/Index.cshtml.js"></script>
+}
+
+@section Styles
+{
+    <link rel="stylesheet" href="~/lib/Swiper/swiper-bundle.min.css" />
+}
+
+@section Scripts
+{
+    <script src="~/lib/Swiper/swiper-bundle.min.js"></script>
+}
