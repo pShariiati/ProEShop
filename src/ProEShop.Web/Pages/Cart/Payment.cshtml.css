@@ -2,3 +2,7 @@
     width: 20px;
     height: 20px;
 }
+
+#discount-code-box-in-payment input:focus, #discount-code-box-in-payment button:focus {
+    outline: none;
+}

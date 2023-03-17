@@ -1,0 +1,8 @@
+<div class="row mt-4" id="discount-code-box-in-payment">
+            <div class="col-lg-6">
+              <label class="border py-1 px-2 rounded-3 d-flex justify-content-between">
+                <input class="me-2 flex-grow-1 border-0 bg-transparent py-2" placeholder="افزودن کد تخفیف">
+                <button class="bg-transparent border-0 rem14px text-info">ثبت</button>
+              </label>
+            </div>
+          </div>

@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Parbad;
 using Parbad.AspNetCore;
 using Parbad.Gateway.ZarinPal;
 using ProEShop.Common.Constants;
+using ProEShop.Common.Helpers;
 using ProEShop.Common.IdentityToolkit;
 using ProEShop.DataLayer.Context;
 using ProEShop.Entities.Enums;
@@ -23,19 +23,22 @@ public class PaymentModel : PageBase
     private readonly IOrderService _orderService;
     private readonly IUnitOfWork _uow;
     private readonly IOnlinePayment _onlinePayment;
+    private readonly IDiscountCodeService _discountCodeService;
 
     public PaymentModel(
         ICartService cartService,
         IAddressService addressService,
         IOrderService orderService,
         IUnitOfWork uow,
-        IOnlinePayment onlinePayment)
+        IOnlinePayment onlinePayment,
+        IDiscountCodeService discountCodeService)
     {
         _cartService = cartService;
         _addressService = addressService;
         _orderService = orderService;
         _uow = uow;
         _onlinePayment = onlinePayment;
+        _discountCodeService = discountCodeService;
     }
 
     #endregion
@@ -315,9 +318,22 @@ public class PaymentModel : PageBase
 
             return result.GatewayTransporter.TransportToGateway();
         }
-        else
+
+        return RedirectToPage(PublicConstantStrings.Error500PageName);
+    }
+
+    /// <summary>
+    /// بررسی کد تخفیف که آیا وجود داره یا خیر ؟
+    /// </summary>
+    /// <param name="code"></param>
+    /// <returns></returns>
+    public async Task<IActionResult> OnGetCheckForDiscount(string code)
+    {
+        var discountCodeResult = await _discountCodeService.CheckForDiscountPrice(code);
+
+        return Json(new JsonResultOperation(true)
         {
-            return RedirectToPage(PublicConstantStrings.Error500PageName);
-        }
+            Data = discountCodeResult
+        });
     }
 }

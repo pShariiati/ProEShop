@@ -88,6 +88,8 @@ public static class AddCustomServicesExtensions
         services.AddScoped<IParcelPostItemService, ParcelPostItemService>();
         services.AddScoped<IWalletService, WalletService>();
         services.AddScoped<IUserHistoryService, UserHistoryService>();
+        services.AddScoped<IDiscountCodeService, DiscountCodeService>();
+        services.AddScoped<IDiscountCodeService, DiscountCodeService>();
 
         #region Html sanitizer
         IHtmlSanitizer sanitizer = new HtmlSanitizer();
