@@ -186,8 +186,12 @@
                     <div class="col-lg-6">
                         <label class="border py-1 px-2 rounded-3 d-flex justify-content-between">
                             <input class="me-2 flex-grow-1 border-0 bg-transparent py-2" placeholder="افزودن کد تخفیف">
-                            <button class="bg-transparent border-0 rem14px text-info">ثبت</button>
+                            <button class="bg-transparent border-0 rem14px text-info" id="add-discount-code-button-in-payment">ثبت</button>
+                            <button class="bg-transparent border-0 d-none" id="remove-discount-code-button-in-payment">
+                                <i class="bi bi-x-circle"></i>
+                            </button>
                         </label>
+                        <span class="rem13px text-success d-none" id="discount-code-added-text-in-payment">کد تخفیف شما با موفقیت اعمال شد</span>
                     </div>
                 </div>
             </div>
@@ -395,13 +399,13 @@
                                 (<span class="persian-numbers">@allProductsCountInCart</span>)
                             </div>
                             <div>
-                                <span class="persian-numbers">
+                                <span class="persian-numbers" id="total-price-box-in-payment">
                                     @totalPrice.ToString("#,0")
                                 </span>
                                 تومان
                             </div>
                         </div>
-                        <hr />
+                        <hr class="text-secondary" />
                     </div>
                     <div class="d-flex justify-content-between align-items-center rem14px">
                         <div class="d-flex align-items-center">
@@ -499,19 +503,44 @@
                         هزینه ارسال بر اساس آدرس، وزن و حجم مرسوله شما محاسبه میشود
                         <hr />
                     </div>
-                    @if (discountPercentage > 0)
-                    {
-                        <div class="d-flex justify-content-between text-danger mb-4">
+                    
+                    <div id="show-discount-code-box-in-payment" class="d-none">
+                        @if (discountPercentage > 0)
+                        {
+                            <div class="d-flex justify-content-between mb-3">
+                                <div class="rem14px">
+                                    <i class="bi bi-coin"></i>
+                                    تخفیف کالا ها
+                                </div>
+                                <div class="fw-bold">
+                                    <span class="persian-numbers">@discountPrice.ToString("#,0")</span>
+                                    تومان
+                                </div>
+                            </div>
+                        }
+                        <div class="d-flex justify-content-between">
                             <div class="rem14px">
-                                سود شما از خرید
+                                <i class="bi bi-currency-exchange"></i>
+                                کد تخفیف
                             </div>
                             <div class="fw-bold">
-                                (<span class="persian-numbers">@discountPercentage</span>%)
-                                <span class="persian-numbers">@discountPrice.ToString("#,0")</span>
+                                <span class="persian-numbers" id="discount-code-price-box-in-payment"></span>
                                 تومان
                             </div>
                         </div>
-                    }
+                        <hr class="text-secondary" />
+                    </div>
+
+                    <div id="discount-price-box-in-payment" class="d-flex justify-content-between text-danger mb-4@(discountPercentage > 0 ? string.Empty : " d-none")">
+                        <div class="rem14px">
+                            سود شما از خرید
+                        </div>
+                        <div class="fw-bold">
+                            (<span class="persian-numbers">@discountPercentage</span>%)
+                            <span class="persian-numbers">@discountPrice.ToString("#,0")</span>
+                            تومان
+                        </div>
+                    </div>
                     
                     <form method="post">
                         <div class="mb-4">
@@ -525,7 +554,7 @@
                                 قابل پرداخت
                             </div>
                             <div class="rem16px fw-bold">
-                                <span class="persian-numbers">
+                                <span class="persian-numbers" id="final-price-box-in-payment">
                                     @((totalPriceWithDiscount + sumPriceOfShipping).ToString("#,0"))
                                 </span>
                                 تومان

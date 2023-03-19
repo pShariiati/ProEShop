@@ -863,7 +863,7 @@ $(document).on('submit', 'form.search-form-via-ajax', function (e) {
     var currentForm = $(this);
     var pageNumberInput = $('#page-number-input').val();
     if (isGotoPageClicked || $('#page-number-input').is(':focus')) {
-        currentForm.find('input[name$="Pagination.CurrentPage"').val(pageNumberInput);
+        currentForm.find('input[name$="Pagination.CurrentPage"]').val(pageNumberInput);
     }
     else if (!isMainPaginationClicked) {
         currentForm.find('input[name$="Pagination.CurrentPage"').val(1);

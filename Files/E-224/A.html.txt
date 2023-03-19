@@ -1,0 +1,23 @@
+<div id="show-discount-code-box-in-payment">
+              <div class="d-flex justify-content-between mb-3">
+                <div class="rem14px">
+                  <i class="bi bi-coin"></i>
+                  تخفیف کالا ها
+                </div>
+                <div class="fw-bold">
+                  <span class="persian-numbers">۲۰۵,۰۰۰</span>
+                  تومان
+                </div>
+              </div>
+              <div class="d-flex justify-content-between">
+                <div class="rem14px">
+                  <i class="bi bi-currency-exchange"></i>
+                  کد تخفیف
+                </div>
+                <div class="fw-bold">
+                  <span class="persian-numbers" id="discount-price-box-in-payment">۲۰۵,۰۰۰</span>
+                  تومان
+                </div>
+              </div>
+              <hr class="text-secondary" />
+            </div>
