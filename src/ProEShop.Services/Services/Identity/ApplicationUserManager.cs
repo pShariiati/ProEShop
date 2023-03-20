@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using DNTPersianUtils.Core;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ProEShop.Common.Helpers;
+using ProEShop.Common.IdentityToolkit;
 using ProEShop.DataLayer.Context;
 using ProEShop.Entities.Identity;
 using ProEShop.Services.Contracts.Identity;
@@ -18,6 +20,7 @@ public class ApplicationUserManager
 {
     private readonly DbSet<User> _users;
     private readonly IMapper _mapper;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
     public ApplicationUserManager(
         IApplicationUserStore store,
@@ -29,7 +32,9 @@ public class ApplicationUserManager
         IdentityErrorDescriber errors,
         IServiceProvider services,
         ILogger<ApplicationUserManager> logger,
-        IUnitOfWork uow, IMapper mapper)
+        IUnitOfWork uow,
+        IMapper mapper,
+        IHttpContextAccessor httpContextAccessor)
         : base(
             (UserStore<User, Role, ApplicationDbContext, long, UserClaim, UserRole, UserLogin, UserToken,
                 RoleClaim>)store,
@@ -37,6 +42,7 @@ public class ApplicationUserManager
             keyNormalizer, errors, services, logger)
     {
         _mapper = mapper;
+        _httpContextAccessor = httpContextAccessor;
         _users = uow.Set<User>();
     }
 
@@ -79,6 +85,11 @@ public class ApplicationUserManager
         return await _users.Where(x => x.IsSeller)
             .Where(x => x.UserRoles.All(r => r.Role.Name != ConstantRoles.Seller))
             .SingleOrDefaultAsync(x => x.UserName == userName);
+    }
+
+    public long GetLoggedInUser()
+    {
+        return _httpContextAccessor.HttpContext.User.Identity.GetLoggedInUserId();
     }
 
     #endregion

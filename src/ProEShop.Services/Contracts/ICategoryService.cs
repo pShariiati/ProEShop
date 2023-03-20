@@ -55,4 +55,11 @@ public interface ICategoryService : IGenericService<Category>
     /// <param name="productCodes"></param>
     /// <returns></returns>
     Task<bool> CheckProductCategoryIdsInComparePage(params int[] productCodes);
+
+    /// <summary>
+    /// گرفتن عنوان دسته بندی
+    /// </summary>
+    /// <param name="categoryId"></param>
+    /// <returns></returns>
+    Task<string> GetCategoryTitle(long categoryId);
 }

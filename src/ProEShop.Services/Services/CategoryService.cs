@@ -243,6 +243,13 @@ public class CategoryService : GenericService<Category>, ICategoryService
         return mainCategoryIds.Distinct().Count() == 1;
     }
 
+    public Task<string> GetCategoryTitle(long categoryId)
+    {
+        return _categories.Where(x => x.Id == categoryId)
+            .Select(x => x.Title)
+            .SingleAsync();
+    }
+
     public override async Task<DuplicateColumns> AddAsync(Category entity)
     {
         var result = new List<string>();

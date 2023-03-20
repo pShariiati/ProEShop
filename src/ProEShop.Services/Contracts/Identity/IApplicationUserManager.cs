@@ -131,5 +131,11 @@ public interface IApplicationUserManager : IDisposable
 
     Task<User> GetUserForCreateSeller(string userName);
 
+    /// <summary>
+    /// گرفتن آیدی کاربری که در داخل سیستم لاگین است
+    /// </summary>
+    /// <returns></returns>
+    long GetLoggedInUser();
+
     #endregion
 }

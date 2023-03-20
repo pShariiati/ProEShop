@@ -67,4 +67,18 @@ public interface ICartService : ICustomGenericService<Cart>
     /// <param name="userId"></param>
     /// <returns></returns>
     Task<List<Entities.Cart>> GetAllCartItems(long userId);
+
+    /// <summary>
+    /// در داخل آیتم های سبد خرید سرچ میکنیم که حداقل یک محصول با این برند آیدی وجود داشته باشد
+    /// </summary>
+    /// <param name="brandId"></param>
+    /// <returns></returns>
+    Task<bool> CheckBrandIdForExistingInCart(long brandId);
+
+    /// <summary>
+    /// در داخل آیتم های سبد خرید سرچ میکنیم که حداقل یک محصول با این آیدی دسته بندی وجود داشته باشد
+    /// </summary>
+    /// <param name="categoryId"></param>
+    /// <returns></returns>
+    Task<bool> CheckCategoryIdForExistingInCart(long categoryId);
 }

@@ -5,10 +5,11 @@
 /// </summary>
 public class CheckDiscountCodeViewModel
 {
-    public CheckDiscountCodeViewModel(bool result, int discountPrice)
+    public CheckDiscountCodeViewModel(bool result, int discountPrice, string message = null)
     {
         Result = result;
         DiscountPrice = discountPrice;
+        Message = message;
     }
 
     public bool Result { get; set; }
@@ -17,4 +18,6 @@ public class CheckDiscountCodeViewModel
     /// میزان تخفیف
     /// </summary>
     public int DiscountPrice { get; set; }
+
+    public string Message { get; set; }
 }

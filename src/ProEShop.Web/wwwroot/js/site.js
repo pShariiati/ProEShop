@@ -126,14 +126,16 @@ function showSweetAlert2(text, functionToCallAfterConfirm, functionToCallAfterRe
         title: 'اعلان',
         text: text,
         icon: 'warning',
-        confirmButtonText: 'بله',
-        showDenyButton: true,
+        confirmButtonText: functionToCallAfterConfirm ? 'بله' : 'باشه',
+        showDenyButton: functionToCallAfterConfirm ? true : false,
         denyButtonText: 'خیر',
         confirmButtonColor: '#067719',
         allowOutsideClick: false
     }).then((result) => {
         if (result.isConfirmed) {
-            window[functionToCallAfterConfirm]();
+            if (functionToCallAfterConfirm) {
+                window[functionToCallAfterConfirm]();
+            }
         } else {
             if (functionToCallAfterReject) {
                 window[functionToCallAfterReject]();

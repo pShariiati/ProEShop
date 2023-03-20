@@ -33,7 +33,30 @@
     // اگر روی دکمه ثبت کد تخفیف کلیک شد، کد تخفیف رو به سمت سرور میفرسته که بررسی کنه همچین کدی وجود داره یا نه
     $('#add-discount-code-button-in-payment').click(function() {
         var code = $(this).parent().find('input').val();
-        getDataWithAJAX('?handler=CheckForDiscount', { code }, 'calculateDiscount');
+        
+        if (isNullOrWhitespace(code)) {
+            showSweetAlert2('کد تخفیف نباید خالی باشد');
+        } else {
+            getDataWithAJAX('?handler=CheckForDiscount', { code }, 'calculateDiscount');
+        }
+    });
+
+    // اگر روی دکمه ضربدر کلیک شد باید کد تخفیف رو حذف کنیم
+    $('#remove-discount-code-button-in-payment').click(function () {
+        // نمایش دکمه ثبت
+        $(this).addClass('d-none');
+        // مخفی کردن دکمه ثبت
+        $(this).prev('button').removeClass('d-none');
+        // اینپوت کد تخفیف
+        var inputEl = $(this).parent().find('input');
+        inputEl.val('');
+        inputEl.focus();
+        // مخفی کردن متن زیر اینپوت که میگه: کد تخفیف اعمال شد
+        $('#discount-code-added-text-in-payment').addClass('d-none');
+        // مخفی کردن بخش کد تخفیف در سمت چپ صفحه
+        $('#show-discount-code-box-in-payment').addClass('d-none');
+        // محاسبه مجدد قیمت ها
+        calculatePrices(0);
     });
 });
 
@@ -58,6 +81,7 @@ function calculateDiscount(message, data) {
     } else {
         // اینپوت رو دوباره به حالت فوکس در میاریم
         $('#discount-code-box-in-payment input').focus();
+        alert(data.message)
     }
 }
 
@@ -83,6 +107,35 @@ function calculatePrices(discountCodePrice) {
     // تخفیف خود کالا ها به علاوه مقدار کد تخفیف
     $('#discount-price-box-in-payment span:last')
         .html((discountPrice + discountCodePrice).toString().addCommaToDigits().toPersinaDigit());
+
+    // محاسبه درصد تخفیف
+    // کل توضیحات در ریزر پیج
+    // Payment
+    var totalPriceDivideBy100 = Math.ceil(totalPrice / 100);
+
+    // چرا به پایین گرد  میکنیم ؟
+    // چون تا زمانی که حتی یک تومان هم پرداخت کنیم، تخفیف، صد در صد نیست
+    // برای مثال قیمت سبد خرید ده هزاره
+    // حالا یک کد تخفیف
+    // 9999
+    // تومانی داریم، اگر محاسبه کنیم یک عدد بین 99 و 100 به دست میاد
+    // و اگه به بالا گرد بشه میشه 100، درصورتیکه ما حداقل یک تومان پرداخت میکنیم پس نمیشه گفت که ما
+    // تخفیف 100 درصدی داریم
+    var percentageOfTotalPriceOfCartThatUserMustPay = Math.floor(finalPriceWithDiscountCodePrice / totalPriceDivideBy100);
+
+    var discountPercentage = 100 - percentageOfTotalPriceOfCartThatUserMustPay;
+
+    // اگر محصولات تخفیف نداشته باشن بخش سود شما از خرید نمایش داده نمیشه ومخفیه
+    // و بعد اگه دکمه ضربدر رو بزنیم که کد تخفیف حذف بشه
+    // باید دوباره بخش سود شما از خرید رو مخفی کنیم
+    // چون از اول وجود نداشته و الان هم کد تخفیف نداریم که بخوایم بخش سود شما از خرید رو نمایش بدیم
+    if (discountPercentage === 0) {
+        $('#discount-price-box-in-payment').addClass('d-none');
+    }
+
+    // درصد تخفیف
+    $('#discount-price-box-in-payment span:first')
+        .html(discountPercentage.toString().toPersinaDigit());
 }
 
 // همینکه روی دکمه پرداخت کلیک بشه، دکمه رو غیر فعال کنیم که مجددا روی دکمه کلیک نشه

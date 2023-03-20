@@ -6,6 +6,7 @@ using ProEShop.Common.Helpers;
 using ProEShop.DataLayer.Context;
 using ProEShop.Entities;
 using ProEShop.Services.Contracts;
+using ProEShop.Services.Contracts.Identity;
 using ProEShop.ViewModels;
 using ProEShop.ViewModels.Brands;
 using ProEShop.ViewModels.Carts;
@@ -18,13 +19,16 @@ public class CartService : CustomGenericService<Cart>, ICartService
 {
     private readonly DbSet<Cart> _carts;
     private readonly IMapper _mapper;
+    private readonly IApplicationUserManager _userManager;
 
     public CartService(
         IUnitOfWork uow,
-        IMapper mapper)
+        IMapper mapper,
+        IApplicationUserManager userManager)
         : base(uow)
     {
         _mapper = mapper;
+        _userManager = userManager;
         _carts = uow.Set<Cart>();
     }
 
@@ -85,5 +89,22 @@ public class CartService : CustomGenericService<Cart>, ICartService
     public Task<List<Cart>> GetAllCartItems(long userId)
     {
         return _carts.Where(x => x.UserId == userId).ToListAsync();
+    }
+
+    public Task<bool> CheckBrandIdForExistingInCart(long brandId)
+    {
+        var userId = _userManager.GetLoggedInUser();
+
+        return _carts.Where(x => x.UserId == userId)
+            .AnyAsync(x => x.ProductVariant.Product.BrandId == brandId);
+    }
+
+    public Task<bool> CheckCategoryIdForExistingInCart(long categoryId)
+    {
+        var userId = _userManager.GetLoggedInUser();
+
+        return _carts.Where(x => x.UserId == userId)
+            .SelectMany(x => x.ProductVariant.Product.ProductCategories)
+            .AnyAsync(x => x.CategoryId == categoryId);
     }
 }

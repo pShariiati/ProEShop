@@ -131,6 +131,13 @@ public class BrandService : GenericService<Brand>, IBrandService
             .SingleOrDefaultAsync(x => x.Id == brandId);
     }
 
+    public Task<string> GetBrandTitle(long brandId)
+    {
+        return _brands.Where(x => x.Id == brandId)
+            .Select(x => x.TitleFa)
+            .SingleAsync();
+    }
+
     public override async Task<DuplicateColumns> AddAsync(Brand entity)
     {
         var result = new List<string>();

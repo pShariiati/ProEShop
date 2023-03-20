@@ -3,7 +3,7 @@
 @model ProEShop.Web.Pages.Cart.CheckoutModel
 @{
     ViewData["Title"] = "ثبت سفارش";
-    Layout = "_CheckoutAndLayoutLayout";
+    Layout = "_CheckoutAndPaymentLayout";
 
     var cartItems = Model.CheckoutPage.CartItems;
     var userAddress = Model.CheckoutPage.UserAddress;
