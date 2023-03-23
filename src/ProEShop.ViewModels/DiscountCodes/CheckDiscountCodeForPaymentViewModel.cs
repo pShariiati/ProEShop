@@ -2,14 +2,16 @@
 
 /// <summary>
 /// ویوو مدل نتیجه ی چک کردن کد تخفیف در صفحه پرداخت
+/// برای بخش پست
 /// </summary>
-public class CheckDiscountCodeViewModel
+public class CheckDiscountCodeForPaymentViewModel
 {
-    public CheckDiscountCodeViewModel(bool result, int discountPrice, string message = null)
+    public CheckDiscountCodeForPaymentViewModel(bool result, int discountPrice, string message = null, long? discountCodeId = null)
     {
         Result = result;
         DiscountPrice = discountPrice;
         Message = message;
+        DiscountCodeId = discountCodeId;
     }
 
     public bool Result { get; set; }
@@ -20,4 +22,6 @@ public class CheckDiscountCodeViewModel
     public int DiscountPrice { get; set; }
 
     public string Message { get; set; }
+
+    public long? DiscountCodeId { get; }
 }

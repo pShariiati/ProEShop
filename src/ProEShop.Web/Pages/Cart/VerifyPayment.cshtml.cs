@@ -1,32 +1,60 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Parbad;
+using ProEShop.Common.Constants;
 using ProEShop.Common.IdentityToolkit;
 using ProEShop.DataLayer.Context;
 using ProEShop.Entities.Enums;
 using ProEShop.Services.Contracts;
+using ProEShop.ViewModels.Orders;
 
 namespace ProEShop.Web.Pages.Cart;
 
 [IgnoreAntiforgeryToken]
+[Authorize]
 public class VerifyPaymentModel : PageModel
 {
+    #region Constructor
+
     private readonly IOnlinePayment _onlinePayment;
     private readonly IOrderService _orderService;
     private readonly IUnitOfWork _uow;
+    private readonly IMapper _mapper;
 
     public VerifyPaymentModel(
         IUnitOfWork uow,
         IOrderService orderService,
-        IOnlinePayment onlinePayment)
+        IOnlinePayment onlinePayment,
+        IMapper mapper)
     {
         _uow = uow;
         _orderService = orderService;
         _onlinePayment = onlinePayment;
+        _mapper = mapper;
     }
 
-    public async Task<IActionResult> OnGet()
+    #endregion
+
+    public VerifyPageDataViewModel VerifyPaymentData { get; set; }
+        = new();
+
+    public async Task<IActionResult> OnGet(long? orderNumber)
     {
+        if (orderNumber != null)
+        {
+            var userId = User.Identity.GetLoggedInUserId();
+            VerifyPaymentData = await _orderService.FindByOrderNumber(orderNumber.Value, userId);
+
+            if (VerifyPaymentData is null)
+            {
+                return RedirectToPage(PublicConstantStrings.Error500PageName);
+            }
+
+            return Page();
+        }
+
         return await Verify();
     }
 
@@ -48,7 +76,7 @@ public class VerifyPaymentModel : PageModel
             // Check if the invoice is new or it's already processed before.
             var isAlreadyProcessed = invoice.Status == PaymentFetchResultStatus.AlreadyProcessed;
             var isAlreadyVerified = invoice.IsAlreadyVerified;
-            return Content("The payment was not successful.");
+            return Page();
         }
 
         var verifyResult = await _onlinePayment.VerifyAsync(invoice);
@@ -58,14 +86,14 @@ public class VerifyPaymentModel : PageModel
         {
             // checking if the payment is already verified
             var isAlreadyVerified = verifyResult.Status == PaymentVerifyResultStatus.AlreadyVerified;
-            return Content("The payment is already verified before.");
+            return Page();
         }
 
         var userId = User.Identity.GetLoggedInUserId();
         var order = await _orderService.FindByOrderNumberAndIncludeParcelPosts(verifyResult.TrackingNumber, userId);
         if (order is null)
         {
-            return Content("The payment was not successful.");
+            return RedirectToPage(PublicConstantStrings.Error500PageName);
         }
 
         // وضعیت مرسوله های این سفارش را به حالت "در حال پردازش" تغییر میدهیم
@@ -80,6 +108,8 @@ public class VerifyPaymentModel : PageModel
         order.IsPay = true;
         await _uow.SaveChangesAsync();
 
-        return Content("The payment was successful");
+        VerifyPaymentData = _mapper.Map(order, VerifyPaymentData);
+
+        return Page();
     }
 }

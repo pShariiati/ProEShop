@@ -50,5 +50,7 @@ public class OrderMappingProfile : Profile
             .ForMember(dest => dest.ProductPicture,
                 options =>
                     options.MapFrom(src => src.ProductVariant.Product.ProductMedia.First().FileName));
+
+        this.CreateMap<Entities.Order, VerifyPageDataViewModel>();
     }
 }

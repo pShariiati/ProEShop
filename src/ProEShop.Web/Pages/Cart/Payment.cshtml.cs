@@ -7,9 +7,11 @@ using ProEShop.Common.Constants;
 using ProEShop.Common.Helpers;
 using ProEShop.Common.IdentityToolkit;
 using ProEShop.DataLayer.Context;
+using ProEShop.Entities;
 using ProEShop.Entities.Enums;
 using ProEShop.Services.Contracts;
 using ProEShop.ViewModels.Carts;
+using ProEShop.ViewModels.DiscountCodes;
 
 namespace ProEShop.Web.Pages.Cart;
 
@@ -66,17 +68,30 @@ public class PaymentModel : PageBase
     /// <summary>
     /// ایجاد سفارش و انتقال کاربر به درگاه بانکی
     /// </summary>
-    /// <param name="model"></param>
     /// <returns></returns>
     public async Task<IActionResult> OnPost()
     {
+        var userId = User.Identity.GetLoggedInUserId();
+
+        if (!ModelState.IsValid)
+        {
+            PaymentPage.CartItems = await _cartService.GetCartsForPaymentPage(userId);
+
+            // اگر سبد خرید خالی بود، کاربر رو به صفحه سبد خرید انتقال بده
+            if (PaymentPage.CartItems.Count < 1)
+            {
+                return RedirectToPage("Index");
+            }
+
+            return Page();
+        }
+
         // پرداخت هزینه سفارش از کیف پول کاربر
         if (CreateOrderAndPayModel.PayFormWallet)
         {
             //todo: pay order price form wallet
         }
-
-        var userId = User.Identity.GetLoggedInUserId();
+        
         var address = await _addressService.GetAddressForCreateOrderAndPay(userId);
         // آیا کاربر آدرس داره ؟
         if (!address.HasUserAddress)
@@ -282,6 +297,35 @@ public class PaymentModel : PageBase
         // قیمت محصولات داخل سبد خرید کاربر به علاوه هزینه حمل و نقل مرسوله ها
         var finalPrice = totalPriceWithDiscount + sumPriceOfShipping;
 
+        var discountCode = CreateOrderAndPayModel.DiscountCode;
+
+        var discountCodePrice = 0;
+
+        if (!string.IsNullOrWhiteSpace(discountCode))
+        {
+            var checkDiscountCode =
+                await _discountCodeService.CheckForDiscountPriceForPayment(new(finalPrice, discountCode));
+            if (!checkDiscountCode.Result)
+            {
+                PaymentPage.CartItems = await _cartService.GetCartsForPaymentPage(userId);
+
+                // اگر سبد خرید خالی بود، کاربر رو به صفحه سبد خرید انتقال بده
+                if (PaymentPage.CartItems.Count < 1)
+                {
+                    return RedirectToPage("Index");
+                }
+
+                ModelState.AddModelError(string.Empty, checkDiscountCode.Message);
+
+                return Page();
+            }
+
+            orderToAdd.DiscountCodeId = checkDiscountCode.DiscountCodeId;
+            discountCodePrice = checkDiscountCode.DiscountPrice;
+        }
+
+        finalPrice = finalPrice - discountCodePrice <= 0 ? 0 : finalPrice - discountCodePrice;
+
         // کاربر بعد از درگاه به چه آدرسی هدایت شود
         var callbackUrl = Url.PageLink("VerifyPayment", null, null, Request.Scheme);
 
@@ -307,9 +351,31 @@ public class PaymentModel : PageBase
             orderToAdd.DiscountPrice = discountPrice;
         }
 
-        orderToAdd.FinalPrice = totalPrice + sumPriceOfShipping - discountPrice;
+        if (discountCodePrice > 0)
+        {
+            orderToAdd.DiscountPrice = discountPrice + discountCodePrice;
+        }
+
+        orderToAdd.FinalPrice = finalPrice;
         orderToAdd.TotalScore = (byte)sumScore;
         orderToAdd.ShippingCount = (byte)shippingCount;
+
+        if (finalPrice == 0)
+        {
+            // وضعیت مرسوله های این سفارش را به حالت "در حال پردازش" تغییر میدهیم
+            foreach (var parcelPost in orderToAdd.ParcelPosts)
+            {
+                parcelPost.Status = ParcelPostStatus.Processing;
+            }
+
+            orderToAdd.Status = OrderStatus.Processing;
+            orderToAdd.IsPay = true;
+
+            await _orderService.AddAsync(orderToAdd);
+            await _uow.SaveChangesAsync();
+
+            return RedirectToPage("VerifyPayment", new { orderNumber = orderToAdd.OrderNumber });
+        }
 
         if (result.IsSucceed)
         {
@@ -325,11 +391,16 @@ public class PaymentModel : PageBase
     /// <summary>
     /// بررسی کد تخفیف که آیا وجود داره یا خیر ؟
     /// </summary>
-    /// <param name="code"></param>
+    /// <param name="model"></param>
     /// <returns></returns>
-    public async Task<IActionResult> OnGetCheckForDiscount(string code)
+    public async Task<IActionResult> OnGetCheckForDiscount(GetDiscountCodeDataViewModel model)
     {
-        var discountCodeResult = await _discountCodeService.CheckForDiscountPrice(code);
+        if (!ModelState.IsValid)
+        {
+            return JsonBadRequest();
+        }
+
+        var discountCodeResult = await _discountCodeService.CheckForDiscountPrice(model);
 
         return Json(new JsonResultOperation(true)
         {

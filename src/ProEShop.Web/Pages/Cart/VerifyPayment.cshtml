@@ -1,4 +1,21 @@
 ﻿@page
 @model ProEShop.Web.Pages.Cart.VerifyPaymentModel
 @{
+    ViewData["Title"] = "پرداخت انجام شد";
+}
+
+@if (Model.VerifyPaymentData.IsPay)
+{
+    <h1>
+        شماره سفارش:
+        @Model.VerifyPaymentData.OrderNumber
+    </h1>
+
+    @if (Model.VerifyPaymentData.BankTransactionCode != null)
+    {
+        <h1>
+            کد پیگیری بانک
+            @Model.VerifyPaymentData.BankTransactionCode
+        </h1>
+    }
 }

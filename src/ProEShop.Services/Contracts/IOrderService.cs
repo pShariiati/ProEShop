@@ -17,6 +17,14 @@ public interface IOrderService : IGenericService<Order>
     Task<Order> FindByOrderNumberAndIncludeParcelPosts(long orderNumber, long userId);
 
     /// <summary>
+    /// گرفتن سفارش بر اساس شماره سفارش
+    /// </summary>
+    /// <param name="orderNumber"></param>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    Task<VerifyPageDataViewModel> FindByOrderNumber(long orderNumber, long userId);
+
+    /// <summary>
     /// نمایش تمامی سفارشات در داخل گرید
     /// </summary>
     /// <param name="model"></param>

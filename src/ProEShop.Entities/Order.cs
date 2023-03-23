@@ -63,6 +63,8 @@ public class Order : EntityBase, IAuditableEntity
 
     public bool IsPay { get; set; }
 
+    public long? DiscountCodeId { get; set; }
+
     #endregion
 
     #region Relations
@@ -76,6 +78,8 @@ public class Order : EntityBase, IAuditableEntity
 
     public ICollection<ParcelPostItem> ParcelPostItems { get; set; }
         = new List<ParcelPostItem>();
+
+    public DiscountCode DiscountCode { get; set; }
 
     #endregion
 }

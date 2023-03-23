@@ -185,7 +185,7 @@
                 <div class="row mt-4 d-none" id="discount-code-box-in-payment">
                     <div class="col-lg-6">
                         <label class="border py-1 px-2 rounded-3 d-flex justify-content-between">
-                            <input class="me-2 flex-grow-1 border-0 bg-transparent py-2" placeholder="افزودن کد تخفیف">
+                            <input maxlength="100" class="me-2 flex-grow-1 border-0 bg-transparent py-2" placeholder="افزودن کد تخفیف">
                             <button class="bg-transparent border-0 rem14px text-info" id="add-discount-code-button-in-payment">ثبت</button>
                             <button class="bg-transparent border-0 d-none" id="remove-discount-code-button-in-payment">
                                 <i class="bi bi-x-circle"></i>
@@ -543,6 +543,8 @@
                     </div>
                     
                     <form method="post">
+                        <div asp-validation-summary="All" class="text-danger rem14px"></div>
+                        <input asp-for="CreateOrderAndPayModel.DiscountCode"/>
                         <div class="mb-4">
                             <label asp-for="CreateOrderAndPayModel.PaymentGateway" class="form-label"></label>
                             <select class="form-select" asp-for="CreateOrderAndPayModel.PaymentGateway" asp-items="Html.GetEnumSelectList<ProEShop.Entities.Enums.PaymentGateway>()">

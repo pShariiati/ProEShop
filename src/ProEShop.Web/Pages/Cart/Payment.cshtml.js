@@ -37,12 +37,16 @@
         if (isNullOrWhitespace(code)) {
             showSweetAlert2('کد تخفیف نباید خالی باشد');
         } else {
-            getDataWithAJAX('?handler=CheckForDiscount', { code }, 'calculateDiscount');
+            getDataWithAJAX('?handler=CheckForDiscount', { DiscountCode: code, SumPriceOfCart: finalPrice }, 'calculateDiscount');
         }
     });
 
     // اگر روی دکمه ضربدر کلیک شد باید کد تخفیف رو حذف کنیم
     $('#remove-discount-code-button-in-payment').click(function () {
+        // مقدار اینپوت کد تخفیف رو حذف میکنیم
+        // که موقعی که فرم به سمت سرور ارسال میشه، کد تخفیف مقدار نداشته باشه
+        $('form').find('input[name="CreateOrderAndPayModel.DiscountCode"]').val('');
+
         // نمایش دکمه ثبت
         $(this).addClass('d-none');
         // مخفی کردن دکمه ثبت
@@ -63,9 +67,14 @@
 // بعد از اینکه کد تخیف رو به سمت سرور فرستادیم، نتیجه به این فانکشن برگشت داده میشه
 function calculateDiscount(message, data) {
     if (data.result) {
+        // تغییر مقدار اینپوت کد تخفیف که موقعی که دکمه پرداخت رو میزنیم
+        // کد تخفیف به سمت سرور ارسال بشه
+        var discountCode = $('#discount-code-box-in-payment').find('input').val();
+        $('form').find('input[name="CreateOrderAndPayModel.DiscountCode"]').val(discountCode);
+
         // اینپوت رو از حالت فوکس خارج میکنیم
         $('#discount-code-box-in-payment input').blur();
-        //نمایش دکمه ضربدر
+        // نمایش دکمه ضربدر
         $('#remove-discount-code-button-in-payment').removeClass('d-none');
         // مخفی کردن دکمه ثبت کد تخفیف
         $('#add-discount-code-button-in-payment').addClass('d-none');
@@ -75,14 +84,26 @@ function calculateDiscount(message, data) {
         $('#show-discount-code-box-in-payment').removeClass('d-none');
         // نمایش مقدار کد تخفیف به صورت فارسی
         $('#discount-code-price-box-in-payment').html(data.discountPrice.toString().addCommaToDigits().toPersinaDigit());
-
-        // محاسبه مجدد قیمت ها بعد از اضافه شدن مقدار کد تخفیف
-        calculatePrices(data.discountPrice);
     } else {
+        // مقدار اینپوت کد تخفیف رو حذف میکنیم
+        // که موقعی که فرم به سمت سرور ارسال میشه، کد تخفیف مقدار نداشته باشه
+        $('form').find('input[name="CreateOrderAndPayModel.DiscountCode"]').val('');
+
         // اینپوت رو دوباره به حالت فوکس در میاریم
         $('#discount-code-box-in-payment input').focus();
-        alert(data.message)
+        // مخفی کردن دکمه ضربدر
+        $('#remove-discount-code-button-in-payment').addClass('d-none');
+        // نمایش دکمه ثبت
+        $('#add-discount-code-button-in-payment').removeClass('d-none');
+        // مخفی متن  "کد تخفیف اعمال شد" در پایین اینپوت کد تخفیف
+        $('#discount-code-added-text-in-payment').addClass('d-none');
+        // مخفی کردن مقدار تخفیف در بخش چپ صفحه
+        $('#show-discount-code-box-in-payment').addClass('d-none');
+        showSweetAlert2(data.message);
     }
+
+    // محاسبه مجدد قیمت ها بعد از اضافه شدن مقدار کد تخفیف
+    calculatePrices(data.discountPrice);
 }
 
 // به محض لود صفحه این مقادیر رو میگیریم که در هنگام افزودن کد تخفیف بتونیم

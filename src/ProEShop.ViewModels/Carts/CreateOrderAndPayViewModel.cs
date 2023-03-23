@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
+using ProEShop.Common.Constants;
 using ProEShop.Entities.Enums;
 
 namespace ProEShop.ViewModels.Carts;
@@ -18,4 +20,9 @@ public class CreateOrderAndPayViewModel
     /// </summary>
     [Display(Name = "درگاه")]
     public PaymentGateway PaymentGateway { get; set; }
+
+    [HiddenInput]
+    [Display(Name = "کد تخفیف")]
+    [MaxLength(100, ErrorMessage = AttributesErrorMessages.MaxLengthMessage)]
+    public string DiscountCode { get; set; }
 }

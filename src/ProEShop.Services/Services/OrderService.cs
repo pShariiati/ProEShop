@@ -34,6 +34,13 @@ public class OrderService : GenericService<Order>, IOrderService
             .SingleOrDefaultAsync(x => x.UserId == userId);
     }
 
+    public Task<VerifyPageDataViewModel> FindByOrderNumber(long orderNumber, long userId)
+    {
+        return _mapper.ProjectTo<VerifyPageDataViewModel>(
+            _orders.Where(x => x.UserId == userId)
+        ).SingleOrDefaultAsync(x => x.OrderNumber == orderNumber);
+    }
+
     public async Task<ShowOrdersViewModel> GetOrders(ShowOrdersViewModel model)
     {
         var orders = _orders.AsNoTracking().AsQueryable();
