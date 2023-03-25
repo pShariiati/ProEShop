@@ -65,6 +65,11 @@ public class Order : EntityBase, IAuditableEntity
 
     public long? DiscountCodeId { get; set; }
 
+    /// <summary>
+    /// میزان کد تخفیف
+    /// </summary>
+    public int? DiscountCodePrice { get; set; }
+
     #endregion
 
     #region Relations
@@ -80,6 +85,8 @@ public class Order : EntityBase, IAuditableEntity
         = new List<ParcelPostItem>();
 
     public DiscountCode DiscountCode { get; set; }
+
+    public ICollection<UsedDiscountCode> UsedDiscountCodes { get; set; }
 
     #endregion
 }

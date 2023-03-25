@@ -1,4 +1,8 @@
 ﻿$(function () {
+    var hasValidationError = !isNullOrWhitespace($('form div:first li:first').text());
+    if (hasValidationError) {
+        showSweetAlert2('خطای اعتبار سنجی، لطفا خطا هایی که در بخش بالای درگاه نوشته شده اند را بررسی نمایید');
+    }
     // موقعی که دکمه "اِن مرسوله" هاور شد
     // دراپ دان مِنو رو نشون بده
     // موقعی که بلر شد مخفیش کن

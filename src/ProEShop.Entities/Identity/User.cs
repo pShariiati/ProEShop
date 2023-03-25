@@ -65,6 +65,8 @@ public class User : IdentityUser<long>, IAuditableEntity
 
     public ICollection<UserHistory> UserHistories { get; set; }
 
+    public ICollection<UsedDiscountCode> UsedDiscountCodes { get; set; }
+
     #endregion
 }
 

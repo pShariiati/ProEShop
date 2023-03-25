@@ -304,7 +304,7 @@ public class PaymentModel : PageBase
         if (!string.IsNullOrWhiteSpace(discountCode))
         {
             var checkDiscountCode =
-                await _discountCodeService.CheckForDiscountPriceForPayment(new(finalPrice, discountCode));
+                await _discountCodeService.CheckForDiscountPriceForPayment(new(finalPrice, discountCode), true);
             if (!checkDiscountCode.Result)
             {
                 PaymentPage.CartItems = await _cartService.GetCartsForPaymentPage(userId);
@@ -321,7 +321,7 @@ public class PaymentModel : PageBase
             }
 
             orderToAdd.DiscountCodeId = checkDiscountCode.DiscountCodeId;
-            discountCodePrice = checkDiscountCode.DiscountPrice;
+            orderToAdd.DiscountCodePrice = discountCodePrice = checkDiscountCode.DiscountPrice;
         }
 
         finalPrice = finalPrice - discountCodePrice <= 0 ? 0 : finalPrice - discountCodePrice;
@@ -362,6 +362,16 @@ public class PaymentModel : PageBase
 
         if (finalPrice == 0)
         {
+            // افزودن رکورد به جدولِ: کد های تخفیف استفاده شده
+            if (orderToAdd.DiscountCodeId != null)
+            {
+                orderToAdd.UsedDiscountCodes.Add(new()
+                {
+                    UserId = userId,
+                    DiscountCodeId = orderToAdd.DiscountCodeId.Value
+                });
+            }
+
             // وضعیت مرسوله های این سفارش را به حالت "در حال پردازش" تغییر میدهیم
             foreach (var parcelPost in orderToAdd.ParcelPosts)
             {
@@ -400,7 +410,7 @@ public class PaymentModel : PageBase
             return JsonBadRequest();
         }
 
-        var discountCodeResult = await _discountCodeService.CheckForDiscountPrice(model);
+        var discountCodeResult = await _discountCodeService.CheckForDiscountPriceForPayment(model, false);
 
         return Json(new JsonResultOperation(true)
         {

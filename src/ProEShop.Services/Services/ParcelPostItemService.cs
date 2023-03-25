@@ -55,4 +55,17 @@ public class ParcelPostItemService : CustomGenericService<ParcelPostItem>, IParc
         model.Pagination.CurrentPage = pageNumber;
         return GetProductsInProfileComment(model);
     }
+
+    public Task<bool> CheckBrandIdForExistingInOrder(long orderId, long brandId)
+    {
+        return _parcelPostItems.Where(x => x.OrderId == orderId)
+            .AnyAsync(x => x.ProductVariant.Product.BrandId == brandId);
+    }
+
+    public Task<bool> CheckCategoryIdForExistingInOrder(long orderId, long categoryId)
+    {
+        return _parcelPostItems.Where(x => x.OrderId == orderId)
+            .SelectMany(x => x.ProductVariant.Product.ProductCategories)
+            .AnyAsync(x => x.CategoryId == categoryId);
+    }
 }

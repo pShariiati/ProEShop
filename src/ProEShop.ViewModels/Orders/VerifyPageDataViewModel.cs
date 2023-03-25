@@ -10,4 +10,6 @@ public class VerifyPageDataViewModel
     public string BankTransactionCode { get; set; }
 
     public long OrderNumber { get; set; }
+
+    public string Message { get; set; }
 }

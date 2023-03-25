@@ -19,4 +19,20 @@ public interface IParcelPostItemService : ICustomGenericService<ParcelPostItem>
     /// <param name="pageNumber"></param>
     /// <returns></returns>
     Task<ShowProductsInProfileCommentViewModel> GetProductsInProfileComment(int pageNumber);
+
+    /// <summary>
+    /// آیا داخل محصولات سفارش کاربر، یک محصول با این برند وجود دارد یا خیر ؟
+    /// </summary>
+    /// <param name="orderId"></param>
+    /// <param name="brandId"></param>
+    /// <returns></returns>
+    Task<bool> CheckBrandIdForExistingInOrder(long orderId, long brandId);
+
+    /// <summary>
+    /// آیا داخل محصولات سفارش کاربر، یک محصول با این دسته بندی وجود دارد یا خیر ؟
+    /// </summary>
+    /// <param name="orderId"></param>
+    /// <param name="categoryId"></param>
+    /// <returns></returns>
+    Task<bool> CheckCategoryIdForExistingInOrder(long orderId, long categoryId);
 }

@@ -75,5 +75,7 @@ public class DiscountCode : EntityBase, IAuditableEntity
 
     public Category Category { get; set; }
 
+    public ICollection<UsedDiscountCode> UsedDiscountCodes { get; set; }
+
     #endregion
 }

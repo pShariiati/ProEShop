@@ -6,6 +6,7 @@ using Parbad;
 using ProEShop.Common.Constants;
 using ProEShop.Common.IdentityToolkit;
 using ProEShop.DataLayer.Context;
+using ProEShop.Entities;
 using ProEShop.Entities.Enums;
 using ProEShop.Services.Contracts;
 using ProEShop.ViewModels.Orders;
@@ -22,17 +23,23 @@ public class VerifyPaymentModel : PageModel
     private readonly IOrderService _orderService;
     private readonly IUnitOfWork _uow;
     private readonly IMapper _mapper;
+    private readonly IUsedDiscountCodeService _usedDiscountCodeService;
+    private readonly IDiscountCodeService _discountCodeService;
 
     public VerifyPaymentModel(
         IUnitOfWork uow,
         IOrderService orderService,
         IOnlinePayment onlinePayment,
-        IMapper mapper)
+        IMapper mapper,
+        IUsedDiscountCodeService discountCodeService,
+        IDiscountCodeService discountCodeService1)
     {
         _uow = uow;
         _orderService = orderService;
         _onlinePayment = onlinePayment;
         _mapper = mapper;
+        _usedDiscountCodeService = discountCodeService;
+        _discountCodeService = discountCodeService1;
     }
 
     #endregion
@@ -94,6 +101,28 @@ public class VerifyPaymentModel : PageModel
         if (order is null)
         {
             return RedirectToPage(PublicConstantStrings.Error500PageName);
+        }
+
+        if (order.DiscountCodeId != null)
+        {
+            // آیا کد تخفیف تغییر پیدا کرده است ؟
+            // بررسی کد تخفیف بعد از اینکه کاربر از درگاه برگشت
+            var checkDiscountCode = await _discountCodeService.CheckForDiscountCodeInVerify(order);
+            if (!checkDiscountCode.Result)
+            {
+                VerifyPaymentData.Message = checkDiscountCode.Message
+                                            + "، سفارش شما لغو و مبلغ پرداختی به کیف پول شما عودت داده شد";
+
+                return Page();
+            }
+
+            // افزودن رکورد به جدولِ: کد های تخفیف استفاده شده
+            await _usedDiscountCodeService.AddAsync(new UsedDiscountCode()
+            {
+                UserId = userId,
+                OrderId = order.Id,
+                DiscountCodeId = order.DiscountCodeId.Value
+            });
         }
 
         // وضعیت مرسوله های این سفارش را به حالت "در حال پردازش" تغییر میدهیم

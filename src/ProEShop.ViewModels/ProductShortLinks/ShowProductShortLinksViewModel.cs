@@ -8,7 +8,7 @@ public class ShowProductShortLinksViewModel
 {
     public List<ShowProductShortLinkViewModel> ProductShortLinks { get; set; }
 
-    public SearchProductShortLinksViewModel SearchBrands { get; set; }
+    public SearchProductShortLinksViewModel SearchProductShortLinks { get; set; }
         = new();
 
     public PaginationViewModel Pagination { get; set; }

@@ -19,25 +19,25 @@
             </h5>
             <div class="row">
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
-                    <label class="form-label" asp-for="ProductShortLinks.SearchBrands.DisplayLink"></label>
-                    <input class="form-control" asp-for="ProductShortLinks.SearchBrands.DisplayLink" />
-                    <span class="span-error-message" asp-validation-for="ProductShortLinks.SearchBrands.DisplayLink"></span>
+                    <label class="form-label" asp-for="ProductShortLinks.SearchProductShortLinks.DisplayLink"></label>
+                    <input class="form-control" asp-for="ProductShortLinks.SearchProductShortLinks.DisplayLink" />
+                    <span class="span-error-message" asp-validation-for="ProductShortLinks.SearchProductShortLinks.DisplayLink"></span>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
-                    <label class="form-label" asp-for="ProductShortLinks.SearchBrands.IsUsed"></label>
-                    <select class="form-select" asp-for="ProductShortLinks.SearchBrands.IsUsed">
+                    <label class="form-label" asp-for="ProductShortLinks.SearchProductShortLinks.IsUsed"></label>
+                    <select class="form-select" asp-for="ProductShortLinks.SearchProductShortLinks.IsUsed">
                         <option value="">همه</option>
                         <option value="true">استفاده شده</option>
                         <option value="false">استفاده نشده</option>
                     </select>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
-                    <label class="form-label" asp-for="ProductShortLinks.SearchBrands.Sorting"></label>
-                    <select class="form-select" asp-for="ProductShortLinks.SearchBrands.Sorting" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.ProductShortLinks.SortingProductShortLinks>()"></select>
+                    <label class="form-label" asp-for="ProductShortLinks.SearchProductShortLinks.Sorting"></label>
+                    <select class="form-select" asp-for="ProductShortLinks.SearchProductShortLinks.Sorting" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.ProductShortLinks.SortingProductShortLinks>()"></select>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3 my-2">
-                    <label class="form-label" asp-for="ProductShortLinks.SearchBrands.SortingOrder"></label>
-                    <select class="form-select" asp-for="ProductShortLinks.SearchBrands.SortingOrder" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.SortingOrder>()"></select>
+                    <label class="form-label" asp-for="ProductShortLinks.SearchProductShortLinks.SortingOrder"></label>
+                    <select class="form-select" asp-for="ProductShortLinks.SearchProductShortLinks.SortingOrder" asp-items="Html.GetEnumSelectList<ProEShop.ViewModels.SortingOrder>()"></select>
                 </div>
                 <div class="col-12 my-2">
                     <div class="d-grid d-lg-block">

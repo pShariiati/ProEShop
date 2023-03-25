@@ -30,14 +30,14 @@ public class ProductShortLinkService : GenericService<ProductShortLink>, IProduc
         #region Search
 
         productShortLinks = ExpressionHelpers
-            .CreateSearchExpressions(productShortLinks, model.SearchBrands, callDeletedStatusExpression: false);
+            .CreateSearchExpressions(productShortLinks, model.SearchProductShortLinks, callDeletedStatusExpression: false);
 
         #endregion
 
         #region OrderBy
 
-        productShortLinks = productShortLinks.CreateOrderByExpression(model.SearchBrands.Sorting.ToString(),
-            model.SearchBrands.SortingOrder.ToString());
+        productShortLinks = productShortLinks.CreateOrderByExpression(model.SearchProductShortLinks.Sorting.ToString(),
+            model.SearchProductShortLinks.SortingOrder.ToString());
 
         #endregion
 

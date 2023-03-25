@@ -4,6 +4,11 @@
     ViewData["Title"] = "پرداخت انجام شد";
 }
 
+@if (Model.VerifyPaymentData.Message != null)
+{
+    <h1>@Model.VerifyPaymentData.Message</h1>
+}
+
 @if (Model.VerifyPaymentData.IsPay)
 {
     <h1>
