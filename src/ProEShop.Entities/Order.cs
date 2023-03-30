@@ -87,6 +87,7 @@ public class Order : EntityBase, IAuditableEntity
     public DiscountCode DiscountCode { get; set; }
 
     public ICollection<UsedDiscountCode> UsedDiscountCodes { get; set; }
+        = new List<UsedDiscountCode>();
 
     #endregion
 }

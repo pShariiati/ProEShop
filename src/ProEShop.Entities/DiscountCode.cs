@@ -67,6 +67,12 @@ public class DiscountCode : EntityBase, IAuditableEntity
     /// </summary>
     public long? CategoryId { get; set; }
 
+    /// <summary>
+    /// هر کاربر چند بار بتونه از این کد تخفیف استفاده کنه
+    /// چرا ناله ؟ چون امکان داره تعداد استفاده توسط هر کاربر نامحدود باشه
+    /// </summary>
+    public int? LimitedCountByOneUser { get; set; }
+
     #endregion
 
     #region Relations

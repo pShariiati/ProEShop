@@ -11,4 +11,11 @@ public interface IUsedDiscountCodeService : ICustomGenericService<UsedDiscountCo
     /// <param name="discountCodeId"></param>
     /// <returns></returns>
     Task<long> GetCountOfUsedDiscount(long discountCodeId);
+
+    /// <summary>
+    /// چه تعداد از این کد تخفیف توسط کاربرِ داخل سیستم، استفاده شده است ؟
+    /// </summary>
+    /// <param name="discountCodeId"></param>
+    /// <returns></returns>
+    Task<long> GetCountOfUsedDiscountByOneUser(long discountCodeId);
 }

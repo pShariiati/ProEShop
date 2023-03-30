@@ -21,9 +21,13 @@
         $('#discount-code-box-in-payment input').focus();
     });
 
-    // test
-    // remove this in production
-    $('#show-discount-box-el-in-payment').click();
+    var discountCodeValue = $('form input[name="CreateOrderAndPayModel.DiscountCode"]').val();
+    // اگر فرم رفت سمت سرور و کد تخفیف مشکل داشته باشه، دوباره صفحه نمایش داده میشه و چون داخل اینپوت کد تخفیف مقدار هست
+    // در نتیجه باید کلمه کد تخفیف رو دوباره داخل اینپوت کد تخفیف نمایش بدیم که کاربر بدونه کد تخفیف اشتباهی که وارد کرده بود چی بوده
+    if (!isNullOrWhitespace(discountCodeValue)) {
+        $('#discount-code-box-in-payment input').val(discountCodeValue);
+        $('#show-discount-box-el-in-payment').click();
+    }
 
     // اگر در داخل اینپوت کد تخفیف دکمه
     // enter
@@ -121,6 +125,11 @@ function calculatePrices(discountCodePrice) {
     // قیمت نهایی منهای میزان کد تخفیف که کاربر باید این مقدار رو پرداخت کنه
     var finalPriceWithDiscountCodePrice = finalPrice - discountCodePrice;
 
+    // قابل پرداخت 10 هزاره، کد تخفیف 20 هزار، در نتیجه قابل پرداخت منفی میشه
+    if (finalPriceWithDiscountCodePrice <= 0) {
+        finalPriceWithDiscountCodePrice = 0;
+    }
+
     // در قسمت قابل پرداخت مقدار متغیر بالایی رو نمایش میدیم
     $('#final-price-box-in-payment')
         .html(finalPriceWithDiscountCodePrice.toString().addCommaToDigits().toPersinaDigit());
@@ -130,8 +139,17 @@ function calculatePrices(discountCodePrice) {
     $('#discount-price-box-in-payment').removeClass('d-none');
     // محاسبه مجدد میزان تخفیف کاربر
     // تخفیف خود کالا ها به علاوه مقدار کد تخفیف
+
+    // مقدار تخفیف کالا به علاوه مقدار کد تخفیف
+    var discountPriceWithDiscountCodePrice = discountPrice + discountCodePrice;
+
+    // نباید در بخش سود خرید، مبلغی بیشتر از توتال پرایس نمایش داده بشه
+    if (discountPriceWithDiscountCodePrice > totalPrice) {
+        discountPriceWithDiscountCodePrice = totalPrice;
+    }
+
     $('#discount-price-box-in-payment span:last')
-        .html((discountPrice + discountCodePrice).toString().addCommaToDigits().toPersinaDigit());
+        .html(discountPriceWithDiscountCodePrice.toString().addCommaToDigits().toPersinaDigit());
 
     // محاسبه درصد تخفیف
     // کل توضیحات در ریزر پیج

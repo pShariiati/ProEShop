@@ -103,6 +103,23 @@ public class DiscountCodeService : GenericService<DiscountCode>, IDiscountCodeSe
             }
         }
 
+        if (discountCode.LimitedCountByOneUser != null)
+        {
+            var usedDiscountCodeCountByCurrentUser = await _usedDiscountCodeService.GetCountOfUsedDiscountByOneUser(discountCode.Id);
+
+            // چرا از بزرگتر مساوی استفاده میکنیم
+            // لیمیتت کانت کاربر پنج تاست
+            // سه بار از کد تخفیف استفاده میکنه
+            // بعد لیمتت رو ویرایش میکنیم به 2
+            // حالا شرط پایین برقرار میشه و چون استفاده شده (3) بزرگتر از لیمتت کاربر هست (2) در نتیجه
+            // متن خطا رو نمایش میده
+            // در صورتیکه اگر از مساوی برای شرط پایین استفاده میکردیم، اصلا خطا رو نمایش نمیداد
+            if (usedDiscountCodeCountByCurrentUser >= discountCode.LimitedCountByOneUser)
+            {
+                return new(false, default, $"ظرفیت استفاده از این کد تخفیف برای هر کاربر {discountCode.LimitedCountByOneUser} بار است و شما حداکثر استفاده از این کد تخفیف را داشته اید");
+            }
+        }
+
         if (showDiscountCodeId)
         {
             return new(true, discountCode.Price, null, discountCode.Id);
