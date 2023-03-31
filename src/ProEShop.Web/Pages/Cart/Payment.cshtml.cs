@@ -12,6 +12,7 @@ using ProEShop.Entities.Enums;
 using ProEShop.Services.Contracts;
 using ProEShop.ViewModels.Carts;
 using ProEShop.ViewModels.DiscountCodes;
+using ProEShop.ViewModels.GiftCards;
 
 namespace ProEShop.Web.Pages.Cart;
 
@@ -26,6 +27,7 @@ public class PaymentModel : PageBase
     private readonly IUnitOfWork _uow;
     private readonly IOnlinePayment _onlinePayment;
     private readonly IDiscountCodeService _discountCodeService;
+    private readonly IGiftCardService _giftCardService;
 
     public PaymentModel(
         ICartService cartService,
@@ -33,7 +35,8 @@ public class PaymentModel : PageBase
         IOrderService orderService,
         IUnitOfWork uow,
         IOnlinePayment onlinePayment,
-        IDiscountCodeService discountCodeService)
+        IDiscountCodeService discountCodeService,
+        IGiftCardService giftCardService)
     {
         _cartService = cartService;
         _addressService = addressService;
@@ -41,6 +44,7 @@ public class PaymentModel : PageBase
         _uow = uow;
         _onlinePayment = onlinePayment;
         _discountCodeService = discountCodeService;
+        _giftCardService = giftCardService;
     }
 
     #endregion
@@ -399,7 +403,7 @@ public class PaymentModel : PageBase
     }
 
     /// <summary>
-    /// بررسی کد تخفیف که آیا وجود داره یا خیر ؟
+    /// بررسی کد تخفیف که آیا وجود داره یا خیر
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
@@ -412,9 +416,23 @@ public class PaymentModel : PageBase
 
         var discountCodeResult = await _discountCodeService.CheckForDiscountPriceForPayment(model, false);
 
-        return Json(new JsonResultOperation(true)
+        return JsonOk(string.Empty, discountCodeResult);
+    }
+
+    /// <summary>
+    /// بررسی کارت هدیه که آیا وجود داره یا خیر
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    public async Task<IActionResult> OnGetCheckForGiftCard(GetGiftCardCodeDataViewModel model)
+    {
+        if (!ModelState.IsValid)
         {
-            Data = discountCodeResult
-        });
+            return JsonBadRequest();
+        }
+
+        var giftCardCodeResult = await _giftCardService.CheckForGiftCardPriceForPayment(model, false);
+
+        return JsonOk(string.Empty, giftCardCodeResult);
     }
 }

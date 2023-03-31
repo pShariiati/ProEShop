@@ -25,4 +25,9 @@ public class CreateOrderAndPayViewModel
     [Display(Name = "کد تخفیف")]
     [MaxLength(100, ErrorMessage = AttributesErrorMessages.MaxLengthMessage)]
     public string DiscountCode { get; set; }
+
+    [HiddenInput]
+    [Display(Name = "کارت هدیه")]
+    [MaxLength(16, ErrorMessage = AttributesErrorMessages.MaxLengthMessage)]
+    public string GiftCardCode { get; set; }
 }

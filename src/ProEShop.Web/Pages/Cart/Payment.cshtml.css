@@ -6,3 +6,7 @@
 #discount-code-box-in-payment input:focus, #discount-code-box-in-payment button:focus {
     outline: none;
 }
+
+#gift-card-code-box-in-payment input:focus, #gift-card-code-box-in-payment button:focus {
+    outline: none;
+}

@@ -70,6 +70,13 @@ public class Order : EntityBase, IAuditableEntity
     /// </summary>
     public int? DiscountCodePrice { get; set; }
 
+    public long? GiftCardId { get; set; }
+
+    /// <summary>
+    /// میزان تخفیف کارت هدیه
+    /// </summary>
+    public int? GiftCardPrice { get; set; }
+
     #endregion
 
     #region Relations

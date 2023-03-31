@@ -127,6 +127,8 @@ public class Seller : EntityBase, IAuditableEntity
 
     public ICollection<ProductVariant> ProductVariants { get; set; }
 
+    public ICollection<GiftCard> GiftCards { get; set; }
+
     #endregion
 }
 

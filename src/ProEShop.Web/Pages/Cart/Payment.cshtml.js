@@ -7,8 +7,8 @@
     // دراپ دان مِنو رو نشون بده
     // موقعی که بلر شد مخفیش کن
     $('#shipping-dropdown').hover(function () {
-            $(this).dropdown('show');
-        },
+        $(this).dropdown('show');
+    },
         function () {
             $(this).dropdown('hide');
         });
@@ -19,6 +19,14 @@
         $(this).remove();
         $('#discount-code-box-in-payment').removeClass('d-none');
         $('#discount-code-box-in-payment input').focus();
+    });
+
+    // همینکه روی دکمه افزودن کارت هدیه کلیک شد
+    // باکس افزودن کارت هدیه رو نمایش میده
+    $('#show-gift-card-box-el-in-payment').click(function () {
+        $(this).remove();
+        $('#gift-card-code-box-in-payment').removeClass('d-none');
+        $('#gift-card-code-box-in-payment input').focus();
     });
 
     var discountCodeValue = $('form input[name="CreateOrderAndPayModel.DiscountCode"]').val();
@@ -32,20 +40,31 @@
     // اگر در داخل اینپوت کد تخفیف دکمه
     // enter
     // رو زد، به سمت سرور درخواست میفرستیم
-    $('#discount-code-box-in-payment input').keypress(function(e) {
+    $('#discount-code-box-in-payment input').keypress(function (e) {
         if (e.which === 13) {
             $('#add-discount-code-button-in-payment').click();
         }
     });
 
     // اگر روی دکمه ثبت کد تخفیف کلیک شد، کد تخفیف رو به سمت سرور میفرسته که بررسی کنه همچین کدی وجود داره یا نه
-    $('#add-discount-code-button-in-payment').click(function() {
+    $('#add-discount-code-button-in-payment').click(function () {
         var code = $(this).parent().find('input').val();
-        
+
         if (isNullOrWhitespace(code)) {
             showSweetAlert2('کد تخفیف نباید خالی باشد');
         } else {
             getDataWithAJAX('?handler=CheckForDiscount', { DiscountCode: code, SumPriceOfCart: finalPrice }, 'calculateDiscount');
+        }
+    });
+
+    // اگر روی دکمه ثبت کارت هدیه کلیک شد، کارت هدیه رو به سمت سرور میفرسته که بررسی کنه همچین کارت هدیه ایی وجود داره یا نه
+    $('#add-gift-card-code-button-in-payment').click(function () {
+        var code = $(this).parent().find('input').val();
+
+        if (isNullOrWhitespace(code)) {
+            showSweetAlert2('کارت هدیه نباید خالی باشد');
+        } else {
+            getDataWithAJAX('?handler=CheckForGiftCard', { GiftCardCode: code, SumPriceOfCart: finalPrice }, 'calculateGiftCard');
         }
     });
 
@@ -74,39 +93,52 @@
 
 // بعد از اینکه کد تخیف رو به سمت سرور فرستادیم، نتیجه به این فانکشن برگشت داده میشه
 function calculateDiscount(message, data) {
+    calculateDiscountAndGiftCard(data, true);
+}
+
+// بعد از اینکه کارت هدیه رو به سمت سرور فرستادیم، نتیجه به این فانکشن برگشت داده میشه
+function calculateGiftCard(message, data) {
+    calculateDiscountAndGiftCard(data, false);
+}
+
+function calculateDiscountAndGiftCard(data, isDiscount) {
+    var input = isDiscount ? 'Discount' : 'GiftCard';
+    var elName = isDiscount ? 'discount' : 'gift-card';
+
     if (data.result) {
-        // تغییر مقدار اینپوت کد تخفیف که موقعی که دکمه پرداخت رو میزنیم
-        // کد تخفیف به سمت سرور ارسال بشه
+        // تغییر مقدار اینپوت که موقعی که دکمه پرداخت رو میزنیم
+        // کد تخفیف یا کارت هدیه به سمت سرور ارسال بشه
         var discountCode = $('#discount-code-box-in-payment').find('input').val();
-        $('form').find('input[name="CreateOrderAndPayModel.DiscountCode"]').val(discountCode);
+        $('form').find('input[name="CreateOrderAndPayModel.' + input + 'Code"]').val(discountCode);
 
         // اینپوت رو از حالت فوکس خارج میکنیم
-        $('#discount-code-box-in-payment input').blur();
+        $('#' + elName + '-code-box-in-payment input').blur();
         // نمایش دکمه ضربدر
-        $('#remove-discount-code-button-in-payment').removeClass('d-none');
-        // مخفی کردن دکمه ثبت کد تخفیف
-        $('#add-discount-code-button-in-payment').addClass('d-none');
-        // نمایش متن  "کد تخفیف اعمال شد" در پایین اینپوت کد تخفیف
-        $('#discount-code-added-text-in-payment').removeClass('d-none');
-        // نمایش مقدار تخفیف در بخش چپ صفحه
-        $('#show-discount-code-box-in-payment').removeClass('d-none');
-        // نمایش مقدار کد تخفیف به صورت فارسی
-        $('#discount-code-price-box-in-payment').html(data.discountPrice.toString().addCommaToDigits().toPersinaDigit());
+        $('#remove-' + elName + '-code-button-in-payment').removeClass('d-none');
+        // مخفی کردن دکمه ثبت
+        $('#add-' + elName + '-code-button-in-payment').addClass('d-none');
+        // نمایش متن  "کد تخفیف یا کارت اعمال شد" در پایین اینپوت
+        $('#' + elName + '-code-added-text-in-payment').removeClass('d-none');
+        // نمایش دادن بخش تخفیف در سمت چپ صفحه، چه برای کارت هدیه چه برای کد تخفیف نمایش داده میشه
+        // این باکس اصلیه تخفیفه چه برای کد تخفیف چه برای کارت هدیه
+        $('#show-' + elName + '-code-box-in-payment').removeClass('d-none');
+        // نمایش مقدار کارت هدیه و کد تخفیف به صورت فارسی
+        $('#' + elName + '-code-price-box-in-payment').html(data.discountPrice.toString().addCommaToDigits().toPersinaDigit());
     } else {
-        // مقدار اینپوت کد تخفیف رو حذف میکنیم
-        // که موقعی که فرم به سمت سرور ارسال میشه، کد تخفیف مقدار نداشته باشه
-        $('form').find('input[name="CreateOrderAndPayModel.DiscountCode"]').val('');
+        // مقدار اینپوت رو حذف میکنیم
+        // که موقعی که فرم به سمت سرور ارسال میشه، مقدار نداشته باشه
+        $('form').find('input[name="CreateOrderAndPayModel.' + input + 'Code"]').val('');
 
         // اینپوت رو دوباره به حالت فوکس در میاریم
-        $('#discount-code-box-in-payment input').focus();
+        $('#' + elName + '-code-box-in-payment input').focus();
         // مخفی کردن دکمه ضربدر
-        $('#remove-discount-code-button-in-payment').addClass('d-none');
+        $('#remove-' + elName + '-code-button-in-payment').addClass('d-none');
         // نمایش دکمه ثبت
-        $('#add-discount-code-button-in-payment').removeClass('d-none');
-        // مخفی متن  "کد تخفیف اعمال شد" در پایین اینپوت کد تخفیف
-        $('#discount-code-added-text-in-payment').addClass('d-none');
+        $('#add-' + elName + '-code-button-in-payment').removeClass('d-none');
+        // مخفی کردن متن "کد تخفیف یا کارت هدیه اعمال شد" در پایین اینپوت 
+        $('#' + elName + '-code-added-text-in-payment').addClass('d-none');
         // مخفی کردن مقدار تخفیف در بخش چپ صفحه
-        $('#show-discount-code-box-in-payment').addClass('d-none');
+        $('#show-' + elName + '-code-box-in-payment').addClass('d-none');
         showSweetAlert2(data.message);
     }
 
@@ -182,6 +214,6 @@ function calculatePrices(discountCodePrice) {
 }
 
 // همینکه روی دکمه پرداخت کلیک بشه، دکمه رو غیر فعال کنیم که مجددا روی دکمه کلیک نشه
-$('form').submit(function() {
+$('form').submit(function () {
     $('#create-order-and-pay-button').attr('disabled', 'disabled');
 });

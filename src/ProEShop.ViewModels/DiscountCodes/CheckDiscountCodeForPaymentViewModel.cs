@@ -2,7 +2,7 @@
 
 /// <summary>
 /// ویوو مدل نتیجه ی چک کردن کد تخفیف در صفحه پرداخت
-/// برای بخش پست
+/// و همچنین بخش پست، بخش پست یعنی زمانیکه فرم ارسال میشه
 /// </summary>
 public class CheckDiscountCodeForPaymentViewModel
 {

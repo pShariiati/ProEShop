@@ -196,9 +196,26 @@
                 </div>
             </div>
 
-            <div class="border rounded-3 p-4 mt-3">
-                کارت هدیه
+        <div class="border rounded-3 p-4 pb-3 mt-3">
+            <div class="d-flex justify-content-between">
+                <div>کارت هدیه</div>
+                <div class="text-info pointer-cursor" id="show-gift-card-box-el-in-payment">
+                    افزودن کارت هدیه +
+                </div>
             </div>
+            <div class="row mt-4 d-none" id="gift-card-code-box-in-payment">
+                <div class="col-lg-6">
+                    <label class="border py-1 px-2 rounded-3 d-flex justify-content-between">
+                        <input maxlength="100" class="me-2 flex-grow-1 border-0 bg-transparent py-2" placeholder="افزودن کارت هدیه">
+                        <button class="bg-transparent border-0 rem14px text-info" id="add-gift-card-code-button-in-payment">ثبت</button>
+                        <button class="bg-transparent border-0 d-none" id="remove-gift-card-code-button-in-payment">
+                            <i class="bi bi-x-circle"></i>
+                        </button>
+                    </label>
+                    <span class="rem13px text-success d-none" id="gift-card-code-added-text-in-payment">کارت هدیه شما با موفقیت اعمال شد</span>
+                </div>
+            </div>
+        </div>
 
             <div class="border rounded-3 p-4 mt-3">
                 <div>
@@ -545,6 +562,7 @@
                     <form method="post">
                         <div asp-validation-summary="All" class="text-danger rem14px"></div>
                         <input asp-for="CreateOrderAndPayModel.DiscountCode"/>
+                        <input asp-for="CreateOrderAndPayModel.GiftCardCode"/>
                         <div class="mb-4">
                             <label asp-for="CreateOrderAndPayModel.PaymentGateway" class="form-label"></label>
                             <select class="form-select" asp-for="CreateOrderAndPayModel.PaymentGateway" asp-items="Html.GetEnumSelectList<ProEShop.Entities.Enums.PaymentGateway>()">
