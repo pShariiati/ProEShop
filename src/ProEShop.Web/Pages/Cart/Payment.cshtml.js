@@ -1,4 +1,5 @@
 ﻿$(function () {
+    // اگر فرم مشکل داشته باشه و از سمت سرور برگرده، این متغیر ترو میشه
     var hasValidationError = !isNullOrWhitespace($('form div:first li:first').text());
     if (hasValidationError) {
         showSweetAlert2('خطای اعتبار سنجی، لطفا خطا هایی که در بخش بالای درگاه نوشته شده اند را بررسی نمایید');
@@ -46,6 +47,15 @@
         }
     });
 
+    // اگر در داخل اینپوت کارت هدیه دکمه
+    // enter
+    // رو زد، به سمت سرور درخواست میفرستیم
+    $('#gift-card-code-box-in-payment input').keypress(function (e) {
+        if (e.which === 13) {
+            $('#add-gift-card-code-button-in-payment').click();
+        }
+    });
+
     // اگر روی دکمه ثبت کد تخفیف کلیک شد، کد تخفیف رو به سمت سرور میفرسته که بررسی کنه همچین کدی وجود داره یا نه
     $('#add-discount-code-button-in-payment').click(function () {
         var code = $(this).parent().find('input').val();
@@ -68,28 +78,52 @@
         }
     });
 
-    // اگر روی دکمه ضربدر کلیک شد باید کد تخفیف رو حذف کنیم
-    $('#remove-discount-code-button-in-payment').click(function () {
-        // مقدار اینپوت کد تخفیف رو حذف میکنیم
-        // که موقعی که فرم به سمت سرور ارسال میشه، کد تخفیف مقدار نداشته باشه
-        $('form').find('input[name="CreateOrderAndPayModel.DiscountCode"]').val('');
-
-        // نمایش دکمه ثبت
-        $(this).addClass('d-none');
-        // مخفی کردن دکمه ثبت
-        $(this).prev('button').removeClass('d-none');
-        // اینپوت کد تخفیف
-        var inputEl = $(this).parent().find('input');
-        inputEl.val('');
-        inputEl.focus();
-        // مخفی کردن متن زیر اینپوت که میگه: کد تخفیف اعمال شد
-        $('#discount-code-added-text-in-payment').addClass('d-none');
-        // مخفی کردن بخش کد تخفیف در سمت چپ صفحه
-        $('#show-discount-code-box-in-payment').addClass('d-none');
-        // محاسبه مجدد قیمت ها
-        calculatePrices(0);
+    // اگر روی دکمه ضربدر کلیک شد باید کد تخفیف یا کارت هدیه رو حذف کنیم
+    $('#remove-discount-code-button-in-payment, #remove-gift-card-code-button-in-payment').click(function () {
+        if ($(this).attr('id').indexOf('gift-card') === -1) {
+            removeDiscountAndGiftCard(this, true);
+        } else {
+            removeDiscountAndGiftCard(this, false);
+        }
     });
 });
+
+function removeDiscountAndGiftCard(el, isDiscount) {
+    var input = isDiscount ? 'Discount' : 'GiftCard';
+    var elName = isDiscount ? 'discount' : 'gift-card';
+
+    // مقدار اینپوت کد تخفیف یا کارت هدیه رو حذف میکنیم
+    // که موقعی که فرم به سمت سرور ارسال میشه، کد تخفیف یا کارت هدیه مقدار نداشته باشن
+    $('form').find('input[name="CreateOrderAndPayModel.' + input + 'Code"]').val('');
+
+    // مخفی کردن دکمه ضربدر
+    $(el).addClass('d-none');
+    // نمایش دکمه ثبت
+    $(el).prev('button').removeClass('d-none');
+    // اینپوت کد
+    var inputEl = $(el).parent().find('input');
+    inputEl.val('');
+    inputEl.focus();
+    // مخفی کردن متن زیر اینپوت که میگه: کد تخفیف یا کارت هدیه اعمال شد
+    $('#' + elName + '-code-added-text-in-payment').addClass('d-none');
+    // مخفی کردن بخش کد تخفیف یا کارت هدیه در سمت چپ صفحه
+    $('#' + elName + '-code-price-box-in-payment').parents('.d-flex').addClass('d-none');
+    // اگر کد تخفیف و کارت هدیه نداشته باشیم کل بخش تخفیفات رو مخفی میکنیم
+    // برای مواقعی که سه دیو مسقتیم داریم و خود کالا ها نیز تخفیف دارند
+    if ($('#discounts-box-in-payment > div').length === 3) {
+        if ($('#discounts-box-in-payment > div:eq(1)').hasClass('d-none') &&
+            $('#discounts-box-in-payment > div:last').hasClass('d-none')) {
+            $('#discounts-box-in-payment').addClass('d-none');
+        }
+    }
+    // برای حالتی که خود کالا ها تخفیف ندارند و کلا دو دیو مستقیم داریم
+    else if ($('#discounts-box-in-payment > div:first').hasClass('d-none') &&
+        $('#discounts-box-in-payment > div:last').hasClass('d-none')) {
+        $('#discounts-box-in-payment').addClass('d-none');
+    }
+    // محاسبه مجدد قیمت ها
+    calculatePrices(0, isDiscount);
+}
 
 // بعد از اینکه کد تخیف رو به سمت سرور فرستادیم، نتیجه به این فانکشن برگشت داده میشه
 function calculateDiscount(message, data) {
@@ -108,8 +142,8 @@ function calculateDiscountAndGiftCard(data, isDiscount) {
     if (data.result) {
         // تغییر مقدار اینپوت که موقعی که دکمه پرداخت رو میزنیم
         // کد تخفیف یا کارت هدیه به سمت سرور ارسال بشه
-        var discountCode = $('#discount-code-box-in-payment').find('input').val();
-        $('form').find('input[name="CreateOrderAndPayModel.' + input + 'Code"]').val(discountCode);
+        var code = $('#' + elName + '-code-box-in-payment').find('input').val();
+        $('form').find('input[name="CreateOrderAndPayModel.' + input + 'Code"]').val(code);
 
         // اینپوت رو از حالت فوکس خارج میکنیم
         $('#' + elName + '-code-box-in-payment input').blur();
@@ -117,12 +151,15 @@ function calculateDiscountAndGiftCard(data, isDiscount) {
         $('#remove-' + elName + '-code-button-in-payment').removeClass('d-none');
         // مخفی کردن دکمه ثبت
         $('#add-' + elName + '-code-button-in-payment').addClass('d-none');
-        // نمایش متن  "کد تخفیف یا کارت اعمال شد" در پایین اینپوت
+        // نمایش متن  "کد تخفیف یا کارت هدیه اعمال شد" در پایین اینپوت
         $('#' + elName + '-code-added-text-in-payment').removeClass('d-none');
         // نمایش دادن بخش تخفیف در سمت چپ صفحه، چه برای کارت هدیه چه برای کد تخفیف نمایش داده میشه
         // این باکس اصلیه تخفیفه چه برای کد تخفیف چه برای کارت هدیه
-        $('#show-' + elName + '-code-box-in-payment').removeClass('d-none');
-        // نمایش مقدار کارت هدیه و کد تخفیف به صورت فارسی
+        // کل سکشن تخفیفات رو نمایش میدیم
+        $('#discounts-box-in-payment').removeClass('d-none');
+        // یا سکشن کارت هدیه یا کد تخفیف رو نمایش میدیم
+        $('#' + elName + '-code-price-box-in-payment').parents('.d-flex').removeClass('d-none');
+        // نمایش مقدار کارت هدیه یا کد تخفیف به صورت رقم فارسی
         $('#' + elName + '-code-price-box-in-payment').html(data.discountPrice.toString().addCommaToDigits().toPersinaDigit());
     } else {
         // مقدار اینپوت رو حذف میکنیم
@@ -143,45 +180,56 @@ function calculateDiscountAndGiftCard(data, isDiscount) {
     }
 
     // محاسبه مجدد قیمت ها بعد از اضافه شدن مقدار کد تخفیف
-    calculatePrices(data.discountPrice);
+    calculatePrices(data.discountPrice, isDiscount);
 }
 
 // به محض لود صفحه این مقادیر رو میگیریم که در هنگام افزودن کد تخفیف بتونیم
 // قیمت های جدید رو محاسبه کنیم
 var totalPrice = parseInt($('#total-price-box-in-payment').html().trim().replace(/,/g, '').toEnglishDigit());
+// تخفیف خود کالا ها
 var discountPrice = parseInt($('#discount-price-box-in-payment span:last').html().trim().replace(/,/g, '').toEnglishDigit());
 var finalPrice = totalPrice - discountPrice;
+var discountCodePrice = 0;
+var giftCardCodePrice = 0;
 
-// محاسبه مجدد قیمت ها بعد از اضافه شدن مقدار کد تخفیف
-function calculatePrices(discountCodePrice) {
-    // قیمت نهایی منهای میزان کد تخفیف که کاربر باید این مقدار رو پرداخت کنه
-    var finalPriceWithDiscountCodePrice = finalPrice - discountCodePrice;
+// محاسبه مجدد قیمت ها بعد از اضافه شدن مقدار کد تخفیف یا کارت هدیه
+function calculatePrices(discountValue, isDiscount) {
+    if (isDiscount) {
+        discountCodePrice = discountValue;
+    } else {
+        giftCardCodePrice = discountValue;
+    }
 
-    // قابل پرداخت 10 هزاره، کد تخفیف 20 هزار، در نتیجه قابل پرداخت منفی میشه
-    if (finalPriceWithDiscountCodePrice <= 0) {
-        finalPriceWithDiscountCodePrice = 0;
+    // قیمت نهایی منهای میزان کد تخفیف منهای کارت هدیه که کاربر باید این مقدار رو پرداخت کنه
+    // قیمت کل منهای تمامی تخفیفات
+    var finalPriceWithDiscounts = finalPrice - discountCodePrice - giftCardCodePrice;
+
+    // قابل پرداخت 10 هزاره، کد تخفیف یا کارت هدیه 20 هزاره، در نتیجه قابل پرداخت منفی میشه
+    if (finalPriceWithDiscounts <= 0) {
+        finalPriceWithDiscounts = 0;
     }
 
     // در قسمت قابل پرداخت مقدار متغیر بالایی رو نمایش میدیم
     $('#final-price-box-in-payment')
-        .html(finalPriceWithDiscountCodePrice.toString().addCommaToDigits().toPersinaDigit());
+        .html(finalPriceWithDiscounts.toString().addCommaToDigits().toPersinaDigit());
 
-    // اگر بخش "سود شما از خرید" به دلیل نبود تخفیف مخفی بود، اون رو نمایش میدیم
-    // که میزان کد تخفیف رو در اونجا نمایش بدیم
+    // اگر بخش "سود شما از خرید" به دلیل نبود تخفیف یا کارت هدیه مخفی بود، اون رو نمایش میدیم
+    // که میزان کد تخفیف یا کارت هدیه رو در اونجا نمایش بدیم
     $('#discount-price-box-in-payment').removeClass('d-none');
-    // محاسبه مجدد میزان تخفیف کاربر
-    // تخفیف خود کالا ها به علاوه مقدار کد تخفیف
+    
+    // سود شما از خرید
+    // مقدار تخفیف خود کالا ها به علاوه مقدار کد تخفیف به علاوه مقدار کارت هدیه
+    // جمع تمامی تخفیفات
+    var allDiscounts = discountPrice + discountCodePrice + giftCardCodePrice;
 
-    // مقدار تخفیف کالا به علاوه مقدار کد تخفیف
-    var discountPriceWithDiscountCodePrice = discountPrice + discountCodePrice;
-
-    // نباید در بخش سود خرید، مبلغی بیشتر از توتال پرایس نمایش داده بشه
-    if (discountPriceWithDiscountCodePrice > totalPrice) {
-        discountPriceWithDiscountCodePrice = totalPrice;
+    // نباید در بخش سود شما از خرید، مبلغی بیشتر از توتال پرایس نمایش داده بشه
+    if (allDiscounts > totalPrice) {
+        allDiscounts = totalPrice;
     }
 
+    // سود شما از خرید
     $('#discount-price-box-in-payment span:last')
-        .html(discountPriceWithDiscountCodePrice.toString().addCommaToDigits().toPersinaDigit());
+        .html(allDiscounts.toString().addCommaToDigits().toPersinaDigit());
 
     // محاسبه درصد تخفیف
     // کل توضیحات در ریزر پیج
@@ -196,7 +244,7 @@ function calculatePrices(discountCodePrice) {
     // تومانی داریم، اگر محاسبه کنیم یک عدد بین 99 و 100 به دست میاد
     // و اگه به بالا گرد بشه میشه 100، درصورتیکه ما حداقل یک تومان پرداخت میکنیم پس نمیشه گفت که ما
     // تخفیف 100 درصدی داریم
-    var percentageOfTotalPriceOfCartThatUserMustPay = Math.floor(finalPriceWithDiscountCodePrice / totalPriceDivideBy100);
+    var percentageOfTotalPriceOfCartThatUserMustPay = Math.floor(finalPriceWithDiscounts / totalPriceDivideBy100);
 
     var discountPercentage = 100 - percentageOfTotalPriceOfCartThatUserMustPay;
 
