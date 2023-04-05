@@ -74,5 +74,10 @@ public class GiftCard : EntityBase, IAuditableEntity
 
     public Seller Seller { get; set; }
 
+    /// <summary>
+    /// سفارشات تکمیل نشده ایی که از این کارت هدیه استفاده کرده اند
+    /// </summary>
+    public ICollection<Order> Orders { get; set; }
+
     #endregion
 }

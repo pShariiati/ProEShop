@@ -7,7 +7,7 @@ public interface IDiscountCodeService : IGenericService<DiscountCode>
 {
     /// <summary>
     /// چک کردن کد تخفیف برای استفاده کردن
-    /// در صفحه پرداخت و بخش پست
+    /// در صفحه پرداخت و بخش پست، بخش پست یعنی زمانی که فرم ارسال میشود
     /// </summary>
     /// <param name="model"></param>
     /// <param name="showDiscountCodeId"></param>

@@ -163,7 +163,7 @@ public class DiscountCodeService : GenericService<DiscountCode>, IDiscountCodeSe
 
         if (discountCode.MinimumPriceOfCart != null)
         {
-            if (discountCode.MinimumPriceOfCart > order.FinalPrice + order.DiscountCodePrice)
+            if (discountCode.MinimumPriceOfCart > order.FinalPrice + order.DiscountCodePrice + order.GiftCardCodePrice)
             {
                 return (false, $"متاسفانه حداقل مبلغ سبد خرید برای استفاده از کد تخفیف {discountCode.Code} به مبلغ {discountCode.MinimumPriceOfCart.Value.ToString("#,0").ToPersianNumbers()} تومان تغییر پیدا کرده است");
             }

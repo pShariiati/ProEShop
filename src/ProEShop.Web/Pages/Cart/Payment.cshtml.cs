@@ -330,6 +330,39 @@ public class PaymentModel : PageBase
 
         finalPrice = finalPrice - discountCodePrice <= 0 ? 0 : finalPrice - discountCodePrice;
 
+        var giftCardCode = CreateOrderAndPayModel.GiftCardCode;
+
+        var giftCardCodePrice = 0;
+
+        if (!string.IsNullOrWhiteSpace(giftCardCode))
+        {
+            if (finalPrice == 0)
+            {
+                return RedirectToPage(PublicConstantStrings.Error500PageName);
+            }
+            var checkGiftCardCode =
+                await _giftCardService.CheckForGiftCardPriceForPayment(new(finalPrice, giftCardCode), true);
+            if (!checkGiftCardCode.Result)
+            {
+                PaymentPage.CartItems = await _cartService.GetCartsForPaymentPage(userId);
+
+                // اگر سبد خرید خالی بود، کاربر رو به صفحه سبد خرید انتقال بده
+                if (PaymentPage.CartItems.Count < 1)
+                {
+                    return RedirectToPage("Index");
+                }
+
+                ModelState.AddModelError(string.Empty, checkGiftCardCode.Message);
+
+                return Page();
+            }
+
+            orderToAdd.ReservedGiftCardId = checkGiftCardCode.GiftCardId;
+            orderToAdd.GiftCardCodePrice = giftCardCodePrice = checkGiftCardCode.DiscountPrice;
+        }
+
+        finalPrice = finalPrice - giftCardCodePrice <= 0 ? 0 : finalPrice - giftCardCodePrice;
+
         // کاربر بعد از درگاه به چه آدرسی هدایت شود
         var callbackUrl = Url.PageLink("VerifyPayment", null, null, Request.Scheme);
 
@@ -350,14 +383,33 @@ public class PaymentModel : PageBase
         orderToAdd.PaymentGateway = CreateOrderAndPayModel.PaymentGateway;
         orderToAdd.TotalPrice = totalPrice;
         var discountPrice = totalPrice - totalPriceWithDiscount;
+
+        // کل تخفیفات
+        // چرا نمیشه از
+        // +=
+        // برای جمع بستن موارد پایین استفاده کرد ؟
+        // چون نمیتوان از عملگر فوق برای
+        // Int nullable
+        // استفاده کرد
+        // orderToAdd.DiscountPrice += discountCodePrice;
+        // https://stackoverflow.com/questions/17943395/why-nullable-int-int-doesnt-increase-the-value-via-if-the-value-is-null
         if (discountPrice > 0)
         {
+            // تخفیف خود کالاها
             orderToAdd.DiscountPrice = discountPrice;
         }
 
         if (discountCodePrice > 0)
         {
+            // کد تخفیف
             orderToAdd.DiscountPrice = discountPrice + discountCodePrice;
+            //orderToAdd.DiscountPrice += discountCodePrice;
+        }
+
+        if (giftCardCodePrice > 0)
+        {
+            // کارت هدیه
+            orderToAdd.DiscountPrice = discountPrice + discountCodePrice + giftCardCodePrice;
         }
 
         orderToAdd.FinalPrice = finalPrice;
@@ -374,6 +426,12 @@ public class PaymentModel : PageBase
                     UserId = userId,
                     DiscountCodeId = orderToAdd.DiscountCodeId.Value
                 });
+            }
+
+            if (orderToAdd.ReservedGiftCardId != null)
+            {
+                orderToAdd.GiftCardId = orderToAdd.ReservedGiftCardId;
+                orderToAdd.ReservedGiftCardId = null;
             }
 
             // وضعیت مرسوله های این سفارش را به حالت "در حال پردازش" تغییر میدهیم

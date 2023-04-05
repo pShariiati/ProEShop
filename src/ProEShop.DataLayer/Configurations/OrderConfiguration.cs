@@ -13,5 +13,9 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
             .WithMany(x => x.Orders)
             .HasForeignKey(x => x.UserId)
             .OnDelete(DeleteBehavior.NoAction);
+
+        builder.HasOne(x => x.ReservedGiftCard)
+            .WithMany(x => x.Orders)
+            .HasForeignKey(x => x.ReservedGiftCardId);
     }
 }

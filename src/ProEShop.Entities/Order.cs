@@ -70,16 +70,31 @@ public class Order : EntityBase, IAuditableEntity
     /// </summary>
     public int? DiscountCodePrice { get; set; }
 
+    /// <summary>
+    /// بعد از پرداخت اگه از کارت هدیه استفاده شده باشد این پراپرتی مقدار دهی میشود
+    /// </summary>
     public long? GiftCardId { get; set; }
 
     /// <summary>
     /// میزان تخفیف کارت هدیه
     /// </summary>
-    public int? GiftCardPrice { get; set; }
+    public int? GiftCardCodePrice { get; set; }
+
+    /// <summary>
+    /// هر کارت هدیه میتواند چندین سفارش تکمیل نشده داشته باشد
+    /// به محض تکمیل سفارش
+    /// GiftCardId
+    /// مقدار دهی میشود و این پراپرتی نال میشود
+    /// </summary>
+    public long? ReservedGiftCardId { get; set; }
 
     #endregion
 
     #region Relations
+
+    public GiftCard GiftCard { get; set; }
+
+    public GiftCard ReservedGiftCard { get; set; }
 
     public User User { get; set; }
 

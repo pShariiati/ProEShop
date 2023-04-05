@@ -25,6 +25,7 @@ public class VerifyPaymentModel : PageModel
     private readonly IMapper _mapper;
     private readonly IUsedDiscountCodeService _usedDiscountCodeService;
     private readonly IDiscountCodeService _discountCodeService;
+    private readonly IGiftCardService _giftCardService;
 
     public VerifyPaymentModel(
         IUnitOfWork uow,
@@ -32,7 +33,8 @@ public class VerifyPaymentModel : PageModel
         IOnlinePayment onlinePayment,
         IMapper mapper,
         IUsedDiscountCodeService discountCodeService,
-        IDiscountCodeService discountCodeService1)
+        IDiscountCodeService discountCodeService1,
+        IGiftCardService giftCardService)
     {
         _uow = uow;
         _orderService = orderService;
@@ -40,6 +42,7 @@ public class VerifyPaymentModel : PageModel
         _mapper = mapper;
         _usedDiscountCodeService = discountCodeService;
         _discountCodeService = discountCodeService1;
+        _giftCardService = giftCardService;
     }
 
     #endregion
@@ -123,6 +126,23 @@ public class VerifyPaymentModel : PageModel
                 OrderId = order.Id,
                 DiscountCodeId = order.DiscountCodeId.Value
             });
+        }
+
+        if (order.ReservedGiftCardId != null)
+        {
+            // آیا کارت هدیه تغییر پیدا کرده است ؟
+            // بررسی کارت هدیه بعد از اینکه کاربر از درگاه برگشت
+            var checkGiftCardCode = await _giftCardService.CheckForGiftCardCodeInVerify(order);
+            if (!checkGiftCardCode.Result)
+            {
+                VerifyPaymentData.Message = checkGiftCardCode.Message
+                                            + "، سفارش شما لغو و مبلغ پرداختی به کیف پول شما عودت داده شد";
+
+                return Page();
+            }
+
+            order.GiftCardId = order.ReservedGiftCardId;
+            order.ReservedGiftCard = null;
         }
 
         // وضعیت مرسوله های این سفارش را به حالت "در حال پردازش" تغییر میدهیم

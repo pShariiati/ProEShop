@@ -59,10 +59,17 @@
     // اگر روی دکمه ثبت کد تخفیف کلیک شد، کد تخفیف رو به سمت سرور میفرسته که بررسی کنه همچین کدی وجود داره یا نه
     $('#add-discount-code-button-in-payment').click(function () {
         var code = $(this).parent().find('input').val();
-
+        // اگر هنگام وارد کردن کد تخفیف، کارت هدیه، مبلغ قابل پرداخت رو صفر کرده بود، نباید اجازه بدیم
+        // که از کد تخفیف استفاده کنه چون دلیل وجود نداره اگه مبلغ قابل پرداخت صفر باشه و بخوایم از کد تخفیف هم استفاده کنیم
+        var finalPriceWithDiscount = finalPrice - giftCardCodePrice;
+        
         if (isNullOrWhitespace(code)) {
             showSweetAlert2('کد تخفیف نباید خالی باشد');
-        } else {
+        }
+        else if (finalPriceWithDiscount <= 0) {
+            showSweetAlert2('مبلغ قابل پرداخت ۰ تومان است و امکان استفاده از کد تخفیف وجود ندارد');
+        }
+        else {
             getDataWithAJAX('?handler=CheckForDiscount', { DiscountCode: code, SumPriceOfCart: finalPrice }, 'calculateDiscount');
         }
     });
@@ -70,10 +77,18 @@
     // اگر روی دکمه ثبت کارت هدیه کلیک شد، کارت هدیه رو به سمت سرور میفرسته که بررسی کنه همچین کارت هدیه ایی وجود داره یا نه
     $('#add-gift-card-code-button-in-payment').click(function () {
         var code = $(this).parent().find('input').val();
+        // اگر هنگام وارد کردن کارت هدیه، کد تخفیف، مبلغ قابل پرداخت رو صفر کرده بود، نباید اجازه بدیم
+        // که از کارت هدیه استفاده کنه چون دلیل وجود نداره اگه مبلغ قابل پرداخت صفر باشه و بخوایم از کارت هدیه هم استفاده کنیم
+        var finalPriceWithDiscount = finalPrice - discountCodePrice;
 
+        debugger;
         if (isNullOrWhitespace(code)) {
             showSweetAlert2('کارت هدیه نباید خالی باشد');
-        } else {
+        }
+        else if (finalPriceWithDiscount <= 0) {
+            showSweetAlert2('مبلغ قابل پرداخت ۰ تومان است و امکان استفاده از کارت هدیه وجود ندارد');
+        }
+        else {
             getDataWithAJAX('?handler=CheckForGiftCard', { GiftCardCode: code, SumPriceOfCart: finalPrice }, 'calculateGiftCard');
         }
     });
