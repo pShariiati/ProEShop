@@ -1,0 +1,40 @@
+﻿.circle-dot-in-search-on-category {
+    width: 4px;
+    height: 4px;
+}
+
+.list-in-search-on-category {
+    max-height: 300px;
+}
+
+.list-in-search-on-category input {
+    caret-color: red;
+}
+
+.list-in-search-on-category input:focus {
+    outline: none;
+}
+
+.list-item-in-search-on-category:not(:last-child) {
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #dee2e6 !important;
+}
+
+.list-item-in-search-on-category input[type=checkbox] {
+    width: 19px;
+    height: 19px;
+    margin-top: 2px;
+}
+
+::deep .product-item-in-search-on-category:not(:nth-child(4n)):not(:last-child) {
+    border-left: 1px solid #dee2e6 !important;
+}
+
+::deep .product-item-in-search-on-category:hover {
+    box-shadow: rgba(0, 0, 0, 0.176) 0px 1rem 3rem !important;
+}
+
+.product-title-in-search-on-category {
+    line-height: 1.5rem;
+    height: 48px;
+}

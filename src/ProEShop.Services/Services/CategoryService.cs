@@ -8,6 +8,7 @@ using ProEShop.DataLayer.Context;
 using ProEShop.Entities;
 using ProEShop.Services.Contracts;
 using ProEShop.ViewModels.Categories;
+using ProEShop.ViewModels.Search;
 
 namespace ProEShop.Services.Services;
 
@@ -248,6 +249,16 @@ public class CategoryService : GenericService<Category>, ICategoryService
         return _categories.Where(x => x.Id == categoryId)
             .Select(x => x.Title)
             .SingleAsync();
+    }
+
+    public Task<SearchOnCategoryViewModel> GetSearchOnCategoryData(string slug)
+    {
+        return _mapper.ProjectTo<SearchOnCategoryViewModel>(
+            _categories
+                .AsNoTracking()
+                .AsSplitQuery()
+                .Where(x => x.Slug == slug)
+        ).SingleOrDefaultAsync();
     }
 
     public override async Task<DuplicateColumns> AddAsync(Category entity)

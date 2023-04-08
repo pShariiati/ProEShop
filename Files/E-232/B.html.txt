@@ -1,0 +1,37 @@
+<a href="#" class="col-lg-3 p-2 rem14px product-item-in-search-on-category text-dark border-bottom">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="text-danger">فروش ویژه</div>
+                        <div class="badge bg-warning">غیر اصل</div>
+                    </div>
+                    <div>
+                        <img src="test" class="img-fluid" />
+                    </div>
+                    <div class="ellipsis2 mt-2 product-title-in-search-on-category">
+                        عنوان محصول
+                    </div>
+                    <div class="d-flex justify-content-between my-2 align-items-center">
+                        <div class="text-danger rem12px">
+                            تنها
+                            <span class="persian-numbers">۱</span>
+                            عدد در انبار باقی مانده
+                        </div>
+                        <div>
+                            <span class="persian-numbers">۳.۸</span>
+                            <i class="bi bi-star-fill text-warning"></i>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <span class="badge bg-danger rounded-pill persian-numbers">۱۸%</span>
+                        </div>
+                        <div>
+                            <div>
+                                <span class="persian-numbers">۱۵,۷۰۰,۵۰۰</span>
+                                تومان
+                            </div>
+                            <div class="mt-1 text-secondary rem12px">
+                                <span class="persian-numbers text-decoration-line-through">۱۹,۷۰۰,۰۰۰</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>

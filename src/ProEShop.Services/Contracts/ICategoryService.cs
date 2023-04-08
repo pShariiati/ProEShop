@@ -1,5 +1,6 @@
 ﻿using ProEShop.Entities;
 using ProEShop.ViewModels.Categories;
+using ProEShop.ViewModels.Search;
 
 namespace ProEShop.Services.Contracts;
 
@@ -62,4 +63,11 @@ public interface ICategoryService : IGenericService<Category>
     /// <param name="categoryId"></param>
     /// <returns></returns>
     Task<string> GetCategoryTitle(long categoryId);
+
+    /// <summary>
+    /// اطلاعات صفحه جستجو دسته بندی ها
+    /// </summary>
+    /// <param name="slug"></param>
+    /// <returns></returns>
+    Task<SearchOnCategoryViewModel> GetSearchOnCategoryData(string slug);
 }

@@ -1,0 +1,138 @@
+﻿@page "{categorySlug}"
+@using ProEShop.Entities
+@model ProEShop.Web.Pages.Search.ShowCategoryModel
+@{
+}
+
+<div class="container">
+    <div class="rem14px text-secondary mt-3">
+        فروشگاه اینترنتی پروشاپ
+        <span class="mx-1">/</span>
+        <span>کالای دیجیتال</span>
+        <span class="mx-1">/</span>
+        <span>موبایل</span>
+    </div>
+    <div class="row mt-3">
+        <div class="col-lg-3">
+            <div class="border rounded-3">
+                <div class="d-flex justify-content-between mt-3 align-items-center mx-3">
+                    <div class="fw-bold">فیلتر ها</div>
+                    <div class="text-info rem13px pointer-cursor">حذف فیلتر ها</div>
+                </div>
+                <div class="mt-4">
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mx-3 pointer-cursor">
+                            <div class="fw-bold d-flex align-items-center">
+                                <div>برند</div>
+                                <div class="ms-2 circle-dot-in-search-on-category bg-info rounded-circle"></div>
+                            </div>
+                            <div>
+                                <i class="bi bi-chevron-down"></i>
+                            </div>
+                        </div>
+                        <div class="text-truncate text-secondary mt-1 rem14px mx-3 pointer-cursor">
+                            ایسوس، سامسونگ، تست، تست دو، تست سه، تست چهار
+                        </div>
+                        <div class="list-in-search-on-category mt-3 overflow-auto border-bottom">
+                            <label class="border rounded-3 d-flex py-2 align-items-center mx-3">
+                                <i class="bi bi-search mx-3"></i>
+                                <input type="text" class="border-0 bg-transparent w-100" placeholder="جستجو برند ..." />
+                                <i class="bi bi-x-circle-fill pointer-cursor me-2"></i>
+                            </label>
+                            <div class="mt-3 ms-3 me-2">
+                                @foreach (var brand in Model.SearchOnCategory.CategoryBrands)
+                                {
+                                    <div class="pb-3 d-flex justify-content-between align-items-center list-item-in-search-on-category">
+                                        <label class="me-2">
+                                            <input type="checkbox" class="form-check-input pointer-cursor" id="brand-in-search-on-category-@brand.BrandId" />
+                                        </label>
+                                        <label for="brand-in-search-on-category-@brand.BrandId" class="d-flex flex-grow-1 align-items-center justify-content-between">
+                                            <strong class="me-1 me-1">@brand.BrandTitleFa</strong>
+                                            <span class="rem14px text-end">@brand.BrandTitleEn</span>
+                                        </label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="border-bottom mx-3 mt-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <div>
+                <div class="d-flex align-items-center rem13px justify-content-between border-bottom pb-2">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-sort-down rem16px me-1"></i>
+                        <div class="ms-1 me-2">
+                            مرتب سازی:
+                        </div>
+                        <div class="mx-2 pointer-cursor text-danger">پر بازدیدترین</div>
+                        <div class="mx-2 pointer-cursor">جدیدترین</div>
+                        <div class="mx-2 pointer-cursor">پرفروش ترین</div>
+                        <div class="mx-2 pointer-cursor">ارزان ترین</div>
+                        <div class="mx-2 pointer-cursor">گران ترین</div>
+                    </div>
+                    <div>
+                        <span class="persian-numbers">۴۳</span>
+                        گران ترین
+                    </div>
+                </div>
+                <div class="row">
+                    @foreach (var product in Model.SearchOnCategory.Products)
+                    {
+                        <a asp-page="/Product/Index" asp-route-productCode="@product.ProductCode" asp-route-slug="@product.Slug" class="col-lg-3 p-2 rem14px product-item-in-search-on-category text-dark border-bottom">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div class="text-danger@(product.IsDiscountActive ? string.Empty : " invisible")">فروش ویژه</div>
+                                @if (product.IsFake)
+                                {
+                                    <div class="badge bg-warning">غیر اصل</div>
+                                }
+                            </div>
+                            <div>
+                                <img src="@WwwRootPaths.ProductImage/@product.Picture" class="img-fluid"/>
+                            </div>
+                            <div class="ellipsis2 mt-2 product-title-in-search-on-category">
+                                @product.PersianTitle
+                            </div>
+                            <div class="d-flex justify-content-between my-2 align-items-center">
+                                <div class="text-danger rem12px@(product.LastInventoryCount == 0 ? " invisible" : string.Empty)">
+                                    تنها
+                                    <span class="persian-numbers">@product.LastInventoryCount</span>
+                                    عدد در انبار باقی مانده
+                                </div>
+                                <div class="@(product.Score == 0 ? "invisible" : string.Empty)">
+                                    <span class="persian-numbers">@product.Score.ToString("0.#")</span>
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <div class="@(product.IsDiscountActive ? string.Empty : "invisible")">
+                                    <span class="badge bg-danger rounded-pill persian-numbers">@product.OffPercentage%</span>
+                                </div>
+                                <div>
+                                    @if (product.ProductStockStatus == ProductStockStatus.Available)
+                                    {
+                                        <div>
+                                            <span class="persian-numbers">@product.FinalPrice.ToString("#,0")</span>
+                                            تومان
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="fw-bold text-black-50">
+                                            ناموجود
+                                        </div>
+                                    }
+                                    <div class="mt-1 text-secondary rem12px@(product.IsDiscountActive ? string.Empty : " invisible")">
+                                        <span class="persian-numbers text-decoration-line-through">@product.Price.ToString("#,0")</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
