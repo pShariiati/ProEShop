@@ -20,7 +20,7 @@ public class Category : EntityBase, IAuditableEntity
     public string Description { get; set; }
 
     [Required]
-    [MaxLength(130)]
+    [MaxLength(50)]
     public string Slug { get; set; }
 
     [MaxLength(50)]

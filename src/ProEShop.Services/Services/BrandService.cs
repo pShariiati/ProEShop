@@ -148,6 +148,9 @@ public class BrandService : GenericService<Brand>, IBrandService
         if (await _brands.AnyAsync(x => x.TitleEn == entity.TitleEn))
             result.Add(nameof(Brand.TitleEn));
 
+        if (await _brands.AnyAsync(x => x.Slug == entity.Slug))
+            result.Add(nameof(Brand.Slug));
+
         if (!result.Any())
             await base.AddAsync(entity);
         return new(!result.Any())
@@ -166,6 +169,9 @@ public class BrandService : GenericService<Brand>, IBrandService
 
         if (await query.AnyAsync(x => x.TitleEn == entity.TitleEn))
             result.Add(nameof(Brand.TitleEn));
+
+        if (await query.AnyAsync(x => x.Slug == entity.Slug))
+            result.Add(nameof(Brand.Slug));
 
         if (!result.Any())
             await base.Update(entity);

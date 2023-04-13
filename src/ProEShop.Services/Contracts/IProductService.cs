@@ -1,6 +1,7 @@
 ﻿using ProEShop.Entities;
 using ProEShop.ViewModels.Brands;
 using ProEShop.ViewModels.Products;
+using ProEShop.ViewModels.Search;
 using ProEShop.ViewModels.Variants;
 
 namespace ProEShop.Services.Contracts;
@@ -91,4 +92,13 @@ public interface IProductService : IGenericService<Product>
     /// <param name="productCode"></param>
     /// <returns></returns>
     Task<long> GetProductCategoryId(long productCode);
+
+    /// <summary>
+    /// صفحه بندی محصولات به صورت
+    /// AJAX
+    /// در صفحه جستجو
+    /// </summary>
+    /// <param name="inputs"></param>
+    /// <returns></returns>
+    Task<ShowProductsInSearchOnCategoryViewModel> GetProductsByPaginationForSearch(SearchOnCategoryInputsViewModel inputs);
 }

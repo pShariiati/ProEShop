@@ -27,7 +27,7 @@ public class AddCategoryViewModel
         AdditionalFields = ViewModelConstants.AntiForgeryToken)]
     [Display(Name = "آدرس دسته بندی")]
     [Required(ErrorMessage = AttributesErrorMessages.RequiredMessage)]
-    [MaxLength(130, ErrorMessage = AttributesErrorMessages.MaxLengthMessage)]
+    [MaxLength(50, ErrorMessage = AttributesErrorMessages.MaxLengthMessage)]
     public string Slug { get; set; }
 
     [Display(Name = "تصویر")]

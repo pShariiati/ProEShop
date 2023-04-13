@@ -154,7 +154,7 @@
                                 @Model.ProductInfo.BrandTitleFa
                             </a>
                             /
-                            <a href="#">
+                            <a asp-page="/Search/ShowCategory" asp-route-categorySlug="@productInfo.ProductCategories.Last().CategorySlug" asp-route-brandSlug="@productInfo.BrandSlug">
                                 @Model.ProductInfo.CategoryTitle
                                 @Model.ProductInfo.BrandTitleFa
                             </a>

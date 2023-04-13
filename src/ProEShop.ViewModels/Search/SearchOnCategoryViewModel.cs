@@ -16,6 +16,10 @@ public class SearchOnCategoryViewModel
     /// محصولات این دسته بندی
     /// </summary>
     public List<ShowProductInSearchOnCategoryViewModel> Products { get; set; }
+
+    public long ProductsCount { get; set; }
+
+    public int PagesCount => (int)Math.Ceiling(ProductsCount / (double)2);
 }
 
 public class ShowBrandInSearchOnCategoryViewModel
@@ -42,7 +46,7 @@ public class ShowProductInSearchOnCategoryViewModel
     public double Score { get; set; }
 
     /// <summary>
-    /// قیمت اصلی با بدون تخفیف
+    /// قیمت اصلی بدون تخفیف
     /// </summary>
     public int Price { get; set; }
 

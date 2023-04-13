@@ -67,7 +67,8 @@ public interface ICategoryService : IGenericService<Category>
     /// <summary>
     /// اطلاعات صفحه جستجو دسته بندی ها
     /// </summary>
-    /// <param name="slug"></param>
+    /// <param name="categorySlug"></param>
+    /// <param name="brandSlug"></param>
     /// <returns></returns>
-    Task<SearchOnCategoryViewModel> GetSearchOnCategoryData(string slug);
+    Task<SearchOnCategoryViewModel> GetSearchOnCategoryData(string categorySlug, string brandSlug);
 }

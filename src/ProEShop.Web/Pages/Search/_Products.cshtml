@@ -1,0 +1,61 @@
+﻿@using ProEShop.Entities
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model ProEShop.ViewModels.Search.ShowProductsInSearchOnCategoryViewModel
+<div class="row g-1">
+    @foreach (var product in Model.Products)
+    {
+        <a asp-page="/Product/Index" asp-route-productCode="@product.ProductCode" asp-route-slug="@product.Slug" class="col-lg-3 p-2 rem14px product-item-in-search-on-category text-dark border-bottom">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <div class="text-danger@(product.IsDiscountActive ? string.Empty : " invisible")">فروش ویژه</div>
+                @if (product.IsFake)
+                {
+                    <div class="badge bg-warning">غیر اصل</div>
+                }
+            </div>
+            <div>
+                <img src="@WwwRootPaths.ProductImage/@product.Picture" class="img-fluid" />
+            </div>
+            <div class="ellipsis2 mt-2 product-title-in-search-on-category">
+                @product.PersianTitle
+            </div>
+            <div class="d-flex justify-content-between my-2 align-items-center">
+                <div class="text-danger rem12px@(product.LastInventoryCount == 0 ? " invisible" : string.Empty)">
+                    تنها
+                    <span class="persian-numbers">@product.LastInventoryCount</span>
+                    عدد در انبار باقی مانده
+                </div>
+                <div class="@(product.Score == 0 ? "invisible" : string.Empty)">
+                    <span class="persian-numbers">@product.Score.ToString("0.#")</span>
+                    <i class="bi bi-star-fill text-warning"></i>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between">
+                <div class="@(product.IsDiscountActive ? string.Empty : "invisible")">
+                    <span class="badge bg-danger rounded-pill persian-numbers">@product.OffPercentage%</span>
+                </div>
+                <div>
+                    @if (product.ProductStockStatus == ProductStockStatus.Available)
+                    {
+                        <div>
+                            <span class="persian-numbers">@product.FinalPrice.ToString("#,0")</span>
+                            تومان
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="fw-bold text-black-50">
+                            ناموجود
+                        </div>
+                    }
+                    <div class="mt-1 text-secondary rem12px@(product.IsDiscountActive ? string.Empty : " invisible")">
+                        <span class="persian-numbers text-decoration-line-through">@product.Price.ToString("#,0")</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+    }
+</div>
+@{
+    var functionName = "showProductsByPagination";
+}
+<partial name="_PaginationPartial" model="(Model.PagesCount, Model.CurrentPage, functionName)" />

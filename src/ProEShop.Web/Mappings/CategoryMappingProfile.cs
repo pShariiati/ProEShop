@@ -11,7 +11,19 @@ public class CategoryMappingProfile : Profile
 {
     public CategoryMappingProfile()
     {
-        this.CreateMap<Entities.Category, SearchOnCategoryViewModel>();
+        #region Parameters
+
+        string brandSlug = null;
+
+        #endregion
+
+        this.CreateMap<Entities.Category, SearchOnCategoryViewModel>()
+            .ForMember(dest => dest.Products,
+                options =>
+                    options.MapFrom(src => src.Products.Where(x => brandSlug == null || x.Brand.Slug == brandSlug)))
+            .ForMember(dest => dest.ProductsCount,
+                options =>
+                    options.MapFrom(src => src.Products.LongCount(x => brandSlug == null || x.Brand.Slug == brandSlug)));
         this.CreateMap<Entities.CategoryBrand, ShowBrandInSearchOnCategoryViewModel>();
         this.CreateMap<Entities.Product, ShowProductInSearchOnCategoryViewModel>()
             .ForMember(dest => dest.Picture,
@@ -70,9 +82,9 @@ public class CategoryMappingProfile : Profile
                             ?
                             src.ProductVariants.Any()
                                 ?
-									src.ProductVariants.OrderBy(x => x.OffPrice ?? x.Price).First().Count > 3
-									? (byte)0
-									: (byte)src.ProductVariants.OrderBy(x => x.OffPrice ?? x.Price).First().Count
+                                    src.ProductVariants.OrderBy(x => x.OffPrice ?? x.Price).First().Count > 3
+                                    ? (byte)0
+                                    : (byte)src.ProductVariants.OrderBy(x => x.OffPrice ?? x.Price).First().Count
                                 :
                                 (byte)0
                             :

@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using ProEShop.Common.Helpers;
@@ -251,14 +252,16 @@ public class CategoryService : GenericService<Category>, ICategoryService
             .SingleAsync();
     }
 
-    public Task<SearchOnCategoryViewModel> GetSearchOnCategoryData(string slug)
+    public Task<SearchOnCategoryViewModel> GetSearchOnCategoryData(string categorySlug, string brandSlug)
     {
-        return _mapper.ProjectTo<SearchOnCategoryViewModel>(
-            _categories
-                .AsNoTracking()
-                .AsSplitQuery()
-                .Where(x => x.Slug == slug)
-        ).SingleOrDefaultAsync();
+        return _categories
+            .AsNoTracking()
+            .AsSplitQuery()
+            .Where(x => x.Slug == categorySlug)
+            .ProjectTo<SearchOnCategoryViewModel>(
+                configuration: _mapper.ConfigurationProvider,
+                parameters: new { brandSlug }
+            ).SingleOrDefaultAsync();
     }
 
     public override async Task<DuplicateColumns> AddAsync(Category entity)

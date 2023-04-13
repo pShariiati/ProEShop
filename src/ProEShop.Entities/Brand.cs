@@ -6,8 +6,9 @@ using ProEShop.Entities.AuditableEntity;
 namespace ProEShop.Entities;
 
 [Table("Brands")]
-[Index(nameof(Brand.TitleFa), IsUnique = true)]
-[Index(nameof(Brand.TitleEn), IsUnique = true)]
+[Index(nameof(TitleFa), IsUnique = true)]
+[Index(nameof(TitleEn), IsUnique = true)]
+[Index(nameof(Slug), IsUnique = true)]
 public class Brand : EntityBase, IAuditableEntity
 {
     #region Properties
@@ -54,6 +55,10 @@ public class Brand : EntityBase, IAuditableEntity
     /// فروشنده پیشنهاد دهنده این برند
     /// </summary>
     public long? SellerId { get; set; }
+
+    [Required]
+    [MaxLength(50)]
+    public string Slug { get; set; }
 
     #endregion
 

@@ -23,6 +23,8 @@ public class ShowProductInfoViewModel
 
     public string BrandTitleFa { get; set; }
 
+    public string BrandSlug { get; set; }
+
     public string BrandLogoPicture { get; set; }
 
     public string CategoryProductPageGuide { get; set; }

@@ -20,7 +20,7 @@ public class Product : EntityBase, IAuditableEntity
     public string EnglishTitle { get; set; }
 
     [Required]
-    [MaxLength(200)]
+    [MaxLength(50)]
     public string Slug { get; set; }
 
     public bool IsFake { get; set; }

@@ -13,6 +13,7 @@ using ProEShop.ViewModels;
 using ProEShop.ViewModels.Brands;
 using ProEShop.ViewModels.Categories;
 using ProEShop.ViewModels.Products;
+using ProEShop.ViewModels.Search;
 using ProEShop.ViewModels.Variants;
 
 namespace ProEShop.Services.Services;
@@ -381,5 +382,45 @@ public class ProductService : GenericService<Product>, IProductService
         return _products.Where(x => x.ProductCode == productCode)
             .Select(x => x.MainCategoryId)
             .SingleOrDefaultAsync();
+    }
+
+    public async Task<ShowProductsInSearchOnCategoryViewModel> GetProductsByPaginationForSearch(SearchOnCategoryInputsViewModel inputs)
+    {
+        var result = new ShowProductsInSearchOnCategoryViewModel();
+
+        if (inputs.PageNumber < 1)
+            inputs.PageNumber = 1;
+
+        var productQuery = _products
+            .AsNoTracking()
+            .Where(x => x.Category.Slug == inputs.CategorySlug)
+            .OrderBy(x => x.Id);
+
+        var itemsCount = await productQuery.LongCountAsync();
+
+        const byte take = 3;
+
+        var pagesCount = (int)Math.Ceiling(
+            (decimal)itemsCount / take
+        );
+
+        if (pagesCount <= 0)
+            pagesCount = 1;
+
+        if (inputs.PageNumber >= pagesCount)
+        {
+            inputs.PageNumber = pagesCount;
+        }
+
+        var skip = (inputs.PageNumber - 1) * take;
+
+        result.Products = await _mapper.ProjectTo<ShowProductInSearchOnCategoryViewModel>(
+            productQuery.Skip(skip).Take(take)
+        ).ToListAsync();
+
+        result.CurrentPage = inputs.PageNumber;
+        result.PagesCount = pagesCount;
+
+        return result;
     }
 }

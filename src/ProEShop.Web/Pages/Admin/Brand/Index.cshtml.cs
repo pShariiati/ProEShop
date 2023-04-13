@@ -76,6 +76,7 @@ public class IndexModel : PageBase
         }
 
         var brand = _mapper.Map<Entities.Brand>(model);
+        brand.Slug = brand.TitleEn.ToUrlSlug();
         brand.Description = _htmlSanitizer.Sanitize(brand.Description);
         brand.IsConfirmed = true;
 
@@ -148,6 +149,8 @@ public class IndexModel : PageBase
         {
             return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
         }
+
+        brandToUpdate.Slug = model.TitleEn.ToUrlSlug();
         var oldLogoPictureFileName = brandToUpdate.LogoPicture;
         var oldBrandRegistrationFileName = brandToUpdate.BrandRegistrationPicture;
 
