@@ -20,80 +20,113 @@ public class Seller : EntityBase, IAuditableEntity
 
     #region Legal person
 
-    [Display(Name = "نام شرکت")]
+    /// <summary>
+    /// نام شرکت
+    /// </summary>
     [MaxLength(200)]
     public string CompanyName { get; set; }
 
-    [Display(Name = "شماره ثبت شرکت")]
+    /// <summary>
+    /// شماره ثبت شرکت
+    /// </summary>
     [MaxLength(100)]
     public string RegisterNumber { get; set; }
 
-    [Display(Name = "کد اقتصادی")]
+    /// <summary>
+    /// کد اقتصادی
+    /// </summary>
     [MaxLength(12)]
     public string EconomicCode { get; set; }
 
-    [Display(Name = "نام افراد دارای حق امضا")]
+    /// <summary>
+    /// نام افراد دارای حق امضا
+    /// </summary>
     [MaxLength(300)]
     public string SignatureOwners { get; set; }
 
-    [Display(Name = "شناسه ملی")]
+    /// <summary>
+    /// شناسه ملی
+    /// </summary>
     [MaxLength(30)]
     public string NationalId { get; set; }
 
-    [Display(Name = "نوع شرکت")]
+    /// <summary>
+    /// نوع شرکت
+    /// </summary>
     public CompanyType? CompanyType { get; set; }
     #endregion
 
-    [Display(Name = "کد فروشنده")]
+    /// <summary>
+    /// کد فروشنده
+    /// </summary>
     public int SellerCode { get; set; }
 
-    [Display(Name = "نام فروشگاه")]
+    /// <summary>
+    /// نام فروشگاه
+    /// </summary>
     [Required]
     [MaxLength(200)]
     public string ShopName { get; set; }
 
-    [Display(Name = "درباره فروشگاه")]
+    /// <summary>
+    /// درباره فروشگاه
+    /// </summary>
     [Column(TypeName = "ntext")]
     public string AboutSeller { get; set; }
 
-    [Display(Name = "لوگو فروشگاه")]
+    /// <summary>
+    /// لوگو فروشگاه
+    /// </summary>
     [MaxLength(50)]
     public string Logo { get; set; }
 
     /// <summary>
     /// عکس کارت ملی
     /// </summary>
-    [Display(Name = "تصویر کارت ملی")]
     [Required]
     [MaxLength(50)]
     public string IdCartPicture { get; set; }
 
-    [Display(Name = "شماره شبا")]
+    /// <summary>
+    /// شماره شبا
+    /// </summary>
     [Required]
     [MaxLength(24)]
     public string ShabaNumber { get; set; }
 
-    [Display(Name = "شماره تلفن ثابت")]
+    /// <summary>
+    /// شماره تلفن ثابت
+    /// </summary>
     [Required]
     [MaxLength(11)]
     public string Telephone { get; set; }
 
-    [Display(Name = "آدرس وبسایت")]
+    /// <summary>
+    /// آدرس وبسایت
+    /// </summary>
     [MaxLength(200)]
     public string Website { get; set; }
 
-    [Display(Name = "استان")]
+    /// <summary>
+    /// استان
+    /// </summary>
     public long ProvinceId { get; set; }
 
-    [Display(Name = "شهرستان")]
+    /// <summary>
+    /// شهرستان
+    /// </summary>
     public long CityId { get; set; }
 
-    [Display(Name = "آدرس کامل")]
+    /// <summary>
+    /// آدرس کامل
+    /// </summary>
     [Required]
     [MaxLength(300)]
     public string Address { get; set; }
 
-    [Display(Name = "کد پستی")]
+    /// <summary>
+    /// کد پستی
+    /// </summary>
     [Required]
     [MaxLength(10)]
     public string PostalCode { get; set; }
@@ -101,15 +134,21 @@ public class Seller : EntityBase, IAuditableEntity
     [MaxLength(100)]
     public string Location { get; set; }
 
-    [Display(Name = "وضعیت مدارک")]
+    /// <summary>
+    /// وضعیت مدارک
+    /// </summary>
     public DocumentStatus DocumentStatus { get; set; }
 
     public bool IsActive { get; set; } = true;
 
-    [Display(Name = "تاریخ ثبت نام")]
+    /// <summary>
+    /// تاریخ ثبت نام
+    /// </summary>
     public DateTime CreatedDateTime { get; set; }
 
-    [Display(Name = "دلایل رد مدراک فروشنده")]
+    /// <summary>
+    /// دلایل رد مدراک فروشنده
+    /// </summary>
     [Column(TypeName = "ntext")]
     public string RejectReason { get; set; }
 

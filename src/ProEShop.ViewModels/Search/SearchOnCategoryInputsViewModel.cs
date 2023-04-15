@@ -14,4 +14,6 @@ public class SearchOnCategoryInputsViewModel
     /// محصولات کدوم دسته بندی رو بخونه
     /// </summary>
     public string CategorySlug { get; set; }
+
+    public List<long> Brands { get; set; }
 }

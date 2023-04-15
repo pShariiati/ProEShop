@@ -20,7 +20,10 @@ public class CategoryMappingProfile : Profile
         this.CreateMap<Entities.Category, SearchOnCategoryViewModel>()
             .ForMember(dest => dest.Products,
                 options =>
-                    options.MapFrom(src => src.Products.Where(x => brandSlug == null || x.Brand.Slug == brandSlug)))
+                    options.MapFrom(src => src.Products
+                        .Where(x => brandSlug == null || x.Brand.Slug == brandSlug)
+                        .OrderBy(x => x.Id)
+                        .Take(2)))
             .ForMember(dest => dest.ProductsCount,
                 options =>
                     options.MapFrom(src => src.Products.LongCount(x => brandSlug == null || x.Brand.Slug == brandSlug)));

@@ -12,13 +12,16 @@
     var isLastPage = currentPage == pagesCount;
 
     var paginationBoxClass = "justify-content-center";
-    if (isFirstPage)
+    if (pagesCount > 1)
     {
-        paginationBoxClass = "justify-content-end";
-    }
-    else if (isLastPage)
-    {
-        paginationBoxClass = "justify-content-start";
+        if (isFirstPage)
+        {
+            paginationBoxClass = "justify-content-end";
+        }
+        else if (isLastPage)
+        {
+            paginationBoxClass = "justify-content-start";
+        }
     }
 
     if (currentPage <= 4)

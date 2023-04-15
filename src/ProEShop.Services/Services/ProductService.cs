@@ -393,12 +393,18 @@ public class ProductService : GenericService<Product>, IProductService
 
         var productQuery = _products
             .AsNoTracking()
-            .Where(x => x.Category.Slug == inputs.CategorySlug)
-            .OrderBy(x => x.Id);
+            .Where(x => x.Category.Slug == inputs.CategorySlug);
+
+        if (inputs.Brands is { Count: > 0 })
+        {
+            productQuery = productQuery.Where(x => inputs.Brands.Contains(x.BrandId));
+        }
+
+        productQuery = productQuery.OrderBy(x => x.Id);
 
         var itemsCount = await productQuery.LongCountAsync();
 
-        const byte take = 3;
+        const byte take = 2;
 
         var pagesCount = (int)Math.Ceiling(
             (decimal)itemsCount / take
