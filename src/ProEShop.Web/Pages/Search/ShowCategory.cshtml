@@ -1,5 +1,4 @@
 ﻿@page "{categorySlug}/{brandSlug?}"
-@using ProEShop.Entities
 @using ProEShop.ViewModels.Search
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model ProEShop.Web.Pages.Search.ShowCategoryModel
@@ -32,17 +31,24 @@
                                 <i class="bi bi-chevron-down"></i>
                             </div>
                         </div>
-                        <div class="text-truncate text-secondary mt-1 rem14px mx-3 pointer-cursor" id="selected-brands-in-search-on-category"></div>
+                        <div class="d-none text-truncate text-secondary mt-1 rem14px mx-3 pointer-cursor" id="selected-brands-in-search-on-category"></div>
                         <div class="list-in-search-on-category mt-3 overflow-auto border-bottom">
                             <label class="border rounded-3 d-flex py-2 align-items-center mx-3">
-                                <i class="bi bi-search mx-3"></i>
-                                <input id="search-on-brands-input-in-search-on-category" type="text" class="border-0 bg-transparent w-100" placeholder="جستجو برند ..." />
-                                <i class="bi bi-x-circle-fill pointer-cursor me-2 d-none" id="close-button-for-brands-search-in-search-on-category"></i>
+                                <i class="bi bi-search ms-3"></i>
+                                <input maxlength="200" type="text" class="search-input-in-search-on-category ms-3 border-0 bg-transparent w-100" placeholder="جستجو برند ..." />
+                                <i class="bi bi-x-circle-fill pointer-cursor me-2 d-none input-clear-icon-in-search-on-category"></i>
                             </label>
+                            <div class="ms-3 mt-3 me-2 d-none selected-items-in-search-on-category">
+                                <div class="rem13px text-secondary mb-2">انتخاب شما</div>
+                                <div class="mb-3"></div>
+                                <div class="rem13px text-secondary">
+                                    همه ی برند ها
+                                </div>
+                            </div>
                             <div class="mt-3 ms-3 me-2" id="brands-box-in-search-on-category">
                                 @foreach (var brand in Model.SearchOnCategory.CategoryBrands)
                                 {
-                                    <div class="pb-3 d-flex justify-content-between align-items-center list-item-in-search-on-category" brand-full-title="@brand.BrandTitleEn.ToLower() @brand.BrandTitleFa">
+                                    <div class="pb-3 d-flex justify-content-between align-items-center list-item-in-search-on-category" title-to-search="@brand.BrandTitleEn.ToLower() @brand.BrandTitleFa">
                                         <label class="me-2">
                                             <input value="@brand.BrandId" type="checkbox" class="form-check-input pointer-cursor" id="brand-in-search-on-category-@brand.BrandId" />
                                         </label>

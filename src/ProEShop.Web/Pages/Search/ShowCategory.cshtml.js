@@ -1,19 +1,34 @@
 ﻿$(function () {
-    // جستجو روی برند ها
-    $('#search-on-brands-input-in-search-on-category').keyup(function () {
+    // جستجو در اینپوت ها
+    $('.search-input-in-search-on-category').keyup(function () {
         var selectedValue = this.value;
-        // تمامی برند هارو نمایش بده
-        $('#brands-box-in-search-on-category .list-item-in-search-on-category').removeClass('d-none');
-        // دکمه ضربدر رو مخفی کن
-        $('#close-button-for-brands-search-in-search-on-category').addClass('d-none');
+        // تمامی آیتم ها رو نمایش بده
+        $(this).parents('.list-in-search-on-category').find('.list-item-in-search-on-category').removeClass('d-none');
+        // آیکون ضربدر رو مخفی کن
+        $(this).next('i').addClass('d-none');
+        // آیکون سرچ رو نمایش بده
+        $(this).prev('i').removeClass('d-none');
         if (!isNullOrWhitespace(selectedValue)) {
             // دکمه ضربدر رو نشون بده
-            $('#close-button-for-brands-search-in-search-on-category').removeClass('d-none');
-            // همه برند ها رو مخفی کن به جز اونیکه روش سرچ انجام شده
-            $('#brands-box-in-search-on-category .list-item-in-search-on-category')
-                .not('[brand-full-title*="' + selectedValue.toLowerCase().trim() + '"]')
+            $(this).next('i').removeClass('d-none');
+            // آیکون سرچ رو مخفی بده
+            $(this).prev('i').addClass('d-none');
+            // همه آیتم ها مخفی بشن به جز اونایی که براشون سرچ انجام شده
+            $(this).parents('.list-in-search-on-category').find('.list-item-in-search-on-category')
+                .not('[title-to-search*="' + selectedValue.toLowerCase().trim() + '"]')
                 .addClass('d-none');
         }
+    });
+
+    // موقعی که روی آیکون ضربدر کلیک شد، اینپوت رو خالی کن
+    $('.input-clear-icon-in-search-on-category').click(function () {
+        // مخفی کردن آیکون ضربدر
+        $(this).addClass('d-none');
+        // خالی کردن اینپوت
+        $(this).prev('input').val('');
+        // نمایش آیکون سرچ
+        $(this).parent().find('i:first').removeClass('d-none');
+        $(this).parents('.list-in-search-on-category').find('.list-item-in-search-on-category').removeClass('d-none');
     });
 });
 
@@ -56,6 +71,7 @@ $('#brands-box-in-search-on-category input:checkbox').change(function () {
     });
 
     var brandsEl = $('#selected-brands-in-search-on-category');
+    brandsEl.removeClass('d-none');
     brandsEl.html('');
     selectedBrands.forEach(item => {
         brandsEl.append(item + "، ");
@@ -63,7 +79,49 @@ $('#brands-box-in-search-on-category input:checkbox').change(function () {
     // حذف کاما و فاصله آخر متن
     brandsEl.text(brandsEl.text().replace(/،\s$/, ''));
 
+    // کدوم چکباکس انتخاب شده ؟ اونو یا به قسمت انتخاب شما
+    // اضافه میکنیم یا اگه تیک چکباکس غیر فعال شده باشه، اونو از قسمت انتخاب شما حذف میکنیم
+
+    var currentDiv = $(this).parents('div');
+    var divClass = currentDiv.attr('class');
+    var cssIsolationString;
+    currentDiv.each(function () {
+        $.each(this.attributes, function () {
+            if (this.name.startsWith('b-')) {
+                cssIsolationString = this.name;
+                return false;
+            }
+        });
+    });
+
+    // دیو موارد انتخاب شده
+    var selectedItemsEl = currentDiv.parents('.list-in-search-on-category').find('.selected-items-in-search-on-category');
+    if (this.checked) {
+        selectedItemsEl.removeClass('d-none');
+        selectedItemsEl.find('> div:eq(1)')
+            .prepend(
+                `<div ${cssIsolationString} class="${divClass}">${currentDiv.html()}</div>`
+            );
+        selectedItemsEl.find('input:first').attr('checked', 'checked');
+    } else {
+        var checkboxValue = this.value;
+        selectedItemsEl.find('input[value="' + checkboxValue + '"]')
+            .parents('div:first')
+            .remove();
+    }
+    // اگر رکوردی وجود نداشت بخش انتخاب شما رو مخفی میکنیم
+    if (!selectedBrands.length) {
+        selectedItemsEl.addClass('d-none');
+        brandsEl.addClass('d-none');
+    }
     getHtmlWithAJAX('?handler=ShowProductsByPagination', dataToSend, 'showProductsByPaginationFunction');
+});
+
+// اگر روی چکباکس موارد انتخاب شده کلیک شد باید اونارو حذف کنیم
+$(document).on('change', '.selected-items-in-search-on-category input', function () {
+    var currentValue = this.value;
+    $(this).parents('.selected-items-in-search-on-category').next().find('input[value="' + currentValue + '"]')
+        .trigger('click');
 });
 
 // آیدی برند های انتخاب شده رو برگشت میزنه

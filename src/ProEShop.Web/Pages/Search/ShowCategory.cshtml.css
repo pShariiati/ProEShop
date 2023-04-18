@@ -25,16 +25,3 @@
     height: 19px;
     margin-top: 2px;
 }
-
-::deep .product-item-in-search-on-category:not(:nth-child(4n)):not(:last-child) {
-    border-left: 1px solid #dee2e6 !important;
-}
-
-::deep .product-item-in-search-on-category:hover {
-    box-shadow: rgba(0, 0, 0, 0.176) 0px 1rem 3rem !important;
-}
-
-.product-title-in-search-on-category {
-    line-height: 1.5rem;
-    height: 48px;
-}
