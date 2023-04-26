@@ -24,10 +24,14 @@ public class CategoryMappingProfile : Profile
                         .Where(x => brandSlug == null || x.Brand.Slug == brandSlug)
                         .OrderBy(x => x.Id)
                         .Take(2)))
+            .ForMember(dest => dest.CategoryVariants,
+                options =>
+                    options.MapFrom(src => src.CategoryVariants.Where(x => x.Variant.IsConfirmed)))
             .ForMember(dest => dest.ProductsCount,
                 options =>
                     options.MapFrom(src => src.Products.LongCount(x => brandSlug == null || x.Brand.Slug == brandSlug)));
         this.CreateMap<Entities.CategoryBrand, ShowBrandInSearchOnCategoryViewModel>();
+        this.CreateMap<Entities.CategoryVariant, ShowVariantInSearchOnCategoryViewModel>();
         this.CreateMap<Entities.Product, ShowProductInSearchOnCategoryViewModel>()
             .ForMember(dest => dest.Picture,
                 options =>
@@ -39,6 +43,22 @@ public class CategoryMappingProfile : Profile
                             src.ProductComments.Average(pc => pc.Score)
                             : 0
                     ))
+            .ForMember(dest => dest.ColorCodes,
+                options =>
+                    options.MapFrom(src => src.Category.IsVariantColor == true
+                    ? src.ProductVariants
+                        .Where(x => x.Count > 0)
+                        .GroupBy(x => x.Variant.ColorCode)
+                        .OrderBy(x => x.Key)
+                        .Take(3)
+                        .Select(x => x.Key)
+                    : null))
+            .ForMember(dest => dest.IsMoreThanThreeColors,
+                options =>
+                    options.MapFrom(src => src.Category.IsVariantColor == true && src.ProductVariants
+                        .Where(x => x.Count > 0)
+                        .GroupBy(x => x.Variant.ColorCode)
+                        .Count() > 3))
             .ForMember(dest => dest.FinalPrice,
                 options =>
                     options.MapFrom(src =>

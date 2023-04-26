@@ -17,9 +17,13 @@ public class SearchOnCategoryViewModel
     /// </summary>
     public List<ShowProductInSearchOnCategoryViewModel> Products { get; set; }
 
+    public List<ShowVariantInSearchOnCategoryViewModel> CategoryVariants { get; set; }
+
     public long ProductsCount { get; set; }
 
     public int PagesCount => (int)Math.Ceiling(ProductsCount / (double)2);
+
+    public bool? IsVariantColor { get; set; }
 }
 
 public class ShowBrandInSearchOnCategoryViewModel
@@ -33,6 +37,10 @@ public class ShowBrandInSearchOnCategoryViewModel
 
 public class ShowProductInSearchOnCategoryViewModel
 {
+    public bool IsMoreThanThreeColors { get; set; }
+
+    public List<string> ColorCodes { get; set; }
+
     public bool IsFake { get; set; }
 
     public string Slug { get; set; }
@@ -72,4 +80,13 @@ public class ShowProductInSearchOnCategoryViewModel
     /// آیا تخفیف داریم
     /// </summary>
     public bool IsDiscountActive => OffPercentage != null;
+}
+
+public class ShowVariantInSearchOnCategoryViewModel
+{
+    public string VariantValue { get; set; }
+
+    public string VariantColorCode { get; set; }
+
+    public long VariantId { get; set; }
 }

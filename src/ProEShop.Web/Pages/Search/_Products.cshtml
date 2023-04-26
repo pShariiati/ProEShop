@@ -12,8 +12,21 @@
                     <div class="badge bg-warning">غیر اصل</div>
                 }
             </div>
-            <div>
-                <img src="@WwwRootPaths.ProductImage/@product.Picture" class="img-fluid" />
+            <div class="position-relative">
+                @if (product.ColorCodes.Count > 0)
+                {
+                    <div class="position-absolute end-0 d-flex flex-column align-items-center">
+                        @foreach (var colorCode in product.ColorCodes)
+                        {
+                            <div class="mb-1 rounded-circle circle-color-for-product-in-search-on-category" style="background-color: @colorCode"></div>
+                        }
+                        @if (product.IsMoreThanThreeColors)
+                        {
+                            <div class="rem14px">+</div>
+                        }
+                    </div>
+                }
+                <img src="@WwwRootPaths.ProductImage/@product.Picture" class="img-fluid"/>
             </div>
             <div class="ellipsis2 mt-2 product-title-in-search-on-category">
                 @product.PersianTitle

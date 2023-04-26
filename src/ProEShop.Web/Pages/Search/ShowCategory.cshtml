@@ -22,7 +22,7 @@
                 </div>
                 <div class="mt-4">
                     <div class="mb-3">
-                        <div class="d-flex justify-content-between mx-3 pointer-cursor">
+                        <div class="d-flex justify-content-between mx-3 pointer-cursor" data-bs-toggle="collapse" data-bs-target="#brands-el-for-collapse-in-search-on-category">
                             <div class="fw-bold d-flex align-items-center">
                                 <div>برند</div>
                                 <div class="ms-2 circle-dot-in-search-on-category bg-info rounded-circle"></div>
@@ -32,7 +32,7 @@
                             </div>
                         </div>
                         <div class="d-none text-truncate text-secondary mt-1 rem14px mx-3 pointer-cursor" id="selected-brands-in-search-on-category"></div>
-                        <div class="list-in-search-on-category mt-3 overflow-auto border-bottom">
+                        <div class="list-in-search-on-category mt-3 overflow-auto border-bottom collapse" id="brands-el-for-collapse-in-search-on-category">
                             <label class="border rounded-3 d-flex py-2 align-items-center mx-3">
                                 <i class="bi bi-search ms-3"></i>
                                 <input maxlength="200" type="text" class="search-input-in-search-on-category ms-3 border-0 bg-transparent w-100" placeholder="جستجو برند ..." />
@@ -62,6 +62,53 @@
                         </div>
                         <div class="border-bottom mx-3 mt-3"></div>
                     </div>
+                    @if (Model.SearchOnCategory.IsVariantColor != null)
+                    {
+                        var variantType = Model.SearchOnCategory.IsVariantColor.Value ? "رنگ" : "اندازه";
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mx-3 pointer-cursor" data-bs-toggle="collapse" data-bs-target="#colors-and-sizes-el-for-collapse-in-search-on-category">
+                                <div class="fw-bold d-flex align-items-center">
+                                    <div>@variantType</div>
+                                    <div class="ms-2 circle-dot-in-search-on-category bg-info rounded-circle"></div>
+                                </div>
+                                <div>
+                                    <i class="bi bi-chevron-down"></i>
+                                </div>
+                            </div>
+                            <div class="list-in-search-on-category mt-3 overflow-auto border-bottom collapse" id="colors-and-sizes-el-for-collapse-in-search-on-category">
+                                <label class="border rounded-3 d-flex py-2 align-items-center mx-3">
+                                    <i class="bi bi-search ms-3"></i>
+                                    <input maxlength="200" type="text" class="search-input-in-search-on-category ms-3 border-0 bg-transparent w-100" placeholder="جستجو @variantType ..." />
+                                    <i class="bi bi-x-circle-fill pointer-cursor me-2 d-none input-clear-icon-in-search-on-category"></i>
+                                </label>
+                                <div class="ms-3 mt-3 me-2 d-none selected-items-in-search-on-category">
+                                    <div class="rem13px text-secondary mb-2">انتخاب شما</div>
+                                    <div class="mb-3"></div>
+                                    <div class="rem13px text-secondary">
+                                        همه ی @variantType ها
+                                    </div>
+                                </div>
+                                <div class="mt-3 ms-3 me-2" id="colors-and-sizes-box-in-search-on-category">
+                                    @foreach (var variant in Model.SearchOnCategory.CategoryVariants)
+                                    {
+                                        <div class="pb-3 d-flex justify-content-between align-items-center list-item-in-search-on-category" title-to-search="@variant.VariantValue">
+                                            <label class="me-2">
+                                                <input value="@variant.VariantId" type="checkbox" class="form-check-input pointer-cursor" id="colors-and-sizes-in-search-on-category-@variant.VariantId" />
+                                            </label>
+                                            <label for="colors-and-sizes-in-search-on-category-@variant.VariantId" class="d-flex flex-grow-1 align-items-center justify-content-between">
+                                                <strong class="me-1 me-1">@variant.VariantValue</strong>
+                                                @if (Model.SearchOnCategory.IsVariantColor.Value)
+                                                {
+                                                    <span class="me-2 rounded-circle circle-color-in-search-on-category" style="background-color: @variant.VariantColorCode"></span>
+                                                }
+                                            </label>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="border-bottom mx-3 mt-3"></div>
+                        </div>
+                    }
                 </div>
             </div>
         </div>

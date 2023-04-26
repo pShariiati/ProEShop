@@ -41,6 +41,10 @@ public class Brand : EntityBase, IAuditableEntity
     [MaxLength(200)]
     public string BrandLinkEn { get; set; }
 
+    /// <summary>
+    /// اگر فروشنده درخواست برند جدید بکند
+    /// این مورد فالس میشه تا زمانیکه ادمین این برند رو تایید کنه
+    /// </summary>
     public bool IsConfirmed { get; set; }
 
     /// <summary>

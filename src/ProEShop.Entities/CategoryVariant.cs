@@ -17,6 +17,7 @@ public class CategoryVariant : IAuditableEntity
     #region Relations
 
     public Category Category { get; set; }
+
     public Variant Variant { get; set; }
 
     #endregion

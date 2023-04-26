@@ -400,6 +400,14 @@ public class ProductService : GenericService<Product>, IProductService
             productQuery = productQuery.Where(x => inputs.Brands.Contains(x.BrandId));
         }
 
+        if (inputs.Variants is { Count: > 0 })
+        {
+            productQuery = productQuery.Where(x => x.ProductVariants
+                .Where(pv => pv.Count > 0)
+                .Any(pv => inputs.Variants.Contains(pv.VariantId.Value))
+            );
+        }
+
         productQuery = productQuery.OrderBy(x => x.Id);
 
         var itemsCount = await productQuery.LongCountAsync();

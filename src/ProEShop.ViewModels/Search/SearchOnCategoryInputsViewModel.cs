@@ -15,5 +15,13 @@ public class SearchOnCategoryInputsViewModel
     /// </summary>
     public string CategorySlug { get; set; }
 
+    /// <summary>
+    /// برند های انتخاب شده از سمت راست صفحه
+    /// </summary>
     public List<long> Brands { get; set; }
+
+    /// <summary>
+    /// تنوع های انتخاب شده از سمت راست صفحه
+    /// </summary>
+    public List<long> Variants { get; set; }
 }
