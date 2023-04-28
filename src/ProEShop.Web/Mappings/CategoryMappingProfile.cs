@@ -24,6 +24,12 @@ public class CategoryMappingProfile : Profile
                         .Where(x => brandSlug == null || x.Brand.Slug == brandSlug)
                         .OrderBy(x => x.Id)
                         .Take(2)))
+            .ForMember(dest => dest.MinimumPrice,
+                options =>
+                    options.MapFrom(src => src.Products.Min(p => p.Price)))
+            .ForMember(dest => dest.MaximumPrice,
+                options =>
+                    options.MapFrom(src => src.Products.Max(p => p.Price)))
             .ForMember(dest => dest.CategoryVariants,
                 options =>
                     options.MapFrom(src => src.CategoryVariants.Where(x => x.Variant.IsConfirmed)))

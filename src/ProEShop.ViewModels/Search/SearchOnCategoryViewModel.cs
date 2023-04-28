@@ -24,6 +24,16 @@ public class SearchOnCategoryViewModel
     public int PagesCount => (int)Math.Ceiling(ProductsCount / (double)2);
 
     public bool? IsVariantColor { get; set; }
+
+    /// <summary>
+    /// قیمت ارزانترین محصول این دسته بندی
+    /// </summary>
+    public int MinimumPrice { get; set; }
+
+    /// <summary>
+    /// قیمت گرانترین محصول این دسته بندی
+    /// </summary>
+    public int MaximumPrice { get; set; }
 }
 
 public class ShowBrandInSearchOnCategoryViewModel

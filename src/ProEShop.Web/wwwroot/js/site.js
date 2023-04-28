@@ -1125,6 +1125,254 @@ function activatingModalFormValidation(modal) {
     $.validator.unobtrusive.parse(modal.find('form'));
 }
 
+// موقع تایپ کردن داخل اینپوت ها اعداد رو به صورت فارسی و سه رقم رقم از هم جدا میکنه
+function keypressForPersianNumbersInPriceInput(event, el, isUseComma, maxLength, functionNameToCallInTheEnd) {
+    // اگه چیزی غیر از اعداد فارسی و انگلیسی رو وارد کنه باید جلوش رو بگیریم
+    var regex = new RegExp('^[\\d۰-۹]$');
+    var key = String.fromCharCode(event.which);
+    if (!regex.test(key)) {
+        return false;
+    }
+
+    // طول رشته داخل اینپوت قبل از اینکه سه رقم سه رقم جداش کنیم
+    var valueLengthBeforeChange = el.value.length;
+    var cursorPosStart = event.target.selectionStart;
+    // اگر یک یا چند رقم رو سلکت کنه، این مورد با پوزیشن استارت متفاوت میشه
+    // اما اگه چیزی رو سلکت نکنه، پوزیشن استارت و اند با هم برابر هستن
+    var cursorPosEnd = event.target.selectionEnd;
+
+    var separatorRegex;
+    if (isUseComma) {
+        separatorRegex = new RegExp(/\,/g);
+    } else {
+        separatorRegex = new RegExp(/\//g);
+    }
+
+    // ارقام قبل پوزیشن استارت
+    var textBefore = el.value.substring(0, cursorPosStart);
+    // ارقام بعد پوزیشن اند
+    var textAfter = el.value.substring(cursorPosEnd, valueLengthBeforeChange);
+    // تعداد اسلش یا کاما های مقدار اینپوت قبل تغییر
+    var separatorCountBeforeChange = (el.value.match(separatorRegex) || []).length;
+
+    // چرا مقدار داخل اینپوت رو دوباره به انگلیسی تبدیل میکنیم ؟
+    // چون برای جدا سازی با اسلش یا کاما باید اعداد انگلیسی رو به متد پاس بدیم
+    if (isUseComma) {
+        el.value = (textBefore + key.toPersinaDigit() + textAfter)
+            .replace(separatorRegex, '')
+            .toEnglishDigit()
+            .addCommaToDigits()
+            .toPersinaDigit();
+    } else {
+        el.value = (textBefore + key.toPersinaDigit() + textAfter)
+            .replace(separatorRegex, '')
+            .toEnglishDigit()
+            .addSlashToDigits()
+            .toPersinaDigit();
+    }
+
+    // Maximum length of the input
+    if (el.value.length > maxLength) {
+        if (isUseComma) {
+            el.value = el.value
+                .substring(0, maxLength)
+                .replace(separatorRegex, '')
+                .toEnglishDigit()
+                .addCommaToDigits()
+                .toPersinaDigit();
+        } else {
+            el.value = el.value
+                .substring(0, maxLength)
+                .replace(separatorRegex, '')
+                .toEnglishDigit()
+                .addSlashToDigits()
+                .toPersinaDigit();
+        }
+        return false;
+    }
+
+    // طول رشته داخل اینپوت بعد از اینکه سه رقم سه رقم جداش کردیم
+    var valueLengthAfterChange = el.value.length;
+    // تعداد اسلش یا کاما های مقدار اینپوت بعد تغییر
+    var separatorCountAfterChange = (el.value.match(separatorRegex) || []).length;
+
+    // آیا متنی رو سلکت کرده ؟
+    var isTextSelected = cursorPosStart !== cursorPosEnd;
+
+    // تغییر پوزیشن کرسر
+
+    // وارد کردن یک عدد
+    // به شرطی که وارد کردن آن عدد موجب افزایش اسلش یا کاما نشود
+    // کرسر بعد از عدد وارد شده قرار میگیره
+    if (valueLengthBeforeChange + 1 === valueLengthAfterChange) {
+        el.setSelectionRange(cursorPosStart + 1, cursorPosStart + 1);
+    }
+    // در صورتیکه کاربر فقط یک عدد را سلکت کند و بعد یک عدد دیگر را وارد کند
+    // طول رشته قبلی با جدید برابر خواهد بود
+    // کرسر بعد از عدد وارد شده قرار میگیره
+    else if (valueLengthBeforeChange === valueLengthAfterChange) {
+        el.setSelectionRange(cursorPosStart + 1, cursorPosStart + 1);
+    }
+    // اگر متنی را سلکت کرده بود و بعد تعداد اسلش یا کاما ها نیز تغییر پیدا نکند
+    // کرسر بعد از عدد وارد شده قرار میگیره
+    else if (isTextSelected && separatorCountBeforeChange === separatorCountAfterChange) {
+        el.setSelectionRange(cursorPosStart + 1, cursorPosStart + 1);
+    }
+
+    if (functionNameToCallInTheEnd) {
+        window[functionNameToCallInTheEnd](el.value);
+    }
+
+    // اگه ریترن فالس رو انجام ندیم، دکمه ایی که فشار دادیم رو در اینپوت نمایش میده
+    // چرا ریترن فالس کردیم ؟ چون خودمون دکمه ایی که وارد شده رو در اینپوت به صورت فارسی نمایش میدیم
+    // و دیگه نیازی نیست خود مرورگر دکمه ایی که فشار دادیم رو باز هم در اینپوت نمایش بده
+    return false;
+}
+
+// پاک کردن مقدار داخل اینپوت ها
+function backspaceAndDeleteForPersianNumbersInPriceInput(event, el, isUseComma, functionNameToCallInTheEnd) {
+    // چون کی پرس برای دکمه های دیلیت و بک اسپیس کار نمیکنه از این ایونت کی داون استفاده میکنیم
+    // https://stackoverflow.com/questions/4690330/jquery-keypress-backspace-wont-fire
+
+    // آیا دکمه دیلیت رو فشار داده
+    var isDeletePressed = event.which === 46;
+    if (event.which === 8 || isDeletePressed) {
+        var separatorRegex;
+        if (isUseComma) {
+            separatorRegex = new RegExp(/\,/g);
+        } else {
+            separatorRegex = new RegExp(/\//g);
+        }
+        // اگه مقدار داخل اینپوت خالی باشه نیازی نیست کاری کنیم
+        if (el.value.length > 0) {
+            var cursorPosStart = event.target.selectionStart;
+            var cursorPosEnd = event.target.selectionEnd;
+            var textBefore = el.value.substring(0, cursorPosStart);
+            var textAfter = el.value.substring(cursorPosEnd, el.value.length);
+            // تعداد اسلش یا کاما های مقدار اینپوت قبل تغییر
+            var separatorCountBeforeChange = (el.value.match(separatorRegex) || []).length;
+
+            var selectedText;
+            // اگر متنی رو سلکت کرده باشه
+            if (cursorPosStart !== cursorPosEnd) {
+                selectedText = el.value.substring(cursorPosStart, cursorPosEnd);
+            } else if (isDeletePressed) {
+                selectedText = textAfter[0];
+            } else {
+                selectedText = textBefore.slice(-1);
+            }
+
+            if (selectedText === '/' || selectedText === ',') {
+                return false;
+            }
+
+            // اگه متنی رو سلکت نکرده باشه
+            // دیلیت: حذف اولین عدد از سمت راست
+            // بک اسپیس: حذف آخرین عدد از سمت چپ
+
+            // اگه پوزیشن استارت و اند برابر باشن یعنی متنی رو سلکت نکرده
+            if (cursorPosStart === cursorPosEnd) {
+                if (isDeletePressed) {
+                    textAfter = textAfter.substring(1, textAfter.length);
+                } else {
+                    textBefore = textBefore.substring(0, textBefore.length - 1);
+                }
+            }
+
+            if (isUseComma) {
+                el.value = (textBefore + textAfter)
+                    .replace(separatorRegex, '')
+                    .toEnglishDigit()
+                    .addCommaToDigits()
+                    .toPersinaDigit();
+            } else {
+                el.value = (textBefore + textAfter)
+                    .replace(separatorRegex, '')
+                    .toEnglishDigit()
+                    .addSlashToDigits()
+                    .toPersinaDigit();
+            }
+
+            // تعداد اسلش یا کاما های مقدار اینپوت بعد تغییر
+            var separatorCountAfterChange = (el.value.match(separatorRegex) || []).length;
+
+            // تغییر پوزیشن کرسر
+            // کرسر در مکان عدد یا اعداد حذف شده قرار میگیره
+            if (textBefore.indexOf(',') === -1 && textBefore.indexOf('/') === -1 && separatorCountAfterChange === separatorCountBeforeChange) {
+                if (isDeletePressed) {
+                    el.setSelectionRange(cursorPosStart, cursorPosStart);
+                } else {
+                    el.setSelectionRange(cursorPosStart - 1, cursorPosStart - 1);
+                }
+            }
+
+            if (functionNameToCallInTheEnd) {
+                window[functionNameToCallInTheEnd](el.value);
+            }
+
+            // چرا ریترن فالس کردم ؟
+            // چون نمیخواد مرورگر چیزی رو پاک کنه
+            // خودم پاکش میکنم
+            // این ریترن فالس باعث میشه اگه دکمه ایی رو فشار بدم
+            // مرورگر کار پیشرفرض اون دکمه رو انجام نده
+            // برای مثال اگه دکمه بک اسپیس رو فشار بدم دیگه چیزی پاک نمیشه
+            // و خودم به جای مرورگر، متن مد نظر رو پاک میکنم
+            return false;
+        }
+    }
+    return true;
+}
+
+// ایونت های پیست و دراپ برای اینپوت ها
+function customEventsForPersianNumbersInPriceInput(el, isUseComma, maxLength, functionNameToCallInTheEnd) {
+    var input = el;
+    var separatorRegex;
+    if (isUseComma) {
+        separatorRegex = new RegExp(/\,/g);
+    } else {
+        separatorRegex = new RegExp(/\//g);
+    }
+    setTimeout(function () {
+        if (isUseComma) {
+            input.value = input.value
+                .replace(/[^\d۰-۹]/g, '')
+                .replace(separatorRegex, '')
+                .toEnglishDigit()
+                .addCommaToDigits()
+                .toPersinaDigit();
+        } else {
+            input.value = input.value
+                .replace(/[^\d۰-۹]/g, '')
+                .replace(separatorRegex, '')
+                .toEnglishDigit()
+                .addSlashToDigits()
+                .toPersinaDigit();
+        }
+
+        // نباید کاربر بیشتر از تعداد مشخصی رقم وارد کند
+        if (input.value.length > maxLength) {
+            if (isUseComma) {
+                input.value = input.value
+                    .substring(0, maxLength)
+                    .replace(separatorRegex, '')
+                    .toEnglishDigit()
+                    .addCommaToDigits()
+                    .toPersinaDigit();
+            } else {
+                input.value = input.value
+                    .substring(0, maxLength)
+                    .replace(separatorRegex, '')
+                    .toEnglishDigit()
+                    .addSlashToDigits()
+                    .toPersinaDigit();
+            }
+        }
+        if (functionNameToCallInTheEnd) {
+            window[functionNameToCallInTheEnd](el.value);
+        }
+    }, 0);
+}
+
 $(function () {
     activatingInputAttributes();
     initializeSelect2WithoutModal();

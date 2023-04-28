@@ -30,6 +30,16 @@
         $(this).parent().find('i:first').removeClass('d-none');
         $(this).parents('.list-in-search-on-category').find('.list-item-in-search-on-category').removeClass('d-none');
     });
+
+    // محدوده قیمت
+    // از قیمت
+    $('#from-price-input-in-search-on-category').on('keypress', function (event) {
+        return keypressForPersianNumbersInPriceInput(event, this, true, 13);
+    }).on('keydown', function (event) {
+        return backspaceAndDeleteForPersianNumbersInPriceInput(event, this, true);
+    }).on('paste drop', function () {
+        customEventsForPersianNumbersInPriceInput(this, true, 13);
+    });
 });
 
 // نمایش محصولات به صورت صفحه بندی شده

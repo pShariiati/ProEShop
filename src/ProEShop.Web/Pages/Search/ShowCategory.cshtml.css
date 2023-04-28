@@ -30,3 +30,8 @@
     width: 18px;
     height: 18px;
 }
+
+#from-price-input-in-search-on-category:focus, #up-to-price-input-in-search-on-category:focus {
+    outline: none;
+    caret-color: red;
+}

@@ -1,6 +1,7 @@
 ﻿@page "{categorySlug}/{brandSlug?}"
 @using ProEShop.ViewModels.Search
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using DNTPersianUtils.Core
 @model ProEShop.Web.Pages.Search.ShowCategoryModel
 @{
 }
@@ -109,6 +110,38 @@
                             <div class="border-bottom mx-3 mt-3"></div>
                         </div>
                     }
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mx-3 pointer-cursor" data-bs-toggle="collapse" data-bs-target="#prices-el-for-collapse-in-search-on-category">
+                            <div class="fw-bold d-flex align-items-center">
+                                <div>محدوده قیمت</div>
+                                <div class="ms-2 circle-dot-in-search-on-category bg-info rounded-circle"></div>
+                            </div>
+                            <div>
+                                <i class="bi bi-chevron-down"></i>
+                            </div>
+                        </div>
+                        <div class="text-truncate text-secondary mt-1 rem14px mx-3 pointer-cursor d-none">
+                            از
+                            <span>۰</span>
+                            تا
+                            <span>۰</span>
+                        </div>
+                        <div class="mt-2 collapse" id="prices-el-for-collapse-in-search-on-category">
+                            <div>
+                                <div class="d-flex align-items-center">
+                                    <div class="ms-3 text-secondary">از</div>
+                                    <input maxlength="13" dir="ltr" class="rem18px flex-grow-1 fw-bold mx-2 py-1 px-2 bg-transparent border-0 border-bottom" id="from-price-input-in-search-on-category" value="@Model.SearchOnCategory.MinimumPrice.ToString("#,0").ToPersianNumbers()" />
+                                    <div class="me-3 rem13px fw-bold">تومان</div>
+                                </div>
+                                <div class="d-flex align-items-center mt-3">
+                                    <div class="ms-3 text-secondary">تا</div>
+                                    <input maxlength="13" dir="ltr" class="rem18px flex-grow-1 fw-bold mx-2 py-1 px-2 bg-transparent border-0 border-bottom" id="up-to-price-input-in-search-on-category" value="@Model.SearchOnCategory.MaximumPrice.ToString("#,0").ToPersianNumbers()" />
+                                    <div class="me-3 rem13px fw-bold">تومان</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border-bottom mx-3 mt-3"></div>
+                    </div>
                 </div>
             </div>
         </div>
