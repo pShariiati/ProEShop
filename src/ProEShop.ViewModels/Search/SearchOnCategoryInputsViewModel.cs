@@ -24,4 +24,14 @@ public class SearchOnCategoryInputsViewModel
     /// تنوع های انتخاب شده از سمت راست صفحه
     /// </summary>
     public List<long> Variants { get; set; }
+
+    /// <summary>
+    /// کمترین قیمت برای فیلتر کردن محصولات
+    /// </summary>
+    public int MinimumPrice { get; set; }
+
+    /// <summary>
+    /// بیشترین قیمت برای فیلتر کردن محصولات
+    /// </summary>
+    public int MaximumPrice { get; set; }
 }

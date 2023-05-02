@@ -726,7 +726,7 @@ $(document).on('submit', 'form.public-ajax-form', function (e) {
     //$('#html-scrollable-modal-place').modal('hide');
     //$('#second-html-modal-place').modal('hide');
 
-    $('.modal').each(function() {
+    $('.modal').each(function () {
         $(this).modal('hide');
     });
 
@@ -1155,18 +1155,37 @@ function keypressForPersianNumbersInPriceInput(event, el, isUseComma, maxLength,
     // تعداد اسلش یا کاما های مقدار اینپوت قبل تغییر
     var separatorCountBeforeChange = (el.value.match(separatorRegex) || []).length;
 
+    // اگر اتریبیوت مکس وجود داشت، باید مقدار داخل اینپوت رو بررسی کنیم و اگر بیشتر از مقدار مکس بود
+    // مقدار داخل اینپوت رو به مقدار مکس تغییر میدهیم
+    var maximumPriceAttribute = $(el).attr('maximum-price');
+    var inputValue = (textBefore + key.toPersinaDigit() + textAfter)
+        .replace(separatorRegex, '')
+        .toEnglishDigit();
+
+    if (maximumPriceAttribute) {
+        if (parseInt(inputValue) > maximumPriceAttribute) {
+            inputValue = maximumPriceAttribute;
+        }
+    }
+
+    // اگر متن داخل اینپوت بعد از اینکه کاربر یک مقداری رو وارد کرد تغییر پیدا نکرد
+    // نباید پوزیشن کرسر رو تغییر بدیم
+    var textBeforeChange = el.value;
+
     // چرا مقدار داخل اینپوت رو دوباره به انگلیسی تبدیل میکنیم ؟
     // چون برای جدا سازی با اسلش یا کاما باید اعداد انگلیسی رو به متد پاس بدیم
     if (isUseComma) {
-        el.value = (textBefore + key.toPersinaDigit() + textAfter)
-            .replace(separatorRegex, '')
-            .toEnglishDigit()
+        // چرا از پارس اینت استفاده میکنیم
+        // به این خاطر که اگر کاربر خواست برای مثال مقدار صفر پنج رو داخل اینپوت وارد کنه
+        // صفر قبل از پنج رو حذف کنه، صفر های اول یک عدد کلا محاسبه نمیشوند
+        // 000005 => 5
+        el.value = parseInt(inputValue)
+            .toString()
             .addCommaToDigits()
             .toPersinaDigit();
     } else {
-        el.value = (textBefore + key.toPersinaDigit() + textAfter)
-            .replace(separatorRegex, '')
-            .toEnglishDigit()
+        el.value = parseInt(inputValue)
+            .toString()
             .addSlashToDigits()
             .toPersinaDigit();
     }
@@ -1191,6 +1210,10 @@ function keypressForPersianNumbersInPriceInput(event, el, isUseComma, maxLength,
         return false;
     }
 
+    // اگر متن داخل اینپوت بعد از اینکه کاربر یک مقداری رو وارد کرد تغییر پیدا نکرد
+    // نباید پوزیشن کرسر رو تغییر بدیم
+    var textAfterChange = el.value;
+
     // طول رشته داخل اینپوت بعد از اینکه سه رقم سه رقم جداش کردیم
     var valueLengthAfterChange = el.value.length;
     // تعداد اسلش یا کاما های مقدار اینپوت بعد تغییر
@@ -1201,10 +1224,15 @@ function keypressForPersianNumbersInPriceInput(event, el, isUseComma, maxLength,
 
     // تغییر پوزیشن کرسر
 
+    // اگر متن داخل اینپوت بعد از اینکه کاربر یک مقداری رو وارد کرد تغییر پیدا نکرد
+    // نباید پوزیشن کرسر رو تغییر بدیم
+    if (textBeforeChange === textAfterChange) {
+        el.setSelectionRange(cursorPosStart, cursorPosStart);
+    }
     // وارد کردن یک عدد
     // به شرطی که وارد کردن آن عدد موجب افزایش اسلش یا کاما نشود
     // کرسر بعد از عدد وارد شده قرار میگیره
-    if (valueLengthBeforeChange + 1 === valueLengthAfterChange) {
+    else if (valueLengthBeforeChange + 1 === valueLengthAfterChange) {
         el.setSelectionRange(cursorPosStart + 1, cursorPosStart + 1);
     }
     // در صورتیکه کاربر فقط یک عدد را سلکت کند و بعد یک عدد دیگر را وارد کند
@@ -1310,6 +1338,12 @@ function backspaceAndDeleteForPersianNumbersInPriceInput(event, el, isUseComma, 
                 window[functionNameToCallInTheEnd](el.value);
             }
 
+            // اگر اتریبیوت "نمیتواند خالی باشد" را داشته باشد در آن صورت
+            // اگر کاربر خواست مقدار داخل اینپوت رو کلا پاک کنه جلوی این کار رو میگیریم و یک صفر داخل اینپوت نمایش میدم
+            if ($(el).attr('can-be-empty') && isNullOrWhitespace(el.value)) {
+                el.value = '۰';
+            }
+
             // چرا ریترن فالس کردم ؟
             // چون نمیخواد مرورگر چیزی رو پاک کنه
             // خودم پاکش میکنم
@@ -1326,25 +1360,23 @@ function backspaceAndDeleteForPersianNumbersInPriceInput(event, el, isUseComma, 
 // ایونت های پیست و دراپ برای اینپوت ها
 function customEventsForPersianNumbersInPriceInput(el, isUseComma, maxLength, functionNameToCallInTheEnd) {
     var input = el;
-    var separatorRegex;
-    if (isUseComma) {
-        separatorRegex = new RegExp(/\,/g);
-    } else {
-        separatorRegex = new RegExp(/\//g);
-    }
     setTimeout(function () {
         if (isUseComma) {
-            input.value = input.value
+            // چرا از پارس اینت استفاده میکنیم
+            // به این خاطر که اگر کاربر خواست برای مثال مقدار صفر پنج رو داخل اینپوت وارد کنه
+            // صفر قبل از پنج رو حذف کنه، صفر های اول یک عدد کلا محاسبه نمیشوند
+            // 000005 => 5
+            input.value = parseInt(input.value
                 .replace(/[^\d۰-۹]/g, '')
-                .replace(separatorRegex, '')
-                .toEnglishDigit()
+                .toEnglishDigit())
+                .toString()
                 .addCommaToDigits()
                 .toPersinaDigit();
         } else {
-            input.value = input.value
+            input.value = parseInt(input.value
                 .replace(/[^\d۰-۹]/g, '')
-                .replace(separatorRegex, '')
-                .toEnglishDigit()
+                .toEnglishDigit())
+                .toString()
                 .addSlashToDigits()
                 .toPersinaDigit();
         }
@@ -1354,14 +1386,12 @@ function customEventsForPersianNumbersInPriceInput(el, isUseComma, maxLength, fu
             if (isUseComma) {
                 input.value = input.value
                     .substring(0, maxLength)
-                    .replace(separatorRegex, '')
                     .toEnglishDigit()
                     .addCommaToDigits()
                     .toPersinaDigit();
             } else {
                 input.value = input.value
                     .substring(0, maxLength)
-                    .replace(separatorRegex, '')
                     .toEnglishDigit()
                     .addSlashToDigits()
                     .toPersinaDigit();

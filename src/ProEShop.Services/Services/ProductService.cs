@@ -408,6 +408,23 @@ public class ProductService : GenericService<Product>, IProductService
             );
         }
 
+        // min: 1000
+        // max: 900
+        // مین نباید بیشتر از مکس باشد
+        // مین باید حداقل مساوی یا کمتر باشد
+        if (inputs.MaximumPrice >= inputs.MinimumPrice)
+        {
+            if (inputs.MinimumPrice > 0)
+            {
+                productQuery = productQuery.Where(x => x.Price >= inputs.MinimumPrice);
+            }
+
+            if (inputs.MaximumPrice > 0)
+            {
+                productQuery = productQuery.Where(x => x.Price <= inputs.MaximumPrice);
+            }
+        }
+
         productQuery = productQuery.OrderBy(x => x.Id);
 
         var itemsCount = await productQuery.LongCountAsync();

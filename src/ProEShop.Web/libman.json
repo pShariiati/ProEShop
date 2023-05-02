@@ -64,6 +64,10 @@
     {
       "library": "Swiper@9.1.0",
       "destination": "wwwroot/lib/Swiper/"
+    },
+    {
+      "library": "noUiSlider@15.7.0",
+      "destination": "wwwroot\\lib\\noUiSlider"
     }
   ]
 }
