@@ -34,4 +34,9 @@ public class SearchOnCategoryInputsViewModel
     /// بیشترین قیمت برای فیلتر کردن محصولات
     /// </summary>
     public int MaximumPrice { get; set; }
+
+    /// <summary>
+    /// فقط کالا هایی که در داخل انبار موجود هستند
+    /// </summary>
+    public bool OnlyExistsProducts { get; set; }
 }

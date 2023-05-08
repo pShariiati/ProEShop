@@ -412,7 +412,12 @@ public class ProductService : GenericService<Product>, IProductService
         // max: 900
         // مین نباید بیشتر از مکس باشد
         // مین باید حداقل مساوی یا کمتر باشد
-        if (inputs.MaximumPrice >= inputs.MinimumPrice)
+        // یا
+        // اگر مقدار مکسیموم تغییر نکند، کلاینت، مقدار صفر را به سمت سرور ارسال میکند
+        // پس اگر فقط مقدار مینیموم را تغییر دهیم و به مکسیموم کاری نداشته باشیم
+        // چون مکسیموم به صورت صفر به سمت سرور میاید در نتیجه مکسیموم از مینیموم بزرگتر میشود
+        // پس حالت "یا" را به این خاطر مینویسیم
+        if (inputs.MaximumPrice >= inputs.MinimumPrice || inputs.MaximumPrice == 0 && inputs.MinimumPrice > 0)
         {
             if (inputs.MinimumPrice > 0)
             {
@@ -423,6 +428,11 @@ public class ProductService : GenericService<Product>, IProductService
             {
                 productQuery = productQuery.Where(x => x.Price <= inputs.MaximumPrice);
             }
+        }
+
+        if (inputs.OnlyExistsProducts)
+        {
+            productQuery = productQuery.Where(x => x.ProductStockStatus == ProductStockStatus.Available);
         }
 
         productQuery = productQuery.OrderBy(x => x.Id);

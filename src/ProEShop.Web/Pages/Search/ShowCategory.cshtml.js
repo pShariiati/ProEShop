@@ -251,6 +251,11 @@ $('#colors-and-sizes-box-in-search-on-category input:checkbox').change(function 
     getHtmlWithAJAX('?handler=ShowProductsByPagination', dataToSend, 'showProductsByPaginationFunction');
 });
 
+// چکباکس مربوط به فقط کالاهای موجود
+$('#only-exist-products-in-search-on-category').change(function() {
+    getHtmlWithAJAX('?handler=ShowProductsByPagination', getDataToSend(), 'showProductsByPaginationFunction');
+});
+
 // اگر روی چکباکس موارد انتخاب شده کلیک شد باید اونارو حذف کنیم
 $(document).on('change', '.selected-items-in-search-on-category input', function () {
     var currentValue = this.value;
@@ -292,6 +297,7 @@ function getDataToSend() {
         brands: getSelectedBrands(),
         variants: getSelectedVariants(),
         minimumPrice: getMinAndMaxPrice(true),
-        maximumPrice: getMinAndMaxPrice(false)
+        maximumPrice: getMinAndMaxPrice(false),
+        onlyExistsProducts: $('#only-exist-products-in-search-on-category').prop('checked')
     }
 }

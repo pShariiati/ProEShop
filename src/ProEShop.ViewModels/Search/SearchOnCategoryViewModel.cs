@@ -19,6 +19,8 @@ public class SearchOnCategoryViewModel
 
     public List<ShowVariantInSearchOnCategoryViewModel> CategoryVariants { get; set; }
 
+    public List<ShowFeatureInSearchOnCategoryViewModel> CategoryFeatures { get; set; }
+
     public long ProductsCount { get; set; }
 
     public int PagesCount => (int)Math.Ceiling(ProductsCount / (double)2);
@@ -99,4 +101,13 @@ public class ShowVariantInSearchOnCategoryViewModel
     public string VariantColorCode { get; set; }
 
     public long VariantId { get; set; }
+}
+
+public class ShowFeatureInSearchOnCategoryViewModel
+{
+    public long FeatureId { get; set; }
+
+    public string FeatureTitle { get; set; }
+
+    public List<string> Values { get; set; }
 }

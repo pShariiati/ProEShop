@@ -24,6 +24,9 @@ public class CategoryMappingProfile : Profile
                         .Where(x => brandSlug == null || x.Brand.Slug == brandSlug)
                         .OrderBy(x => x.Id)
                         .Take(2)))
+            .ForMember(dest => dest.CategoryFeatures,
+                options =>
+                    options.MapFrom(src => src.FeatureConstantValues.GroupBy(x => x.FeatureId)))
             .ForMember(dest => dest.MinimumPrice,
                 options =>
                     options.MapFrom(src => src.Products.Min(p => p.Price)))
@@ -37,6 +40,16 @@ public class CategoryMappingProfile : Profile
                 options =>
                     options.MapFrom(src => src.Products.LongCount(x => brandSlug == null || x.Brand.Slug == brandSlug)));
         this.CreateMap<Entities.CategoryBrand, ShowBrandInSearchOnCategoryViewModel>();
+        this.CreateMap<IGrouping<long, Entities.FeatureConstantValue>, ShowFeatureInSearchOnCategoryViewModel>()
+            .ForMember(dest => dest.FeatureTitle,
+                options =>
+                    options.MapFrom(src => src.First().Feature.Title))
+            .ForMember(dest => dest.FeatureId,
+                options =>
+                    options.MapFrom(src => src.First().FeatureId))
+            .ForMember(dest => dest.Values,
+                options =>
+                    options.MapFrom(src => src.Select(x => x.Value)));
         this.CreateMap<Entities.CategoryVariant, ShowVariantInSearchOnCategoryViewModel>();
         this.CreateMap<Entities.Product, ShowProductInSearchOnCategoryViewModel>()
             .ForMember(dest => dest.Picture,
