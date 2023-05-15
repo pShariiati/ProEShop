@@ -435,6 +435,29 @@ public class ProductService : GenericService<Product>, IProductService
             productQuery = productQuery.Where(x => x.ProductStockStatus == ProductStockStatus.Available);
         }
 
+        if (inputs.Features is { Count: > 0 })
+        {
+            foreach (var feature in inputs.Features)
+            {
+                if (!string.IsNullOrWhiteSpace(feature))
+                {
+                    // 3___6گیگ|||
+                    var splitFeature = feature.Split("___");
+                    if (long.TryParse(splitFeature.First(), out long featureId))
+                    {
+                        var featureValues = splitFeature.Last().Split("|||",
+                            StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+                        if (featureValues.Length > 0)
+                        {
+                            productQuery = productQuery.Where(x => x.ProductFeatures
+                                .Where(pf => pf.FeatureId == featureId)
+                                .Any(pf => featureValues.Contains(pf.Value)));
+                        }
+                    }
+                }
+            }
+        }
+
         productQuery = productQuery.OrderBy(x => x.Id);
 
         var itemsCount = await productQuery.LongCountAsync();

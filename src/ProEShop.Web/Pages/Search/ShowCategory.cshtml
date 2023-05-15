@@ -47,7 +47,7 @@
                                     همه ی برند ها
                                 </div>
                             </div>
-                            <div class="mt-3 ms-3 me-2" id="brands-box-in-search-on-category">
+                            <div class="mt-3 ms-3 me-2 all-items-box-in-search-on-category" id="brands-box-in-search-on-category">
                                 @foreach (var brand in Model.SearchOnCategory.CategoryBrands)
                                 {
                                     <div class="pb-3 d-flex justify-content-between align-items-center list-item-in-search-on-category" title-to-search="@brand.BrandTitleEn.ToLower() @brand.BrandTitleFa">
@@ -77,6 +77,7 @@
                                     <i class="bi bi-chevron-down"></i>
                                 </div>
                             </div>
+                            <div class="d-none text-truncate text-secondary mt-1 rem14px mx-3 pointer-cursor" id="selected-variants-in-search-on-category"></div>
                             <div class="list-in-search-on-category mt-3 overflow-auto border-bottom collapse" id="colors-and-sizes-el-for-collapse-in-search-on-category">
                                 <label class="border rounded-3 d-flex py-2 align-items-center mx-3">
                                     <i class="bi bi-search ms-3"></i>
@@ -90,7 +91,7 @@
                                         همه ی @variantType ها
                                     </div>
                                 </div>
-                                <div class="mt-3 ms-3 me-2" id="colors-and-sizes-box-in-search-on-category">
+                                <div class="mt-3 ms-3 me-2 all-items-box-in-search-on-category" id="colors-and-sizes-box-in-search-on-category">
                                     @foreach (var variant in Model.SearchOnCategory.CategoryVariants)
                                     {
                                         <div class="pb-3 d-flex justify-content-between align-items-center list-item-in-search-on-category" title-to-search="@variant.VariantValue">
@@ -153,7 +154,7 @@
                     </div>
                     @foreach (var feature in Model.SearchOnCategory.CategoryFeatures)
                     {
-                        <div class="mb-3">
+                        <div class="mb-3 features-in-search-on-category" feature-id="@feature.FeatureId">
                             <div class="d-flex justify-content-between mx-3 pointer-cursor" data-bs-toggle="collapse" data-bs-target="#feature-@(feature.FeatureId)-el-for-collapse-in-search-on-category">
                                 <div class="fw-bold d-flex align-items-center">
                                     <div>@feature.FeatureTitle</div>
@@ -163,7 +164,7 @@
                                     <i class="bi bi-chevron-down"></i>
                                 </div>
                             </div>
-                            <div class="d-none text-truncate text-secondary mt-1 rem14px mx-3 pointer-cursor" id="selected-brands-in-search-on-category"></div>
+                            <div class="d-none text-truncate text-secondary mt-1 rem14px mx-3 pointer-cursor selected-features-text-in-search-category"></div>
                             <div class="list-in-search-on-category mt-3 overflow-auto border-bottom collapse" id="feature-@(feature.FeatureId)-el-for-collapse-in-search-on-category">
                                 <label class="border rounded-3 d-flex py-2 align-items-center mx-3">
                                     <i class="bi bi-search ms-3"></i>
@@ -177,7 +178,7 @@
                                         همه ی @feature.FeatureTitle ها
                                     </div>
                                 </div>
-                                <div class="mt-3 ms-3 me-2" id="brands-box-in-search-on-category">
+                                <div class="mt-3 ms-3 me-2 all-items-box-in-search-on-category">
                                     @foreach (var featureValue in feature.Values)
                                     {
                                         <div class="pb-3 d-flex justify-content-between align-items-center list-item-in-search-on-category" title-to-search="@featureValue.ToLower()">

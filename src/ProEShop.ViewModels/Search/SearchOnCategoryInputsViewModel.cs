@@ -39,4 +39,9 @@ public class SearchOnCategoryInputsViewModel
     /// فقط کالا هایی که در داخل انبار موجود هستند
     /// </summary>
     public bool OnlyExistsProducts { get; set; }
+
+    /// <summary>
+    /// فیچر هایی که تیکشون فعال شده
+    /// </summary>
+    public List<string> Features { get; set; }
 }
