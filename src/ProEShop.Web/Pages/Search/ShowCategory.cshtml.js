@@ -11,6 +11,107 @@ var currentMinimumPriceValueToCheck = $('#from-price-input-in-search-on-category
 var currentMaximumPriceValueToCheck = $('#up-to-price-input-in-search-on-category').val();
 
 $(function () {
+    // range slider for price
+    var rangeSlider = document.getElementById('prices-range-in-search-on-category');
+    noUiSlider.create(rangeSlider, {
+        connect: true,
+        step: currentCategoryMaximumPrice / 100,
+        direction: 'rtl',
+        start: [0, currentCategoryMaximumPrice],
+        range: {
+            'min': 0,
+            'max': currentCategoryMaximumPrice
+        }
+    });
+
+    rangeSlider.noUiSlider.on('update', function (values, handle) {
+        var value = Math.round(values[handle]).toString().addCommaToDigits().toPersinaDigit();
+        if (handle) {
+            $('#up-to-price-input-in-search-on-category').val(value);
+        } else {
+            $('#from-price-input-in-search-on-category').val(value);
+        }
+    });
+
+    rangeSlider.noUiSlider.on('change', function (values, handle) {
+        // گردی آبی رنگ
+        var circleDotEl = $('#from-price-text-in-search-on-category').parents('.mb-3').find('.circle-dot-in-search-on-category');
+        // نمایش یا مخفی کردن گردی آبی رنگ
+        // اگر مین روی صفر بود و مکس تغییر پیدا نکرده بود باید گردی رو مخفی کنیم
+        // در غیر اینصورت نمایشش میدیم
+        if (Math.round(values[0]) === 0 && Math.round(values[1]) === currentCategoryMaximumPrice) {
+            circleDotEl.addClass('d-none');
+        } else {
+            circleDotEl.removeClass('d-none');
+        }
+        var value = Math.round(values[handle]).toString().addCommaToDigits().toPersinaDigit();
+        if (handle) {
+            // متن از فلان تا فلان
+            $('#up-to-price-text-in-search-on-category').html(value);
+            $('#up-to-price-input-in-search-on-category').keyup();
+        } else {
+            // متن از فلان تا فلان
+            $('#from-price-text-in-search-on-category').html(value);
+            $('#from-price-input-in-search-on-category').keyup();
+        }
+    });
+
+    // حذف تمامی فیلتر ها
+    $('#remove-all-filters-in-search-on-category').click(function () {
+        // غیر فعال کردن تمامی چکباکس های بخش سایدبار
+        $('#sidebar-in-search-on-category input:checkbox').prop('checked', false);
+        // حذف تمامی آیتم های انتخاب شده
+        // برای مثال کاربر از قبل برند ایکس رو انتخاب کرده و در بخش انتخاب شده وجود داره
+        // باید تمامی آیتم های بخش انتخاب شده ها رو حذف کنیم
+        $('.selected-items-in-search-on-category .mb-3 > div').remove();
+        // بخش انتخاب شده هارو مخفی میکنیم که متن "انتخاب شما" رو مخفی کنه
+        $('.selected-items-in-search-on-category').addClass('d-none');
+        // گردی های آبی رنگ رو مخفی میکنیم
+        $('.circle-dot-in-search-on-category').addClass('d-none');
+        // تمامی کولپس هارو میبندیم
+        $('#sidebar-in-search-on-category .collapse').collapse('hide');
+        // متن انتخاب شده برند ها، تنوع ها، محدوده قیمت و فیچر های انتخاب شده رو حذف و المنتشون رو مخفی میکنیم
+        $('#selected-brands-in-search-on-category').html('');
+        $('#selected-brands-in-search-on-category').addClass('d-none');
+        $('#selected-variants-in-search-on-category').html('');
+        $('#selected-variants-in-search-on-category').addClass('d-none');
+        $('.selected-features-text-in-search-category').html('');
+        $('.selected-features-text-in-search-category').addClass('d-none');
+        $('#up-to-price-text-in-search-on-category').parent().addClass('d-none');
+        // خود دکمه حذف تمامی فیلتر ها رو مخفی میکنیم
+        $(this).addClass('d-none');
+        // تغییر رنج اسلایدر محدوده قیمت به مقادیر اولیه
+        //https://refreshless.com/nouislider/more/
+        rangeSlider.noUiSlider.updateOptions({
+            start: [0, currentCategoryMaximumPrice]
+        });
+        currentMinimumPriceValueToCheck = '۰';
+        currentMaximumPriceValueToCheck = $('#up-to-price-input-in-search-on-category').val();
+        // و در نهایت یک درخواست رو به سمت سرور ارسال میکنیم که تمامی محصولات رو بدون فیلتر از نو نمایش بده
+        getHtmlWithAJAX('?handler=ShowProductsByPagination', getDataToSend(), 'showProductsByPaginationFunction');
+    });
+
+    // اگر کولپس ها بسته شدن و بخش موارد انتخاب شده مقدار داشت در اون صورت دیو موارد انتخاب شده رو از حالت هیدن خارج میکنیم
+    $('#sidebar-in-search-on-category .collapse').on('hide.bs.collapse', function () {
+        var selectedItemsEl = $(this).parents('.mb-3').find('.text-truncate');
+        // چون اچ تی ام ال محدوده قیمت تحت هیچ شرایطی خالی نمیشود و همیشه مقدار دارد چون داخل المنت دو تا اسپن وجود داره
+        // باید مقادیر "از" و "تا" مورد بررسی قرار گیرند و اگر تغییر کرده باشند در آن صورت المنت متن راهنمای محدوده قیمت نمایش داده می شود
+        if ($(this).attr('id') === 'prices-el-for-collapse-in-search-on-category') {
+            if (currentMinimumPriceValueToCheck !== '۰' ||
+                currentMaximumPriceValueToCheck !== currentCategoryMaximumPrice.toString().addCommaToDigits().toPersinaDigit()) {
+                selectedItemsEl.removeClass('d-none');
+            }
+        }
+        else if (selectedItemsEl.html()) {
+            selectedItemsEl.removeClass('d-none');
+        }
+    });
+
+    // موقعی که کولپس ها باز میشن باید دیو موارد انتخاب شده رو مخفی کنیم
+    $('#sidebar-in-search-on-category .collapse').on('show.bs.collapse', function () {
+        $(this).parents('.mb-3').find('.text-truncate').addClass('d-none');
+    });
+
     // اگه چکباکس برند ها تیکش فعال یا غیر فعال شد
     // این ایونت فراخوانی میشه
     $('#brands-box-in-search-on-category input:checkbox').change(function () {
@@ -25,7 +126,6 @@ $(function () {
 
         // دیو موارد انتخاب شده
         var brandsEl = $('#selected-brands-in-search-on-category');
-        brandsEl.removeClass('d-none');
         brandsEl.html('');
         selectedBrands.forEach(item => {
             brandsEl.append(item + "، ");
@@ -62,10 +162,16 @@ $(function () {
                 .parents('div:first')
                 .remove();
         }
+
+        // گردی آبی رنگ
+        var circleDotEl = $(this).parents('.mb-3').find('.circle-dot-in-search-on-category');
         // اگر رکوردی وجود نداشت بخش انتخاب شما رو مخفی میکنیم
         if (!selectedBrands.length) {
             selectedItemsEl.addClass('d-none');
             brandsEl.addClass('d-none');
+            circleDotEl.addClass('d-none');
+        } else {
+            circleDotEl.removeClass('d-none');
         }
         getHtmlWithAJAX('?handler=ShowProductsByPagination', dataToSend, 'showProductsByPaginationFunction');
     });
@@ -84,7 +190,6 @@ $(function () {
 
         // دیو موارد انتخاب شده
         var variantsEl = $('#selected-variants-in-search-on-category');
-        variantsEl.removeClass('d-none');
         variantsEl.html('');
         selectedVariants.forEach(item => {
             variantsEl.append(item + "، ");
@@ -121,10 +226,16 @@ $(function () {
                 .parents('div:first')
                 .remove();
         }
+
+        // گردی آبی رنگ
+        var circleDotEl = $(this).parents('.mb-3').find('.circle-dot-in-search-on-category');
         // اگر رکوردی وجود نداشت بخش انتخاب شما رو مخفی میکنیم
         if (!selectedVariants.length) {
             selectedItemsEl.addClass('d-none');
             variantsEl.addClass('d-none');
+            circleDotEl.addClass('d-none');
+        } else {
+            circleDotEl.removeClass('d-none');
         }
         getHtmlWithAJAX('?handler=ShowProductsByPagination', dataToSend, 'showProductsByPaginationFunction');
     });
@@ -145,13 +256,12 @@ $(function () {
     $('.features-in-search-on-category input').change(function () {
         // نام برند هایی که تیک آنها فعال شده
         var selectedFeatures = [];
-        $(this).parents('.all-items-box-in-search-on-category').find('input:checked').each(function() {
+        $(this).parents('.all-items-box-in-search-on-category').find('input:checked').each(function () {
             selectedFeatures.push($(this).val());
         });
 
         // دیو موارد انتخاب شده
         var featuresEl = $(this).parents('.features-in-search-on-category').find('.selected-features-text-in-search-category');
-        featuresEl.removeClass('d-none');
         featuresEl.html('');
         selectedFeatures.forEach(item => {
             featuresEl.append(item + "، ");
@@ -187,10 +297,16 @@ $(function () {
                 .parents('div:first')
                 .remove();
         }
+
+        // گردی آبی رنگ
+        var circleDotEl = $(this).parents('.mb-3').find('.circle-dot-in-search-on-category');
         // اگر رکوردی وجود نداشت بخش انتخاب شما رو مخفی میکنیم
         if (!selectedFeatures.length) {
             selectedItemsEl.addClass('d-none');
             featuresEl.addClass('d-none');
+            circleDotEl.addClass('d-none');
+        } else {
+            circleDotEl.removeClass('d-none');
         }
         getHtmlWithAJAX('?handler=ShowProductsByPagination', getDataToSend(), 'showProductsByPaginationFunction');
     });
@@ -236,7 +352,7 @@ $(function () {
         return backspaceAndDeleteForPersianNumbersInPriceInput(event, this, true);
     }).on('paste drop', function () {
         customEventsForPersianNumbersInPriceInput(this, true, 13);
-    }).on('keyup',function() {
+    }).on('keyup', function () {
         if (globalTimeout != null) {
             clearTimeout(globalTimeout);
         }
@@ -272,36 +388,6 @@ $(function () {
             currentMaximumPriceValueToCheck = currentValue;
             getHtmlWithAJAX('?handler=ShowProductsByPagination', getDataToSend(), 'showProductsByPaginationFunction');
         }, 500);
-    });
-
-    // range slider for price
-    var rangeSlider = document.getElementById('prices-range-in-search-on-category');
-    noUiSlider.create(rangeSlider, {
-        connect: true,
-        step: currentCategoryMaximumPrice / 100,
-        direction: 'rtl',
-        start: [0, currentCategoryMaximumPrice],
-        range: {
-            'min': 0,
-            'max': currentCategoryMaximumPrice
-        }
-    });
-
-    rangeSlider.noUiSlider.on('update', function (values, handle) {
-        var value = Math.round(values[handle]);
-        if (handle) {
-            $('#up-to-price-input-in-search-on-category').val(value.toString().addCommaToDigits().toPersinaDigit());
-        } else {
-            $('#from-price-input-in-search-on-category').val(value.toString().addCommaToDigits().toPersinaDigit());
-        }
-    });
-
-    rangeSlider.noUiSlider.on('change', function (values, handle) {
-        if (handle) {
-            $('#up-to-price-input-in-search-on-category').keyup();
-        } else {
-            $('#from-price-input-in-search-on-category').keyup();
-        }
     });
 });
 
@@ -359,12 +445,12 @@ function getMinAndMaxPrice(isMin) {
 // feature id + ___ + values (split by |||)
 function getActiveFeatures() {
     var activeFeatures = [];
-    $('.features-in-search-on-category').each(function() {
+    $('.features-in-search-on-category').each(function () {
         var featureId = $(this).attr('feature-id');
         var currentFeatureInputs = $(this).find('input:checked');
         if (currentFeatureInputs.length) {
             var featureTextToAdd = featureId + '___';
-            currentFeatureInputs.each(function() {
+            currentFeatureInputs.each(function () {
                 var featureValue = this.value;
                 featureTextToAdd += featureValue + '|||';
             });
@@ -376,12 +462,26 @@ function getActiveFeatures() {
 
 // گرفتن تمام دیتا های فیلتر ها که به سمت سرور ارسالشون کنیم
 function getDataToSend() {
-    return {
+    var result = {
         brands: getSelectedBrands(),
         variants: getSelectedVariants(),
         minimumPrice: getMinAndMaxPrice(true),
         maximumPrice: getMinAndMaxPrice(false),
         onlyExistsProducts: $('#only-exist-products-in-search-on-category').prop('checked'),
         features: getActiveFeatures()
+    };
+
+    var removeAllFiltersEl = $('#remove-all-filters-in-search-on-category');
+    if (result.brands.length ||
+        result.variants.length ||
+        result.features.length ||
+        result.onlyExistsProducts ||
+        result.minimumPrice > 0 ||
+        result.maximumPrice > 0) {
+        removeAllFiltersEl.removeClass('d-none');
+    } else {
+        removeAllFiltersEl.addClass('d-none');
     }
+
+    return result;
 }

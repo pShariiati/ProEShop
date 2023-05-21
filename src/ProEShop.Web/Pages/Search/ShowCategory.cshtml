@@ -16,24 +16,24 @@
         <span>موبایل</span>
     </div>
     <div class="row mt-3">
-        <div class="col-lg-3">
+        <div class="col-lg-3" id="sidebar-in-search-on-category">
             <div class="border rounded-3">
                 <div class="d-flex justify-content-between mt-3 align-items-center mx-3">
                     <div class="fw-bold">فیلتر ها</div>
-                    <div class="text-info rem13px pointer-cursor">حذف فیلتر ها</div>
+                    <div class="text-info rem13px pointer-cursor d-none" id="remove-all-filters-in-search-on-category">حذف فیلتر ها</div>
                 </div>
                 <div class="mt-4">
                     <div class="mb-3">
                         <div class="d-flex justify-content-between mx-3 pointer-cursor" data-bs-toggle="collapse" data-bs-target="#brands-el-for-collapse-in-search-on-category">
                             <div class="fw-bold d-flex align-items-center">
                                 <div>برند</div>
-                                <div class="ms-2 circle-dot-in-search-on-category bg-info rounded-circle"></div>
+                                <div class="d-none ms-2 circle-dot-in-search-on-category bg-info rounded-circle"></div>
                             </div>
                             <div>
                                 <i class="bi bi-chevron-down"></i>
                             </div>
                         </div>
-                        <div class="d-none text-truncate text-secondary mt-1 rem14px mx-3 pointer-cursor" id="selected-brands-in-search-on-category"></div>
+                        <div data-bs-toggle="collapse" data-bs-target="#brands-el-for-collapse-in-search-on-category" class="d-none text-truncate text-secondary mt-1 rem14px mx-3 pointer-cursor" id="selected-brands-in-search-on-category"></div>
                         <div class="list-in-search-on-category mt-3 overflow-auto border-bottom collapse" id="brands-el-for-collapse-in-search-on-category">
                             <label class="border rounded-3 d-flex py-2 align-items-center mx-3">
                                 <i class="bi bi-search ms-3"></i>
@@ -71,13 +71,13 @@
                             <div class="d-flex justify-content-between mx-3 pointer-cursor" data-bs-toggle="collapse" data-bs-target="#colors-and-sizes-el-for-collapse-in-search-on-category">
                                 <div class="fw-bold d-flex align-items-center">
                                     <div>@variantType</div>
-                                    <div class="ms-2 circle-dot-in-search-on-category bg-info rounded-circle"></div>
+                                    <div class="d-none ms-2 circle-dot-in-search-on-category bg-info rounded-circle"></div>
                                 </div>
                                 <div>
                                     <i class="bi bi-chevron-down"></i>
                                 </div>
                             </div>
-                            <div class="d-none text-truncate text-secondary mt-1 rem14px mx-3 pointer-cursor" id="selected-variants-in-search-on-category"></div>
+                            <div data-bs-toggle="collapse" data-bs-target="#colors-and-sizes-el-for-collapse-in-search-on-category" class="d-none text-truncate text-secondary mt-1 rem14px mx-3 pointer-cursor" id="selected-variants-in-search-on-category"></div>
                             <div class="list-in-search-on-category mt-3 overflow-auto border-bottom collapse" id="colors-and-sizes-el-for-collapse-in-search-on-category">
                                 <label class="border rounded-3 d-flex py-2 align-items-center mx-3">
                                     <i class="bi bi-search ms-3"></i>
@@ -116,17 +116,17 @@
                         <div class="d-flex justify-content-between mx-3 pointer-cursor" data-bs-toggle="collapse" data-bs-target="#prices-el-for-collapse-in-search-on-category">
                             <div class="fw-bold d-flex align-items-center">
                                 <div>محدوده قیمت</div>
-                                <div class="ms-2 circle-dot-in-search-on-category bg-info rounded-circle"></div>
+                                <div class="d-none ms-2 circle-dot-in-search-on-category bg-info rounded-circle"></div>
                             </div>
                             <div>
                                 <i class="bi bi-chevron-down"></i>
                             </div>
                         </div>
-                        <div class="text-truncate text-secondary mt-1 rem14px mx-3 pointer-cursor d-none">
+                        <div data-bs-toggle="collapse" data-bs-target="#prices-el-for-collapse-in-search-on-category" class="text-truncate text-secondary mt-1 rem14px mx-3 pointer-cursor d-none">
                             از
-                            <span>۰</span>
+                            <span id="from-price-text-in-search-on-category">۰</span>
                             تا
-                            <span>۰</span>
+                            <span id="up-to-price-text-in-search-on-category">@Model.SearchOnCategory.MaximumPrice.ToString("#,0").ToPersianNumbers()</span>
                         </div>
                         <div class="mt-2 collapse" id="prices-el-for-collapse-in-search-on-category">
                             <div>
@@ -158,13 +158,13 @@
                             <div class="d-flex justify-content-between mx-3 pointer-cursor" data-bs-toggle="collapse" data-bs-target="#feature-@(feature.FeatureId)-el-for-collapse-in-search-on-category">
                                 <div class="fw-bold d-flex align-items-center">
                                     <div>@feature.FeatureTitle</div>
-                                    <div class="ms-2 circle-dot-in-search-on-category bg-info rounded-circle"></div>
+                                    <div class="d-none ms-2 circle-dot-in-search-on-category bg-info rounded-circle"></div>
                                 </div>
                                 <div>
                                     <i class="bi bi-chevron-down"></i>
                                 </div>
                             </div>
-                            <div class="d-none text-truncate text-secondary mt-1 rem14px mx-3 pointer-cursor selected-features-text-in-search-category"></div>
+                            <div data-bs-toggle="collapse" data-bs-target="#feature-@(feature.FeatureId)-el-for-collapse-in-search-on-category" class="d-none text-truncate text-secondary mt-1 rem14px mx-3 pointer-cursor selected-features-text-in-search-category"></div>
                             <div class="list-in-search-on-category mt-3 overflow-auto border-bottom collapse" id="feature-@(feature.FeatureId)-el-for-collapse-in-search-on-category">
                                 <label class="border rounded-3 d-flex py-2 align-items-center mx-3">
                                     <i class="bi bi-search ms-3"></i>
