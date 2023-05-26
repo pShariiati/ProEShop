@@ -16,4 +16,6 @@ public class ShowProductsInSearchOnCategoryViewModel
     /// در چه صفحه ایی هستیم که اون صفحه رو اکتیو کنیم
     /// </summary>
     public int CurrentPage { get; set; }
+
+    public long AllProductsCount { get; set; }
 }

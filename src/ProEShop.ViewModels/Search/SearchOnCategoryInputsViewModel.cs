@@ -44,4 +44,33 @@ public class SearchOnCategoryInputsViewModel
     /// فیچر هایی که تیکشون فعال شده
     /// </summary>
     public List<string> Features { get; set; }
+
+    public SortingSearchOnCategory Sorting { get; set; }
+
+    public SortingOrder SortingOrder { get; set; }
+}
+
+public enum SortingSearchOnCategory
+{
+    /// <summary>
+    /// تعداد مشاهده
+    /// </summary>
+    VisitCount,
+    /// <summary>
+    /// جدیدترین
+    /// </summary>
+    Id,
+    /// <summary>
+    /// پر فروشترین
+    /// </summary>
+    SaleCount,
+    /// <summary>
+    /// ارزانترین
+    /// گرانترین
+    /// </summary>
+    Price,
+    /// <summary>
+    /// پیشنهاد خریداران
+    /// </summary>
+    BuyersSuggest
 }

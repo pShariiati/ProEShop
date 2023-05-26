@@ -11,6 +11,17 @@ var currentMinimumPriceValueToCheck = $('#from-price-input-in-search-on-category
 var currentMaximumPriceValueToCheck = $('#up-to-price-input-in-search-on-category').val();
 
 $(function () {
+    // Order by and sort by
+    $('.order-by-item-in-search-on-category').click(function () {
+        // اگه روی یک آیتم اکتیو مجددا کلیک شد نباید به سمت سرور درخواست بفرستیم
+        if ($(this).hasClass('text-danger')) {
+            return;
+        }
+        $('.order-by-item-in-search-on-category').removeClass('text-danger');
+        $(this).addClass('text-danger');
+        getHtmlWithAJAX('?handler=ShowProductsByPagination', getDataToSend(), 'showProductsByPaginationFunction');
+    });
+
     // range slider for price
     var rangeSlider = document.getElementById('prices-range-in-search-on-category');
     noUiSlider.create(rangeSlider, {
@@ -105,11 +116,15 @@ $(function () {
         else if (selectedItemsEl.html()) {
             selectedItemsEl.removeClass('d-none');
         }
+        // بوردر پایین کولپس رو نمایش میکنیم
+        $(this).next().removeClass('d-none');
     });
 
     // موقعی که کولپس ها باز میشن باید دیو موارد انتخاب شده رو مخفی کنیم
     $('#sidebar-in-search-on-category .collapse').on('show.bs.collapse', function () {
         $(this).parents('.mb-3').find('.text-truncate').addClass('d-none');
+        // بوردر پایین کولپس رو مخفی میکنیم
+        $(this).next().addClass('d-none');
     });
 
     // اگه چکباکس برند ها تیکش فعال یا غیر فعال شد
@@ -410,6 +425,10 @@ function showProductsByPagination(el) {
 // نمایش محصولات به صورت صفحه بندی شده
 function showProductsByPaginationFunction(data) {
     $('#products-box-in-search-on-category').html(data);
+    // تعداد کل محصولات بر اساس جستجویی که انجام شده
+    var allProductsCount = $('#products-box-in-search-on-category div:first').attr('all-products-count');
+    // نمایش تعداد کل محصولات
+    $('#all-products-count-in-search-on-category').html(allProductsCount.addCommaToDigits().toPersinaDigit());
     convertEnglishNumbersToPersianNumber();
 }
 
@@ -460,6 +479,16 @@ function getActiveFeatures() {
     return activeFeatures;
 }
 
+// Get sorting and order by info
+function getSortingByAndOrderBy(isSortBy) {
+    var selectedItem = $('.order-by-item-in-search-on-category.text-danger');
+    if (isSortBy) {
+        return selectedItem.attr('sort-by');
+    } else {
+        return selectedItem.attr('order-by');
+    }
+}
+
 // گرفتن تمام دیتا های فیلتر ها که به سمت سرور ارسالشون کنیم
 function getDataToSend() {
     var result = {
@@ -468,7 +497,9 @@ function getDataToSend() {
         minimumPrice: getMinAndMaxPrice(true),
         maximumPrice: getMinAndMaxPrice(false),
         onlyExistsProducts: $('#only-exist-products-in-search-on-category').prop('checked'),
-        features: getActiveFeatures()
+        features: getActiveFeatures(),
+        sorting: getSortingByAndOrderBy(false),
+        sortingOrder: getSortingByAndOrderBy(true)
     };
 
     var removeAllFiltersEl = $('#remove-all-filters-in-search-on-category');

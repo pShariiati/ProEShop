@@ -22,7 +22,7 @@ public class CategoryMappingProfile : Profile
                 options =>
                     options.MapFrom(src => src.Products
                         .Where(x => brandSlug == null || x.Brand.Slug == brandSlug)
-                        .OrderBy(x => x.Id)
+                        .OrderByDescending(x => x.VisitCount)
                         .Take(2)))
             .ForMember(dest => dest.CategoryFeatures,
                 options =>

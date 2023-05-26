@@ -73,6 +73,16 @@ public class Product : EntityBase, IAuditableEntity
     /// </summary>
     public int? Price { get; set; }
 
+    /// <summary>
+    /// تعداد مشاهده
+    /// </summary>
+    public long VisitCount { get; set; }
+
+    /// <summary>
+    /// تعداد فروش از این محصول
+    /// </summary>
+    public long SaleCount { get; set; }
+
     #endregion
 
     #region Relations

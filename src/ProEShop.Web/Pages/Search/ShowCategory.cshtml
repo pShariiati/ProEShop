@@ -165,12 +165,15 @@
                                 </div>
                             </div>
                             <div data-bs-toggle="collapse" data-bs-target="#feature-@(feature.FeatureId)-el-for-collapse-in-search-on-category" class="d-none text-truncate text-secondary mt-1 rem14px mx-3 pointer-cursor selected-features-text-in-search-category"></div>
-                            <div class="list-in-search-on-category mt-3 overflow-auto border-bottom collapse" id="feature-@(feature.FeatureId)-el-for-collapse-in-search-on-category">
-                                <label class="border rounded-3 d-flex py-2 align-items-center mx-3">
-                                    <i class="bi bi-search ms-3"></i>
-                                    <input maxlength="200" type="text" class="search-input-in-search-on-category ms-3 border-0 bg-transparent w-100" placeholder="جستجو @feature.FeatureTitle ..." />
-                                    <i class="bi bi-x-circle-fill pointer-cursor me-2 d-none input-clear-icon-in-search-on-category"></i>
-                                </label>
+                            <div class="@(feature.Values.Count > 4 ? "mt-3 " : string.Empty)list-in-search-on-category overflow-auto border-bottom collapse" id="feature-@(feature.FeatureId)-el-for-collapse-in-search-on-category">
+                                @if (feature.Values.Count > 4)
+                                {
+                                    <label class="border rounded-3 d-flex py-2 align-items-center mx-3">
+                                        <i class="bi bi-search ms-3"></i>
+                                        <input maxlength="200" type="text" class="search-input-in-search-on-category ms-3 border-0 bg-transparent w-100" placeholder="جستجو @feature.FeatureTitle ..." />
+                                        <i class="bi bi-x-circle-fill pointer-cursor me-2 d-none input-clear-icon-in-search-on-category"></i>
+                                    </label>
+                                }
                                 <div class="ms-3 mt-3 me-2 d-none selected-items-in-search-on-category">
                                     <div class="rem13px text-secondary mb-2">انتخاب شما</div>
                                     <div class="mb-3"></div>
@@ -206,14 +209,15 @@
                         <div class="ms-1 me-2">
                             مرتب سازی:
                         </div>
-                        <div class="mx-2 pointer-cursor text-danger">پر بازدیدترین</div>
-                        <div class="mx-2 pointer-cursor">جدیدترین</div>
-                        <div class="mx-2 pointer-cursor">پرفروش ترین</div>
-                        <div class="mx-2 pointer-cursor">ارزان ترین</div>
-                        <div class="mx-2 pointer-cursor">گران ترین</div>
+                        <div class="mx-2 pointer-cursor text-danger order-by-item-in-search-on-category" sort-by="1" order-by="0">پر بازدیدترین</div>
+                        <div class="mx-2 pointer-cursor order-by-item-in-search-on-category" sort-by="1" order-by="1">جدیدترین</div>
+                        <div class="mx-2 pointer-cursor order-by-item-in-search-on-category" sort-by="1" order-by="2">پرفروش ترین</div>
+                        <div class="mx-2 pointer-cursor order-by-item-in-search-on-category" sort-by="0" order-by="3">ارزان ترین</div>
+                        <div class="mx-2 pointer-cursor order-by-item-in-search-on-category" sort-by="1" order-by="3">گران ترین</div>
+                        <div class="mx-2 pointer-cursor order-by-item-in-search-on-category" sort-by="1" order-by="4">پیشنهاد خریداران</div>
                     </div>
                     <div>
-                        <span class="persian-numbers">@Model.SearchOnCategory.ProductsCount</span>
+                        <span class="persian-numbers" id="all-products-count-in-search-on-category">@Model.SearchOnCategory.ProductsCount</span>
                         کالا
                     </div>
                 </div>

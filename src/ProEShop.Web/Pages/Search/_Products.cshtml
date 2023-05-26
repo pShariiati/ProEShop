@@ -1,7 +1,7 @@
 ﻿@using ProEShop.Entities
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model ProEShop.ViewModels.Search.ShowProductsInSearchOnCategoryViewModel
-<div class="row g-1">
+<div class="row g-1" all-products-count="@Model.AllProductsCount">
     @foreach (var product in Model.Products)
     {
         <a asp-page="/Product/Index" asp-route-productCode="@product.ProductCode" asp-route-slug="@product.Slug" class="col-lg-3 p-2 rem14px product-item-in-search-on-category text-dark border-bottom">

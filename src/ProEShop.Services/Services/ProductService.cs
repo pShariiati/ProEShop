@@ -395,6 +395,8 @@ public class ProductService : GenericService<Product>, IProductService
             .AsNoTracking()
             .Where(x => x.Category.Slug == inputs.CategorySlug);
 
+        #region Search
+
         if (inputs.Brands is { Count: > 0 })
         {
             productQuery = productQuery.Where(x => inputs.Brands.Contains(x.BrandId));
@@ -458,7 +460,21 @@ public class ProductService : GenericService<Product>, IProductService
             }
         }
 
-        productQuery = productQuery.OrderBy(x => x.Id);
+        #endregion
+
+        #region OrderBy
+
+        if (inputs.Sorting == SortingSearchOnCategory.BuyersSuggest)
+        {
+            productQuery = productQuery.OrderByDescending(x => x.ProductComments.LongCount(pc => pc.Suggest.Value));
+        }
+        else
+        {
+            productQuery = productQuery.CreateOrderByExpression(inputs.Sorting.ToString(),
+                inputs.SortingOrder.ToString());
+        }
+
+        #endregion
 
         var itemsCount = await productQuery.LongCountAsync();
 
@@ -477,6 +493,8 @@ public class ProductService : GenericService<Product>, IProductService
         }
 
         var skip = (inputs.PageNumber - 1) * take;
+
+        result.AllProductsCount = await productQuery.LongCountAsync();
 
         result.Products = await _mapper.ProjectTo<ShowProductInSearchOnCategoryViewModel>(
             productQuery.Skip(skip).Take(take)
