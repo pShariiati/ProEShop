@@ -9,6 +9,12 @@ public class OrderMappingProfile : Profile
 {
     public OrderMappingProfile()
     {
+        #region Parameters
+
+        DateTime now = default;
+
+        #endregion
+
         this.CreateMap<Entities.Order, ShowOrderViewModel>()
             .ForMember(dest => dest.CreatedDateTime,
                 options =>
@@ -21,6 +27,9 @@ public class OrderMappingProfile : Profile
             .ForMember(dest => dest.CreatedDateTime,
                 options =>
                     options.MapFrom(src => src.CreatedDateTime.ToLongPersianDate()))
+            .ForMember(dest => dest.CanReturnProduct,
+                options =>
+                    options.MapFrom(src => !src.LastDeliveredParcelPostToClientDateTime.HasValue || src.LastDeliveredParcelPostToClientDateTime.Value.AddDays(7) > now))
             .ForMember(dest => dest.ProductImages,
                 options =>
                     options.MapFrom(src => src.ParcelPostItems.OrderBy(x => x.ParcelPostId).Take(7).Select(x => x.ProductVariant.Product.ProductMedia.First().FileName)));

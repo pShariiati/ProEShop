@@ -24,4 +24,9 @@ public class ShowOrderInProfileViewModel
     public List<string> ProductImages { get; set; }
 
     public long ParcelPostItemsLongCount { get; set; }
+
+    /// <summary>
+    /// آیا امکان مرجوع کردن یکی از مرسوله های این سفارش وجود دارد یا خیر
+    /// </summary>
+    public bool CanReturnProduct { get; set; }
 }

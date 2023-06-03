@@ -88,6 +88,16 @@ public class Order : EntityBase, IAuditableEntity
     /// </summary>
     public long? ReservedGiftCardId { get; set; }
 
+    /// <summary>
+    /// این فیلد برای بررسی کردن امکان ثبت مرجوعی میباشد
+    /// برای مثال این سفارش 3 مرسوله دارد
+    /// مرسوله آخر در تاریخ بیستم به دست مشتری میرسد
+    /// تا تاریخ بیست و هفتم باید دکمه ثبت مرجوعی رو به کاربر نمایش بدیم
+    /// این فیلد توسط مسئول حمل و نقل زمانیکه وضعیت آخرین مرسوله این سفارش را به تحویل داده تغییر میدهد، مقدار دهی میشود
+    /// اگر دکمه ثبت مرجوعی نمایان باشد یعنی حداقل یکی از مرسوله های این سفارش زمان مرجوع کردنش به پایان نرسیده است
+    /// </summary>
+    public DateTime? LastDeliveredParcelPostToClientDateTime { get; set; }
+
     #endregion
 
     #region Relations

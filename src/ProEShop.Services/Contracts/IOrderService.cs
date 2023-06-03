@@ -46,6 +46,14 @@ public interface IOrderService : IGenericService<Order>
     Task<OrderDetailsViewModel> GetOrderDetails(long orderId);
 
     /// <summary>
+    /// گرفتن جزییات سفارش در بخش پروفایل کاربری
+    /// </summary>
+    /// <param name="orderNumber"></param>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    Task<OrderDetailsViewModel> GetOrderDetailsInProfile(long orderNumber, long userId);
+
+    /// <summary>
     /// نمایش تمامی سفارشات در بخش پروفایل
     /// </summary>
     /// <param name="model"></param>

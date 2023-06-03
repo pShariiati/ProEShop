@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using ProEShop.Common.Helpers;
 using ProEShop.DataLayer.Context;
@@ -155,6 +156,16 @@ public class OrderService : GenericService<Order>, IOrderService
             .SingleOrDefaultAsync(x => x.Id == orderId);
     }
 
+    public Task<OrderDetailsViewModel> GetOrderDetailsInProfile(long orderNumber, long userId)
+    {
+        return _mapper.ProjectTo<OrderDetailsViewModel>(
+                _orders
+                    .Where(x => x.UserId == userId)
+                    .AsSplitQuery()
+                    .AsNoTracking())
+            .SingleOrDefaultAsync(x => x.OrderNumber == orderNumber);
+    }
+
     public async Task<ShowOrdersInProfileViewModel> GetOrdersInProfile(ShowOrdersInProfileViewModel model)
     {
         var orders = _orders
@@ -199,9 +210,9 @@ public class OrderService : GenericService<Order>, IOrderService
 
         return new()
         {
-            Orders = await _mapper.ProjectTo<ShowOrderInProfileViewModel>(
-                paginationResult.Query
-            ).ToListAsync(),
+            Orders = await paginationResult.Query.ProjectTo<ShowOrderInProfileViewModel>
+            (configuration: _mapper.ConfigurationProvider,
+                parameters: new { now = DateTime.Now }).ToListAsync(),
             Pagination = paginationResult.Pagination
         };
     }

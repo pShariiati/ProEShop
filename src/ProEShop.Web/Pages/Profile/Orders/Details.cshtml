@@ -1,0 +1,538 @@
+﻿@page "{orderNumber}"
+@model ProEShop.Web.Pages.Profile.Orders.DetailsModel
+@{
+    ViewData["Title"] = "جزییات سفارش";
+}
+
+@using ProEShop.Entities.Enums
+@using ProEShop.Common.Helpers
+
+@{
+    var normalParcelPost = Model.OrderDetails.ParcelPosts.SingleOrDefault(x => x.Dimension == Dimension.Normal);
+    var normalProductsPrice = 0;
+    if (normalParcelPost != null)
+    {
+        normalProductsPrice = normalParcelPost.ParcelPostItems.Sum(x =>
+        {
+            if (x.DiscountPrice is null)
+                return x.Price * x.Count;
+            return (x.Price - x.DiscountPrice.Value) * x.Count;
+        });
+    }
+
+    var heavyParcelPost = Model.OrderDetails.ParcelPosts.SingleOrDefault(x => x.Dimension == Dimension.Heavy);
+    var heavyProductsPrice = 0;
+    if (heavyParcelPost != null)
+    {
+        heavyProductsPrice = heavyParcelPost.ParcelPostItems.Sum(x =>
+        {
+            if (x.DiscountPrice is null)
+                return x.Price * x.Count;
+            return (x.Price - x.DiscountPrice.Value) * x.Count;
+        });
+    }
+
+    var ultraHeavyParcelPost = Model.OrderDetails.ParcelPosts.SingleOrDefault(x => x.Dimension == Dimension.UltraHeavy);
+    var ultraHeavyProductsPrice = 0;
+    if (ultraHeavyParcelPost != null)
+    {
+        ultraHeavyProductsPrice = ultraHeavyParcelPost.ParcelPostItems.Sum(x =>
+        {
+            if (x.DiscountPrice is null)
+                return x.Price * x.Count;
+            return (x.Price - x.DiscountPrice.Value) * x.Count;
+        });
+    }
+}
+
+<div class="border rounded-3 py-3 custom-border-color-in-profile">
+    <div class="d-flex align-items-center px-3">
+        <div class="text-black-50 me-1">کد پیگیری سفارش</div>
+        <div class="persian-numbers">@Model.OrderDetails.OrderNumber</div>
+        <div class="bg-custom-grey rounded-circle mx-3 circle-fill-dot-in-order-details"></div>
+        <div class="text-black-50 me-1">تاریخ ثبت سفارش</div>
+        <div>@Model.OrderDetails.CreatedDateTime</div>
+    </div>
+    <hr class="text-secondary my-3" />
+    <div class="d-flex align-items-center px-3">
+        <div class="text-black-50 me-1">تحویل گیرنده</div>
+        <div>@Model.OrderDetails.AddressFullName</div>
+        <div class="bg-custom-grey rounded-circle mx-3 circle-fill-dot-in-order-details"></div>
+        <div class="text-black-50 me-1">شماره موبایل</div>
+        <div class="persian-numbers">@Model.OrderDetails.AddressPhoneNumber</div>
+    </div>
+    <div class="d-flex align-items-center mt-3 px-3">
+        <div class="text-black-50 me-1">تحویل گیرنده</div>
+        <div>@Model.OrderDetails.AddressAddressLine</div>
+    </div>
+    <hr class="text-secondary my-3" />
+    <div class="d-flex align-items-center px-3">
+        <div class="text-black-50 me-1">مبلغ</div>
+        <div>
+            <span class="persian-numbers">@Model.OrderDetails.TotalPrice.ToString("#,0")</span>
+            تومان
+        </div>
+        @if (Model.OrderDetails.DiscountPrice != null)
+        {
+            <div class="bg-custom-grey rounded-circle mx-3 circle-fill-dot-in-order-details"></div>
+            <div class="text-black-50 me-1">سود شما از خرید</div>
+            <div>
+                <span class="persian-numbers">@Model.OrderDetails.DiscountPrice.Value.ToString("#,0")</span>
+                تومان
+            </div>
+        }
+        <div class="bg-custom-grey rounded-circle mx-3 circle-fill-dot-in-order-details"></div>
+        <div>
+            @if (Model.OrderDetails.PayFromWallet)
+            {
+                @:کیف پول
+            }
+            else
+            {
+                @:پرداخت اینترنتی
+            }
+        </div>
+    </div>
+    <div class="d-flex align-items-center mt-3 px-3">
+        <div class="text-black-50 me-1">
+            <i class="bi bi-trophy me-1 text-warning rem21px"></i>
+            امتیاز پروشاپ
+        </div>
+        <div class="persian-numbers">@Model.OrderDetails.TotalScore</div>
+    </div>
+
+    @if (normalParcelPost != null)
+    {
+        <!-- مرسوله شماره اِن -->
+        <div class="border p-3 rounded mt-3 mx-3">
+            <!-- قسمت بالای مرسوله -->
+            <div class="row d-flex justify-content-between align-items-center">
+                <div class="col-md-8">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            مرسوله
+                            ۱
+                            از
+                            <span class="persian-numbers">@Model.OrderDetails.ShippingCount</span>
+                        </div>
+                        <div class="bg-custom-grey rounded-circle mx-3 circle-fill-dot-in-order-details"></div>
+                        <div class="text-danger">
+                            <i class="bi bi-truck rem21px"></i>
+                            ارسال عادی
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center mt-3">
+                        <div class="text-black-50 me-1">هزینه ارسال</div>
+                        <div>
+                            @if (normalParcelPost.ShippingPrice == 0)
+                            {
+                                @:رایگان
+                            }
+                            else
+                            {
+                                <span class="persian-numbers">@normalParcelPost.ShippingPrice.ToString("#,0") تومان</span>
+                            }
+                        </div>
+                        <div class="bg-custom-grey rounded-circle mx-3 circle-fill-dot-in-order-details"></div>
+                        <div class="text-black-50 me-1">مبلغ مرسوله</div>
+                        <div>
+                            <span class="persian-numbers">@normalProductsPrice.ToString("#,0")</span>
+                            تومان
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mt-3 mt-md-0">
+                    @{
+                        var progressPercentage = (byte)normalParcelPost.Status * 20 + 20;
+                        var progressTextColor = normalParcelPost.Status == ParcelPostStatus.WaitingForPaying ? "danger" : "success";
+                    }
+                    <div class="text-@progressTextColor mb-2">@normalParcelPost.Status.GetEnumDisplayName()</div>
+                    <div class="progress order-details-progress">
+                        <div class="progress-bar bg-@progressTextColor" style="width: @progressPercentage%"></div>
+                    </div>
+                    @if (normalParcelPost.PostTrackingCode != null)
+                    {
+                        <div class="d-flex align-items-center mt-3">
+                            <div class="text-black-50 me-1">کد پیگیری اداره پست</div>
+                            <div class="copy-post-tracking-code-button d-flex align-items-center" post-tracking-code="@normalParcelPost.PostTrackingCode">
+                                <span class="persian-numbers">@normalParcelPost.PostTrackingCode</span>
+                                <i class="pointer-cursor bi bi-clipboard2-check ms-1"></i>
+                                <span class="text-info rem14px d-none ms-1">کپی شد</span>
+                            </div>
+                        </div>
+                        <a href="https://tracking.post.ir/search.aspx?id=@normalParcelPost.PostTrackingCode" class="rem14px" target="_blank">پیگیری در سامانه رهگیری پست</a>
+                    }
+                </div>
+            </div>
+            <hr class="my-3 text-secondary" />
+
+            <!-- محصولات مرسوله -->
+            @foreach (var parcelPostItem in normalParcelPost.ParcelPostItems)
+            {
+                <!-- یک محصول در داخل مرسوله -->
+                <div class="parcel-post-item-in-order-details">
+                    <div class="d-flex">
+                        <!-- عکس -->
+                        <div>
+                            <div class="position-relative">
+                                <a target="_blank" asp-page="/Product/Index" asp-route-productCode="@parcelPostItem.ProductVariantProductProductCode"
+                           asp-route-slug="@parcelPostItem.ProductVariantProductSlug">
+                                    <img src="@WwwRootPaths.ProductImage/@parcelPostItem.ProductPicture" width="150" height="150" />
+                                    <span class="position-absolute badge rounded-pill bg-secondary persian-numbers">
+                                        @parcelPostItem.Count
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- جزییات محصول -->
+                        <div class="rem14px ms-4">
+                            <div>@parcelPostItem.ProductVariantProductPersianTitle</div>
+                            <div class="text-secondary mt-3 mb-5">
+                                @if (parcelPostItem.ProductVariantVariantIsColor != null)
+                                {
+                                    <div class="mb-1 d-flex align-items-center">
+                                        @if (parcelPostItem.ProductVariantVariantIsColor.Value)
+                                        {
+                                            <div class="color-element-in-cart rounded-circle" style="background-color: @parcelPostItem.ProductVariantVariantColorCode"></div>
+                                            <span class="ms-1">
+                                                @parcelPostItem.ProductVariantVariantValue
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <i class="bi bi-sort-numeric-up"></i>
+                                            <span class="ms-1">
+                                                @parcelPostItem.ProductVariantVariantValue
+                                            </span>
+                                        }
+                                    </div>
+                                }
+                                <div>
+                                    <i class="bi bi-shield-check me-2 rem16px"></i>
+                                    <span class="persian-numbers">
+                                        @parcelPostItem.ProductVariantGuaranteeFullTitle.ToShowGuaranteeFullTitle()
+                                    </span>
+                                </div>
+                                <div>
+                                    <i class="bi bi-shop me-2 rem16px"></i>
+                                    @parcelPostItem.ProductVariantSellerShopName
+                                </div>
+                            </div>
+                            @{
+                                var price = parcelPostItem.Price * parcelPostItem.Count;
+                                var discountPrice = (parcelPostItem.DiscountPrice ?? 0) * parcelPostItem.Count;
+                                var finalPrice = price - discountPrice;
+                            }
+                            @if (discountPrice > 0)
+                            {
+                                <div class="rem12px text-danger mb-2">
+                                    <span class="persian-numbers">@discountPrice.ToString("#,0")</span>
+                                    تومان تخفیف
+                                </div>
+                            }
+                            <div>
+                                <span class="persian-numbers">@(finalPrice.ToString("#,0"))</span>
+                                تومان
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="text-secondary mb-0" />
+                </div>
+            }
+        </div>
+    }
+
+    @if (heavyParcelPost != null)
+    {
+        <!-- مرسوله شماره اِن -->
+        <div class="border p-3 rounded mt-3 mx-3">
+            <!-- قسمت بالای مرسوله -->
+            <div class="row d-flex justify-content-between align-items-center">
+                <div class="col-md-8">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            مرسوله
+                            @if (normalParcelPost != null)
+                            {
+                                @:۲
+                            }
+                            else
+                            {
+                                @:۱
+                            }
+                            از
+                            <span class="persian-numbers">@Model.OrderDetails.ShippingCount</span>
+                        </div>
+                        <div class="bg-custom-grey rounded-circle mx-3 circle-fill-dot-in-order-details"></div>
+                        <div class="text-danger">
+                            <i class="bi bi-truck rem21px"></i>
+                            ارسال کالاهای بزرگ و سنگین
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center mt-3">
+                        <div class="text-black-50 me-1">هزینه ارسال</div>
+                        <div>
+                            @if (heavyParcelPost.ShippingPrice == 0)
+                            {
+                                @:رایگان
+                            }
+                            else
+                            {
+                                <span class="persian-numbers">@heavyParcelPost.ShippingPrice.ToString("#,0") تومان</span>
+                            }
+                        </div>
+                        <div class="bg-custom-grey rounded-circle mx-3 circle-fill-dot-in-order-details"></div>
+                        <div class="text-black-50 me-1">مبلغ مرسوله</div>
+                        <div>
+                            <span class="persian-numbers">@heavyProductsPrice.ToString("#,0")</span>
+                            تومان
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mt-3 mt-md-0">
+                    @{
+                        var progressPercentage = (byte)heavyParcelPost.Status * 20 + 20;
+                        var progressTextColor = heavyParcelPost.Status == ParcelPostStatus.WaitingForPaying ? "danger" : "success";
+                    }
+                    <div class="text-@progressTextColor mb-2">@heavyParcelPost.Status.GetEnumDisplayName()</div>
+                    <div class="progress order-details-progress">
+                        <div class="progress-bar bg-@progressTextColor" style="width: @progressPercentage%"></div>
+                    </div>
+                    @if (heavyParcelPost.PostTrackingCode != null)
+                    {
+                        <div class="d-flex align-items-center mt-3">
+                            <div class="text-black-50 me-1">کد پیگیری اداره پست</div>
+                            <div class="copy-post-tracking-code-button d-flex align-items-center" post-tracking-code="@heavyParcelPost.PostTrackingCode">
+                                <span class="persian-numbers">@heavyParcelPost.PostTrackingCode</span>
+                                <i class="pointer-cursor bi bi-clipboard2-check ms-1"></i>
+                                <span class="text-info rem14px d-none ms-1">کپی شد</span>
+                            </div>
+                        </div>
+                        <a href="https://tracking.post.ir/search.aspx?id=@heavyParcelPost.PostTrackingCode" class="rem14px" target="_blank">پیگیری در سامانه رهگیری پست</a>
+                    }
+                </div>
+            </div>
+            <hr class="my-3 text-secondary" />
+
+            <!-- محصولات مرسوله -->
+            @foreach (var parcelPostItem in heavyParcelPost.ParcelPostItems)
+            {
+                <!-- یک محصول در داخل مرسوله -->
+                <div class="parcel-post-item-in-order-details">
+                    <div class="d-flex">
+                        <!-- عکس -->
+                        <div>
+                            <div class="position-relative">
+                                <a target="_blank" asp-page="/Product/Index" asp-route-productCode="@parcelPostItem.ProductVariantProductProductCode"
+                           asp-route-slug="@parcelPostItem.ProductVariantProductSlug">
+                                    <img src="@WwwRootPaths.ProductImage/@parcelPostItem.ProductPicture" width="150" height="150" />
+                                    <span class="position-absolute badge rounded-pill bg-secondary persian-numbers">
+                                        @parcelPostItem.Count
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- جزییات محصول -->
+                        <div class="rem14px ms-4">
+                            <div>@parcelPostItem.ProductVariantProductPersianTitle</div>
+                            <div class="text-secondary mt-3 mb-5">
+                                @if (parcelPostItem.ProductVariantVariantIsColor != null)
+                                {
+                                    <div class="mb-1 d-flex align-items-center">
+                                        @if (parcelPostItem.ProductVariantVariantIsColor.Value)
+                                        {
+                                            <div class="color-element-in-cart rounded-circle" style="background-color: @parcelPostItem.ProductVariantVariantColorCode"></div>
+                                            <span class="ms-1">
+                                                @parcelPostItem.ProductVariantVariantValue
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <i class="bi bi-sort-numeric-up"></i>
+                                            <span class="ms-1">
+                                                @parcelPostItem.ProductVariantVariantValue
+                                            </span>
+                                        }
+                                    </div>
+                                }
+                                <div>
+                                    <i class="bi bi-shield-check me-2 rem16px"></i>
+                                    <span class="persian-numbers">
+                                        @parcelPostItem.ProductVariantGuaranteeFullTitle.ToShowGuaranteeFullTitle()
+                                    </span>
+                                </div>
+                                <div>
+                                    <i class="bi bi-shop me-2 rem16px"></i>
+                                    @parcelPostItem.ProductVariantSellerShopName
+                                </div>
+                            </div>
+                            @{
+                                var price = parcelPostItem.Price * parcelPostItem.Count;
+                                var discountPrice = (parcelPostItem.DiscountPrice ?? 0) * parcelPostItem.Count;
+                                var finalPrice = price - discountPrice;
+                            }
+                            @if (discountPrice > 0)
+                            {
+                                <div class="rem12px text-danger mb-2">
+                                    <span class="persian-numbers">@discountPrice.ToString("#,0")</span>
+                                    تومان تخفیف
+                                </div>
+                            }
+                            <div>
+                                <span class="persian-numbers">@(finalPrice.ToString("#,0"))</span>
+                                تومان
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="text-secondary mb-0" />
+                </div>
+            }
+        </div>
+    }
+
+    @if (ultraHeavyParcelPost != null)
+    {
+        <!-- مرسوله شماره اِن -->
+        <div class="border p-3 rounded mt-3 mx-3">
+            <!-- قسمت بالای مرسوله -->
+            <div class="row d-flex justify-content-between align-items-center">
+                <div class="col-md-8">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            مرسوله
+                            @if (normalParcelPost != null && heavyParcelPost != null)
+                            {
+                                @:۳
+                            }
+                            else if (normalParcelPost != null || heavyParcelPost != null)
+                            {
+                                @:۲
+                            }
+                            else
+                            {
+                                @:۱
+                            }
+                            از
+                            <span class="persian-numbers">@Model.OrderDetails.ShippingCount</span>
+                        </div>
+                        <div class="bg-custom-grey rounded-circle mx-3 circle-fill-dot-in-order-details"></div>
+                        <div>
+                            <i class="bi bi-truck rem21px text-warning"></i>
+                            <span class="text-black">ارسال کالاهای فوق سنگین</span>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center mt-3">
+                        <div class="text-black-50 me-1">هزینه ارسال</div>
+                        <div>
+                            پس کرایه
+                        </div>
+                        <div class="bg-custom-grey rounded-circle mx-3 circle-fill-dot-in-order-details"></div>
+                        <div class="text-black-50 me-1">مبلغ مرسوله</div>
+                        <div>
+                            <span class="persian-numbers">@ultraHeavyProductsPrice.ToString("#,0")</span>
+                            تومان
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mt-3 mt-md-0">
+                    @{
+                        var progressPercentage = (byte)ultraHeavyParcelPost.Status * 20 + 20;
+                        var progressTextColor = ultraHeavyParcelPost.Status == ParcelPostStatus.WaitingForPaying ? "danger" : "success";
+                    }
+                    <div class="text-@progressTextColor mb-2">@ultraHeavyParcelPost.Status.GetEnumDisplayName()</div>
+                    <div class="progress order-details-progress">
+                        <div class="progress-bar bg-@progressTextColor" style="width: @progressPercentage%"></div>
+                    </div>
+                    @if (ultraHeavyParcelPost.PostTrackingCode != null)
+                    {
+                        <div class="d-flex align-items-center mt-3">
+                            <div class="text-black-50 me-1">کد پیگیری اداره پست</div>
+                            <div>@ultraHeavyParcelPost.PostTrackingCode</div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <hr class="my-3 text-secondary" />
+
+            <!-- محصولات مرسوله -->
+            @foreach (var parcelPostItem in ultraHeavyParcelPost.ParcelPostItems)
+            {
+                <!-- یک محصول در داخل مرسوله -->
+                <div class="parcel-post-item-in-order-details">
+                    <div class="d-flex">
+                        <!-- عکس -->
+                        <div>
+                            <div class="position-relative">
+                                <a target="_blank" asp-page="/Product/Index" asp-route-productCode="@parcelPostItem.ProductVariantProductProductCode"
+                           asp-route-slug="@parcelPostItem.ProductVariantProductSlug">
+                                    <img src="@WwwRootPaths.ProductImage/@parcelPostItem.ProductPicture" width="150" height="150" />
+                                    <span class="position-absolute badge rounded-pill bg-secondary persian-numbers">
+                                        @parcelPostItem.Count
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- جزییات محصول -->
+                        <div class="rem14px ms-4">
+                            <div>@parcelPostItem.ProductVariantProductPersianTitle</div>
+                            <div class="text-secondary mt-3 mb-5">
+                                @if (parcelPostItem.ProductVariantVariantIsColor != null)
+                                {
+                                    <div class="mb-1 d-flex align-items-center">
+                                        @if (parcelPostItem.ProductVariantVariantIsColor.Value)
+                                        {
+                                            <div class="color-element-in-cart rounded-circle" style="background-color: @parcelPostItem.ProductVariantVariantColorCode"></div>
+                                            <span class="ms-1">
+                                                @parcelPostItem.ProductVariantVariantValue
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <i class="bi bi-sort-numeric-up"></i>
+                                            <span class="ms-1">
+                                                @parcelPostItem.ProductVariantVariantValue
+                                            </span>
+                                        }
+                                    </div>
+                                }
+                                <div>
+                                    <i class="bi bi-shield-check me-2 rem16px"></i>
+                                    <span class="persian-numbers">
+                                        @parcelPostItem.ProductVariantGuaranteeFullTitle.ToShowGuaranteeFullTitle()
+                                    </span>
+                                </div>
+                                <div>
+                                    <i class="bi bi-shop me-2 rem16px"></i>
+                                    @parcelPostItem.ProductVariantSellerShopName
+                                </div>
+                            </div>
+                            @{
+                                var price = parcelPostItem.Price * parcelPostItem.Count;
+                                var discountPrice = (parcelPostItem.DiscountPrice ?? 0) * parcelPostItem.Count;
+                                var finalPrice = price - discountPrice;
+                            }
+                            @if (discountPrice > 0)
+                            {
+                                <div class="rem12px text-danger mb-2">
+                                    <span class="persian-numbers">@discountPrice.ToString("#,0")</span>
+                                    تومان تخفیف
+                                </div>
+                            }
+                            <div>
+                                <span class="persian-numbers">@(finalPrice.ToString("#,0"))</span>
+                                تومان
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="text-secondary mb-0" />
+                </div>
+            }
+        </div>
+    }
+</div>
