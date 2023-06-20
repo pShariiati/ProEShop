@@ -223,4 +223,12 @@ public class OrderService : GenericService<Order>, IOrderService
         model.Pagination.CurrentPage = pageNumber;
         return GetOrdersInProfile(model);
     }
+
+    public Task<ReturnProductViewModel> GetOrderDetailsForReturnProduct(long orderNumber, long userId)
+    {
+        return _mapper.ProjectTo<ReturnProductViewModel>
+            (_orders.Where(x => x.UserId == userId)
+                .Where(x => x.OrderNumber == orderNumber))
+            .SingleOrDefaultAsync();
+    }
 }

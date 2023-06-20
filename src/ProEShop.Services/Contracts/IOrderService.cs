@@ -66,4 +66,12 @@ public interface IOrderService : IGenericService<Order>
     /// <param name="pageNumber"></param>
     /// <returns></returns>
     Task<ShowOrdersInProfileViewModel> GetOrdersInProfile(int pageNumber);
+
+    /// <summary>
+    /// گرفتن محصولاتی که کاربر میتواند آن ها را مرجوع کند
+    /// </summary>
+    /// <param name="orderNumber"></param>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    Task<ReturnProductViewModel> GetOrderDetailsForReturnProduct(long orderNumber, long userId);
 }

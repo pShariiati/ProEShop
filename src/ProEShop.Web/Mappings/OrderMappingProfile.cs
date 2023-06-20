@@ -61,5 +61,12 @@ public class OrderMappingProfile : Profile
                     options.MapFrom(src => src.ProductVariant.Product.ProductMedia.First().FileName));
 
         this.CreateMap<Entities.Order, VerifyPageDataViewModel>();
+
+        this.CreateMap<Entities.Order, ReturnProductViewModel>();
+
+        this.CreateMap<Entities.ParcelPostItem, ParcelPostItemInReturnProduct>()
+            .ForMember(dest => dest.ProductPicture,
+                options =>
+                    options.MapFrom(src => src.ProductVariant.Product.ProductMedia.First().FileName));
     }
 }
