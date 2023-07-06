@@ -46,6 +46,8 @@ public class ParcelPostForOrderDetailsViewModel
     
     public int ShippingPrice { get; set; }
 
+    public string DeliveredToClientDateTime { get; set; }
+
     public List<ParcelPostItemForOrderDetailsViewModel> ParcelPostItems { get; set; }
 }
 

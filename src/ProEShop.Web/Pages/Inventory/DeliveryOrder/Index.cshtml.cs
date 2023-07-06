@@ -135,7 +135,8 @@ public class IndexModel : DeliveryOrderPanelBase
         }
 
         // تعداد مرسوله هایی که از این سفارش به اداره پست تحویل داده شده است
-        var deliveredParcelPostsToPostCount = order.ParcelPosts.Count(x => x.Status == ParcelPostStatus.DeliveredToPost);
+        var deliveredParcelPostsToPostCount = order.ParcelPosts
+            .Count(x => x.Status == ParcelPostStatus.DeliveredToPost || x.Status == ParcelPostStatus.DeliveredToClient);
 
         if (order.ParcelPosts.Count == deliveredParcelPostsToPostCount)
         {
@@ -152,31 +153,33 @@ public class IndexModel : DeliveryOrderPanelBase
             new JsonResultOperation(true, "وضعیت مرسوله مورد نظر به \"تحویل داده شده به اداره پست\" تغییر یافت"));
     }
 
-    public async Task<IActionResult> OnPostDeliveredToClient(long orderId)
+    public async Task<IActionResult> OnPostChangeParcelPostStatusToDeliveryToClient(long id)
     {
-        var order = await _orderService.FindByIdWithIncludesAsync(orderId,
+        var parcelPost = await _parcelPostService.FindByIdAsync(id);
+
+        if (parcelPost is null)
+        {
+            return Json(new JsonResultOperation(false, PublicConstantStrings.RecordNotFoundMessage));
+        }
+
+        var order = await _orderService.FindByIdWithIncludesAsync(parcelPost.OrderId,
             nameof(Entities.Order.ParcelPosts));
 
-        if (order is null)
-        {
-            return RecordNotFound();
-        }
+        parcelPost.Status = ParcelPostStatus.DeliveredToClient;
+        parcelPost.DeliveredToClientDateTime = DateTime.Now;
 
-        if (order.Status != OrderStatus.CompletelyParcelsDeliveredToPost)
-        {
-            return RecordNotFound();
-        }
+        // تعداد مرسوله هایی که از این سفارش به مشتری تحویل داده شده است
+        var deliveredParcelPostsToPostCount = order.ParcelPosts.Count(x => x.Status == ParcelPostStatus.DeliveredToClient);
 
-        order.Status = OrderStatus.DeliveredToClient;
-
-        foreach (var parcelPost in order.ParcelPosts)
+        if (order.ParcelPosts.Count == deliveredParcelPostsToPostCount)
         {
-            parcelPost.Status = ParcelPostStatus.DeliveredToClient;
+            order.LastDeliveredParcelPostToClientDateTime = DateTime.Now;
+            order.Status = OrderStatus.DeliveredToClient;
         }
 
         await _uow.SaveChangesAsync();
 
-        return Json(new JsonResultOperation(true,
-            "وضعیت سفارش مورد نظر به \"تحویل داده شده به مشتری\" تغییر یافت"));
+        return Json(
+            new JsonResultOperation(true, "وضعیت مرسوله مورد نظر به \"تحویل داده شده به مشتری\" تغییر یافت"));
     }
 }

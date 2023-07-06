@@ -37,6 +37,11 @@ public class ParcelPost : EntityBase, IAuditableEntity
     /// </summary>
     public int ShippingPrice { get; set; }
 
+    /// <summary>
+    /// در چه زمانی این مرسوله به دست مشتری رسیده است
+    /// </summary>
+    public DateTime? DeliveredToClientDateTime { get; set; }
+
     #endregion
 
     #region Relations

@@ -140,7 +140,18 @@
                     var progressPercentage = (byte)normalParcelPost.Status * 20 + 20;
                     var progressTextColor = normalParcelPost.Status == ParcelPostStatus.WaitingForPaying ? "danger" : "success";
                 }
-                <div class="text-@progressTextColor mb-2">@normalParcelPost.Status.GetEnumDisplayName()</div>
+                <div class="text-@progressTextColor mb-2">
+                    @normalParcelPost.Status.GetEnumDisplayName()
+                    @if (normalParcelPost.DeliveredToClientDateTime != null)
+                    {
+                        <text>
+                            (
+                                تاریخ تحویل به مشتری
+                                @normalParcelPost.DeliveredToClientDateTime
+                            )
+                        </text>
+                    }
+                </div>
                 <div class="progress order-details-progress">
                     <div class="progress-bar bg-@progressTextColor" style="width: @progressPercentage%"></div>
                 </div>
@@ -290,7 +301,18 @@
                     var progressPercentage = (byte)heavyParcelPost.Status * 20 + 20;
                     var progressTextColor = heavyParcelPost.Status == ParcelPostStatus.WaitingForPaying ? "danger" : "success";
                 }
-                <div class="text-@progressTextColor mb-2">@heavyParcelPost.Status.GetEnumDisplayName()</div>
+                <div class="text-@progressTextColor mb-2">
+                    @heavyParcelPost.Status.GetEnumDisplayName()
+                    @if (heavyParcelPost.DeliveredToClientDateTime != null)
+                    {
+                        <text>
+                            (
+                            تاریخ تحویل به مشتری
+                            @heavyParcelPost.DeliveredToClientDateTime
+                            )
+                        </text>
+                    }
+                </div>
                 <div class="progress order-details-progress">
                     <div class="progress-bar bg-@progressTextColor" style="width: @progressPercentage%"></div>
                 </div>
@@ -437,7 +459,18 @@
                     var progressPercentage = (byte)ultraHeavyParcelPost.Status * 20 + 20;
                     var progressTextColor = ultraHeavyParcelPost.Status == ParcelPostStatus.WaitingForPaying ? "danger" : "success";
                 }
-                <div class="text-@progressTextColor mb-2">@ultraHeavyParcelPost.Status.GetEnumDisplayName()</div>
+                <div class="text-@progressTextColor mb-2">
+                    @ultraHeavyParcelPost.Status.GetEnumDisplayName()
+                    @if (ultraHeavyParcelPost.DeliveredToClientDateTime != null)
+                    {
+                        <text>
+                            (
+                            تاریخ تحویل به مشتری
+                            @ultraHeavyParcelPost.DeliveredToClientDateTime
+                            )
+                        </text>
+                    }
+                </div>
                 <div class="progress order-details-progress">
                     <div class="progress-bar bg-@progressTextColor" style="width: @progressPercentage%"></div>
                 </div>

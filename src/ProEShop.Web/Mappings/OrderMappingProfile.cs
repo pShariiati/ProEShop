@@ -53,7 +53,10 @@ public class OrderMappingProfile : Profile
                 options =>
                     options.MapFrom(src => src.CreatedDateTime.ToLongPersianDateTime()));
 
-        this.CreateMap<Entities.ParcelPost, ParcelPostForOrderDetailsViewModel>();
+        this.CreateMap<Entities.ParcelPost, ParcelPostForOrderDetailsViewModel>()
+            .ForMember(dest => dest.DeliveredToClientDateTime,
+                options =>
+                    options.MapFrom(src => src.DeliveredToClientDateTime.HasValue ? src.DeliveredToClientDateTime.Value.ToLongPersianDateTime() : null));
 
         this.CreateMap<Entities.ParcelPostItem, ParcelPostItemForOrderDetailsViewModel>()
             .ForMember(dest => dest.ProductPicture,
@@ -62,7 +65,11 @@ public class OrderMappingProfile : Profile
 
         this.CreateMap<Entities.Order, VerifyPageDataViewModel>();
 
-        this.CreateMap<Entities.Order, ReturnProductViewModel>();
+        this.CreateMap<Entities.Order, ReturnProductViewModel>()
+            .ForMember(dest => dest.ParcelPostItems,
+                options =>
+                    options.MapFrom(src => src.ParcelPostItems
+                        .Where(x => x.ParcelPost.DeliveredToClientDateTime.Value.AddDays(7) > now)));
 
         this.CreateMap<Entities.ParcelPostItem, ParcelPostItemInReturnProduct>()
             .ForMember(dest => dest.ProductPicture,

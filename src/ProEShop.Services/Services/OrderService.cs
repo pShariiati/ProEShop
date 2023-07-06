@@ -226,9 +226,14 @@ public class OrderService : GenericService<Order>, IOrderService
 
     public Task<ReturnProductViewModel> GetOrderDetailsForReturnProduct(long orderNumber, long userId)
     {
-        return _mapper.ProjectTo<ReturnProductViewModel>
-            (_orders.Where(x => x.UserId == userId)
-                .Where(x => x.OrderNumber == orderNumber))
+        return _orders
+            .Where(x => x.UserId == userId)
+            .Where(x => x.OrderNumber == orderNumber)
+            .ProjectTo<ReturnProductViewModel>
+            (
+                configuration: _mapper.ConfigurationProvider,
+                parameters: new { now = DateTime.Now }
+            )
             .SingleOrDefaultAsync();
     }
 }

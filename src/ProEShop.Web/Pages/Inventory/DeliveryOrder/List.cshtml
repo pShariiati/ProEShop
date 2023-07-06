@@ -104,15 +104,28 @@
                                         </form>
                                     }
                                 }
-                            }
-                            @if (order.Status == OrderStatus.CompletelyParcelsDeliveredToPost)
-                            {
-                                <form asp-page-handler="DeliveredToClient" class="d-inline-block">
-                                    <input type="hidden" name="orderId" value="@order.Id" />
-                                    <button custom-message="وضعیت سفارش به تحویل داده شده به مشتری تغییر یابد ؟" type="button" class="btn btn-success delete-row-button">
-                                        تحویل به مشتری
-                                    </button>
-                                </form>
+                                else if (parcelPost.Status == ParcelPostStatus.DeliveredToPost)
+                                {
+                                    <form asp-page-handler="ChangeParcelPostStatusToDeliveryToClient" class="d-inline-block">
+                                        <input type="hidden" name="id" value="@parcelPost.Id" />
+                                        <button custom-message="وضعیت این مرسوله به تحویل داده شده به مشتری تغییر یابد ؟" type="button" class="btn btn-success delete-row-button">
+                                            تحویل مرسوله
+                                            @if (parcelPost.Dimension == Dimension.Normal)
+                                            {
+                                                @:عادی
+                                            }
+                                            else if (parcelPost.Dimension == Dimension.Heavy)
+                                            {
+                                                @:سنگین
+                                            }
+                                            else
+                                            {
+                                                @:فوق سنگین
+                                            }
+                                            به مشتری
+                                        </button>
+                                    </form>
+                                }
                             }
                         </td>
                     </tr>
