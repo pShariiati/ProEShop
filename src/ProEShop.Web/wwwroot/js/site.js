@@ -586,6 +586,8 @@ function activatingPagination() {
         isMainPaginationClicked = true;
         var currentPageSelected = $(this).val();
         $('.search-form-via-ajax input[name$="Pagination.CurrentPage"]').val(currentPageSelected);
+        // مخفی کردن تمامی تولتیپ ها قبل از ارسال فرم
+        $('[data-bs-toggle="tooltip"]').tooltip("hide");
         $('.search-form-via-ajax').submit();
     });
 }

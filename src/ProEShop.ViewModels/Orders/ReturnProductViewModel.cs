@@ -5,13 +5,24 @@
 /// </summary>
 public class ReturnProductViewModel
 {
+    /// <summary>
+    /// OrderId
+    /// </summary>
+    public long Id { get; set; }
+
     public long OrderNumber { get; set; }
 
     public List<ParcelPostItemInReturnProduct> ParcelPostItems { get; set; }
 }
 
+/// <summary>
+/// محصولاتی که کاربر قراره یک یا چند تا از اونا رو مرجوع کنه
+/// </summary>
 public class ParcelPostItemInReturnProduct
 {
+    /// <summary>
+    /// عنوان محصول
+    /// </summary>
     public string ProductVariantProductPersianTitle { get; set; }
 
     public int Price { get; set; }
@@ -49,4 +60,9 @@ public class ParcelPostItemInReturnProduct
     /// مقدار تنوع
     /// </summary>
     public string ProductVariantVariantValue { get; set; }
+
+    /// <summary>
+    /// آیدی تنوع
+    /// </summary>
+    public long ProductVariantId { get; set; }
 }

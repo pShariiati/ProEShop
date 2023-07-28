@@ -21,53 +21,67 @@
         <div class="text-secondary rem15px">
             دقت کنید که برچسپ سریال کالا (چسپیده روی بسته) را سالم نگه دارید و کالای اصلی را با تمام لوازم در بسته‌بندی اولیه قرار دهید
         </div>
-        <div class="mt-4">
-            @foreach (var product in Model.ReturnProduct.ParcelPostItems)
-            {
-                <div class="d-flex justify-content-between border-bottom py-3">
-                    <div class="d-flex">
-                        <div class="d-flex align-items-center me-2">
-                            <div class="form-check">
-                                <input class="form-check-input border-2 border-dark" type="checkbox" value="" id="flexCheckDefault">
-                            </div>
-                            <a asp-page="/Product/Index" asp-route-productCode="@product.ProductVariantProductProductCode" asp-route-slug="@product.ProductVariantProductSlug" target="_blank">
-                                <img src="@WwwRootPaths.ProductImage/@product.ProductPicture" width="100">
-                            </a>
-                        </div>
-                        <div class="rem14px">
-                            <div class="fw-bold mb-1">@product.ProductVariantProductPersianTitle</div>
-                            @if (product.ProductVariantVariantIsColor != null)
-                            {
-                                <div class="d-flex align-items-center mb-1">
-                                    @if (product.ProductVariantVariantIsColor.Value)
-                                    {
-                                        <div class="circle-dot-in-return-product rounded-circle" style="background-color: @product.ProductVariantVariantColorCode;"></div>
-                                    }
-                                    else
-                                    {
-                                        <i class="bi bi-sort-numeric-up"></i>
-                                    }
-                                    <div class="ms-1">@product.ProductVariantVariantValue</div>
+        <form method="post" class="public-ajax-form" functionNameToCallInTheEnd="returnProductSuccessful">
+            <input type="hidden" value="@Model.ReturnProduct.Id" name="orderId" />
+            <div class="mt-4" id="product-items-in-return-products">
+                @foreach (var product in Model.ReturnProduct.ParcelPostItems)
+                {
+                    <div class="d-flex justify-content-between border-bottom py-3">
+                        <div class="d-flex">
+                            <div class="d-flex align-items-center me-2">
+                                <div class="form-check">
+                                    <input class="form-check-input border-2 border-dark" type="checkbox" value="@product.ProductVariantId" name="productIdsToReturn">
                                 </div>
-                            }
-                            <div class="mb-1">
-                                <i class="bi bi-shield-check"></i>
-                                @product.GuaranteeTitle
+                                <a asp-page="/Product/Index" asp-route-productCode="@product.ProductVariantProductProductCode" asp-route-slug="@product.ProductVariantProductSlug" target="_blank">
+                                    <img src="@WwwRootPaths.ProductImage/@product.ProductPicture" width="100">
+                                </a>
                             </div>
+                            <div class="rem14px">
+                                <div class="fw-bold mb-1">@product.ProductVariantProductPersianTitle</div>
+                                @if (product.ProductVariantVariantIsColor != null)
+                                {
+                                    <div class="d-flex align-items-center mb-1">
+                                        @if (product.ProductVariantVariantIsColor.Value)
+                                        {
+                                            <div class="circle-dot-in-return-product rounded-circle" style="background-color: @product.ProductVariantVariantColorCode;"></div>
+                                        }
+                                        else
+                                        {
+                                            <i class="bi bi-sort-numeric-up"></i>
+                                        }
+                                        <div class="ms-1">@product.ProductVariantVariantValue</div>
+                                    </div>
+                                }
+                                <div class="mb-1">
+                                    <i class="bi bi-shield-check"></i>
+                                    @product.GuaranteeTitle
+                                </div>
+                                <div>
+                                    <i class="bi bi-shop"></i>
+                                    @product.ProductVariantSellerShopName
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-end">
                             <div>
-                                <i class="bi bi-shop"></i>
-                                @product.ProductVariantSellerShopName
+                                <span class="persian-numbers fw-bold">@product.Price.ToString("#,0")</span>
+                                تومان
                             </div>
                         </div>
                     </div>
-                    <div class="d-flex align-items-end">
-                        <div>
-                            <span class="persian-numbers fw-bold">@product.Price.ToString("#,0")</span>
-                            تومان
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
+                }
+            </div>
+            <div class="d-flex justify-content-between mt-3">
+                <a href="#" class="btn btn-outline-danger">
+                    بازگشت
+                </a>
+                <button id="continue-button-in-return-product" class="btn btn-secondary" disabled="disabled">ادامه</button>
+            </div>
+        </form>
     </div>
 </div>
+
+@section CustomScripts
+{
+    <script src="~/Pages/Profile/Orders/ReturnProduct.cshtml.js"></script>
+}

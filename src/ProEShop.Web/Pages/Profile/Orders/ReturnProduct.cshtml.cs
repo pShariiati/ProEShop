@@ -1,12 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using ProEShop.Common.IdentityToolkit;
 using ProEShop.Services.Contracts;
 using ProEShop.ViewModels.Orders;
 
 namespace ProEShop.Web.Pages.Profile.Orders;
 
-public class ReturnProductModel : PageModel
+public class ReturnProductModel : ProfilePageBase
 {
     #region Constructor
 
@@ -25,5 +24,14 @@ public class ReturnProductModel : PageModel
     {
         var userId = User.Identity.GetLoggedInUserId();
         ReturnProduct = await _orderService.GetOrderDetailsForReturnProduct(orderNumber, userId);
+    }
+
+    public IActionResult OnPost(long orderId, List<long> productIdsToReturn)
+    {
+        return JsonOk(string.Empty, new
+        {
+            orderId,
+            productIdsToReturn
+        });
     }
 }
