@@ -8,12 +8,13 @@
 }
 
 <div class="container">
-    <div class="rem14px text-secondary mt-3">
+    <div class="rem14px text-secondary mt-3" id="breadcrumb-in-search-on-category">
         فروشگاه اینترنتی پروشاپ
-        <span class="mx-1">/</span>
-        <span>کالای دیجیتال</span>
-        <span class="mx-1">/</span>
-        <span>موبایل</span>
+        @foreach (var breadcrumbItem in Model.SearchOnCategory.BreadcrumbItems)
+        {
+            <span class="mx-1">/</span>
+            <a asp-page="/Search/ShowCategory" asp-route-categorySlug="@breadcrumbItem.Slug">@breadcrumbItem.Title</a>
+        }
     </div>
     <div class="row mt-3">
         <div class="col-lg-3" id="sidebar-in-search-on-category">

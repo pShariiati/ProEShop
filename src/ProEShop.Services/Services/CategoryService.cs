@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using AutoMapper;
+using AutoMapper.Execution;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -252,9 +253,9 @@ public class CategoryService : GenericService<Category>, ICategoryService
             .SingleAsync();
     }
 
-    public Task<SearchOnCategoryViewModel> GetSearchOnCategoryData(string categorySlug, string brandSlug)
+    public async Task<SearchOnCategoryViewModel> GetSearchOnCategoryData(string categorySlug, string brandSlug)
     {
-        return _categories
+        var result = await _categories
             .AsNoTracking()
             .AsSplitQuery()
             .Where(x => x.Slug == categorySlug)
@@ -262,6 +263,52 @@ public class CategoryService : GenericService<Category>, ICategoryService
                 configuration: _mapper.ConfigurationProvider,
                 parameters: new { brandSlug }
             ).SingleOrDefaultAsync();
+        if (result is null)
+        {
+            return null;
+        }
+
+        // https://www.dntips.ir/post/3234
+        var parentsResult = await _categories
+            .Where(x => x.Slug == categorySlug
+                             || x.Categories.Any(m => x.Id == m.ParentId))
+            .ToListAsync(); //It's a MUST - get all children from the database
+
+        var mainCategory = parentsResult.First(x => x.Slug == categorySlug);
+
+        var actualResult = new List<BreadcrumbItemInSearchOnCategoryViewModel>();
+        FindParents(mainCategory, actualResult);
+        actualResult.Reverse();
+
+        // چون دسته اصلی اضافه نمیشود پس دسته اصلی را هم در آخر سر اضافه میکنیم
+        actualResult.Add(new()
+        {
+            Slug = mainCategory.Slug,
+            Title = mainCategory.Title
+        });
+        result.BreadcrumbItems = actualResult;
+
+        return result;
+    }
+
+    private static void FindParents(Category category, List<BreadcrumbItemInSearchOnCategoryViewModel> actualResult)
+    {
+        if (category == null || category.Parent == null)
+        {
+            return;
+        }
+
+        var item = category.Parent;
+        actualResult.Add(new ()
+        {
+            Slug = item.Slug,
+            Title = item.Title
+        });
+
+        if (item.Parent != null)
+        {
+            FindParents(item, actualResult);
+        }
     }
 
     public override async Task<DuplicateColumns> AddAsync(Category entity)

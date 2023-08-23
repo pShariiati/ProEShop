@@ -36,6 +36,15 @@ public class SearchOnCategoryViewModel
     /// قیمت گرانترین محصول این دسته بندی
     /// </summary>
     public int MaximumPrice { get; set; }
+
+    public List<BreadcrumbItemInSearchOnCategoryViewModel> BreadcrumbItems { get; set; }
+}
+
+public class BreadcrumbItemInSearchOnCategoryViewModel
+{
+    public string Title { get; set; }
+
+    public string Slug { get; set; }
 }
 
 public class ShowBrandInSearchOnCategoryViewModel

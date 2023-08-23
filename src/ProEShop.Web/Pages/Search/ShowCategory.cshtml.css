@@ -35,3 +35,7 @@
     outline: none;
     caret-color: red;
 }
+
+::deep #breadcrumb-in-search-on-category a {
+    color: #6c757d;
+}
