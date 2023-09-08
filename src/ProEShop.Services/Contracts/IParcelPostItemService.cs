@@ -35,4 +35,15 @@ public interface IParcelPostItemService : ICustomGenericService<ParcelPostItem>
     /// <param name="categoryId"></param>
     /// <returns></returns>
     Task<bool> CheckCategoryIdForExistingInOrder(long orderId, long categoryId);
+
+    /// <summary>
+    /// بررسی محصولاتی که قرار است مرجوع شوند
+    /// آیا به همان تعداد محصولی که توسط کلاینت به سمت سرور آمده است
+    /// به همان تعداد محصول هم داخل آن سفارش، محصول وجود دارد
+    /// </summary>
+    /// <param name="orderId"></param>
+    /// <param name="productVariantIdsToReturn"></param>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    Task<bool> CheckProductsVariantsForReturn(long orderId, List<long> productVariantIdsToReturn, long userId);
 }

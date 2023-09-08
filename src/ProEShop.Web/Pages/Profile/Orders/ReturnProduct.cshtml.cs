@@ -1,5 +1,8 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProEShop.Common.IdentityToolkit;
+using ProEShop.DataLayer.Context;
+using ProEShop.Entities;
+using ProEShop.Entities.Enums;
 using ProEShop.Services.Contracts;
 using ProEShop.ViewModels.Orders;
 
@@ -10,10 +13,20 @@ public class ReturnProductModel : ProfilePageBase
     #region Constructor
 
     private readonly IOrderService _orderService;
+    private readonly IParcelPostItemService _parcelPostItemService;
+    private readonly IReturnProductService _returnProductService;
+    private readonly IUnitOfWork _uow;
 
-    public ReturnProductModel(IOrderService orderService)
+    public ReturnProductModel(
+        IOrderService orderService,
+        IParcelPostItemService parcelPostItemService,
+        IReturnProductService returnProductService,
+        IUnitOfWork uow)
     {
         _orderService = orderService;
+        _parcelPostItemService = parcelPostItemService;
+        _returnProductService = returnProductService;
+        _uow = uow;
     }
 
     #endregion
@@ -26,12 +39,38 @@ public class ReturnProductModel : ProfilePageBase
         ReturnProduct = await _orderService.GetOrderDetailsForReturnProduct(orderNumber, userId);
     }
 
-    public IActionResult OnPost(long orderId, List<long> productIdsToReturn)
+    public async Task<IActionResult> OnPost(long orderId, List<long> productVariantIdsToReturn)
     {
-        return JsonOk(string.Empty, new
+        var userId = User.Identity.GetLoggedInUserId();
+
+        if (productVariantIdsToReturn.Count <= 0)
         {
-            orderId,
-            productIdsToReturn
-        });
+            return JsonBadRequest();
+        }
+
+        if (!await _parcelPostItemService.CheckProductsVariantsForReturn(orderId, productVariantIdsToReturn, userId))
+        {
+            return JsonBadRequest();
+        }
+
+        var returnProductToAdd = new ReturnProduct()
+        {
+            OrderId = orderId,
+            TrackingNumber = await _returnProductService.GetTrackingNumberForAddNewRecord(),
+            Status = ReturnProductStatus.Draft
+        };
+
+        foreach (var productVariantId in productVariantIdsToReturn)
+        {
+            returnProductToAdd.ReturnProductItems.Add(new ReturnProductItem()
+            {
+                ProductVariantId = productVariantId
+            });
+        }
+
+        await _returnProductService.AddAsync(returnProductToAdd);
+        await _uow.SaveChangesAsync();
+
+        return JsonOk("درخواست ثبت مرجوعی ثبت شد");
     }
 }

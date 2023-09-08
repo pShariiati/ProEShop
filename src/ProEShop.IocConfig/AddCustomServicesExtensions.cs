@@ -92,6 +92,7 @@ public static class AddCustomServicesExtensions
         services.AddScoped<IDiscountCodeService, DiscountCodeService>();
         services.AddScoped<IUsedDiscountCodeService, UsedDiscountCodeService>();
         services.AddScoped<IGiftCardService, GiftCardService>();
+        services.AddScoped<IReturnProductService, ReturnProductService>();
 
         #region Html sanitizer
         IHtmlSanitizer sanitizer = new HtmlSanitizer();

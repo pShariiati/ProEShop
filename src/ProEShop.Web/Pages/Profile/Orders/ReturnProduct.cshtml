@@ -30,7 +30,7 @@
                         <div class="d-flex">
                             <div class="d-flex align-items-center me-2">
                                 <div class="form-check">
-                                    <input class="form-check-input border-2 border-dark" type="checkbox" value="@product.ProductVariantId" name="productIdsToReturn">
+                                    <input class="form-check-input border-2 border-dark" type="checkbox" value="@product.ProductVariantId" name="productVariantIdsToReturn">
                                 </div>
                                 <a asp-page="/Product/Index" asp-route-productCode="@product.ProductVariantProductProductCode" asp-route-slug="@product.ProductVariantProductSlug" target="_blank">
                                     <img src="@WwwRootPaths.ProductImage/@product.ProductPicture" width="100">

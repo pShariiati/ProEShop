@@ -68,4 +68,14 @@ public class ParcelPostItemService : CustomGenericService<ParcelPostItem>, IParc
             .SelectMany(x => x.ProductVariant.Product.ProductCategories)
             .AnyAsync(x => x.CategoryId == categoryId);
     }
+
+    public async Task<bool> CheckProductsVariantsForReturn(long orderId, List<long> productVariantIdsToReturn, long userId)
+    {
+        var returnProductsCount = await _parcelPostItems
+            .Where(x => productVariantIdsToReturn.Contains(x.ProductVariantId))
+            .Where(x => x.OrderId == orderId)
+            .CountAsync(x => x.Order.UserId == userId);
+
+        return returnProductsCount == productVariantIdsToReturn.Count;
+    }
 }

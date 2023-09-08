@@ -15,5 +15,5 @@
 // بعد از اینکه کالا های مورد نظر رو جهت مرجوعی انتخاب کرد و روی ادامه کلیک کرد و از سمت سرور هم برگشت
 // این فانکشن فراخوانی می شود
 function returnProductSuccessful(message, data) {
-    console.log(data);
+    showToastr('success', message);
 }
