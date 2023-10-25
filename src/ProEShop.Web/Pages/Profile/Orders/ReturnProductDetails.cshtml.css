@@ -1,0 +1,16 @@
+﻿.product-count-in-return-product-details {
+    top: 90px;
+    right: 86px;
+}
+
+.counter-box-in-return-product {
+    border: 1px solid #d8caca;
+}
+
+.return-reason-select-box-in-return-product {
+    height: 42px;
+}
+
+.return-reason-text-in-return-product {
+    resize: none;
+}

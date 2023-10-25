@@ -1,0 +1,115 @@
+﻿@page "{returnProductId}"
+@model ProEShop.Web.Pages.Profile.Orders.ReturnProductDetails
+@{
+    ViewData["Title"] = "توضیحات و دلایل مرجوع کردن کالا";
+}
+
+<div class="container mt-4">
+    <div class="d-flex">
+        <a href="#" class="rem21px text-dark me-2">
+            <i class="bi bi-arrow-right"></i>
+        </a>
+        <div class="fw-bold">تکمیل جزئیات</div>
+    </div>
+    <div class="border rounded-3 p-3 mt-3">
+        <div>
+            @foreach (var product in Model.ReturnProductItems)
+            {
+                <div>
+                    <div class="d-flex justify-content-between align-items-end">
+                        <div class="d-flex">
+                            <div class="position-relative me-4">
+                                <img src="images/products/product1.jpg" width="100" />
+                                <span class="product-count-in-return-product-details rounded-circle badge bg-secondary position-absolute persian-numbers">۲</span>
+                            </div>
+                            <div>
+                                <div class="rem14px fw-bold mb-3">@product.ProductVariantProductPersianTitle</div>
+                                <div class="d-flex">
+                                    <i class="bi bi-sort-numeric-up text-secondary"></i>
+                                    <div class="rem13px ms-2">43</div>
+                                </div>
+                                <div class="d-flex">
+                                    <i class="bi bi-shield-check text-secondary"></i>
+                                    <div class="rem13px ms-2">نام گارانتی</div>
+                                </div>
+                                <div class="d-flex">
+                                    <i class="bi bi-shop text-secondary"></i>
+                                    <div class="rem13px ms-2">نام فروشگاه</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex fw-bold rem15px">
+                            <div class="persian-numbers me-1">۲۵۵,۰۰۰</div>
+                            تومان
+                        </div>
+                    </div>
+                    <div class="d-flex mt-4">
+                        <div class="me-3 me-lg-4">
+                            <div class="mb-2">
+                                تعداد مرجوعی <span class="text-danger">*</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center p-2 rounded-3 counter-box-in-return-product">
+                                <div class="pe-3 ps-1 pointer-cursor">-</div>
+                                <div class="persian-numbers px-3">۱</div>
+                                <div class="ps-3 pe-1 pointer-cursor">+</div>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="mb-2">
+                                علت مرجوعی <span class="text-danger">*</span>
+                            </div>
+                            <select class="form-select return-reason-select-box-in-return-product">
+                                <option>انتخاب کنید</option>
+                                <option>انصراف از خرید با رعایت شرایط مرجوعی</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <label class="form-label rem12px">
+                            توضیحات
+                            <sapn class="text-danger">*</sapn>
+                        </label>
+                        <div>
+                            <textarea class="form-control return-reason-text-in-return-product"
+                                      rows="3" placeholder="اینجا بنویسید"></textarea>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="mb-2">ارسال عکس</div>
+                        <div class="text-secondary rem12px">اگر ایراد کالا قابل مشاهده است، به صورتی عکس بگیرید که مشخص باشد (بافرمت JPG یا PNG و هر عکس حداکثر ۱۰ مگابایت)</div>
+                        <div class="mt-3 d-flex text-info">
+                            <div class="border border-info rounded-3 px-2 pointer-cursor py-1 d-flex flex-column align-items-center border-2">
+                                <div>
+                                    <i class="bi bi-plus-circle"></i>
+                                </div>
+                                <div class="fw-bold rem12px">اضافه</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="mt-4 border-top pt-3 d-flex justify-content-between align-items-center">
+            <div>
+                <a href="#" class="btn btn-outline-danger py-2">بازگشت</a>
+            </div>
+            <div class="d-flex align-items-center">
+                <div class="me-3">
+                    <div class="text-secondary rem13px">مبلغ مرجوعی</div>
+                    <div>
+                        <span class="persian-numbers fw-bold">۲۹۳,۰۰۰</span>
+                        <span class="rem14px">تومان</span>
+                    </div>
+                </div>
+                <div>
+                    <a href="#" class="btn btn-danger py-2">ادامه</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section CustomScripts
+{
+    <script src="~/Pages/Profile/Orders/ReturnProductDetails.cshtml.js"></script>
+}

@@ -9,4 +9,10 @@ public interface IReturnProductService : IGenericService<ReturnProduct>
     /// </summary>
     /// <returns></returns>
     Task<long> GetTrackingNumberForAddNewRecord();
+
+	/// <summary>
+    /// بررسی آیدی مرجوعی کالا هنگام نمایش دادن جزییات مرجوعی کالا
+    /// </summary>
+    /// <returns></returns>
+    Task<bool> CheckForReturnProductDetails(long id);
 }
