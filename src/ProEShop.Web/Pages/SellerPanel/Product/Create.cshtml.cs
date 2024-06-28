@@ -1,8 +1,7 @@
 ﻿using System.Text;
 using AutoMapper;
-using Ganss.XSS;
+using Ganss.Xss;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using ProEShop.Common.Attributes;
 using ProEShop.Common.Constants;
 using ProEShop.Common.Helpers;
@@ -12,7 +11,6 @@ using ProEShop.Entities;
 using ProEShop.Services.Contracts;
 using ProEShop.ViewModels.Brands;
 using ProEShop.ViewModels.CategoryFeatures;
-using ProEShop.ViewModels.FeatureConstantValues;
 using ProEShop.ViewModels.Products;
 
 namespace ProEShop.Web.Pages.SellerPanel.Product;

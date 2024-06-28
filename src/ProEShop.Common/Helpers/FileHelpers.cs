@@ -1,8 +1,8 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
-using System.Drawing.Text;
-using BarcodeLib;
+using BarcodeStandard;
 using Microsoft.AspNetCore.Http;
+using SkiaSharp;
 
 namespace ProEShop.Common.Helpers;
 
@@ -245,11 +245,12 @@ public static class FileHelpers
     {
         // BarcodeLib package
         var barcodeInstance = new Barcode();
-        var barcodeImage = barcodeInstance.Encode(BarcodeLib.TYPE.CODE39, input, Color.Black,
-            Color.OrangeRed, width, height);
+        var encodedBarcode = barcodeInstance.Encode(BarcodeStandard.Type.Code128, input, SKColors.Black,
+            SKColors.OrangeRed, width, height);
         using var barcodeStream = new MemoryStream();
         {
-            barcodeImage.Save(barcodeStream, ImageFormat.Png);
+            var imageToBarcode = Image.FromStream(encodedBarcode.Encode().AsStream());
+            imageToBarcode.Save(barcodeStream, ImageFormat.Png);
         }
         return (Bitmap)Image.FromStream(barcodeStream);
     }

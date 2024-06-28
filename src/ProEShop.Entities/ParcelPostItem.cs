@@ -1,8 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using ProEShop.Entities.AuditableEntity;
-using ProEShop.Entities.Identity;
 
 namespace ProEShop.Entities;
 

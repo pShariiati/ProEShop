@@ -1,6 +1,4 @@
 ﻿using ProEShop.Entities;
-using ProEShop.ViewModels.Brands;
-using ProEShop.ViewModels.Carts;
 using ProEShop.ViewModels.UserLists;
 
 namespace ProEShop.Services.Contracts;

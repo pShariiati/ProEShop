@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using ProEShop.Common.Helpers;
-using ProEShop.ViewModels.Carts;
 using ProEShop.ViewModels.ProductComments;
 using ProEShop.ViewModels.Products;
 

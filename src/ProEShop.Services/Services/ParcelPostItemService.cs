@@ -6,7 +6,6 @@ using ProEShop.DataLayer.Context;
 using ProEShop.Entities;
 using ProEShop.Entities.Enums;
 using ProEShop.Services.Contracts;
-using ProEShop.ViewModels.CategoryFeatures;
 using ProEShop.ViewModels.Products;
 
 namespace ProEShop.Services.Services;

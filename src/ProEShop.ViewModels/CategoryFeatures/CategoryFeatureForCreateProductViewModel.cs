@@ -1,8 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using ProEShop.Common.Constants;
-
-namespace ProEShop.ViewModels.CategoryFeatures;
+﻿namespace ProEShop.ViewModels.CategoryFeatures;
 
 public class CategoryFeatureForCreateProductViewModel
 {

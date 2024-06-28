@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using ProEShop.ViewModels.Carts;
-using ProEShop.ViewModels.Products;
 using ProEShop.ViewModels.Wallets;
 
 namespace ProEShop.Web.Mappings;

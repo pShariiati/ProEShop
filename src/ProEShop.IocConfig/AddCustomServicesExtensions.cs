@@ -10,8 +10,7 @@ using ProEShop.Services.Services;
 using ProEShop.Services.Services.Identity;
 using System.Security.Claims;
 using System.Security.Principal;
-using Ganss.XSS;
-using ProEShop.Services;
+using Ganss.Xss;
 
 namespace ProEShop.IocConfig;
 

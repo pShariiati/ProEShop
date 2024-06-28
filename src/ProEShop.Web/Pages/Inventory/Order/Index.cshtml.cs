@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using ProEShop.Common;
 using ProEShop.Common.Constants;
 using ProEShop.Common.Helpers;
@@ -7,7 +6,6 @@ using ProEShop.Common.IdentityToolkit;
 using ProEShop.DataLayer.Context;
 using ProEShop.Entities.Enums;
 using ProEShop.Services.Contracts;
-using ProEShop.Services.Services;
 using ProEShop.ViewModels.Orders;
 
 namespace ProEShop.Web.Pages.Inventory.Order;

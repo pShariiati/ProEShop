@@ -1,8 +1,6 @@
 ﻿using ProEShop.Entities;
 using ProEShop.ViewModels;
-using ProEShop.ViewModels.Brands;
 using ProEShop.ViewModels.Guarantees;
-using ProEShop.ViewModels.Variants;
 
 namespace ProEShop.Services.Contracts;
 

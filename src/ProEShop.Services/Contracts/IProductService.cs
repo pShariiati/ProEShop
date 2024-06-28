@@ -1,5 +1,4 @@
 ﻿using ProEShop.Entities;
-using ProEShop.ViewModels.Brands;
 using ProEShop.ViewModels.Products;
 using ProEShop.ViewModels.Search;
 using ProEShop.ViewModels.Variants;

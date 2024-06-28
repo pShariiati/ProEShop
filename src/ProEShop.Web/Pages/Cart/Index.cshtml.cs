@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using ProEShop.Common.Helpers;
 using ProEShop.Common.IdentityToolkit;
 using ProEShop.DataLayer.Context;
 using ProEShop.Services.Contracts;
-using ProEShop.Services.Services;
 using ProEShop.ViewModels.Carts;
 
 namespace ProEShop.Web.Pages.Cart;

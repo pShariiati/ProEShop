@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Mvc;
 using ProEShop.Common.Attributes;
-using ProEShop.Common.Constants;
 using ProEShop.Entities;
 using ProEShop.Entities.Identity;
 

@@ -1,8 +1,6 @@
 ﻿using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.CodeAnalysis.FlowAnalysis;
 using ProEShop.Common.Attributes;
 using ProEShop.Common.Constants;
 using ProEShop.Common.Helpers;
@@ -10,7 +8,6 @@ using ProEShop.Common.IdentityToolkit;
 using ProEShop.DataLayer.Context;
 using ProEShop.Entities;
 using ProEShop.Services.Contracts;
-using ProEShop.Services.Services;
 using ProEShop.ViewModels;
 using ProEShop.ViewModels.Categories;
 using ProEShop.ViewModels.DiscountNotices;

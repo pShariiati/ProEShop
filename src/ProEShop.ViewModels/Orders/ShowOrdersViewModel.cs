@@ -1,5 +1,4 @@
-﻿using ProEShop.ViewModels.Brands;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ProEShop.Common.Attributes;
 using ProEShop.Common.Constants;

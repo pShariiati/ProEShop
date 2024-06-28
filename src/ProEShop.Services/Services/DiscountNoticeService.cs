@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using ProEShop.DataLayer.Context;
 using ProEShop.Entities;
 using ProEShop.Services.Contracts;
-using ProEShop.ViewModels.CategoryFeatures;
 using ProEShop.ViewModels.DiscountNotices;
 
 namespace ProEShop.Services.Services;

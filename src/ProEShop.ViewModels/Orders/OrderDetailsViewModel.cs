@@ -1,5 +1,4 @@
 ﻿using ProEShop.Entities.Enums;
-using System.ComponentModel.DataAnnotations;
 
 namespace ProEShop.ViewModels.Orders;
 

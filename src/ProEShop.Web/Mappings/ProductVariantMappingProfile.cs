@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using ProEShop.ViewModels.Products;
 using ProEShop.ViewModels.ProductVariants;
 
 namespace ProEShop.Web.Mappings;

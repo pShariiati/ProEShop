@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using ProEShop.Common.Attributes;
 using ProEShop.Common.Constants;
 using ProEShop.Common.Helpers;

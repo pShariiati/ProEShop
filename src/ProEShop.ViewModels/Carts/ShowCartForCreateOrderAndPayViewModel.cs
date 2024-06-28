@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ProEShop.Entities.Enums;
+﻿using ProEShop.Entities.Enums;
 
 namespace ProEShop.ViewModels.Carts;
 

@@ -1,11 +1,10 @@
-using Ganss.XSS;
+using Ganss.Xss;
 using Microsoft.AspNetCore.Mvc;
 using ProEShop.Common;
 using ProEShop.Common.Constants;
 using ProEShop.Common.Helpers;
 using ProEShop.Common.IdentityToolkit;
 using ProEShop.DataLayer.Context;
-using ProEShop.Entities;
 using ProEShop.Services.Contracts;
 using ProEShop.ViewModels.Products;
 

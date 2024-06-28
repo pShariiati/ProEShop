@@ -1,17 +1,12 @@
-﻿using System.Linq.Expressions;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using ProEShop.Common.Helpers;
 using ProEShop.Common.IdentityToolkit;
 using ProEShop.DataLayer.Context;
 using ProEShop.Entities;
-using ProEShop.Entities.Enums;
 using ProEShop.Services.Contracts;
 using ProEShop.ViewModels;
-using ProEShop.ViewModels.Brands;
-using ProEShop.ViewModels.Carts;
-using ProEShop.ViewModels.Categories;
 using ProEShop.ViewModels.ProductComments;
 using ProEShop.ViewModels.Products;
 

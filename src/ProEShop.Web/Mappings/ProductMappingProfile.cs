@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using ProEShop.Entities;
-using ProEShop.ViewModels.Carts;
 using ProEShop.ViewModels.Products;
 
 namespace ProEShop.Web.Mappings;

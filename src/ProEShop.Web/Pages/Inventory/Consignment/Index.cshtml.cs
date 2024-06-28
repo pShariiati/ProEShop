@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using Ganss.XSS;
+﻿using Ganss.Xss;
 using Microsoft.AspNetCore.Mvc;
 using ProEShop.Common.Attributes;
 using ProEShop.Common.Constants;

@@ -1,8 +1,6 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ProEShop.Entities;
-using ProEShop.Entities.Identity;
 
 namespace ProEShop.DataLayer.Configurations;
 

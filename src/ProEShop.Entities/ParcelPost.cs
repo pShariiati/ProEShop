@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using ProEShop.Entities.AuditableEntity;
 using ProEShop.Entities.Enums;
-using ProEShop.Entities.Identity;
 
 namespace ProEShop.Entities;
 

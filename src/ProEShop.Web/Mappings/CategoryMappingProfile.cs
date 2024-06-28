@@ -1,8 +1,5 @@
 ﻿using AutoMapper;
 using ProEShop.Entities;
-using ProEShop.ViewModels.Addresses;
-using ProEShop.ViewModels.Carts;
-using ProEShop.ViewModels.Products;
 using ProEShop.ViewModels.Search;
 
 namespace ProEShop.Web.Mappings;

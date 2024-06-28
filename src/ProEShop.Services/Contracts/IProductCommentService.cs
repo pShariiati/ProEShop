@@ -1,7 +1,5 @@
 ﻿using ProEShop.Entities;
 using ProEShop.ViewModels;
-using ProEShop.ViewModels.Brands;
-using ProEShop.ViewModels.Carts;
 using ProEShop.ViewModels.ProductComments;
 using ProEShop.ViewModels.Products;
 

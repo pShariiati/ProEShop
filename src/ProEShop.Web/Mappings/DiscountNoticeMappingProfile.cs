@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
-using ProEShop.ViewModels.Carts;
 using ProEShop.ViewModels.DiscountNotices;
-using ProEShop.ViewModels.Products;
 
 namespace ProEShop.Web.Mappings;
 

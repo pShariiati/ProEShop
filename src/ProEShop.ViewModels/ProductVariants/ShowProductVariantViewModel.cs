@@ -1,5 +1,4 @@
-﻿using ProEShop.Common.Constants;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ProEShop.ViewModels.ProductVariants;
 

@@ -1,5 +1,4 @@
 ﻿using ProEShop.Entities;
-using ProEShop.ViewModels.Categories;
 using ProEShop.ViewModels.Sellers;
 
 namespace ProEShop.Services.Contracts;

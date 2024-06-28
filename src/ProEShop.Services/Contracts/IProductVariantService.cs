@@ -1,5 +1,4 @@
 ﻿using ProEShop.Entities;
-using ProEShop.ViewModels.Brands;
 using ProEShop.ViewModels.ProductVariants;
 
 namespace ProEShop.Services.Contracts;

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ProEShop.ViewModels.Carts;
+﻿namespace ProEShop.ViewModels.Carts;
 
 /// <summary>
 /// استفاده شده در صفحه تکی سبد خرید

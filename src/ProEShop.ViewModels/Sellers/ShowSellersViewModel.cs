@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using ProEShop.Common.Constants;
 using ProEShop.Entities;
-using ProEShop.ViewModels.Categories;
 
 namespace ProEShop.ViewModels.Sellers;
 

@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using AutoMapper;
+﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using ProEShop.Common.Helpers;
@@ -7,12 +6,7 @@ using ProEShop.DataLayer.Context;
 using ProEShop.Entities;
 using ProEShop.Entities.Enums;
 using ProEShop.Services.Contracts;
-using ProEShop.ViewModels;
-using ProEShop.ViewModels.Brands;
-using ProEShop.ViewModels.Carts;
-using ProEShop.ViewModels.Categories;
 using ProEShop.ViewModels.Orders;
-using ProEShop.ViewModels.ProductComments;
 
 namespace ProEShop.Services.Services;
 

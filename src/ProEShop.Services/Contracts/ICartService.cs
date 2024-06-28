@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualBasic.CompilerServices;
-using ProEShop.Entities;
-using ProEShop.ViewModels.Brands;
+﻿using ProEShop.Entities;
 using ProEShop.ViewModels.Carts;
 using ProEShop.ViewModels.Products;
 

@@ -4,9 +4,7 @@ using ProEShop.Common.Helpers;
 using ProEShop.DataLayer.Context;
 using ProEShop.Entities;
 using ProEShop.Services.Contracts;
-using ProEShop.Services.Services;
 using ProEShop.ViewModels;
-using ProEShop.ViewModels.Brands;
 using ProEShop.ViewModels.FeatureConstantValues;
 using SortingBrands = ProEShop.ViewModels.FeatureConstantValues.SortingBrands;
 

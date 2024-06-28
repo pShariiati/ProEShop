@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using ProEShop.Common.Helpers;
 using ProEShop.Services.Contracts;
 using ProEShop.ViewModels.Products;

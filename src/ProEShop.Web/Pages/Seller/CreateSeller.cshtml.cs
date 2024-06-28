@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using AutoMapper;
-using Ganss.XSS;
+using Ganss.Xss;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using ProEShop.Common;
 using ProEShop.Common.Constants;
 using ProEShop.Common.Helpers;

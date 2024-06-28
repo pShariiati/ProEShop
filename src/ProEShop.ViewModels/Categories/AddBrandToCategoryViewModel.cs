@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using ProEShop.Common.Constants;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc;
-using ProEShop.Common.Attributes;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace ProEShop.ViewModels.Categories;
 

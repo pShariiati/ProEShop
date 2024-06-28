@@ -3,7 +3,6 @@ using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ProEShop.Common.Constants;
-using ProEShop.Common.Helpers;
 using ProEShop.Services.Contracts;
 
 namespace ProEShop.Web.Pages.Product;

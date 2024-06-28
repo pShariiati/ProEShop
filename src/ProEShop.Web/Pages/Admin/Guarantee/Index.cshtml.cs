@@ -4,7 +4,6 @@ using ProEShop.Common.Helpers;
 using ProEShop.Common.IdentityToolkit;
 using ProEShop.Services.Contracts;
 using ProEShop.ViewModels.Guarantees;
-using ProEShop.ViewModels.Variants;
 
 namespace ProEShop.Web.Pages.Admin.Guarantee;
 

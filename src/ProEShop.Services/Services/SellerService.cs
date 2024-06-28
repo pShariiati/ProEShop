@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using ProEShop.Common.Helpers;
@@ -8,7 +7,6 @@ using ProEShop.DataLayer.Context;
 using ProEShop.Entities;
 using ProEShop.Services.Contracts;
 using ProEShop.ViewModels;
-using ProEShop.ViewModels.Categories;
 using ProEShop.ViewModels.Sellers;
 
 namespace ProEShop.Services.Services;

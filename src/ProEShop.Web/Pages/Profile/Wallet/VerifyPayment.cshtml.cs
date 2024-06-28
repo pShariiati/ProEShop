@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Parbad;
 using ProEShop.Common.IdentityToolkit;
 using ProEShop.DataLayer.Context;
-using ProEShop.Entities.Enums;
 using ProEShop.Services.Contracts;
 
 namespace ProEShop.Web.Pages.Profile.Wallet;

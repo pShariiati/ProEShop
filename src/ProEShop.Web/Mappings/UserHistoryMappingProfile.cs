@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using ProEShop.Entities;
 using ProEShop.ViewModels.UserHistories;
 
 namespace ProEShop.Web.Mappings;

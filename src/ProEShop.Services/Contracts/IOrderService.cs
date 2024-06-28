@@ -1,8 +1,5 @@
 ﻿using ProEShop.Entities;
-using ProEShop.ViewModels.Brands;
-using ProEShop.ViewModels.Carts;
 using ProEShop.ViewModels.Orders;
-using ProEShop.ViewModels.ProductComments;
 
 namespace ProEShop.Services.Contracts;
 

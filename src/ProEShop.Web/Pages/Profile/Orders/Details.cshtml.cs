@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using ProEShop.Common.IdentityToolkit;
 using ProEShop.Services.Contracts;
 using ProEShop.ViewModels.Orders;

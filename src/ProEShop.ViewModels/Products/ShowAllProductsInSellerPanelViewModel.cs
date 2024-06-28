@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ProEShop.Common.Helpers;
 using ProEShop.Entities;
-using ProEShop.ViewModels.Sellers;
 
 namespace ProEShop.ViewModels.Products;
 

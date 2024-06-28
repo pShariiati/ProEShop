@@ -1,8 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ProEShop.Common.IdentityToolkit;
-using ProEShop.DataLayer.Context;
-using ProEShop.Entities;
-using ProEShop.Entities.Enums;
 using ProEShop.Services.Contracts;
 using ProEShop.ViewModels.Orders;
 
