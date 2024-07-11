@@ -1,5 +1,12 @@
 ﻿$(function () {
     activationSwiper();
+    $('.item-in-profile-order').click(function (e) {
+        if ($(e.target).parents('.register-return-product-button-in-profile-order').length) {
+            e.preventDefault();
+            var orderNumber = $(this).attr('href').split('/').at(-1);
+            location.href = `/Profile/Orders/ReturnProduct/${orderNumber}`;
+        }
+    });
 });
 
 function activationSwiper() {

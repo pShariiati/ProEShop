@@ -19,22 +19,32 @@
                     <div class="d-flex justify-content-between align-items-end">
                         <div class="d-flex">
                             <div class="position-relative me-4">
-                                <img src="images/products/product1.jpg" width="100" />
+                                <img src="@WwwRootPaths.ProductImage/@product.ProductImage" width="100" />
                                 <span class="product-count-in-return-product-details rounded-circle badge bg-secondary position-absolute persian-numbers">۲</span>
                             </div>
                             <div>
-                                <div class="rem14px fw-bold mb-3">@product.ProductVariantProductPersianTitle</div>
-                                <div class="d-flex">
-                                    <i class="bi bi-sort-numeric-up text-secondary"></i>
-                                    <div class="rem13px ms-2">43</div>
-                                </div>
+                                <div class="rem14px fw-bold mb-3">@product.PersianTitle</div>
+                                @if (product.VariantValue != null)
+                                {
+                                    <div class="d-flex@(product.IsVariantColor ? " mb-1" : string.Empty)">
+                                        @if (product.IsVariantColor)
+                                        {
+                                            <div class="circle-dot-in-return-product-details rounded-circle" style="background-color: @product.VariantColorCode"></div>
+                                        }
+                                        else
+                                        {
+                                            <i class="bi bi-sort-numeric-up text-secondary"></i>
+                                        }
+                                        <div class="rem13px ms-2">@product.VariantValue</div>
+                                    </div>
+                                }
                                 <div class="d-flex">
                                     <i class="bi bi-shield-check text-secondary"></i>
-                                    <div class="rem13px ms-2">نام گارانتی</div>
+                                    <div class="rem13px ms-2">@product.GuaranteeTitle</div>
                                 </div>
                                 <div class="d-flex">
                                     <i class="bi bi-shop text-secondary"></i>
-                                    <div class="rem13px ms-2">نام فروشگاه</div>
+                                    <div class="rem13px ms-2">@product.ShopName</div>
                                 </div>
                             </div>
                         </div>

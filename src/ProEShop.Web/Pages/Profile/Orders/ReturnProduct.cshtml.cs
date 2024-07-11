@@ -71,6 +71,9 @@ public class ReturnProductModel : ProfilePageBase
         await _returnProductService.AddAsync(returnProductToAdd);
         await _uow.SaveChangesAsync();
 
-        return JsonOk("درخواست ثبت مرجوعی ثبت شد");
+        return JsonOk("درخواست ثبت مرجوعی ثبت شد", new
+        {
+            ReturnProductId = returnProductToAdd.Id
+        });
     }
 }

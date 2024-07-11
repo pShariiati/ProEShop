@@ -5,6 +5,7 @@ using ProEShop.Common.Constants;
 using ProEShop.Common.Helpers;
 using ProEShop.Common.IdentityToolkit;
 using ProEShop.DataLayer.Context;
+using ProEShop.Entities;
 using ProEShop.Entities.Enums;
 using ProEShop.Services.Contracts;
 using ProEShop.ViewModels.Orders;
@@ -115,6 +116,12 @@ public class IndexModel : DeliveryOrderPanelBase
 
     public async Task<IActionResult> OnPostChangeStatusToDeliveryToPost(DeliveryParcelPostToPostViewModel model)
     {
+        // بررسی تکراری بودن کد رهگیری اداره پست
+        if (await _parcelPostService.IsExistsBy(nameof(ParcelPost.PostTrackingCode), model.PostTrackingCode))
+        {
+            return JsonBadRequest("کد رهگیری اداره پست تکراری است");
+        }
+
         var parcelPost = await _parcelPostService.FindByIdAsync(model.Id);
 
         if (parcelPost is null)
